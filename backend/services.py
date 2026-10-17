@@ -1,14 +1,112 @@
 from collections import Counter, defaultdict, deque
 from datetime import timedelta, datetime
 from zoneinfo import ZoneInfo
+try:
+    from .program_catalog import program_catalog, preparation_quests, available, distance_km
+    from .preferences import PREFERENCES
+except ImportError:
+    from program_catalog import program_catalog, preparation_quests, available, distance_km
+    from preferences import PREFERENCES
 
 DAY_ZONE = ZoneInfo("America/Los_Angeles")
 
 class OneThing:
     """Reads and personalization for the persistent demo profile."""
-    def __init__(self, db, clock):
+    def __init__(self, db, clock, data_mode='sample'):
         self.db = db
         self.clock = clock
+        self.data_mode = data_mode
+        self.catalog = program_catalog() if data_mode == 'catalog' else None
+    def opportunity_rows(self):
+        return list(self.catalog.values()) if self.catalog is not None else self.db.all('opportunities')
+    def opportunity(self, opportunity_id):
+        if self.catalog is not None and opportunity_id in self.catalog:
+            return self.catalog[opportunity_id]
+        # Old sample saves and completed quests remain readable after switching modes.
+        return self.db.get('opportunities', opportunity_id)
+    def quest(self, quest_id):
+        if self.catalog is not None and '::' in quest_id:
+            o = self.catalog.get(quest_id.rsplit('::', 1)[0])
+            return next((q for q in preparation_quests(o) if q['id'] == quest_id), None) if o else None
+        return self.db.get('quests', quest_id)
+    def quests_for(self, rows):
+        if self.catalog is None:
+            ids = {o['id'] for o in rows}
+            return [q for q in self.db.all('quests') if q['opportunity_id'] in ids]
+        result = []
+        for o in rows:
+            if o['id'] in self.catalog:
+                result.extend(preparation_quests(o))
+            else:
+                result.extend(q for q in self.db.all('quests') if q['opportunity_id'] == o['id'])
+        return result
+    def decorate(self, rows):
+        p = self.profile() or {}
+        tags = p.get('interests', []) + p.get('skills', [])
+        saved = {a['opportunity_id'] for a in self.activity('save')}
+        return [{**o, 'matching_tags': list(dict.fromkeys(t for t in o.get('topics', []) + o.get('tags', []) + o.get('skills', []) if t in tags)), 'saved': o['id'] in saved} for o in rows]
+    def saved_opportunities(self):
+        rows = [self.opportunity(a['opportunity_id']) for a in self.activity('save')]
+        return self.decorate([o for o in rows if o])
+    def mark_quests(self, quests):
+        done = self.activity('completion')
+        return [{**q, 'completed': any(a['quest_id'] == q['id'] and (not q.get('daily') or self.completion_day(a) == self.today()) for a in done)} for q in quests]
+    def feed_page(self, filters, offset, limit):
+        """Filter before pagination. All repeated choices are OR; groups are AND."""
+        for field in ('interests', 'goals'):
+            if len(set(filters.get(field, []))) > 3:
+                raise ValueError('Choose up to 3 '+field)
+        if self.catalog is None:
+            rows = self.opportunities()
+            return dict(opportunities=rows, quests=self.mark_quests(self.db.all('quests')), total=len(rows), offset=0, limit=len(rows), has_more=False, data_mode='sample')
+        import math
+        if offset < 0 or not 1 <= limit <= 100:
+            raise ValueError('offset must be nonnegative and limit must be 1–100')
+        for field, option in [('interests','interests'),('goals','goals'),('challenges','challenges'),('time','time'),('locations','locations')]:
+            if any(v not in PREFERENCES[option] for v in filters.get(field, [])):
+                raise ValueError('Unknown '+field+' filter')
+        if filters.get('commitment', 'A mix of both') not in PREFERENCES['commitments']:
+            raise ValueError('Unknown commitment filter')
+        if filters.get('step_size', 'Any') not in {'Any','Small','Medium','Big'}:
+            raise ValueError('Unknown step size')
+        lat,lon = filters.get('lat'),filters.get('lon')
+        radius = filters.get('radius_km', 25)
+        if (lat is None) != (lon is None) or (lat is not None and (not math.isfinite(lat) or not math.isfinite(lon) or not -90 <= lat <= 90 or not -180 <= lon <= 180)) or not math.isfinite(radius) or not 0 < radius <= 500:
+            raise ValueError('Provide valid latitude, longitude and radius (0–500 km)')
+        if 'Near me' in filters.get('locations', []) and lat is None:
+            raise ValueError('Near me requires your location. Allow location access or choose another location filter.')
+        matches = defaultdict(lambda: defaultdict(deque))
+        profile = self.profile() or {}
+        tags = set(profile.get('interests', []) + profile.get('skills', []))
+        default_effort = (self.checkin() or {}).get('effort', 'small')
+        for o in self.catalog.values():
+            if not available(o, self.clock()): continue
+            p = o['personalization']
+            if filters.get('challenges') and not set(filters['challenges']).intersection(p['challenge_levels']): continue
+            if filters.get('time') and not set(filters['time']).intersection(p['time_buckets']): continue
+            if any(filters.get(key) and not set(filters[key]).intersection(o[field]) for key,field in [('interests','topics'),('goals','career_goals'),('skills','skills')]): continue
+            if filters.get('kind') and o['kind'] not in filters['kind']: continue
+            if filters.get('q') and not all(t in ' '.join(str(o.get(k) or '') for k in ['title','description','organization','location']).casefold() for t in filters['q'].casefold().split()): continue
+            venues = list(o['venues'])
+            if lat is not None and o.get('coordinates') and distance_km(lat,lon,o['coordinates']) <= radius: venues.append('Near me')
+            if filters.get('locations') and not set(filters['locations']).intersection(venues): continue
+            commitment = filters.get('commitment', 'A mix of both')
+            if commitment != 'A mix of both' and commitment != o['commitment']: continue
+            candidates = [q for q in preparation_quests(o)
+                if filters.get('step_size','Any') == 'Any' or q['size'] == filters['step_size']]
+            if not candidates: continue
+            chosen = min(candidates, key=lambda q:(q['effort'] != default_effort,q['minutes']))
+            score = len(tags.intersection(o['topics'] + o['skills']))
+            matches[score][o['kind']].append((o,chosen,venues))
+        mixed = []
+        for score in sorted(matches, reverse=True):
+            groups = matches[score]
+            while any(groups.values()):
+                for group in groups.values():
+                    if group: mixed.append(group.popleft())
+        page = mixed[offset:offset+limit]
+        cards = self.decorate([{**o, 'venues':venues, 'minutes':q['minutes'], 'suggested_quest_id':q['id'], 'preparation_difficulty':q['difficulty'], 'size':q['size'], 'effort':q['effort']} for o,q,venues in page])
+        return dict(opportunities=cards, quests=self.mark_quests(self.quests_for(cards)), total=len(mixed), offset=offset, limit=limit, has_more=offset+limit<len(mixed), data_mode='catalog', kinds=sorted({o['kind'] for o in self.catalog.values()}))
     def today(self):
         return self.clock().astimezone(DAY_ZONE).date()
     def profile(self):
@@ -40,6 +138,8 @@ class OneThing:
             previous = date
         return dict(streak=streak, longest_streak=best, active_today=self.today() in dates, today=self.today().isoformat(), timezone='America/Los_Angeles', points=sum((a['points'] for a in done)), completed_count=len(done), saved_count=len(self.activity('save')), completed_ids=[a['quest_id'] for a in done], activity=done)
     def opportunities(self):
+        if self.catalog is not None:
+            return self.decorate([o for o in self.catalog.values() if available(o,self.clock())])
         p = self.profile() or {}
         tags = p.get('interests', []) + p.get('skills', [])
         saved = {a['opportunity_id'] for a in self.activity('save')}

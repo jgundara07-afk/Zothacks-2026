@@ -27,7 +27,7 @@ Every catalog record now has `personalization` using the exact [checklist labels
 
 This generates `backend/catalog/opportunities.json.gz` (portable compressed JSON, no external database needed to read it) and `backend/catalog/manifest.json` (counts, checksum, options, coverage, fallback counts). All records are validated and the artifact is fully read back before publication. The generated file is inside the project and is not ignored by Git. The much larger raw/local datasets remain ignored. No commit or upload is performed by these commands.
 
-The Flask app provides read-only `/catalog/options` and `/catalog/opportunities` search/filter routes over this file. See [the API contract](../docs/CATALOG_API.md) and [reader usage](../backend/catalog/README.md). The existing dummy feed, onboarding and save/completion lifecycle remain separate until deliberately migrated; card field names are compatible, but this artifact does not pretend real opportunities are fictional game quests.
+The Flask app provides read-only `/catalog/options` and `/catalog/opportunities` search/filter routes over this file. See [the API contract](../docs/CATALOG_API.md) and [reader usage](../backend/catalog/README.md). The default core app now uses the same export for discovery, saves, daily preparation quests, resume suggestions and analytics. Explicit sample mode remains available. Source opportunity completion is distinct from self-reported preparation.
 
 Topics and goal relevance use evidence-based editorial rules. When no specific interest is supported, a labeled broad personal-growth fallback is used. An unrelated subject can have no matching checklist goal. Unknown eligibility, venue details and full duration are not invented. Filtering can target full opportunities, first steps, or two-minute micro steps, so Lazy/Under 5 min never implies an entire internship can be completed in two minutes. Near me is calculated from supplied user coordinates and only records with source coordinates can match it.
 
@@ -45,7 +45,7 @@ Default output, ignored by Git:
 - `data/raw/<run-id>/`: original response bytes and a `receipts.jsonl` manifest with URL, HTTP status, UTC collection time, SHA-256, and local snapshot path. Credentials are removed from receipt URLs and authorization headers are never recorded.
 - `data/latest_run.json`: per-source counts, errors, completeness, selection, and request count. Run history is also stored in the database's `runs` table.
 
-The existing Flask demo continues to use its own seed and database. This catalog is intentionally separate: it has provenance and editorial fields rather than pretending source opportunities are fictional game quests. Connecting the catalog to the UI requires an explicit mapping, source labels, eligibility handling, and quest creation; this collector does not overwrite demo data.
+The default Flask program adapts this export through `backend/program_catalog.py`. Source labels, current-detail links, and estimated preparation quests remain distinct from source facts. Profiles and activity persist in their existing store; this collector never overwrites them. `ONETHING_DATA_MODE=sample` uses the fictional fixture explicitly.
 
 ## Sources
 

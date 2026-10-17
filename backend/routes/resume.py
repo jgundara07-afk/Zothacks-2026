@@ -36,7 +36,7 @@ def register(app, svc):
         text = data['text'].lower()
         found = [skill for skill, words in aliases.items() if any((re.search('\\b' + re.escape(word) + '\\b', text) for word in words))]
         gaps = [skill for skill in roles[role] if skill not in found]
-        recommendations = [dict(opportunity_id=o['id'], skills=[t for t in o.get('skills', []) if t in gaps]) for o in db.all('opportunities') if any((t in gaps for t in o.get('skills', [])))]
+        recommendations = [dict(opportunity_id=o['id'], skills=[t for t in o.get('skills', []) if t in gaps]) for o in svc.opportunities() if any((t in gaps for t in o.get('skills', [])))][:100]
         return jsonify(role=role, found_skills=found, gaps=gaps, recommendations=recommendations, method='Local keyword matching against fictional role templates. Missing keywords are prompts to explore, not an assessment of your ability. Resume text is not stored.')
 
     @app.post('/resume-analysis')

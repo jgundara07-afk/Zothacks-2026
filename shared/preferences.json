@@ -1,4 +1,6 @@
 {
+ "max_selected_goals": 3,
+ "max_selected_interests": 3,
  "interests":["Software Engineering","AI & Machine Learning","Web & App Development","Data Science","Cybersecurity","Entrepreneurship & Startups","Hackathons","Career Development","Networking & Mentorship","Leadership","Personal Finance & Investing","Productivity & Personal Growth","Design & UI/UX","Hike","Sports"],
  "goals":["Internship","Build a strong project portfolio","Learn a new technical skill","Win or place in a hackathon","Join a technical club or organization","Find mentors and build a network","Launch a startup or personal product","Improve my resume and interview skills","Develop leadership experience","Progress toward an outdoor adventure goal"],
  "challenges":["Lazy","Easy","Medium","Hard","Challenging"],

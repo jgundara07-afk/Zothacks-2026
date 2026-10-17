@@ -6,7 +6,7 @@ class JourneyTest(unittest.TestCase):
     def test_complete_journey_and_persistence(self):
         with tempfile.TemporaryDirectory() as directory:
             path = directory + '/test.sqlite3'
-            client = create_app(Store(path=path)).test_client()
+            client = create_app(data_mode='sample', store=Store(path=path)).test_client()
             self.assertEqual(client.get('/health').status_code, 200)
             self.assertIsNone(client.get('/opportunities').json['profile'])
             self.assertEqual(client.post('/saved', json={'opportunity_id':'design'}).status_code, 400)
@@ -21,7 +21,7 @@ class JourneyTest(unittest.TestCase):
                 duplicate=client.post('/completions',json={'quest_id':quest}).json
                 self.assertTrue(duplicate['already_completed'])
                 self.assertEqual(duplicate['points_earned'],0)
-            reopened=create_app(Store(path=path)).test_client()
+            reopened=create_app(data_mode='sample', store=Store(path=path)).test_client()
             progress=reopened.get('/progress').json
             self.assertEqual(progress['points'],125)
             self.assertEqual(progress['completed_count'],2)
@@ -33,7 +33,7 @@ class JourneyTest(unittest.TestCase):
                 response = reopened.delete('/saved', json={'opportunity_id':'design'})
                 self.assertEqual(response.status_code, 200)
                 self.assertFalse(response.json['saved'])
-            after_unsave = create_app(Store(path=path)).test_client()
+            after_unsave = create_app(data_mode='sample', store=Store(path=path)).test_client()
             self.assertEqual(after_unsave.get('/progress').json['saved_count'], 1)
             self.assertEqual(after_unsave.get('/progress').json['points'], 125)
             self.assertEqual(after_unsave.get('/progress').json['completed_count'], 2)
@@ -52,7 +52,7 @@ class DailyJourneyTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             current = [datetime(2026, 10, 17, 19, tzinfo=timezone.utc)]
             path = directory + '/daily.sqlite3'
-            client = create_app(Store(path=path), now=lambda:current[0]).test_client()
+            client = create_app(data_mode='sample', store=Store(path=path), now=lambda:current[0]).test_client()
             self.assertEqual(client.post('/checkins',json={'mood':'Low','effort':'small'}).status_code,400)
             client.post('/profiles',json={'goal':'Build my skills','interests':['Design'],'skills':['Writing']})
             self.assertEqual(client.post('/checkins',json={'mood':'Low','effort':'huge'}).status_code,400)
@@ -80,7 +80,7 @@ class DailyJourneyTest(unittest.TestCase):
             current[0]=datetime(2026,10,20,19,tzinfo=timezone.utc)
             self.assertEqual(client.get('/progress').json['streak'],0)
             self.assertEqual(complete()['progress']['streak'],1)
-            reopened=create_app(Store(path=path), now=lambda:current[0]).test_client()
+            reopened=create_app(data_mode='sample', store=Store(path=path), now=lambda:current[0]).test_client()
             self.assertEqual(reopened.get('/progress').json['longest_streak'],2)
             self.assertEqual(reopened.get('/progress').json['points'],45)
 
@@ -89,7 +89,7 @@ class CareerToolsTest(unittest.TestCase):
         from datetime import datetime, timezone
         with tempfile.TemporaryDirectory() as directory:
             store = Store(path=directory+'/career.sqlite3')
-            client = create_app(store, now=lambda:datetime(2026,10,17,19,tzinfo=timezone.utc)).test_client()
+            client = create_app(data_mode='sample', store=store, now=lambda:datetime(2026,10,17,19,tzinfo=timezone.utc)).test_client()
             client.post('/profiles',json={'goal':'Build my skills','interests':['Technology'],'skills':['Coding']})
             feed = client.get('/opportunities').json['opportunities']
             self.assertEqual(len(feed),87)
@@ -124,7 +124,7 @@ class CatalogSizeTest(unittest.TestCase):
     def test_catalog_specifics_and_step_sizes(self):
         from collections import Counter
         with tempfile.TemporaryDirectory() as directory:
-            client = create_app(Store(path=directory+'/catalog.sqlite3')).test_client()
+            client = create_app(data_mode='sample', store=Store(path=directory+'/catalog.sqlite3')).test_client()
             client.post('/profiles',json={'goal':'Build my skills','interests':['Technology'],'skills':['Coding']})
             catalog=client.get('/opportunities').json['opportunities']
             self.assertEqual(len({o['id'] for o in catalog}),87)
@@ -146,7 +146,7 @@ class CatalogSizeTest(unittest.TestCase):
             client.post('/saved',json={'opportunity_id':'sample-internship-backend'})
             done=client.post('/completions',json={'quest_id':'sample-internship-backend-small'})
             self.assertEqual(done.status_code,200)
-            reopened=create_app(Store(path=directory+'/catalog.sqlite3')).test_client()
+            reopened=create_app(data_mode='sample', store=Store(path=directory+'/catalog.sqlite3')).test_client()
             self.assertEqual(reopened.get('/progress').json['points'],15)
             self.assertEqual(reopened.get('/saved').json['opportunities'][0]['id'],'sample-internship-backend')
 
@@ -171,7 +171,7 @@ class PDFResumeTest(unittest.TestCase):
         from pypdf import PdfWriter, PdfReader
         with tempfile.TemporaryDirectory() as directory:
             store=Store(path=directory+'/pdf.sqlite3')
-            client=create_app(store).test_client()
+            client=create_app(data_mode='sample', store=store).test_client()
             def upload(content,name='fictional-resume.pdf'):
                 response = client.post('/resume-analysis/pdf',data={'file':(BytesIO(content),name),'role':'Software developer'})
                 response.request.close()
@@ -207,10 +207,10 @@ class PreferencesTest(unittest.TestCase):
     def test_preferences_validate_and_persist(self):
         with tempfile.TemporaryDirectory() as directory:
             path=directory+'/preferences.sqlite3'
-            client=create_app(Store(path=path)).test_client()
+            client=create_app(data_mode='sample', store=Store(path=path)).test_client()
             data=dict(goals=['Internship','Build a strong project portfolio','Find mentors and build a network'], interests=['Software Engineering','AI & Machine Learning','Hike'], skills=['Coding'], preferences=dict(challenges=['Easy','Medium','Hard'], time=['Under 5 min','Multi-day'], locations=['Online / Remote','On campus'], commitment='A mix of both'))
             self.assertEqual(client.post('/profiles',json=data).status_code,200)
-            reopened=create_app(Store(path=path)).test_client()
+            reopened=create_app(data_mode='sample', store=Store(path=path)).test_client()
             profile=reopened.get('/opportunities').json['profile']
             self.assertEqual(profile['goals'],data['goals'])
             self.assertEqual(profile['preferences'],data['preferences'])

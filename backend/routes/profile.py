@@ -42,6 +42,8 @@ def register(app, svc):
         for key, values in allowed.items():
             if not isinstance(data.get(key), list) or (key == 'skills' and (not data[key])) or any((not isinstance(t, str) or t not in values for t in data[key])):
                 raise ValueError(f'Choose valid {key} tags.')
+        if len(set(data['interests'])) > 3:
+            raise ValueError('Choose up to 3 interests.')
         preferences = data.get('preferences', {})
         if not isinstance(preferences, dict):
             raise ValueError('Provide preferences as a JSON object.')

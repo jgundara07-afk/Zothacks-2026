@@ -1,8 +1,8 @@
 # Collected catalog search API
 
-These read-only routes expose `backend/catalog/opportunities.json.gz`, separate from the fictional demo feed. Vite proxies `/api/catalog/...` to Flask `/catalog/...`. A missing export returns 503 with the generation command; validation errors return 400. Reading catalog cards does not add them to the demo's saves, quests, or progress.
+These read-only routes expose `backend/catalog/opportunities.json.gz`, also used by the default core program. Vite proxies `/api/catalog/...` to Flask `/catalog/...`. A missing export returns 503 with the generation command; validation errors return 400. Use the core `/opportunities`, `/saved`, `/quests` and `/completions` routes for the integrated app lifecycle; see `docs/API.md`. Reading a catalog card alone does not create activity.
 
-`GET /catalog/options` returns the exact versioned checklist from `opportunity_data/taxonomy.json`: 15 interests, 10 goals, five challenge levels (including Medium), seven time buckets, four location preferences, three commitment choices, and `max_selected_goals: 3`.
+`GET /catalog/options` returns the exact versioned checklist from `opportunity_data/taxonomy.json`: 15 interests, 10 goals, five challenge levels (including Medium), seven time buckets, four location preferences, three commitment choices, and `max_selected_interests: 3`, `max_selected_goals: 3`.
 
 `GET /catalog/opportunities` accepts:
 

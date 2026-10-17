@@ -29,13 +29,11 @@ def register(app, svc):
     @app.get('/analytics')
     def analytics():
         done = activity('completion')
-        quests_by_id = {q['id']: q for q in db.all('quests')}
-        opps = {o['id']: o for o in db.all('opportunities')}
         categories, skills, difficulties = (Counter(), Counter(), Counter())
         minutes = 0
         for a in done:
-            q = quests_by_id.get(a['quest_id'], {})
-            o = opps.get(q.get('opportunity_id'), {})
+            q = svc.quest(a['quest_id']) or {}
+            o = svc.opportunity(q.get('opportunity_id')) or {}
             categories[o.get('kind', 'Other')] += 1
             skills.update(o.get('skills', []))
             difficulties[q.get('difficulty', 'Easy')] += 1
@@ -52,7 +50,7 @@ def register(app, svc):
         data = body('quest_id')
         if not profile():
             raise ValueError('Set up your profile first.')
-        q = next((q for q in db.all('quests') if q['id'] == data['quest_id']), None)
+        q = svc.quest(data['quest_id'])
         if not q:
             return (jsonify(error='Quest not found.'), 404)
         if q['opportunity_id'] not in [a['opportunity_id'] for a in activity('save')]:

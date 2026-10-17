@@ -69,7 +69,8 @@
       "Long-term opportunities and projects",
       "A mix of both"
     ],
-    "max_selected_goals": 3
+    "max_selected_goals": 3,
+    "max_selected_interests": 3
   },
   "coverage": {
     "interests": {

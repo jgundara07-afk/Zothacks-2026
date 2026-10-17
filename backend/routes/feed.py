@@ -24,23 +24,35 @@ def register(app, svc):
 
     @app.get('/opportunities')
     def feed():
-        return jsonify(profile=profile(), checkin=checkin(), opportunities=opportunities())
+        allowed = {'interests','goals','challenges','time','locations','skills','kind','commitment','step_size','q','offset','limit','lat','lon','radius_km'}
+        if set(request.args) - allowed:
+            raise ValueError('Unknown feed filter parameter')
+        filters = {key:request.args.getlist(key) for key in ['interests','goals','challenges','time','locations','skills','kind']}
+        filters.update({key:request.args[key] for key in ['commitment','step_size','q'] if key in request.args})
+        filters.update({key:float(request.args[key]) for key in ['lat','lon','radius_km'] if key in request.args})
+        result = svc.feed_page(filters, int(request.args.get('offset',0)), int(request.args.get('limit',40)))
+        return jsonify(profile=profile(), checkin=checkin(), **result)
 
     @app.get('/saved')
     def saved():
-        return jsonify(opportunities=[o for o in opportunities() if o['saved']])
+        rows = svc.saved_opportunities()
+        return jsonify(opportunities=rows, quests=svc.mark_quests(svc.quests_for(rows)))
 
     @app.get('/quests')
     def quests():
-        done = activity('completion')
-        return jsonify(quests=[{**q, 'completed': any((a['quest_id'] == q['id'] and (not q.get('daily') or completion_day(a) == today()) for a in done))} for q in db.all('quests')])
+        ids = request.args.getlist('opportunity_id')
+        if len(ids) > 100: raise ValueError('Request at most 100 opportunities at once')
+        rows = [svc.opportunity(i) for i in ids] if ids else svc.saved_opportunities()
+        if any(o is None for o in rows): return jsonify(error='Opportunity not found.'), 404
+        qs = svc.quests_for(rows) if svc.catalog is not None or ids else db.all('quests')
+        return jsonify(quests=svc.mark_quests(qs))
 
     @app.post('/saved')
     def save():
         data = body('opportunity_id')
         if not profile():
             raise ValueError('Set up your profile first.')
-        if data['opportunity_id'] not in [o['id'] for o in db.all('opportunities')]:
+        if not svc.opportunity(data['opportunity_id']):
             return (jsonify(error='Opportunity not found.'), 404)
         db.put('activity', dict(id='save:demo:' + data['opportunity_id'], profile_id='demo', kind='save', opportunity_id=data['opportunity_id']), once=True)
         return jsonify(saved=True, opportunity_id=data['opportunity_id'])
@@ -50,7 +62,7 @@ def register(app, svc):
         data = body('opportunity_id')
         if not profile():
             raise ValueError('Set up your profile first.')
-        if data['opportunity_id'] not in [o['id'] for o in db.all('opportunities')]:
+        if not svc.opportunity(data['opportunity_id']):
             return (jsonify(error='Opportunity not found.'), 404)
         db.delete('activity', 'save:demo:' + data['opportunity_id'])
         return jsonify(saved=False, opportunity_id=data['opportunity_id'])
