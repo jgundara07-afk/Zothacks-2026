@@ -1,0 +1,14 @@
+{
+ "opportunities": [
+  {"id":"design","title":"Make campus a little kinder.","organization":"Kindred Campus Collective","description":"Turn a student pain point into a thoughtful little design. No portfolio required, just a curious mind.","tags":["Design","Community","Writing"],"kind":"Creative project","minutes":15,"color":"pink","sample":true},
+  {"id":"code","title":"Code something that matters.","organization":"Little Good Lab","description":"Start a tiny tool that makes someone's everyday easier. Big impact can start with a very small idea.","tags":["Technology","Coding","Community"],"kind":"Build challenge","minutes":20,"color":"yellow","sample":true},
+  {"id":"green","title":"A greener corner of campus.","organization":"Tomorrow Club","description":"Find one small way to make your campus more sustainable, then sketch a plan to make it happen.","tags":["Sustainability","Research","Community"],"kind":"Campus initiative","minutes":10,"color":"green","sample":true},
+  {"id":"story","title":"Give a good story a voice.","organization":"The Student Story Project","description":"Practice telling a story that deserves to be heard. Start with someone who inspires you.","tags":["Writing","Arts","Design"],"kind":"Creative project","minutes":15,"color":"blue","sample":true}
+ ],
+ "quests": [
+  {"id":"design-1","opportunity_id":"design","title":"Find one tiny friction","description":"Good design starts with noticing. Turn an everyday frustration into a possibility.","steps":["Notice one thing on campus that could be easier.","Write down who it affects and why it matters.","Sketch one possible solution on paper. Keep it simple."],"points":50,"minutes":15,"difficulty":"Easy"},
+  {"id":"code-1","opportunity_id":"code","title":"Sketch your tiny tool","description":"Before the first line of code, give your idea a little shape.","steps":["Choose a small problem you or a friend faces.","Write one sentence describing your tool.","Draw the main screen and label its three most useful features."],"points":75,"minutes":20,"difficulty":"Medium"},
+  {"id":"green-1","opportunity_id":"green","title":"Spot a greener possibility","description":"Small observations can grow into meaningful change.","steps":["Find one place on campus where resources are wasted.","Write down a practical improvement.","List one person or campus group who could help."],"points":40,"minutes":10,"difficulty":"Easy"},
+  {"id":"story-1","opportunity_id":"story","title":"Write a six-sentence story","description":"You do not need a whole novel to make someone feel something.","steps":["Choose a fictional student doing something kind.","Write six sentences: a beginning, a challenge, and a hopeful ending.","Read it aloud and improve one sentence."],"points":50,"minutes":15,"difficulty":"Easy"}
+ ]
+}
