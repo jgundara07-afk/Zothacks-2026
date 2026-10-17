@@ -170,3 +170,6 @@
 @media (prefers-reduced-motion: reduce) {
   .ob-title *, .ob-title *::before, .ob-title *::after { transition: none !important; animation: none !important; }
 }
+.ob-empty { border-top: 1px solid rgba(184,144,74,.4); padding-top: 14px; }
+.ob-reveal .ob-note { color: #cdbd9f; }
+.ob-reveal .ob-text { color: #e4b8a6; }

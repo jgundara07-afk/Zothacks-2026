@@ -20,7 +20,7 @@ const PLACES=['Online / Remote','On campus'];
 
 function Title({children,className=''}){return <h1 className={'eva '+className}>{children}</h1>}
 
-export default function Onboarding({data,busy,error,hasProfile,interests,setInterests,goals,setGoals,skills,setSkills,preferences,setPreferences,stepSize,setStepSize,sample,topPick,topQuest,onSave,onEnter,onSkip}){
+export default function Onboarding({data,busy,error,hasProfile,interests,setInterests,goals,setGoals,skills,setSkills,preferences,setPreferences,stepSize,setStepSize,sample,topPick,topQuest,onSave,onEnter,onWiden,onSkip}){
  const [step,setStep]=useState(0);
  // Intro plays once per visit; reduced motion goes straight to the finished first screen.
  const [phase,setPhase]=useState(()=>window.matchMedia('(prefers-reduced-motion: reduce)').matches?'ui':'spark');
@@ -147,8 +147,8 @@ export default function Onboarding({data,busy,error,hasProfile,interests,setInte
     <h2 className="eva">{topPick.title}</h2>
     <p className="ob-why">{topPick.matching_tags?.length?`Because you chose ${topPick.matching_tags.slice(0,2).join(' and ')}.`:'A new direction worth a look.'}</p>
     {topQuest&&<div className="ob-first-step"><span>First step · {topQuest.minutes||topPick.minutes} min</span><strong>{topQuest.title}</strong></div>}
-   </article>:<p className="ob-note">No sample matches that exact mix. The feed will show everything nearby.</p>}
+   </article>:<div className="ob-empty"><p className="ob-why">Your exact mix is rare. Nothing in the catalog matches every choice at once.</p><p className="ob-note">Widen the search to start from your first interest, or change your answers.</p></div>}
   </main>
-  <footer className="ob-foot"><button className="primary wide" onClick={onEnter}>Explore the feed<ArrowRight size={18}/></button></footer>
+  <footer className="ob-foot">{topPick?<button className="primary wide" onClick={onEnter}>Explore the feed<ArrowRight size={18}/></button>:<><button className="primary wide" disabled={busy} onClick={onWiden}>Widen my search<ArrowRight size={18}/></button><button className="ob-text" onClick={()=>setStep(3)}>Change my answers</button></>}</footer>
  </div>;
 }
