@@ -1,6 +1,7 @@
-/* Mobile experience. mobile.css owns layout; print.css and theme.css apply the art direction on top.
+/* Mobile experience. mobile.css owns layout; print, theme and onboarding apply the art direction on top.
    The other style modules (base, layout, feed, ...) belong to the earlier desktop layout and are kept for reference. */
 @import './tokens.css';
 @import './mobile.css';
 @import './print.css';
 @import './theme.css';
+@import './onboarding.css';

@@ -1,5 +1,7 @@
 # One Thing — opening experience proposal
 
+**Current screen-by-screen plan:** see [`ONBOARDING_RESEARCH_AND_FLOW.md`](ONBOARDING_RESEARCH_AND_FLOW.md). The sequence below is earlier exploration; use the researched plan for implementation.
+
 ## Chosen first-screen composition
 
 The primary reference is [`references/iris-halftone-signin-reference.png`](references/iris-halftone-signin-reference.png). Its composition matters more than its exact subject: a distinctive, atmospheric photograph fills the top/background, softened and ghosted behind a quiet foreground panel. The form is precise and easy to read. A separate monochrome halftone image provides texture on the panel's far side. On phones, make the photo-led upper half fade naturally into the sign-up/log-in controls below; on desktop, use a spacious centered panel over the ghosted photograph. Keep the photo visible enough to create a first impression, while the form remains effortlessly legible. Do not copy the source's logo, imagery, or exact form.

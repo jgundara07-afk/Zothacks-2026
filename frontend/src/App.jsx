@@ -2,11 +2,12 @@ import React, {useState, useEffect, useRef} from 'react';
 import {ArrowRight, ArrowLeft, Bookmark, Check, Compass, Flag, Mountain, Sparkles, Sprout, Clock3, X, SlidersHorizontal, Pencil, Flame, ChevronDown, List, Image, Leaf, BookOpen, Users, Briefcase, Code2} from 'lucide-react';
 import {api} from './api';
 import Print from './components/Print';
+import {photoFor} from './utils/photos';
 import ResumeLab from './pages/ResumeLabPage';
 import Recap from './pages/RecapPage';
 import Analytics from './components/Analytics';
 import StreakCalendar from './components/StreakCalendar';
-import SignIn from './components/SignIn';
+import Onboarding from './components/Onboarding';
 import Climb from './components/Climb';
 import {crossedMilestone,climbPosition} from './utils/climbMath';
 import {options,emptyPreferences,PreferenceFields} from './components/PreferenceFields';
@@ -25,9 +26,9 @@ function imageFor(o){
  if(o.id==='code')return ['build','A laptop with code and a handwritten checklist'];
  return ['creative','A sketchbook with colorful ideas and a pencil'];
 }
-// Hero image slot: a real photo once one is registered in OPPORTUNITY_PHOTOS, otherwise tinted halftone art with the category icon.
+// Hero image slot: the quest's graded scene photograph (utils/photos.js); the icon is only a fallback.
 const CATEGORY_ICONS={nature:Leaf,learn:BookOpen,community:Users,career:Briefcase,build:Code2,creative:Pencil};
-function Art({opportunity,osd}){const [name]=imageFor(opportunity);return <Print id={opportunity.id} color={opportunity.color} icon={CATEGORY_ICONS[name]} osd={osd}/>}
+function Art({opportunity,osd}){const [name]=imageFor(opportunity);return <Print src={photoFor(opportunity)} color={opportunity.color} icon={CATEGORY_ICONS[name]} osd={osd}/>}
 function Modal({title,onClose,children,className=''}){
  const ref=useRef(null),close=useRef(onClose);close.current=onClose;
  useEffect(()=>{
@@ -45,7 +46,7 @@ function Modal({title,onClose,children,className=''}){
 }
 function ChoiceList({label,choices,value,onChange}){return <fieldset><legend>{label}</legend><div className="choice-tags">{choices.map(v=><button type="button" key={v} aria-pressed={value.includes(v)} onClick={()=>onChange(value.includes(v)?value.filter(x=>x!==v):[...value,v])}>{value.includes(v)&&<Check size={13}/>} {v}</button>)}</div></fieldset>}
 export default function App(){
- const [signedIn,setSignedIn]=useState(false),[climbFrom,setClimbFrom]=useState(null);
+ const [climbFrom,setClimbFrom]=useState(null);
  const [page,setPage]=useState('Discover'),[data,setData]=useState(null),[quests,setQuests]=useState([]),[progress,setProgress]=useState({points:0,completed_count:0,saved_count:0,activity:[]}),[analytics,setAnalytics]=useState(null);
  const [opening,setOpening]=useState(true),[error,setError]=useState(''),[busy,setBusy]=useState(false),[detail,setDetail]=useState(null),[active,setActive]=useState(null),[checked,setChecked]=useState([]),[reward,setReward]=useState(null),[filtersOpen,setFiltersOpen]=useState(false),[calendarOpen,setCalendarOpen]=useState(false);
  const [goal,setGoal]=useState(GOALS[0]),[interests,setInterests]=useState(['Software Engineering','Web & App Development']),[skills,setSkills]=useState(['Writing']),[mood,setMood]=useState('Okay'),[effort,setEffort]=useState('small');
@@ -96,12 +97,14 @@ export default function App(){
  function nextCard(e){const card=e.currentTarget.closest('article'),next=card.nextElementSibling||card.parentElement.firstElementChild;card.parentElement.scrollTo({top:next.offsetTop-card.parentElement.firstElementChild.offsetTop,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'})}
  const errorBox=error&&<div role="alert" className="error"><span>{error}</span><button type="button" disabled={busy} onClick={()=>action(load)}>Retry</button></div>;
 
- if(!signedIn)return <SignIn onSignIn={()=>setSignedIn(true)}/>;
- if(opening)return <div className="phone-shell welcome-shell"><header className="welcome-header"><span className="brand">one thing<span>✳</span></span><button className="skip-button" disabled={busy||!data} onClick={()=>action(async()=>{if(!data.profile){await api.profile({goal:GOALS[0],interests:['Design','Community'],skills:['Writing']});await load()}resetFilters();setOpening(false);setPage('Discover')})}>Skip for now <ArrowRight size={14}/></button></header><main className="welcome-content"><div className="welcome-note"><Sprout size={25}/><span>A LITTLE SPACE TO CHECK IN</span></div><h1>Hey, you.<br/>What feels <em>right today?</em></h1><p className="welcome-copy">Pick your interests and goals, then choose what fits your day. Your next little step is waiting.</p>{errorBox}<form onSubmit={e=>{e.preventDefault();action(async()=>{await api.profile({goal:goals[0]||GOALS[0],goals,interests,skills,preferences});await load();setOpening(false);setDifficulty('Any');setMode('Anywhere');setGoalFilter('Any goal');setSkillFilter('Any skill');setInterestFilter('Any interest');setGapSkills([]);setPage('Discover')})}}>
- <PreferenceFields interests={interests} setInterests={setInterests} goals={goals} setGoals={setGoals} preferences={preferences} setPreferences={setPreferences}/>
- <div className="welcome-submit"><button className="primary wide" disabled={busy||!data||!skills.length}>{busy?'Setting your pace…':'Find my next little thing'}<ArrowRight size={18}/></button><small>Small steps count. You can change your plan anytime.</small></div></form><p className="fictional-note">ZotHacks demo · fictional profile · {data?.data_mode==='sample'?'sample opportunities':'cached source opportunities'}</p></main></div>;
+ const topPick=visible[0];
+ const topQuest=topPick&&(quests.find(q=>q.id===topPick.suggested_quest_id)||quests.find(q=>q.opportunity_id===topPick.id));
+ const sample=(data?.opportunities||[]).find(o=>o.id==='sample-networking-backend')||all[0];
+ async function saveOnboarding(){let ok=false;await action(async()=>{await api.profile({goal:goals[0]||GOALS[0],goals,interests,skills,preferences});await load();ok=true});return ok}
+ function enterApp(){setOpening(false);setKinds([]);setGapSkills([]);setPage('Discover')}
+ if(opening)return <Onboarding data={data} busy={busy} error={error} hasProfile={!!data?.profile} interests={interests} setInterests={setInterests} goals={goals} setGoals={setGoals} skills={skills} setSkills={setSkills} preferences={preferences} setPreferences={setPreferences} stepSize={difficulty} setStepSize={setDifficulty} sample={sample} topPick={topPick} topQuest={topQuest} onSave={saveOnboarding} onEnter={enterApp} onSkip={()=>action(async()=>{if(!data.profile){await api.profile({goal:GOALS[0],interests:['Design','Community'],skills:['Writing']});await load()}resetFilters();enterApp()})}/>;
 
- return <div className="phone-shell"><div className="app-surface" inert={modalOpen?true:undefined}><header className="app-header"><a className="brand" href="#" onClick={e=>{e.preventDefault();navigate('Discover')}}>one thing<span>✳</span></a><div className="header-actions"><button className="streak-chip" aria-label={`View streak calendar, ${progress.streak||0} day streak`} onClick={()=>setCalendarOpen(true)}><Flame size={15}/>{progress.streak||0}</button></div></header>
+ return <div className="phone-shell"><div className="app-surface" inert={modalOpen?true:undefined}><header className="app-header"><a className="brand" href="#" onClick={e=>{e.preventDefault();navigate('Discover')}}>OneThing</a><div className="header-actions"><button className="streak-chip" aria-label={`View streak calendar, ${progress.streak||0} day streak`} onClick={()=>setCalendarOpen(true)}><Flame size={15}/>{progress.streak||0}</button></div></header>
  {errorBox}
  <main className={['Discover','Saved things'].includes(page)?'feed-page':'page-scroll'} key={page}>
  {['Discover','Saved things'].includes(page)?<><div className="feed-heading"><div><span className="eyebrow">{page==='Discover'?'A LITTLE LESS SCROLL. A LITTLE MORE YOU.':'YOUR NEXT STEPS, KEPT CLOSE.'}</span><h1>{page==='Discover'?<>For <em>you.</em></>:<>Saved <em>things.</em></>}</h1></div><span className="feed-total">{page==='Saved things'?visible.length:(data?.total??visible.length)} {data?.data_mode==='sample'?'samples':'opportunities'}</span></div>

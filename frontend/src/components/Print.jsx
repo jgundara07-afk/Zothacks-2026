@@ -1,13 +1,12 @@
 import React from 'react';
-import {OPPORTUNITY_PHOTOS,OPPORTUNITY_ICONS,DEFAULT_ICON} from '../constants';
+import {OPPORTUNITY_ICONS,DEFAULT_ICON} from '../constants';
 
-// A quest's hero image with the analog treatment (grade, grain, scanlines).
-// Until a photo is added in constants.js it shows halftone terrain tinted by the card color.
-export default function Print({id,color,icon,osd,children}){
- const photo=OPPORTUNITY_PHOTOS[id];
- const Icon=icon||OPPORTUNITY_ICONS[id]||DEFAULT_ICON;
- return <div className={'print '+(color||'')+(photo?.bw?' bw':'')}>
-  {photo?<img src={photo.src} alt="" loading="lazy"/>:<div className="print-fallback" aria-hidden="true"><Icon size={56} strokeWidth={1}/></div>}
+// A quest's hero photograph with the live analog layer (grain, scanlines) over its baked-in grade.
+// Without a src it falls back to tinted halftone art with an icon.
+export default function Print({src,color,icon,osd,children}){
+ const Icon=icon||DEFAULT_ICON;
+ return <div className={'print '+(color||'')}>
+  {src?<img src={src} alt="" loading="lazy"/>:<div className="print-fallback" aria-hidden="true"><Icon size={56} strokeWidth={1}/></div>}
   <div className="grain" aria-hidden="true"/>
   {osd&&<div className="osd" aria-hidden="true"><span className="rec">REC</span><span>{osd}</span></div>}
   {children}
