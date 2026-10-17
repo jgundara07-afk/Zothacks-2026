@@ -18,14 +18,14 @@ See [the consolidated audit](reports/collection-summary.json). The Anteater cata
 
 ## App-readable personalization export
 
-Every catalog record now has `personalization` using the exact [checklist labels](taxonomy.json), including Medium. Run these explicit commands after collecting:
+Every published catalog record has `personalization` using the exact [checklist labels](taxonomy.json), including Medium. App export applies the versioned relevance policy in `relevance.py`: it removes courses without a supported topic, generic unrelated jobs/internships, and events without an evident benefit. Parks, trails, and sports facilities are retained as personal wellbeing/recreation activities. The source SQLite catalog remains intact as a local review archive. Run these explicit commands after collecting:
 
 ```powershell
 .\.venv\Scripts\python.exe -m opportunity_data.refine --export
 .\.venv\Scripts\python.exe -m opportunity_data.export_app
 ```
 
-This generates `backend/catalog/opportunities.json.gz` (portable compressed JSON, no external database needed to read it) and `backend/catalog/manifest.json` (counts, checksum, options, coverage, fallback counts). All records are validated and the artifact is fully read back before publication. The generated file is inside the project and is not ignored by Git. The much larger raw/local datasets remain ignored. No commit or upload is performed by these commands.
+This generates `backend/catalog/opportunities.json.gz` (portable compressed JSON, no external database needed to read it) and `backend/catalog/manifest.json` (included/excluded counts, exclusion reasons, checksum, options, coverage, fallback counts). Kept records are validated and the artifact is fully read back before publication. The generated file is inside the project and is not ignored by Git. The much larger raw/local datasets remain ignored. No commit or upload is performed by these commands.
 
 The Flask app provides read-only `/catalog/options` and `/catalog/opportunities` search/filter routes over this file. See [the API contract](../docs/CATALOG_API.md) and [reader usage](../backend/catalog/README.md). The default core app now uses the same export for discovery, saves, daily preparation quests, resume suggestions and analytics. Explicit sample mode remains available. Source opportunity completion is distinct from self-reported preparation.
 

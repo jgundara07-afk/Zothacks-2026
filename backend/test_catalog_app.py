@@ -14,11 +14,11 @@ class CollectedJourneyTest(unittest.TestCase):
             client = reopen()
             health = client.get('/health').json
             self.assertEqual(health['data_mode'], 'catalog')
-            self.assertEqual(health['catalog_records'], 42908)
+            self.assertEqual(health['catalog_records'], 28678)
             self.assertEqual(Store(path=path).all('opportunities'), [])
             first = client.get('/opportunities?limit=10').json
             second = client.get('/opportunities?limit=10&offset=10').json
-            self.assertGreater(first['total'], 40000)
+            self.assertGreater(first['total'], 25000)
             self.assertTrue(first['has_more'])
             self.assertFalse({o['id'] for o in first['opportunities']} & {o['id'] for o in second['opportunities']})
             self.assertTrue(all(not o['sample'] and o['source_url'] for o in first['opportunities']))

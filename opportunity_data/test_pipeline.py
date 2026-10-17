@@ -8,6 +8,7 @@ from .database import Catalog
 from .enrich import enrich
 from .http import public_url
 from .sources import anteater, coursera, muse, zotspot, eventbrite, irvine
+from .relevance import inclusion
 
 
 class Response:
@@ -29,6 +30,15 @@ class FakeFetcher:
 
 
 class PipelineTests(unittest.TestCase):
+    def test_relevance_curation_keeps_personal_benefit_and_rejects_unrelated_roles(self):
+        self.assertEqual(inclusion({"kind": "Park", "title": "Quiet neighborhood green space"}),
+                         (True, "personal_wellbeing_or_recreation"))
+        self.assertFalse(inclusion({"kind": "Job", "title": "Family Medicine Physician", "description": "Patient care", "personalization": {"interests": ["Career Development"]}})[0])
+        self.assertFalse(inclusion({"kind": "Job", "title": "Family Medicine Physician", "description": "Build software for clinics", "personalization": {"interests": ["Software Engineering"]}})[0])
+        self.assertFalse(inclusion({"kind": "Class", "title": "20th Century Music", "description": "Music history", "personalization": {"interests": ["Productivity & Personal Growth"]}})[0])
+        self.assertTrue(inclusion({"kind": "Internship", "title": "Machine Learning Engineer Intern", "description": "Build machine learning models"})[0])
+        self.assertTrue(inclusion({"kind": "Campus event", "title": "Student club community garden shift"})[0])
+
     def test_irvine_places_exclude_parking_and_keep_source_geometry(self):
         fetcher = FakeFetcher([
             Response({"objectIds": [1]}), Response({"features": [{"attributes": {"OBJECTID": 1, "STREETNAME": "Test Trail", "MILES": 0.5}, "geometry": {"paths": [[[-117.8, 33.7], [-117.81, 33.71]]]}}]}),

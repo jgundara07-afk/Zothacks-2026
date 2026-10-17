@@ -1,17 +1,18 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-10-17T19:15:27.946695+00:00",
+  "generated_at": "2026-10-17T20:10:43.844712+00:00",
   "file": "opportunities.json.gz",
-  "record_count": 42908,
+  "record_count": 28678,
   "by_source": {
-    "anteater": 9299,
-    "coursera": 24990,
-    "eventbrite": 11,
+    "anteater": 6305,
+    "coursera": 20394,
+    "eventbrite": 6,
     "irvine": 294,
-    "muse": 7261,
-    "zotspot": 1053
+    "muse": 1063,
+    "zotspot": 616
   },
   "taxonomy": {
+    "max_selected_interests": 3,
     "version": "onething-personalization-v1",
     "interests": [
       "Software Engineering",
@@ -69,84 +70,109 @@
       "Long-term opportunities and projects",
       "A mix of both"
     ],
-    "max_selected_goals": 3,
-    "max_selected_interests": 3
+    "max_selected_goals": 3
+  },
+  "curation": {
+    "policy_version": "one-thing-relevance-v1",
+    "included_from_source_counts": {
+      "anteater": 6305,
+      "coursera": 20394,
+      "eventbrite": 6,
+      "irvine": 294,
+      "muse": 1063,
+      "zotspot": 616
+    },
+    "excluded_from_source_counts": {
+      "anteater": 2994,
+      "coursera": 4596,
+      "eventbrite": 5,
+      "muse": 6198,
+      "zotspot": 437
+    },
+    "exclusion_reasons": {
+      "course_without_supported_checklist_topic": 7587,
+      "test_or_placeholder_record": 3,
+      "event_without_supported_benefit_or_topic": 442,
+      "job_or_internship_without_relevant_role_evidence": 4382,
+      "unrelated_profession_or_general_labor": 1816
+    },
+    "note": "The app catalog excludes records without evidence of a checklist interest, goal, personal-growth benefit, club/community value, or outdoor/recreation benefit. Raw collected records remain in the local source database."
   },
   "coverage": {
     "interests": {
-      "Productivity & Personal Growth": 20343,
-      "Career Development": 9509,
-      "Entrepreneurship & Startups": 1189,
-      "Personal Finance & Investing": 1151,
-      "Software Engineering": 7995,
-      "Data Science": 4659,
-      "Networking & Mentorship": 2093,
-      "AI & Machine Learning": 5816,
-      "Sports": 468,
-      "Design & UI/UX": 932,
-      "Leadership": 2123,
-      "Cybersecurity": 1049,
-      "Web & App Development": 2126,
-      "Hike": 235,
-      "Hackathons": 6
+      "Productivity & Personal Growth": 12056,
+      "Career Development": 3306,
+      "Entrepreneurship & Startups": 1079,
+      "Personal Finance & Investing": 1004,
+      "Data Science": 4302,
+      "Software Engineering": 5930,
+      "Networking & Mentorship": 1204,
+      "AI & Machine Learning": 5656,
+      "Design & UI/UX": 887,
+      "Leadership": 1435,
+      "Sports": 414,
+      "Cybersecurity": 999,
+      "Web & App Development": 1549,
+      "Hike": 227,
+      "Hackathons": 5
     },
     "goals": {
-      "Launch a startup or personal product": 2658,
-      "Land a software engineering internship": 7982,
-      "Build a strong project portfolio": 13343,
-      "Learn a new technical skill": 16326,
-      "Find mentors and build a network": 2101,
-      "Develop leadership experience": 2123,
-      "Improve my resume and interview skills": 7643,
-      "Progress toward an outdoor adventure goal": 272,
-      "Win or place in a hackathon": 6,
+      "Launch a startup or personal product": 2548,
+      "Build a strong project portfolio": 12994,
+      "Learn a new technical skill": 13331,
+      "Land a software engineering internship": 5917,
+      "Find mentors and build a network": 1208,
+      "Develop leadership experience": 1435,
+      "Improve my resume and interview skills": 1445,
+      "Progress toward an outdoor adventure goal": 264,
+      "Win or place in a hackathon": 5,
       "Join a technical club or organization": 1
     },
     "challenge_levels": {
-      "Medium": 1796,
-      "Challenging": 4822,
-      "Hard": 11677,
-      "Easy": 24613
+      "Hard": 3990,
+      "Challenging": 3837,
+      "Medium": 1225,
+      "Easy": 19626
     },
     "time_buckets": {
-      "Multi-day": 37875,
-      "1–3 hours": 3498,
-      "30–60 min": 404,
-      "3+ hours": 1117,
-      "5–15 min": 2,
-      "15–30 min": 12
+      "Multi-day": 24745,
+      "1–3 hours": 2646,
+      "30–60 min": 284,
+      "3+ hours": 994,
+      "5–15 min": 1,
+      "15–30 min": 8
     },
     "location_preferences": {
-      "On campus": 9471,
-      "Online / Remote": 25048,
-      "In-person events": 328
+      "On campus": 6395,
+      "Online / Remote": 20427,
+      "In-person events": 201
     }
   },
-  "broad_fallback_records": 18640,
-  "records_without_supported_checklist_goals": 20675,
+  "broad_fallback_records": 10665,
+  "records_without_supported_checklist_goals": 12684,
   "coordinate_records": 294,
   "step_coverage": {
     "first_step": {
       "challenge_levels": {
-        "Easy": 35647,
-        "Medium": 7261
+        "Easy": 27615,
+        "Medium": 1063
       },
       "time_buckets": {
-        "15–30 min": 16560,
-        "5–15 min": 26348
+        "15–30 min": 7368,
+        "5–15 min": 21310
       }
     },
     "micro_step": {
       "challenge_levels": {
-        "Lazy": 42908
+        "Lazy": 28678
       },
       "time_buckets": {
-        "Under 5 min": 42908
+        "Under 5 min": 28678
       }
     }
   },
-  "sha256": "0dd6c85c998d888e42c0365b50a6d6044971b119f34628f83449c85ce476bf7d",
-  "bytes": 21012003,
+  "sha256": "aaa95cbdcf163c58c940376ec5cb78ee70fe51664d1b5c420edb6508298013a2",
+  "bytes": 14493515,
   "notes": [
     "Editorial classifications are estimates, not provider-verified facts",
     "No applicable goal is represented by an empty goals array",

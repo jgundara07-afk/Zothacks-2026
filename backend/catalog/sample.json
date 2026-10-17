@@ -2,14 +2,14 @@
   "note": "Small preview, not the full catalog",
   "opportunities": [
     {
-      "id": "anteater-00007c2e6c1a19a31356",
-      "title": "Jewish and Israeli Culture",
-      "description": "Examination of subjects relevant to the culture of Israel and Judaism in their historical and modern day contexts through the study of film, literature, religious texts, artistic representations, etc.",
+      "id": "anteater-0008e7184a980cb39d80",
+      "title": "Toxic Chemicals in the Environment Laboratory",
+      "description": "Covers field sampling techniques and laboratory analysis methods for assessing the occurrence and effects of toxic chemicals in environmental compartments, including water, soils, sediments, air, and food resources.",
       "description_truncated": false,
       "organization": "University of California, Irvine",
       "source": "anteater",
-      "source_id": "HEBREW50",
-      "source_url": "https://anteaterapi.com/v2/rest/courses/HEBREW50",
+      "source_id": "PUBHLTH164L",
+      "source_url": "https://anteaterapi.com/v2/rest/courses/PUBHLTH164L",
       "kind": "Class",
       "sample": false,
       "tags": [
@@ -17,10 +17,11 @@
       ],
       "goals": [],
       "skills": [
-        "Writing"
+        "Research",
+        "Sustainability"
       ],
       "minutes": 15,
-      "difficulty": "Medium",
+      "difficulty": "Hard",
       "mode": null,
       "color": "yellow",
       "location": "UC Irvine",
@@ -33,102 +34,7 @@
         ],
         "goals": [],
         "challenge_levels": [
-          "Medium"
-        ],
-        "time_buckets": [
-          "Multi-day"
-        ],
-        "location_preferences": [
-          "On campus"
-        ],
-        "commitment": "Long-term opportunities and projects",
-        "first_step": {
-          "minutes": 15,
-          "time_bucket": "15–30 min",
-          "challenge_level": "Easy",
-          "commitment": "Quick tasks I can finish immediately"
-        },
-        "micro_step": {
-          "minutes": 2,
-          "time_bucket": "Under 5 min",
-          "challenge_level": "Lazy",
-          "commitment": "Quick tasks I can finish immediately",
-          "action": "Open the source, check whether this opportunity suits you, and write one question or next step."
-        },
-        "duration": {
-          "minutes": null,
-          "bucket": "Multi-day",
-          "estimated": true,
-          "basis": "Planning assumption for education/employment when exact total effort is unavailable; source workload: unknown"
-        },
-        "classification": {
-          "method": "Assistant-authored evidence rules; estimates require source verification",
-          "interest_evidence": {
-            "Productivity & Personal Growth": "Broad personal exploration fallback; no specific checklist topic detected"
-          },
-          "fallback": true,
-          "goal_basis": "Inferred relevance to the listed topics and opportunity type; not promised outcomes",
-          "challenge_is_estimate": true,
-          "challenge_basis": "Estimated relative effort for lower-division academic work",
-          "location_basis": [
-            "UCI catalog affiliation or explicit campus venue; class delivery must be checked"
-          ],
-          "location_is_inferred": true
-        }
-      },
-      "suggested_first_step": "Read the prerequisites and outline one topic you want to learn.",
-      "availability": "Catalog entry; current enrollment and schedule not checked",
-      "status": "verify_at_source",
-      "source_facts": {
-        "units": {
-          "min": 4,
-          "max": 4
-        },
-        "prerequisites": "",
-        "restrictions": "",
-        "terms": [
-          "2015 Fall",
-          "2016 Fall",
-          "2016 Spring",
-          "2017 Spring",
-          "2018 Spring"
-        ],
-        "course_level": "Lower Division (1-99)",
-        "attribution": "Data from Anteater API (ICSSC): https://icssc.link/about-anteaterapi"
-      },
-      "collected_at": "2026-10-17T19:01:47.696800+00:00"
-    },
-    {
-      "id": "anteater-00052f60abac0e0798ae",
-      "title": "Sentencing and Corrections",
-      "description": "Reviews U.S. attempts to punish and rehabilitate convicted law violators. Conflicts among major purposes of sentencing (rehabilitation, deterrence, incapacitation, and retribution) are discussed, as well as effects of different sanctions on public safety, offender rehabilitation, and justice system costs.",
-      "description_truncated": false,
-      "organization": "University of California, Irvine",
-      "source": "anteater",
-      "source_id": "CRM/LAWC221",
-      "source_url": "https://anteaterapi.com/v2/rest/courses/CRM%2FLAWC221",
-      "kind": "Class",
-      "sample": false,
-      "tags": [
-        "Productivity & Personal Growth"
-      ],
-      "goals": [],
-      "skills": [],
-      "minutes": 15,
-      "difficulty": "Challenging",
-      "mode": null,
-      "color": "yellow",
-      "location": "UC Irvine",
-      "city": null,
-      "coordinates": null,
-      "personalization": {
-        "taxonomy_version": "onething-personalization-v1",
-        "interests": [
-          "Productivity & Personal Growth"
-        ],
-        "goals": [],
-        "challenge_levels": [
-          "Challenging"
+          "Hard"
         ],
         "time_buckets": [
           "Multi-day"
@@ -179,36 +85,108 @@
           "min": 4,
           "max": 4
         },
-        "prerequisites": "",
-        "restrictions": "",
-        "terms": [
-          "2005 Spring",
-          "2006 Spring",
-          "2007 Spring",
-          "2008 Spring",
-          "2009 Spring",
-          "2010 Spring",
-          "2011 Spring",
-          "2012 Spring",
-          "2013 Spring",
-          "2014 Spring",
-          "2015 Spring",
-          "2016 Spring",
-          "2017 Spring",
-          "2018 Spring",
-          "2019 Spring",
-          "2020 Spring",
-          "2021 Fall",
-          "2021 Winter",
-          "2023 Spring",
-          "2024 Winter",
-          "2025 Winter",
-          "2026 Winter"
-        ],
-        "course_level": "Graduate/Professional Only (200+)",
+        "prerequisites": "PUBHLTH 1 and PUBHLTH 2. Prerequisite or corequisite: PUBHLTH 164.",
+        "restrictions": "Public Health Sciences and Public Health Policy majors have first consideration for enrollment.",
+        "terms": [],
+        "course_level": "Upper Division (100-199)",
         "attribution": "Data from Anteater API (ICSSC): https://icssc.link/about-anteaterapi"
       },
-      "collected_at": "2026-10-17T19:01:31.237952+00:00"
+      "collected_at": "2026-10-17T19:02:14.456318+00:00"
+    },
+    {
+      "id": "anteater-00136db8fde236674c11",
+      "title": "Psychology and Emotion",
+      "description": "General theories of emotion and research regarding cognitive, behavioral, physiological, and subjective experience of emotion. Specific topics include emotion regulation, emotion and health, emotional intelligence, and emotional development.",
+      "description_truncated": false,
+      "organization": "University of California, Irvine",
+      "source": "anteater",
+      "source_id": "PSYCH127E",
+      "source_url": "https://anteaterapi.com/v2/rest/courses/PSYCH127E",
+      "kind": "Class",
+      "sample": false,
+      "tags": [
+        "Productivity & Personal Growth"
+      ],
+      "goals": [],
+      "skills": [
+        "Research"
+      ],
+      "minutes": 15,
+      "difficulty": "Hard",
+      "mode": null,
+      "color": "yellow",
+      "location": "UC Irvine",
+      "city": null,
+      "coordinates": null,
+      "personalization": {
+        "taxonomy_version": "onething-personalization-v1",
+        "interests": [
+          "Productivity & Personal Growth"
+        ],
+        "goals": [],
+        "challenge_levels": [
+          "Hard"
+        ],
+        "time_buckets": [
+          "Multi-day"
+        ],
+        "location_preferences": [
+          "On campus"
+        ],
+        "commitment": "Long-term opportunities and projects",
+        "first_step": {
+          "minutes": 15,
+          "time_bucket": "15–30 min",
+          "challenge_level": "Easy",
+          "commitment": "Quick tasks I can finish immediately"
+        },
+        "micro_step": {
+          "minutes": 2,
+          "time_bucket": "Under 5 min",
+          "challenge_level": "Lazy",
+          "commitment": "Quick tasks I can finish immediately",
+          "action": "Open the source, check whether this opportunity suits you, and write one question or next step."
+        },
+        "duration": {
+          "minutes": null,
+          "bucket": "Multi-day",
+          "estimated": true,
+          "basis": "Planning assumption for education/employment when exact total effort is unavailable; source workload: unknown"
+        },
+        "classification": {
+          "method": "Assistant-authored evidence rules; estimates require source verification",
+          "interest_evidence": {
+            "Productivity & Personal Growth": "Broad personal exploration fallback; no specific checklist topic detected"
+          },
+          "fallback": true,
+          "goal_basis": "Inferred relevance to the listed topics and opportunity type; not promised outcomes",
+          "challenge_is_estimate": true,
+          "challenge_basis": "UCI catalog course level; relative academic effort, not an eligibility assessment",
+          "location_basis": [
+            "UCI catalog affiliation or explicit campus venue; class delivery must be checked"
+          ],
+          "location_is_inferred": true
+        }
+      },
+      "suggested_first_step": "Read the prerequisites and outline one topic you want to learn.",
+      "availability": "Catalog entry; current enrollment and schedule not checked",
+      "status": "verify_at_source",
+      "source_facts": {
+        "units": {
+          "min": 4,
+          "max": 4
+        },
+        "prerequisites": "PSY BEH 9 or PSY BEH 11C or PSYCH 7A or PSYCH 9C.",
+        "restrictions": "Psychology and Social Behavior, Social Ecology, and Psychology majors have first consideration for enrollment.",
+        "terms": [
+          "2006 Winter",
+          "2012 Fall",
+          "2014 Fall"
+        ],
+        "course_level": "Upper Division (100-199)",
+        "attribution": "Data from Anteater API (ICSSC): https://icssc.link/about-anteaterapi"
+      },
+      "collected_at": "2026-10-17T19:02:12.498382+00:00"
     },
     {
       "id": "coursera-0001c3c78d0024c55b84",
@@ -297,23 +275,32 @@
       "collected_at": "2026-10-17T19:02:56.669835+00:00"
     },
     {
-      "id": "coursera-00024c9958ef23322bf8",
-      "title": "Инициирование и планирование проектов",
-      "description": "Курсы по специализации «Введение в принципы и практику управления проектами» — обязательное условие для получения сертификата по прикладному управлению проектами Калифорнийского университета в Ирвайне (University of California, Irvine, UCI). \n\nДля успешного осуществления проектов требуется тщательное предварительное планирование. В этом курсе вы узнаете о ключевых ролях и обязанностях руководителя проекта и проектной команды. Вы также научитесь отвечать на некоторые ключевые вопросы заранее, что поможет вам достичь целей проекта: Какие задачи решит этот проект? Почему этот проект важен? Кто получает выгоду от этого проекта? Как мы будем планировать успешные результаты?\n\nПо завершении этого курса вы сможете:\n1.       Определять ключевые характеристики проекта\n2.       Определять основные ограничения проекта\n3.       Определять роль и обязанности руководителя проекта\n4.       Определять организационные структуры проекта\n5.       Понимать определение стейкхолдера проекта\n6.       Определять стейкхолдеров проекта\n7.       Определять информационные потребности стейкхолдеров проекта\n8.       Определять ответственность за управление стейкхолдерами и контроль вовлеченности \n          стейкхолдеров\n9.       Определять цель использования устава проекта\n10.     Резюмировать ключевые элементы плана проекта\n11.     Определять общие источники конфликтов в среде проекта\n12.     Описывать разницу между авторитетом и влиянием",
+      "id": "coursera-0003761ad3a7976e56c2",
+      "title": "Advanced JavaScript 1: Objects, Loops, Hoisting",
+      "description": "This advanced JavaScript course deepens your understanding of key programming concepts, equipping you with the tools to write more efficient and scalable code. \n\nThrough hands-on lessons and challenges, you’ll explore key JavaScript features like hoisting, loops, and object destructuring, along with ternary operators and asynchronous functions like setTimeout and setInterval.\n\nYou’ll also focus heavily on loops and methods for manipulating objects and arrays, gaining practical experience in modern function handling techniques such as arrow functions, default parameters, and callback functions.\n\nThis interactive course is designed to enhance your learning with coding challenges and real-world problem-solving tasks. You'll be writing, testing, and refining code throughout, ensuring that you not only understand the concepts but also have the practical skills to implement them in various scenarios.\n\nBy the end of this course, you will be able to solve complex challenges and apply best practices for structuring your code to handle real-world problems.",
       "description_truncated": false,
       "organization": "Coursera (see course page for provider)",
       "source": "coursera",
-      "source_id": "nskr9yO8EeuBKxKy0yCFlw",
-      "source_url": "https://www.coursera.org/learn/project-planning-ru",
+      "source_id": "iZlMInmuEe-ptQr_1JhtRw",
+      "source_url": "https://www.coursera.org/learn/advanced-javascript-1-objects-loops-hoisting",
       "kind": "Online course",
       "sample": false,
       "tags": [
-        "Productivity & Personal Growth"
+        "Software Engineering",
+        "Web & App Development"
       ],
-      "goals": [],
-      "skills": [],
+      "goals": [
+        "Land a software engineering internship",
+        "Build a strong project portfolio",
+        "Learn a new technical skill",
+        "Launch a startup or personal product"
+      ],
+      "skills": [
+        "Coding",
+        "Writing"
+      ],
       "minutes": 10,
-      "difficulty": "Easy",
+      "difficulty": "Challenging",
       "mode": "Online",
       "color": "pink",
       "location": null,
@@ -322,11 +309,17 @@
       "personalization": {
         "taxonomy_version": "onething-personalization-v1",
         "interests": [
-          "Productivity & Personal Growth"
+          "Software Engineering",
+          "Web & App Development"
         ],
-        "goals": [],
+        "goals": [
+          "Land a software engineering internship",
+          "Build a strong project portfolio",
+          "Learn a new technical skill",
+          "Launch a startup or personal product"
+        ],
         "challenge_levels": [
-          "Easy"
+          "Challenging"
         ],
         "time_buckets": [
           "Multi-day"
@@ -352,14 +345,15 @@
           "minutes": null,
           "bucket": "Multi-day",
           "estimated": true,
-          "basis": "Planning assumption for education/employment when exact total effort is unavailable; source workload: 4 недели обучения, 2–3 часа в неделю "
+          "basis": "Planning assumption for education/employment when exact total effort is unavailable; source workload: unknown"
         },
         "classification": {
           "method": "Assistant-authored evidence rules; estimates require source verification",
           "interest_evidence": {
-            "Productivity & Personal Growth": "Broad personal exploration fallback; no specific checklist topic detected"
+            "Software Engineering": "programming",
+            "Web & App Development": "JavaScript"
           },
-          "fallback": true,
+          "fallback": false,
           "goal_basis": "Inferred relevance to the listed topics and opportunity type; not promised outcomes",
           "challenge_is_estimate": true,
           "challenge_basis": "Title keyword rubric; provider difficulty was not supplied by this catalog endpoint",
@@ -373,12 +367,12 @@
       "availability": "Catalog entry; enrollment, price and certificate availability not checked",
       "status": "verify_at_source",
       "source_facts": {
-        "workload": "4 недели обучения, 2–3 часа в неделю ",
+        "workload": "",
         "languages": [
-          "ru"
+          "en"
         ]
       },
-      "collected_at": "2026-10-17T19:02:51.164067+00:00"
+      "collected_at": "2026-10-17T19:03:06.954536+00:00"
     },
     {
       "id": "eventbrite-3e3eea58424b115d6e50",
@@ -479,51 +473,45 @@
       "collected_at": "2026-10-17T19:03:33.988332+00:00"
     },
     {
-      "id": "eventbrite-59ed3070a22f424ec292",
-      "title": "November Business Mixer hosted by MNO - The Founders",
-      "description": "Kick back and connect with fellow entrepreneurs at the November Business Mixer hosted by MNO - The Founders.",
+      "id": "eventbrite-73ced4944f6065b3ab55",
+      "title": "Fall 2026 Civil and Environmental Engineering Career Fair",
+      "description": "The UCI Annual Civil & Environmental Engineering Career Fair is back on Tuesday, October 20th, 2026 at the UCI Student Center!",
       "description_truncated": false,
-      "organization": "Patricia Davis",
+      "organization": "ASCE UCI",
       "source": "eventbrite",
-      "source_id": "1998657073108",
-      "source_url": "https://www.eventbrite.com/e/november-business-mixer-hosted-by-mno-the-founders-tickets-1998657073108",
+      "source_id": "1998123104995",
+      "source_url": "https://www.eventbrite.com/e/fall-2026-civil-and-environmental-engineering-career-fair-tickets-1998123104995",
       "kind": "Networking event",
       "sample": false,
       "tags": [
-        "Entrepreneurship & Startups",
-        "Career Development",
-        "Networking & Mentorship"
+        "Career Development"
       ],
       "goals": [
         "Find mentors and build a network",
-        "Launch a startup or personal product"
+        "Improve my resume and interview skills"
       ],
-      "skills": [
-        "Business"
-      ],
+      "skills": [],
       "minutes": 5,
       "difficulty": "Easy",
       "mode": "Local",
       "color": "green",
-      "location": "14450 Culver Drive #Suite #E & #F, Irvine, CA 92604",
+      "location": "311 West Peltason Dr, Irvine, CA 92697",
       "city": null,
       "coordinates": null,
       "personalization": {
         "taxonomy_version": "onething-personalization-v1",
         "interests": [
-          "Entrepreneurship & Startups",
-          "Career Development",
-          "Networking & Mentorship"
+          "Career Development"
         ],
         "goals": [
           "Find mentors and build a network",
-          "Launch a startup or personal product"
+          "Improve my resume and interview skills"
         ],
         "challenge_levels": [
           "Easy"
         ],
         "time_buckets": [
-          "1–3 hours"
+          "3+ hours"
         ],
         "location_preferences": [
           "In-person events"
@@ -543,17 +531,15 @@
           "action": "Open the source, check whether this opportunity suits you, and write one question or next step."
         },
         "duration": {
-          "minutes": 60.0,
-          "bucket": "1–3 hours",
+          "minutes": 360.0,
+          "bucket": "3+ hours",
           "estimated": false,
           "basis": "Difference between source start and end timestamps"
         },
         "classification": {
           "method": "Assistant-authored evidence rules; estimates require source verification",
           "interest_evidence": {
-            "Entrepreneurship & Startups": "Founders",
-            "Networking & Mentorship": "Business Mixer",
-            "Career Development": "Employment/networking source category"
+            "Career Development": "Career"
           },
           "fallback": false,
           "goal_basis": "Inferred relevance to the listed topics and opportunity type; not promised outcomes",
@@ -570,19 +556,19 @@
       "status": "verify_at_source",
       "source_facts": {
         "start": {
-          "utc": "2026-11-20T20:00:00Z",
-          "local": "2026-11-20T12:00:00",
-          "timezone": "America/Los_Angeles"
+          "local": "2026-10-20T10:00:00",
+          "timezone": "America/Los_Angeles",
+          "utc": "2026-10-20T17:00:00Z"
         },
         "end": {
-          "utc": "2026-11-20T21:00:00Z",
-          "local": "2026-11-20T13:00:00",
-          "timezone": "America/Los_Angeles"
+          "local": "2026-10-20T16:00:00",
+          "timezone": "America/Los_Angeles",
+          "utc": "2026-10-20T23:00:00Z"
         },
         "ticket_availability": null,
-        "is_free": true
+        "is_free": false
       },
-      "collected_at": "2026-10-17T19:03:35.633101+00:00"
+      "collected_at": "2026-10-17T19:03:38.804298+00:00"
     },
     {
       "id": "irvine-01b9a41b1b7c1dd20abe",
@@ -774,101 +760,6 @@
       "collected_at": "2026-10-17T19:07:58.457951+00:00"
     },
     {
-      "id": "muse-0004efcfd9af7b5ae65f",
-      "title": "(USA) Member Team Lead- FULL TIME",
-      "description": "Position Summary... What you'll do... Assists management with the supervision of associates in assigned area of responsibility by assigning duties to associates communicating goals and feedback training associates on processes and procedures providing direction and guidance to associates on member service approaches and techniques to ensure member complaints and issues are resolved according to company guidelines ensuring compliance with company policies and procedures supporting the Open Door Policy: and participating in recruiting hiring scheduling promoting coaching and evaluating associates Communicates and supports membership by providing information on membership types programs and benefits to current and prospective members processing memberships upgrades and credit accounts encouraging membership renewals participating in sales and marketing events completing and maintaining marketing recaps and other required documentation striving to meet membership goals and promoting the value of Sams Club products and services Provides and ensures member service by acknowledging the member and identifying member needs assisting members with purchasing decisions locating merchandise providing guidance and support to members regarding selfservice technology assisting members with transactions utilizing registers or selfcheckout area and ensuring club pick up orders are filled Oversees assigned area of responsibility by handling claims and returns zoning the area arranging and organizing merchandise identifying shrink and damages organizing and maintaining availability of cartsfla",
-      "description_truncated": true,
-      "organization": "Walmart",
-      "source": "muse",
-      "source_id": "20163080",
-      "source_url": "https://www.themuse.com/jobs/walmart/usa-member-team-lead-full-time-9eab23",
-      "kind": "Job",
-      "sample": false,
-      "tags": [
-        "Web & App Development",
-        "Career Development"
-      ],
-      "goals": [
-        "Learn a new technical skill",
-        "Improve my resume and interview skills"
-      ],
-      "skills": [
-        "Business",
-        "Community",
-        "Sustainability"
-      ],
-      "minutes": 20,
-      "difficulty": "Hard",
-      "mode": null,
-      "color": "blue",
-      "location": "Lebanon, PA",
-      "city": null,
-      "coordinates": null,
-      "personalization": {
-        "taxonomy_version": "onething-personalization-v1",
-        "interests": [
-          "Web & App Development",
-          "Career Development"
-        ],
-        "goals": [
-          "Learn a new technical skill",
-          "Improve my resume and interview skills"
-        ],
-        "challenge_levels": [
-          "Hard"
-        ],
-        "time_buckets": [
-          "Multi-day"
-        ],
-        "location_preferences": [],
-        "commitment": "Long-term opportunities and projects",
-        "first_step": {
-          "minutes": 20,
-          "time_bucket": "15–30 min",
-          "challenge_level": "Medium",
-          "commitment": "Quick tasks I can finish immediately"
-        },
-        "micro_step": {
-          "minutes": 2,
-          "time_bucket": "Under 5 min",
-          "challenge_level": "Lazy",
-          "commitment": "Quick tasks I can finish immediately",
-          "action": "Open the source, check whether this opportunity suits you, and write one question or next step."
-        },
-        "duration": {
-          "minutes": null,
-          "bucket": "Multi-day",
-          "estimated": true,
-          "basis": "Planning assumption for education/employment when exact total effort is unavailable; source workload: unknown"
-        },
-        "classification": {
-          "method": "Assistant-authored evidence rules; estimates require source verification",
-          "interest_evidence": {
-            "Web & App Development": "front-end",
-            "Career Development": "recruiting"
-          },
-          "fallback": false,
-          "goal_basis": "Inferred relevance to the listed topics and opportunity type; not promised outcomes",
-          "challenge_is_estimate": true,
-          "challenge_basis": "Application preparation typically involves tailoring materials; estimated by OneThing",
-          "location_basis": [],
-          "location_is_inferred": false
-        }
-      },
-      "suggested_first_step": "Read the requirements and draft one evidence-backed resume bullet for this role.",
-      "availability": "Listed by The Muse at collection; verify with employer",
-      "status": "verify_at_source",
-      "source_facts": {
-        "levels": [
-          "Entry Level"
-        ],
-        "categories": [
-          "Business Operations"
-        ]
-      },
-      "collected_at": "2026-10-17T19:05:46.413775+00:00"
-    },
-    {
       "id": "muse-000d316b62d39c591834",
       "title": "scientist intern",
       "description": "Conducts routine analyses of samples in compliance with applicable methods, protocols, SOPs, and regulatory agency guidelines. Documents work, maintains study documentation, and laboratory records according to appropriate regulatory documentation practices.  Also can perform QC review of data. Operates laboratory equipment and system software appropriate for assigned tasks with assistance. May attend and provides input in project meetings. Informs Study Director, Lead Scientist, and/or management of any problems or deviations that may affect integrity of the data; participates in corrective action of problems. Contributes to a cohesive team environment.  Plans individual assigned workload on a daily basis in coordination with team members, can effectively manage multiple assignments. Assists in evaluating data and experiment modification as directed. Provides ideas, supports, and participates in process improvement initiatives. Maintains a clean and safe laboratory work environment.  Demonstrates understanding of Health and Safety compliance by ensuring that policies/SOPs and training are up to date. Performs other related duties as assigned. Bachelor of Science (BS) degree or college degree plus at least 2-year applicable experience. The degree can be in Chemistry, Biology or related field. Experience may be substituted for education. 0-2 years related or relevant laboratory experience required with a Associate or BS degree. Familiar with the use of standard laboratory equipment (e.g., balances, pipettes, centrifuges). Experience with analytical instrumentation. Acts as a ",
@@ -962,6 +853,133 @@
       "collected_at": "2026-10-17T19:03:50.483206+00:00"
     },
     {
+      "id": "muse-0017795b029febd04b7b",
+      "title": "2027 Quantitative Research - Markets - Summer Internship - Associate- United States",
+      "description": "As a Summer Associate in the Quantitative Trading & Research Markets team at JPMorganChase, you will join a leading quantitative modeling group focused on systematic trading, financial engineering, data analytics, statistical modeling, and portfolio optimization. You will work closely with traders, sales, marketing, technologists, and risk managers across products and regions. You will support research and strategy deployment, client and sales engagement, product innovation, valuation and risk management, and inventory and portfolio optimization, including electronic trading and market-making activities. You will help build quantitative models, methodologies, and infrastructure to price, hedge, and trade financial products, advancing algorithmic trading and data-driven strategies such as statistical arbitrage. ABOUT THE PROGRAM Our Global Markets teams develop sophisticated solutions to help clients manage risk, increase returns and solve complex financial problems. We hold leadership positions across all major financial markets worldwide. This means you'll be part of a dynamic team, helping to solve a wide range of interesting business issues and will be challenged in your work every day. Expert instructors and J.P. Morgan professionals will teach you about our history, scale, and scope of our organization today and our ambitious plans for tomorrow. We'll teach you technical and practical skills that will help you hit the ground running. The program is an opportunity to take your career to the next level through hands-on experience, relevant skills training and valuable pr",
+      "description_truncated": true,
+      "organization": "JPMorgan Chase",
+      "source": "muse",
+      "source_id": "22028266",
+      "source_url": "https://www.themuse.com/jobs/jpmorganchase/2027-quantitative-research-markets-summer-internship-associate-united-states",
+      "kind": "Internship",
+      "sample": false,
+      "tags": [
+        "Software Engineering",
+        "AI & Machine Learning",
+        "Data Science",
+        "Entrepreneurship & Startups",
+        "Career Development",
+        "Networking & Mentorship",
+        "Leadership",
+        "Personal Finance & Investing"
+      ],
+      "goals": [
+        "Land a software engineering internship",
+        "Build a strong project portfolio",
+        "Learn a new technical skill",
+        "Find mentors and build a network",
+        "Launch a startup or personal product",
+        "Improve my resume and interview skills",
+        "Develop leadership experience"
+      ],
+      "skills": [
+        "Coding",
+        "Data analysis",
+        "Writing",
+        "Research",
+        "Business",
+        "Community",
+        "Sustainability"
+      ],
+      "minutes": 20,
+      "difficulty": "Hard",
+      "mode": null,
+      "color": "blue",
+      "location": "New York, NY",
+      "city": null,
+      "coordinates": null,
+      "personalization": {
+        "taxonomy_version": "onething-personalization-v1",
+        "interests": [
+          "Software Engineering",
+          "AI & Machine Learning",
+          "Data Science",
+          "Entrepreneurship & Startups",
+          "Career Development",
+          "Networking & Mentorship",
+          "Leadership",
+          "Personal Finance & Investing"
+        ],
+        "goals": [
+          "Land a software engineering internship",
+          "Build a strong project portfolio",
+          "Learn a new technical skill",
+          "Find mentors and build a network",
+          "Launch a startup or personal product",
+          "Improve my resume and interview skills",
+          "Develop leadership experience"
+        ],
+        "challenge_levels": [
+          "Hard"
+        ],
+        "time_buckets": [
+          "Multi-day"
+        ],
+        "location_preferences": [],
+        "commitment": "Long-term opportunities and projects",
+        "first_step": {
+          "minutes": 20,
+          "time_bucket": "15–30 min",
+          "challenge_level": "Medium",
+          "commitment": "Quick tasks I can finish immediately"
+        },
+        "micro_step": {
+          "minutes": 2,
+          "time_bucket": "Under 5 min",
+          "challenge_level": "Lazy",
+          "commitment": "Quick tasks I can finish immediately",
+          "action": "Open the source, check whether this opportunity suits you, and write one question or next step."
+        },
+        "duration": {
+          "minutes": null,
+          "bucket": "Multi-day",
+          "estimated": true,
+          "basis": "Planning assumption for education/employment when exact total effort is unavailable; source workload: unknown"
+        },
+        "classification": {
+          "method": "Assistant-authored evidence rules; estimates require source verification",
+          "interest_evidence": {
+            "Software Engineering": "algorithms",
+            "AI & Machine Learning": "machine learning",
+            "Data Science": "data analytics",
+            "Entrepreneurship & Startups": "small business",
+            "Career Development": "Internship",
+            "Networking & Mentorship": "networking",
+            "Leadership": "leadership",
+            "Personal Finance & Investing": "investment"
+          },
+          "fallback": false,
+          "goal_basis": "Inferred relevance to the listed topics and opportunity type; not promised outcomes",
+          "challenge_is_estimate": true,
+          "challenge_basis": "Application preparation typically involves tailoring materials; estimated by OneThing",
+          "location_basis": [],
+          "location_is_inferred": false
+        }
+      },
+      "suggested_first_step": "Read the requirements and draft one evidence-backed resume bullet for this role.",
+      "availability": "Listed by The Muse at collection; verify with employer",
+      "status": "verify_at_source",
+      "source_facts": {
+        "levels": [
+          "Internship"
+        ],
+        "categories": [
+          "Advertising and Marketing"
+        ]
+      },
+      "collected_at": "2026-10-17T19:03:49.850295+00:00"
+    },
+    {
       "id": "zotspot-005ca1b5c268a99427dc",
       "title": "1L Summer Job Information Fair with APALSA",
       "description": "This fair provides an opportunity for 1Ls to ask 2Ls and 3Ls questions about their summer job experiences.\n\nThis event is intended for UCI Law students only.\n---\nEvent Details: https://zotspot.uci.edu/rsvp?id=1947818",
@@ -1040,14 +1058,14 @@
       "collected_at": "2026-10-17T19:03:29.202819+00:00"
     },
     {
-      "id": "zotspot-00e666416736f81dc1de",
-      "title": "EarthReps Class Wk.1-Attendance",
-      "description": "EarthReps Class Wk.1 \n---\nEvent Details: https://zotspot.uci.edu/rsvp?id=1948574",
+      "id": "zotspot-0117463055ac53ee9470",
+      "title": "Goals in Action (GIA) - Fall 2026",
+      "description": "Goals in Action (GIA) is a 6-week program centered on supporting undergraduate students as they develop and reach their academic goals. This program is intended for students who would like to develop greater academic resilience and skills, and is appropriate for students who are struggling academically, at risk or are on academic recovery plans, or at risk for dismissal.\n\nLearn how you can use your strengths and resources to:\n- Develop goals based on your values and align your actions accordingly, as values-driven action is more sustainable in the long run.\n- Build healthy skills to manage stressors and your time effectively.\n- Identify barriers and seek out support to help you succeed.\n\nGIA program meets weekly for 6 weeks, with each section running 60 minutes. Sections are offered in-person and virtually.\n---\nEvent Details: https://zotspot.uci.edu/rsvp?id=1948425",
       "description_truncated": false,
-      "organization": "EarthReps - UCI Housing Sustainability ",
+      "organization": "UCI Counseling Center ",
       "source": "zotspot",
-      "source_id": "26640fee3e3cde8d1f38429404cfbbc89302026_1:34:09_PM@campusgroups.com",
-      "source_url": "https://zotspot.uci.edu/rsvp?id=1948574",
+      "source_id": "d4e0cdc311b7f2a8e7f84e5152e002f09242026_12:30:50_PM@campusgroups.com",
+      "source_url": "https://zotspot.uci.edu/rsvp?id=1948425",
       "kind": "Campus event",
       "sample": false,
       "tags": [
@@ -1090,10 +1108,10 @@
           "action": "Open the source, check whether this opportunity suits you, and write one question or next step."
         },
         "duration": {
-          "minutes": 60.0,
+          "minutes": 90,
           "bucket": "1–3 hours",
-          "estimated": false,
-          "basis": "Difference between source start and end timestamps"
+          "estimated": true,
+          "basis": "OneThing planning estimate for one visit/session; not provider-reported duration"
         },
         "classification": {
           "method": "Assistant-authored evidence rules; estimates require source verification",
@@ -1110,10 +1128,10 @@
       },
       "suggested_first_step": "Review the event, check eligibility, and write one question to bring.",
       "availability": "Public calendar listing; verify date, eligibility and registration",
-      "status": "past",
+      "status": "verify_at_source",
       "source_facts": {
-        "start": "2026-09-30T20:00:00+00:00",
-        "end": "2026-09-30T21:00:00+00:00"
+        "start": "2026-11-20T21:00:00+00:00",
+        "end": "2026-11-20T20:00:00+00:00"
       },
       "collected_at": "2026-10-17T19:03:29.202819+00:00"
     }

@@ -10,6 +10,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from .personalize import TAXONOMY, status
+from .relevance import inclusion
 
 ROOT = Path(__file__).resolve().parent
 DESTINATION = ROOT.parent / "backend" / "catalog"
@@ -78,16 +79,27 @@ def publish(database=ROOT / "data" / "opportunities.sqlite3", destination=DESTIN
     ids = set()
     samples = []
     sample_sources = Counter()
+    included_counts = Counter()
+    excluded_counts = Counter()
+    exclusion_reasons = Counter()
     connection = sqlite3.connect(database)
     try:
         with temporary.open("wb") as raw, gzip.GzipFile(filename="", fileobj=raw, mode="wb", mtime=0) as compressed:
             compressed.write(b'{"schema_version":1,"opportunities":[')
-            for index, (document,) in enumerate(connection.execute("SELECT document FROM opportunities ORDER BY source,id")):
-                row = project(json.loads(document), now)
+            output_index = 0
+            for (document,) in connection.execute("SELECT document FROM opportunities ORDER BY source,id"):
+                source_row = json.loads(document)
+                keep, reason = inclusion(source_row)
+                if not keep:
+                    excluded_counts[source_row["source"]] += 1
+                    exclusion_reasons[reason] += 1
+                    continue
+                row = project(source_row, now)
                 if row["id"] in ids:
                     raise ValueError("Duplicate opportunity ID")
                 ids.add(row["id"])
                 counts[row["source"]] += 1
+                included_counts[row["source"]] += 1
                 if sample_sources[row["source"]] < 2:
                     samples.append(row)
                     sample_sources[row["source"]] += 1
@@ -101,7 +113,8 @@ def publish(database=ROOT / "data" / "opportunities.sqlite3", destination=DESTIN
                     groups["challenge_levels"].update([plan["challenge_level"]])
                     groups["time_buckets"].update([plan["time_bucket"]])
                 encoded = json.dumps(row, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
-                compressed.write((b"," if index else b"") + encoded)
+                compressed.write((b"," if output_index else b"") + encoded)
+                output_index += 1
             compressed.write(b"]}")
         # Read back the full artifact before publishing it.
         with gzip.open(temporary, "rt", encoding="utf-8") as stream:
@@ -110,6 +123,11 @@ def publish(database=ROOT / "data" / "opportunities.sqlite3", destination=DESTIN
             raise ValueError("Export read-back count mismatch")
         manifest = {"schema_version": 1, "generated_at": now.isoformat(), "file": output.name,
                     "record_count": len(ids), "by_source": dict(counts), "taxonomy": TAXONOMY,
+                    "curation": {"policy_version": "one-thing-relevance-v1",
+                                 "included_from_source_counts": dict(included_counts),
+                                 "excluded_from_source_counts": dict(excluded_counts),
+                                 "exclusion_reasons": dict(exclusion_reasons),
+                                 "note": "The app catalog excludes records without evidence of a checklist interest, goal, personal-growth benefit, club/community value, or outdoor/recreation benefit. Raw collected records remain in the local source database."},
                     "coverage": coverage, "broad_fallback_records": fallback_count,
                     "records_without_supported_checklist_goals": no_goals,
                     "coordinate_records": coordinates_count, "step_coverage": step_coverage,
