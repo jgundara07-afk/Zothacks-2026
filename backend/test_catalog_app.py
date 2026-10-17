@@ -114,5 +114,27 @@ class CollectedJourneyTest(unittest.TestCase):
                 nearby=client.get(route,query_string=[('locations','Near me'),('locations','Online / Remote'),('lat','0'),('lon','0')])
                 self.assertEqual(nearby.json['total'],0)
 
+    def test_expanded_interest_profiles_and_related_onboarding(self):
+        from preferences import PREFERENCES
+        with tempfile.TemporaryDirectory() as directory:
+            client = create_app(Store(path=directory+'/related.sqlite3'), data_mode='catalog').test_client()
+            # Every selectable UI tag must survive the profile API, including new tags.
+            for start in range(0, len(PREFERENCES['interests']), 10):
+                choices = PREFERENCES['interests'][start:start+10]
+                response = client.post('/profiles', json={'interests':choices,'skills':['Research']})
+                self.assertEqual(response.status_code, 200, response.json)
+            choices = ['Frontend development','Hiking']
+            client.post('/profiles', json={'interests':choices,'skills':['Research']})
+            strict = client.get('/opportunities', query_string=[('interests',v) for v in choices]).json
+            self.assertGreater(strict['total'], 0)  # OR matching preserves partial-interest results.
+            result = client.get('/recommendations?limit=5').json
+            self.assertTrue(result['recommendation_mode'])
+            self.assertTrue(result['opportunities'])
+            self.assertTrue(result['opportunities'][0]['recommendation_reason'].startswith('Matches '))
+            self.assertEqual(result['profile']['interests'], choices)
+            next_page = client.get('/recommendations?limit=5&offset=5').json
+            self.assertFalse({o['id'] for o in result['opportunities']} & {o['id'] for o in next_page['opportunities']})
+            self.assertEqual(client.get('/recommendations?step_size=invalid').status_code,400)
+
 if __name__ == '__main__':
     unittest.main()

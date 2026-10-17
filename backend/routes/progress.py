@@ -74,10 +74,10 @@ def register(app, svc):
         for a in done:
             q = svc.quest(a['quest_id']) or {}
             o = svc.opportunity(q.get('opportunity_id')) or {}
-            categories[o.get('kind', 'Other')] += 1
-            skills.update(o.get('skills', []))
-            difficulties[q.get('difficulty', 'Easy')] += 1
-            minutes += q.get('minutes', 0)
+            categories[a.get('category', o.get('kind', 'Other'))] += 1
+            skills.update(a.get('skills', o.get('skills', [])))
+            difficulties[a.get('difficulty', q.get('difficulty', 'Easy'))] += 1
+            minutes += a.get('minutes', q.get('minutes', 0))
         days = []
         for offset in range(6, -1, -1):
             day_date = today() - timedelta(days=offset)
@@ -138,5 +138,6 @@ def register(app, svc):
         if q['opportunity_id'] not in [a['opportunity_id'] for a in activity('save')]:
             raise ValueError('Save this opportunity before completing its quest.')
         completion_id = 'completion:demo:' + q['id'] + (':' + today().isoformat() if q.get('daily') else '')
-        created = db.put('activity', dict(id=completion_id, profile_id='demo', kind='completion', quest_id=q['id'], title=q['title'], points=q['points'], completed_at=clock().isoformat()), once=True)
+        opportunity = svc.opportunity(q['opportunity_id']) or {}
+        created = db.put('activity', dict(opportunity_id=q['opportunity_id'], category=opportunity.get('kind', 'Other'), skills=opportunity.get('skills', []), difficulty=q.get('difficulty', 'Easy'), minutes=q.get('minutes', 0), id=completion_id, profile_id='demo', kind='completion', quest_id=q['id'], title=q['title'], points=q['points'], completed_at=clock().isoformat()), once=True)
         return jsonify(already_completed=not created, points_earned=q['points'] if created else 0, progress=progress())

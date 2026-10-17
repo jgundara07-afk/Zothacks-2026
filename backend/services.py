@@ -3,13 +3,13 @@ from datetime import timedelta, datetime
 from zoneinfo import ZoneInfo
 try:
     from .program_catalog import program_catalog, preparation_quests, available, distance_km
-    from .preferences import PREFERENCES
+    from .preferences import PREFERENCES, INTEREST_GROUPS
     from .filter_rules import supported_interests, validate_extra, matches_extra
     from .ranking import rank_records
     from .neutral import is_neutral, fallback_info
 except ImportError:
     from program_catalog import program_catalog, preparation_quests, available, distance_km
-    from preferences import PREFERENCES
+    from preferences import PREFERENCES, INTEREST_GROUPS
     from filter_rules import supported_interests, validate_extra, matches_extra
     from ranking import rank_records
     from neutral import is_neutral, fallback_info
@@ -69,7 +69,7 @@ class OneThing:
     def mark_quests(self, quests):
         done = self.activity('completion')
         return [{**q, 'completed': any(a['quest_id'] == q['id'] and (not q.get('daily') or self.completion_day(a) == self.today()) for a in done)} for q in quests]
-    def feed_page(self, filters, offset, limit):
+    def feed_page(self, filters, offset, limit, related=False):
         """Match any choice within each group; rank relevance before a small diversity boost."""
         for field in ('interests', 'goals'):
             maximum = PREFERENCES['max_selected_interests'] if field == 'interests' else PREFERENCES['max_selected_goals']
@@ -145,13 +145,18 @@ class OneThing:
         ranking = {o['id']:dict(relevance_score=base, uniqueness_bonus=round(bonus,4)) for o,base,bonus in ranked}
         page = mixed[offset:offset+limit]
         cards = self.decorate([{**o, 'recommendation_type':'neutral' if using_fallback else 'matched', 'ranking':ranking[o['id']], 'venues':venues, 'minutes':q['minutes'], 'suggested_quest_id':q['id'], 'preparation_difficulty':q['difficulty'], 'size':q['size'], 'effort':q['effort']} for o,q,venues in page])
+        if related:
+            for card in cards:
+                exact = interest_tags.intersection(supported_interests(card['personalization']))
+                nearby = [g['name'] for g in INTEREST_GROUPS if g['name'] != 'Original interests' and set(g['interests']).intersection(interest_tags) and set(g['interests']).intersection(supported_interests(card['personalization']))]
+                card['recommendation_reason'] = ('Matches '+', '.join(sorted(exact))) if exact else ('Related to your '+', '.join(nearby)+' interests') if nearby else 'An exploratory option; no direct interest match.'
         if using_fallback:
             cards = [{**o,'matching_tags':[]} for o in cards]
         return dict(opportunities=cards, quests=self.mark_quests(self.quests_for(cards)), total=len(mixed), offset=offset, limit=limit, has_more=offset+limit<len(mixed), data_mode='catalog', fallback=fallback_info(using_fallback,filters), kinds=sorted({o['kind'] for o in self.catalog.values()}))
     def today(self):
         return self.clock().astimezone(DAY_ZONE).date()
     def profile(self):
-        p = next(iter(self.db.all('profiles')), None)
+        p = self.db.get('profiles', 'demo')
         if p:
             p['goals'] = ['Internship' if g == 'Land a software engineering internship' else g for g in p.get('goals', [])]
             if p.get('goal') == 'Land a software engineering internship':

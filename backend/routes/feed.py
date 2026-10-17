@@ -33,6 +33,13 @@ def register(app, svc):
         result = svc.feed_page(filters, int(request.args.get('offset',0)), int(request.args.get('limit',40)))
         return jsonify(profile=profile(), checkin=checkin(), **result)
 
+    @app.get('/recommendations')
+    def recommendations():
+        # Intentional broad search for onboarding, separate from strict feed filters.
+        filters = {'step_size': request.args.get('step_size', 'Any')}
+        result = svc.feed_page(filters, int(request.args.get('offset', 0)), int(request.args.get('limit', 40)), related=True)
+        return jsonify(profile=profile(), checkin=checkin(), recommendation_mode=True, **result)
+
     @app.get('/saved')
     def saved():
         rows = svc.saved_opportunities()

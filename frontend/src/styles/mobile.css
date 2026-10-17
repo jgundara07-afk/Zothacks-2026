@@ -20,3 +20,12 @@ button.streak-chip{min-width:42px;min-height:36px}.calendar-stats{display:flex;j
 .demo-date-badge{font-size:10px;color:inherit;border:1px dashed #d6b165;background:transparent;padding:5px;border-radius:8px}
 
 .period-chart.month-chart{gap:2px;overflow:visible;width:100%;min-width:0}.period-chart.month-chart>div{min-width:0;flex:1}.period-chart.month-chart .bar-value,.period-chart.month-chart small{font-size:7px;letter-spacing:-.3px}.period-chart.month-chart .bar-track{width:100%;min-width:0}.period-chart.month-chart .bar-track>span{width:100%}
+
+/* Pages scroll vertically only; decorative condensed titles must not widen them. */
+html,body,#root{width:100%;max-width:100%;overflow-x:clip}
+.app-surface,.phone-shell{min-width:0;max-width:100%}
+.page-scroll,.ob-body,.opportunity-feed,.opportunity-list,.modal{overflow-x:hidden}
+.page-scroll>*,.modal>*,.ob-body>*{min-width:0}
+.period-chart{overflow-x:hidden;gap:4px}.period-chart>div{min-width:0;flex:1}.period-chart small{font-size:9px}
+.feed-filters{grid-template-columns:repeat(2,minmax(0,1fr))}.feed-filters>*{min-width:0}.feed-filters select,.feed-filters input{max-width:100%;min-width:0}
+.phone-shell{max-width:480px}

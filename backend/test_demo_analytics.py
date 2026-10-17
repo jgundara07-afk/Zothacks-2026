@@ -37,6 +37,19 @@ class DemoAnalyticsTest(unittest.TestCase):
             self.assertEqual(snapshot['climb']['mountain'], snapshot['progress']['points']//100+1)
             self.assertEqual(snapshot['climb']['level'], snapshot['progress']['points']//100+1)
             self.assertEqual(client.get('/progress/data?date=invalid').status_code, 400)
+            # Other profiles' activity must not leak into this demo recap.
+            store = Store(path=path)
+            store.put('activity', dict(id='other-win', profile_id='other', kind='completion', quest_id='design-small', title='Other user', points=9999, completed_at='2026-10-17T12:00:00-07:00'))
+            self.assertEqual(client.get('/analytics').json['completed_count'], 4)
+            # Snapshot tags keep recorded wins meaningful even if a quest is removed.
+            recorded = next(a for a in store.all('activity') if a.get('profile_id')=='demo' and a.get('kind')=='completion')
+            self.assertIn('category', recorded)
+            self.assertIn('skills', recorded)
+            before = client.get('/analytics').json
+            store.delete('quests', 'design-small')
+            after = client.get('/analytics').json
+            self.assertEqual(before['categories'], after['categories'])
+            self.assertEqual(before['estimated_minutes'], after['estimated_minutes'])
             reopened = create_app(store=Store(path=path), now=now, data_mode='sample').test_client()
             self.assertEqual(reopened.get('/progress').json['today'], '2027-01-01')
             self.assertEqual(reopened.post('/demo/clock', json={'reset':True}).json['today'], '2026-10-17')

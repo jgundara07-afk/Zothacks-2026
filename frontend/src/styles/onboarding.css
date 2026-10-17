@@ -185,3 +185,50 @@
 .ob-empty { border-top: 1px solid rgba(184,144,74,.4); padding-top: 14px; }
 .ob-reveal .ob-note { color: #cdbd9f; }
 .ob-reveal .ob-text { color: #e4b8a6; }
+
+/* Promise is one screen: shrink the photo before sacrificing the text or CTA. */
+.ob-promise .ob-body{display:flex;flex-direction:column;overflow:hidden;padding:clamp(12px,3dvh,24px) 22px 8px;min-width:0;gap:8px}
+.ob-promise h1.eva{font-size:clamp(28px,5.7dvh,43px);margin:6px 0;max-width:100%;width:auto;transform:none;overflow-wrap:anywhere}
+.ob-promise .ob-card{flex:1;min-height:80px;max-height:280px;aspect-ratio:auto;margin:0}
+.ob-promise .ob-card h2.eva{font-size:clamp(20px,3.8dvh,29px);width:auto;transform:none;overflow-wrap:anywhere}
+.ob-promise .ob-note{font-size:13px;line-height:1.35;margin:2px 0;flex-shrink:0}
+.ob-promise .ob-foot{padding-top:8px;padding-bottom:max(12px,env(safe-area-inset-bottom))}
+.ob-promise .ob-chapter{font-size:11px;letter-spacing:.15em}
+/* Keep long filter labels inside the sheet while preserving vertical scrolling. */
+.filter-sheet{position:relative;overflow-x:hidden;overflow-y:auto;min-width:0;max-width:480px;width:100%}
+.filter-sheet>*{min-width:0;max-width:100%;overflow-wrap:anywhere}
+.filter-sheet fieldset{min-inline-size:0;width:100%;margin-inline:0}
+.filter-sheet .feed-filters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));min-width:0}
+.filter-sheet .feed-filters label,.filter-sheet select,.filter-sheet input:not([type=checkbox]):not([type=radio]){min-width:0;max-width:100%;width:100%}
+.filter-sheet .choice-tags,.filter-sheet .preference-choices{min-width:0;max-width:100%;flex-wrap:wrap}
+.filter-sheet .eva{width:auto;max-width:100%;transform:none}
+.related-notice{font-size:11px;color:var(--on-paper-mute);margin:0 0 6px}
+
+.ob-promise .ob-note{color:var(--on-paper)!important}
+.filter-sheet .preference-choices input{width:16px;max-width:16px}
+.filter-sheet::before{position:fixed;display:none}
+.filter-sheet h2{width:100%;max-width:100%!important;transform:none}
+.filter-sheet{background-image:linear-gradient(rgba(216,195,155,.82),rgba(216,195,155,.82)),var(--map)}
+.filter-sheet .sheet-actions{position:sticky;display:flex;gap:12px;bottom:-24px}
+.filter-sheet .sheet-actions .primary{flex:1;min-width:0}
+
+.profile-button{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--ink-line);border-radius:20px;padding:7px 9px;font-size:11px;color:var(--on-ink)}
+.profile-sheet .profile-fields{border:0;padding:0;margin:0;min-width:0}
+.profile-sheet form{min-width:0;max-width:100%}
+.profile-sheet .sheet-actions{padding:12px 0;bottom:-24px}
+.profile-sheet .sheet-actions button{width:100%}
+@media(max-width:360px){.header-actions{gap:6px}.profile-button span{display:none}}
+
+.demo-auth{display:flex;flex-direction:column;background:var(--paper);color:var(--on-paper);overflow:hidden}
+.demo-auth-body{flex:1;min-height:0;padding:clamp(16px,4dvh,32px) 24px;display:flex;flex-direction:column;justify-content:center;gap:clamp(10px,2dvh,20px);overflow:hidden}
+.demo-auth-body h1{font-family:var(--font-serif);font-size:clamp(28px,6dvh,44px);line-height:1.05;margin:0}
+.demo-auth-tabs{display:flex;gap:6px;border:1px solid #8d7c64;border-radius:10px;padding:4px}
+.demo-auth-tabs button{flex:1;padding:10px;border-radius:6px;font-size:14px}
+.demo-auth-tabs button[aria-pressed=true]{background:var(--red);color:#fff}
+.demo-auth-body form{display:grid;gap:clamp(10px,2dvh,16px);min-width:0}
+.demo-auth-body label{display:grid;gap:6px;font-size:13px}
+.demo-auth-body input{width:100%;min-width:0;border:1px solid #99886b;border-radius:8px;background:#f4ead6;color:#30291f;padding:11px;font-size:14px}
+.demo-auth-body p,.demo-auth-body small{font-size:12px;line-height:1.4;margin:0}
+.demo-auth-body .primary{min-height:46px}
+@media(max-height:560px){.demo-auth .welcome-header{height:48px;padding-block:8px}.demo-auth-body{gap:8px;padding:12px 22px}.demo-auth-body h1{font-size:28px}.demo-auth-body input{padding:8px}.demo-auth-body form{gap:8px}.demo-auth-body>small{display:none}}
+.profile-button{max-width:130px;min-width:0}.profile-button svg{flex-shrink:0}.profile-button span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
