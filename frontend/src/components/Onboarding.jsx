@@ -2,6 +2,7 @@ import React,{useState,useEffect,useRef} from 'react';
 import {ArrowRight,ArrowLeft,Check,Clock3} from 'lucide-react';
 import {options} from './PreferenceFields';
 import {OPENING_HALFTONE} from '../constants';
+import PixelFlame from './PixelFlame';
 import {photoFor,scenePhoto,INTEREST_SCENES} from '../utils/photos';
 
 // First-run story, screen by screen (see frontend/ONBOARDING_FLOW.md).
@@ -21,8 +22,18 @@ function Title({children,className=''}){return <h1 className={'eva '+className}>
 
 export default function Onboarding({data,busy,error,hasProfile,interests,setInterests,goals,setGoals,skills,setSkills,preferences,setPreferences,stepSize,setStepSize,sample,topPick,topQuest,onSave,onEnter,onSkip}){
  const [step,setStep]=useState(0);
+ // Intro plays once per visit; reduced motion goes straight to the finished first screen.
+ const [phase,setPhase]=useState(()=>window.matchMedia('(prefers-reduced-motion: reduce)').matches?'ui':'spark');
+ useEffect(()=>{
+  if(phase==='ui')return;
+  const next={spark:['flame',450],flame:['flare',1900],flare:['card',520],card:['ui',2300]}[phase];
+  const id=setTimeout(()=>setPhase(next[0]),next[1]);
+  return()=>clearTimeout(id);
+ },[phase]);
+ useEffect(()=>{if(phase==='ui')return;const key=e=>{if(['Enter',' ','Escape'].includes(e.key))setPhase('ui')};window.addEventListener('keydown',key);return()=>window.removeEventListener('keydown',key)},[phase]);
+ const skipIntro=()=>setPhase('ui');
  const heading=useRef(null);
- useEffect(()=>{heading.current?.focus({preventScroll:true})},[step]);
+ useEffect(()=>{if(step>0||phase==='ui')heading.current?.focus({preventScroll:true})},[step,phase]);
  const next=()=>setStep(s=>Math.min(6,s+1)),back=()=>setStep(s=>Math.max(0,s-1));
  const toggle=(list,set,value,max)=>set(list.includes(value)?list.filter(v=>v!==value):max&&list.length>=max?list:[...list,value]);
  const pace=stepSize;
@@ -36,21 +47,31 @@ export default function Onboarding({data,busy,error,hasProfile,interests,setInte
   <button className="ob-skip" disabled={busy||!data} onClick={onSkip}>Skip</button>
  </header>;
 
- // ---------- 0: title card ----------
- if(step===0)return <div className="phone-shell ob ob-title">
+ // ---------- 0: intro sequence → title card → first screen ----------
+ // spark → flame → flare (light floods the screen) → card (full-screen title) → ui (title rises, panel slides in)
+ if(step===0)return <div className={`phone-shell ob ob-title phase-${phase}`} onClick={phase==='ui'?undefined:skipIntro}>
   <div className="ob-title-photo" aria-hidden="true"/>
-  <div className="ob-title-card">
-   <span className="ob-episode">Episode 01</span>
-   <p className="ob-logo eva" aria-label="OneThing">OneThing</p>
-   <Title className="ob-title-headline">A place<br/>to start.</Title>
+  <div className="ob-intro" aria-hidden="true">
+   <div className="ob-glow"/>
+   <PixelFlame className="ob-flame"/>
+   <div className="ob-embers">{Array.from({length:10},(_,i)=><i key={i} style={{'--i':i}}/>)}</div>
   </div>
-  <div className="ob-title-panel">
+  <div className="ob-flash" aria-hidden="true"/>
+  <div className="ob-letterbox ob-letterbox-top" aria-hidden="true"><span>A ZotHacks 2026 Picture</span></div>
+  <div className="ob-letterbox ob-letterbox-bottom" aria-hidden="true"><span>One small step at a time</span></div>
+  <div className="ob-title-card">
+   <span className="ob-ep eva">EPISODE:01</span>
+   <h1 className="ob-logo eva">OneThing</h1>
+   <p className="ob-tagline eva">A PLACE TO START.</p>
+  </div>
+  <div className="ob-title-panel" inert={phase==='ui'?undefined:true}>
    <img className="ob-halftone" src={OPENING_HALFTONE} alt="" aria-hidden="true"/>
    <p className="ob-lede" ref={heading} tabIndex={-1}>One small, real step at a time, found for you and worth your while.</p>
    <button className="primary wide" disabled={!data} onClick={next}>{data?'Get started':'Opening the map…'}<ArrowRight size={18}/></button>
    {hasProfile&&<button className="ob-text" disabled={busy} onClick={onSkip}>Continue my journey</button>}
    <small className="ob-fine">ZotHacks demo · fictional profile & sample opportunities · no account needed</small>
   </div>
+  {phase!=='ui'&&<button className="ob-skip-intro" onClick={skipIntro}>Skip intro</button>}
  </div>;
 
  // ---------- 1: problem ----------
