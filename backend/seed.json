@@ -1,14 +1,1066 @@
 {
- "opportunities": [
-  {"id":"design","title":"Make campus a little kinder.","organization":"Kindred Campus Collective","description":"Turn a student pain point into a thoughtful little design. No portfolio required, just a curious mind.","tags":["Design","Community","Writing"],"kind":"Creative project","minutes":15,"color":"pink","sample":true},
-  {"id":"code","title":"Code something that matters.","organization":"Little Good Lab","description":"Start a tiny tool that makes someone's everyday easier. Big impact can start with a very small idea.","tags":["Technology","Coding","Community"],"kind":"Build challenge","minutes":20,"color":"yellow","sample":true},
-  {"id":"green","title":"A greener corner of campus.","organization":"Tomorrow Club","description":"Find one small way to make your campus more sustainable, then sketch a plan to make it happen.","tags":["Sustainability","Research","Community"],"kind":"Campus initiative","minutes":10,"color":"green","sample":true},
-  {"id":"story","title":"Give a good story a voice.","organization":"The Student Story Project","description":"Practice telling a story that deserves to be heard. Start with someone who inspires you.","tags":["Writing","Arts","Design"],"kind":"Creative project","minutes":15,"color":"blue","sample":true}
- ],
- "quests": [
-  {"id":"design-1","opportunity_id":"design","title":"Find one tiny friction","description":"Good design starts with noticing. Turn an everyday frustration into a possibility.","steps":["Notice one thing on campus that could be easier.","Write down who it affects and why it matters.","Sketch one possible solution on paper. Keep it simple."],"points":50,"minutes":15,"difficulty":"Easy"},
-  {"id":"code-1","opportunity_id":"code","title":"Sketch your tiny tool","description":"Before the first line of code, give your idea a little shape.","steps":["Choose a small problem you or a friend faces.","Write one sentence describing your tool.","Draw the main screen and label its three most useful features."],"points":75,"minutes":20,"difficulty":"Medium"},
-  {"id":"green-1","opportunity_id":"green","title":"Spot a greener possibility","description":"Small observations can grow into meaningful change.","steps":["Find one place on campus where resources are wasted.","Write down a practical improvement.","List one person or campus group who could help."],"points":40,"minutes":10,"difficulty":"Easy"},
-  {"id":"story-1","opportunity_id":"story","title":"Write a six-sentence story","description":"You do not need a whole novel to make someone feel something.","steps":["Choose a fictional student doing something kind.","Write six sentences: a beginning, a challenge, and a hopeful ending.","Read it aloud and improve one sentence."],"points":50,"minutes":15,"difficulty":"Easy"}
- ]
+  "opportunities": [
+    {
+      "id": "design",
+      "title": "Make campus a little kinder.",
+      "organization": "Kindred Campus Collective",
+      "description": "Turn a student pain point into a thoughtful little design. No portfolio required, just a curious mind.",
+      "tags": [
+        "Design",
+        "Community",
+        "Writing"
+      ],
+      "kind": "Creative project",
+      "minutes": 15,
+      "color": "pink",
+      "sample": true,
+      "mode": "Local",
+      "goals": [
+        "Explore my interests",
+        "Build my skills",
+        "Make an impact"
+      ],
+      "skills": [
+        "Design",
+        "Writing"
+      ]
+    },
+    {
+      "id": "code",
+      "title": "Code something that matters.",
+      "organization": "Little Good Lab",
+      "description": "Start a tiny tool that makes someone's everyday easier. Big impact can start with a very small idea.",
+      "tags": [
+        "Technology",
+        "Coding",
+        "Community"
+      ],
+      "kind": "Build challenge",
+      "minutes": 20,
+      "color": "yellow",
+      "sample": true,
+      "mode": "Online",
+      "goals": [
+        "Explore my interests",
+        "Build my skills",
+        "Make an impact"
+      ],
+      "skills": [
+        "Coding"
+      ]
+    },
+    {
+      "id": "green",
+      "title": "A greener corner of campus.",
+      "organization": "Tomorrow Club",
+      "description": "Find one small way to make your campus more sustainable, then sketch a plan to make it happen.",
+      "tags": [
+        "Sustainability",
+        "Research",
+        "Community"
+      ],
+      "kind": "Campus initiative",
+      "minutes": 10,
+      "color": "green",
+      "sample": true,
+      "mode": "Local",
+      "goals": [
+        "Explore my interests",
+        "Build my skills",
+        "Make an impact"
+      ],
+      "skills": [
+        "Research"
+      ]
+    },
+    {
+      "id": "story",
+      "title": "Give a good story a voice.",
+      "organization": "The Student Story Project",
+      "description": "Practice telling a story that deserves to be heard. Start with someone who inspires you.",
+      "tags": [
+        "Writing",
+        "Arts",
+        "Design"
+      ],
+      "kind": "Creative project",
+      "minutes": 15,
+      "color": "blue",
+      "sample": true,
+      "mode": "Online",
+      "goals": [
+        "Explore my interests",
+        "Build my skills"
+      ],
+      "skills": [
+        "Writing",
+        "Design"
+      ]
+    },
+    {
+      "id": "class",
+      "title": "Learn a little. Build a lot.",
+      "organization": "Pocket Classroom",
+      "description": "Explore a fictional introductory class and turn one concept into something you can explain.",
+      "kind": "Class",
+      "mode": "Online",
+      "tags": [
+        "Technology",
+        "Research"
+      ],
+      "color": "blue",
+      "sample": true,
+      "minutes": 15,
+      "goals": [
+        "Explore my interests",
+        "Build my skills"
+      ],
+      "skills": [
+        "Research"
+      ]
+    },
+    {
+      "id": "club",
+      "title": "Find your people, find your spark.",
+      "organization": "Campus Makers Guild",
+      "description": "Try a sample student club challenge. Practice showing up with an idea and a little curiosity.",
+      "kind": "Club",
+      "mode": "Local",
+      "tags": [
+        "Design",
+        "Community"
+      ],
+      "color": "pink",
+      "sample": true,
+      "minutes": 15,
+      "goals": [
+        "Explore my interests",
+        "Build my skills",
+        "Make an impact"
+      ],
+      "skills": [
+        "Design"
+      ]
+    },
+    {
+      "id": "cert",
+      "title": "Turn curiosity into a new skill.",
+      "organization": "Brightpath Learning",
+      "description": "Preview a fictional certification path. Build a study plan before committing to a course.",
+      "kind": "Certification",
+      "mode": "Online",
+      "tags": [
+        "Technology",
+        "Coding"
+      ],
+      "color": "yellow",
+      "sample": true,
+      "minutes": 15,
+      "goals": [
+        "Explore my interests",
+        "Build my skills"
+      ],
+      "skills": [
+        "Coding"
+      ]
+    },
+    {
+      "id": "event",
+      "title": "Make room for a new perspective.",
+      "organization": "Next Chapter Campus Fair",
+      "description": "Prepare for a fictional local career event. Get clear on what you would like to learn.",
+      "kind": "Local event",
+      "mode": "Local",
+      "tags": [
+        "Community",
+        "Research"
+      ],
+      "color": "green",
+      "sample": true,
+      "minutes": 15,
+      "goals": [
+        "Explore my interests",
+        "Build my skills",
+        "Make an impact"
+      ],
+      "skills": [
+        "Research"
+      ]
+    },
+    {
+      "id": "network",
+      "title": "One conversation can open a door.",
+      "organization": "Warm Introductions Studio",
+      "description": "Practice introducing yourself with a fictional networking prompt. No messages are sent.",
+      "kind": "Networking",
+      "mode": "Online",
+      "tags": [
+        "Writing",
+        "Community"
+      ],
+      "color": "blue",
+      "sample": true,
+      "minutes": 15,
+      "goals": [
+        "Explore my interests",
+        "Build my skills",
+        "Make an impact"
+      ],
+      "skills": [
+        "Writing"
+      ]
+    },
+    {
+      "id": "simulation",
+      "title": "Try on a career for a little while.",
+      "organization": "Day One Simulation Lab",
+      "description": "Take on a fictional product team scenario and practice making a decision with limited information.",
+      "kind": "Job simulation",
+      "mode": "Online",
+      "tags": [
+        "Research",
+        "Design"
+      ],
+      "color": "pink",
+      "sample": true,
+      "minutes": 15,
+      "goals": [
+        "Explore my interests",
+        "Build my skills"
+      ],
+      "skills": [
+        "Research",
+        "Design"
+      ]
+    },
+    {
+      "id": "internship",
+      "title": "Your next chapter starts before you apply.",
+      "organization": "Future You Fellowship",
+      "description": "Prepare for a fictional internship. Identify what you can already show and one thing you could strengthen.",
+      "kind": "Internship",
+      "mode": "Local",
+      "tags": [
+        "Coding",
+        "Writing"
+      ],
+      "color": "yellow",
+      "sample": true,
+      "minutes": 15,
+      "goals": [
+        "Explore my interests",
+        "Build my skills"
+      ],
+      "skills": [
+        "Coding",
+        "Writing"
+      ]
+    }
+  ],
+  "quests": [
+    {
+      "id": "design-1",
+      "opportunity_id": "design",
+      "title": "Find one tiny friction",
+      "description": "Good design starts with noticing. Turn an everyday frustration into a possibility.",
+      "steps": [
+        "Notice one thing on campus that could be easier.",
+        "Write down who it affects and why it matters.",
+        "Sketch one possible solution on paper. Keep it simple."
+      ],
+      "points": 50,
+      "minutes": 15,
+      "difficulty": "Easy"
+    },
+    {
+      "id": "code-1",
+      "opportunity_id": "code",
+      "title": "Sketch your tiny tool",
+      "description": "Before the first line of code, give your idea a little shape.",
+      "steps": [
+        "Choose a small problem you or a friend faces.",
+        "Write one sentence describing your tool.",
+        "Draw the main screen and label its three most useful features."
+      ],
+      "points": 75,
+      "minutes": 20,
+      "difficulty": "Medium"
+    },
+    {
+      "id": "green-1",
+      "opportunity_id": "green",
+      "title": "Spot a greener possibility",
+      "description": "Small observations can grow into meaningful change.",
+      "steps": [
+        "Find one place on campus where resources are wasted.",
+        "Write down a practical improvement.",
+        "List one person or campus group who could help."
+      ],
+      "points": 40,
+      "minutes": 10,
+      "difficulty": "Easy"
+    },
+    {
+      "id": "story-1",
+      "opportunity_id": "story",
+      "title": "Write a six-sentence story",
+      "description": "You do not need a whole novel to make someone feel something.",
+      "steps": [
+        "Choose a fictional student doing something kind.",
+        "Write six sentences: a beginning, a challenge, and a hopeful ending.",
+        "Read it aloud and improve one sentence."
+      ],
+      "points": 50,
+      "minutes": 15,
+      "difficulty": "Easy"
+    },
+    {
+      "id": "design-small",
+      "opportunity_id": "design",
+      "title": "Notice one little thing",
+      "description": "A two-minute step is enough. You can return to this practice every day.",
+      "steps": [
+        "Look around and notice one thing that could be easier.",
+        "Write a single sentence describing a possible improvement."
+      ],
+      "points": 15,
+      "minutes": 2,
+      "difficulty": "Lazy",
+      "effort": "small",
+      "daily": true
+    },
+    {
+      "id": "design-big",
+      "opportunity_id": "design",
+      "title": "Find one tiny friction \u2014 daily practice",
+      "description": "Good design starts with noticing. Turn an everyday frustration into a possibility. Try a fresh idea each day.",
+      "steps": [
+        "Notice one thing on campus that could be easier.",
+        "Write down who it affects and why it matters.",
+        "Sketch one possible solution on paper. Keep it simple."
+      ],
+      "points": 50,
+      "minutes": 15,
+      "difficulty": "Easy",
+      "effort": "big",
+      "daily": true
+    },
+    {
+      "id": "code-small",
+      "opportunity_id": "code",
+      "title": "Catch a tiny tool idea",
+      "description": "A two-minute step is enough. You can return to this practice every day.",
+      "steps": [
+        "Think of one repetitive task you do.",
+        "Write one sentence about a tool that could help."
+      ],
+      "points": 15,
+      "minutes": 2,
+      "difficulty": "Lazy",
+      "effort": "small",
+      "daily": true
+    },
+    {
+      "id": "code-big",
+      "opportunity_id": "code",
+      "title": "Sketch your tiny tool \u2014 daily practice",
+      "description": "Before the first line of code, give your idea a little shape. Try a fresh idea each day.",
+      "steps": [
+        "Choose a small problem you or a friend faces.",
+        "Write one sentence describing your tool.",
+        "Draw the main screen and label its three most useful features."
+      ],
+      "points": 75,
+      "minutes": 20,
+      "difficulty": "Easy",
+      "effort": "big",
+      "daily": true
+    },
+    {
+      "id": "green-small",
+      "opportunity_id": "green",
+      "title": "Make one greener choice",
+      "description": "A two-minute step is enough. You can return to this practice every day.",
+      "steps": [
+        "Pick one reusable item you can use today.",
+        "Use it instead of a disposable alternative."
+      ],
+      "points": 15,
+      "minutes": 2,
+      "difficulty": "Lazy",
+      "effort": "small",
+      "daily": true
+    },
+    {
+      "id": "green-big",
+      "opportunity_id": "green",
+      "title": "Spot a greener possibility \u2014 daily practice",
+      "description": "Small observations can grow into meaningful change. Try a fresh idea each day.",
+      "steps": [
+        "Find one place on campus where resources are wasted.",
+        "Write down a practical improvement.",
+        "List one person or campus group who could help."
+      ],
+      "points": 40,
+      "minutes": 10,
+      "difficulty": "Easy",
+      "effort": "big",
+      "daily": true
+    },
+    {
+      "id": "story-small",
+      "opportunity_id": "story",
+      "title": "Write a little kindness",
+      "description": "A two-minute step is enough. You can return to this practice every day.",
+      "steps": [
+        "Think of someone who made your day better.",
+        "Write two sentences about that moment in your notes."
+      ],
+      "points": 15,
+      "minutes": 2,
+      "difficulty": "Lazy",
+      "effort": "small",
+      "daily": true
+    },
+    {
+      "id": "story-big",
+      "opportunity_id": "story",
+      "title": "Write a six-sentence story \u2014 daily practice",
+      "description": "You do not need a whole novel to make someone feel something. Try a fresh idea each day.",
+      "steps": [
+        "Choose a fictional student doing something kind.",
+        "Write six sentences: a beginning, a challenge, and a hopeful ending.",
+        "Read it aloud and improve one sentence."
+      ],
+      "points": 50,
+      "minutes": 15,
+      "difficulty": "Easy",
+      "effort": "big",
+      "daily": true
+    },
+    {
+      "id": "class-small",
+      "opportunity_id": "class",
+      "title": "One tiny step: class",
+      "description": "Two minutes is enough to start. Try a fresh idea every day.",
+      "steps": [
+        "Write down one concept you want to learn.",
+        "Save your note somewhere you can return to it."
+      ],
+      "points": 15,
+      "minutes": 2,
+      "difficulty": "Lazy",
+      "effort": "small",
+      "daily": true
+    },
+    {
+      "id": "class-big",
+      "opportunity_id": "class",
+      "title": "Outline a lesson",
+      "description": "A little focused practice for your next chapter. Use a fresh idea each day.",
+      "steps": [
+        "Choose a concept related to your goal.",
+        "Read your own class notes or a textbook page.",
+        "Explain it in your own words and create one example."
+      ],
+      "points": 50,
+      "minutes": 15,
+      "difficulty": "Easy",
+      "effort": "big",
+      "daily": true
+    },
+    {
+      "id": "club-small",
+      "opportunity_id": "club",
+      "title": "One tiny step: club",
+      "description": "Two minutes is enough to start. Try a fresh idea every day.",
+      "steps": [
+        "Write one question you would ask a club member.",
+        "Save your note somewhere you can return to it."
+      ],
+      "points": 15,
+      "minutes": 2,
+      "difficulty": "Lazy",
+      "effort": "small",
+      "daily": true
+    },
+    {
+      "id": "club-big",
+      "opportunity_id": "club",
+      "title": "Bring an idea to the table",
+      "description": "A little focused practice for your next chapter. Use a fresh idea each day.",
+      "steps": [
+        "Choose a club theme you would enjoy.",
+        "Draft a short introduction and an idea for a club activity.",
+        "Write three ways you could contribute using your current skills."
+      ],
+      "points": 50,
+      "minutes": 15,
+      "difficulty": "Easy",
+      "effort": "big",
+      "daily": true
+    },
+    {
+      "id": "cert-small",
+      "opportunity_id": "cert",
+      "title": "One tiny step: certification",
+      "description": "Two minutes is enough to start. Try a fresh idea every day.",
+      "steps": [
+        "Write down one technical skill you want to practice.",
+        "Save your note somewhere you can return to it."
+      ],
+      "points": 15,
+      "minutes": 2,
+      "difficulty": "Lazy",
+      "effort": "small",
+      "daily": true
+    },
+    {
+      "id": "cert-big",
+      "opportunity_id": "cert",
+      "title": "Plan your first learning sprint",
+      "description": "A little focused practice for your next chapter. Use a fresh idea each day.",
+      "steps": [
+        "Choose a skill you want to build.",
+        "List three topics and design a practice exercise for each.",
+        "Set a realistic schedule and try the first exercise."
+      ],
+      "points": 50,
+      "minutes": 15,
+      "difficulty": "Easy",
+      "effort": "big",
+      "daily": true
+    },
+    {
+      "id": "event-small",
+      "opportunity_id": "event",
+      "title": "One tiny step: local event",
+      "description": "Two minutes is enough to start. Try a fresh idea every day.",
+      "steps": [
+        "Write one question you would bring to a career event.",
+        "Save your note somewhere you can return to it."
+      ],
+      "points": 15,
+      "minutes": 2,
+      "difficulty": "Lazy",
+      "effort": "small",
+      "daily": true
+    },
+    {
+      "id": "event-big",
+      "opportunity_id": "event",
+      "title": "Build your event game plan",
+      "description": "A little focused practice for your next chapter. Use a fresh idea each day.",
+      "steps": [
+        "Choose a career topic that interests you.",
+        "Draft three questions and a short self-introduction.",
+        "Write a follow-up note template and rehearse it aloud."
+      ],
+      "points": 50,
+      "minutes": 15,
+      "difficulty": "Easy",
+      "effort": "big",
+      "daily": true
+    },
+    {
+      "id": "network-small",
+      "opportunity_id": "network",
+      "title": "One tiny step: networking",
+      "description": "Two minutes is enough to start. Try a fresh idea every day.",
+      "steps": [
+        "Write one sentence introducing yourself and your interests.",
+        "Save your note somewhere you can return to it."
+      ],
+      "points": 15,
+      "minutes": 2,
+      "difficulty": "Lazy",
+      "effort": "small",
+      "daily": true
+    },
+    {
+      "id": "network-big",
+      "opportunity_id": "network",
+      "title": "Practice your introduction",
+      "description": "A little focused practice for your next chapter. Use a fresh idea each day.",
+      "steps": [
+        "Imagine a professional you would like to learn from.",
+        "Draft a thoughtful introduction and two specific questions.",
+        "Read it aloud and revise for clarity. Keep it as a private practice draft."
+      ],
+      "points": 50,
+      "minutes": 15,
+      "difficulty": "Easy",
+      "effort": "big",
+      "daily": true
+    },
+    {
+      "id": "simulation-small",
+      "opportunity_id": "simulation",
+      "title": "One tiny step: job simulation",
+      "description": "Two minutes is enough to start. Try a fresh idea every day.",
+      "steps": [
+        "Name one user and a problem a product could solve.",
+        "Save your note somewhere you can return to it."
+      ],
+      "points": 15,
+      "minutes": 2,
+      "difficulty": "Lazy",
+      "effort": "small",
+      "daily": true
+    },
+    {
+      "id": "simulation-big",
+      "opportunity_id": "simulation",
+      "title": "Be the product lead",
+      "description": "A little focused practice for your next chapter. Use a fresh idea each day.",
+      "steps": [
+        "Imagine students need a better way to find study groups.",
+        "Describe a user, three needs, and one feature you would prioritize.",
+        "Write your decision and one simple metric to evaluate it."
+      ],
+      "points": 50,
+      "minutes": 15,
+      "difficulty": "Easy",
+      "effort": "big",
+      "daily": true
+    },
+    {
+      "id": "internship-small",
+      "opportunity_id": "internship",
+      "title": "One tiny step: internship",
+      "description": "Two minutes is enough to start. Try a fresh idea every day.",
+      "steps": [
+        "Write one accomplishment you could include in an application.",
+        "Save your note somewhere you can return to it."
+      ],
+      "points": 15,
+      "minutes": 2,
+      "difficulty": "Lazy",
+      "effort": "small",
+      "daily": true
+    },
+    {
+      "id": "internship-big",
+      "opportunity_id": "internship",
+      "title": "Draft your application story",
+      "description": "A little focused practice for your next chapter. Use a fresh idea each day.",
+      "steps": [
+        "Choose a fictional role you might enjoy.",
+        "Draft a short paragraph with one concrete accomplishment.",
+        "Identify one missing skill and create a practice plan to develop it."
+      ],
+      "points": 50,
+      "minutes": 15,
+      "difficulty": "Easy",
+      "effort": "big",
+      "daily": true
+    },
+    {
+      "id": "design-hard",
+      "opportunity_id": "design",
+      "title": "Find one tiny friction \u00b7 hard",
+      "description": "Good design starts with noticing. Turn an everyday frustration into a possibility. Try a fresh idea each day.",
+      "steps": [
+        "Notice one thing on campus that could be easier.",
+        "Write down who it affects and why it matters.",
+        "Sketch one possible solution on paper. Keep it simple.",
+        "Create a concrete first draft or prototype from your plan.",
+        "Review it and write down one improvement."
+      ],
+      "points": 100,
+      "minutes": 30,
+      "difficulty": "Hard",
+      "effort": "hard",
+      "daily": true
+    },
+    {
+      "id": "design-challenging",
+      "opportunity_id": "design",
+      "title": "Find one tiny friction \u00b7 challenging",
+      "description": "Good design starts with noticing. Turn an everyday frustration into a possibility. Try a fresh idea each day.",
+      "steps": [
+        "Notice one thing on campus that could be easier.",
+        "Write down who it affects and why it matters.",
+        "Sketch one possible solution on paper. Keep it simple.",
+        "Create a concrete first draft or prototype from your plan.",
+        "Test your idea with two different scenarios and note what fails.",
+        "Revise your work and write a short reflection on what you learned."
+      ],
+      "points": 150,
+      "minutes": 45,
+      "difficulty": "Challenging",
+      "effort": "challenging",
+      "daily": true
+    },
+    {
+      "id": "code-hard",
+      "opportunity_id": "code",
+      "title": "Sketch your tiny tool \u00b7 hard",
+      "description": "Before the first line of code, give your idea a little shape. Try a fresh idea each day.",
+      "steps": [
+        "Choose a small problem you or a friend faces.",
+        "Write one sentence describing your tool.",
+        "Draw the main screen and label its three most useful features.",
+        "Create a concrete first draft or prototype from your plan.",
+        "Review it and write down one improvement."
+      ],
+      "points": 100,
+      "minutes": 30,
+      "difficulty": "Hard",
+      "effort": "hard",
+      "daily": true
+    },
+    {
+      "id": "code-challenging",
+      "opportunity_id": "code",
+      "title": "Sketch your tiny tool \u00b7 challenging",
+      "description": "Before the first line of code, give your idea a little shape. Try a fresh idea each day.",
+      "steps": [
+        "Choose a small problem you or a friend faces.",
+        "Write one sentence describing your tool.",
+        "Draw the main screen and label its three most useful features.",
+        "Create a concrete first draft or prototype from your plan.",
+        "Test your idea with two different scenarios and note what fails.",
+        "Revise your work and write a short reflection on what you learned."
+      ],
+      "points": 150,
+      "minutes": 45,
+      "difficulty": "Challenging",
+      "effort": "challenging",
+      "daily": true
+    },
+    {
+      "id": "green-hard",
+      "opportunity_id": "green",
+      "title": "Spot a greener possibility \u00b7 hard",
+      "description": "Small observations can grow into meaningful change. Try a fresh idea each day.",
+      "steps": [
+        "Find one place on campus where resources are wasted.",
+        "Write down a practical improvement.",
+        "List one person or campus group who could help.",
+        "Create a concrete first draft or prototype from your plan.",
+        "Review it and write down one improvement."
+      ],
+      "points": 100,
+      "minutes": 30,
+      "difficulty": "Hard",
+      "effort": "hard",
+      "daily": true
+    },
+    {
+      "id": "green-challenging",
+      "opportunity_id": "green",
+      "title": "Spot a greener possibility \u00b7 challenging",
+      "description": "Small observations can grow into meaningful change. Try a fresh idea each day.",
+      "steps": [
+        "Find one place on campus where resources are wasted.",
+        "Write down a practical improvement.",
+        "List one person or campus group who could help.",
+        "Create a concrete first draft or prototype from your plan.",
+        "Test your idea with two different scenarios and note what fails.",
+        "Revise your work and write a short reflection on what you learned."
+      ],
+      "points": 150,
+      "minutes": 45,
+      "difficulty": "Challenging",
+      "effort": "challenging",
+      "daily": true
+    },
+    {
+      "id": "story-hard",
+      "opportunity_id": "story",
+      "title": "Write a six-sentence story \u00b7 hard",
+      "description": "You do not need a whole novel to make someone feel something. Try a fresh idea each day.",
+      "steps": [
+        "Choose a fictional student doing something kind.",
+        "Write six sentences: a beginning, a challenge, and a hopeful ending.",
+        "Read it aloud and improve one sentence.",
+        "Create a concrete first draft or prototype from your plan.",
+        "Review it and write down one improvement."
+      ],
+      "points": 100,
+      "minutes": 30,
+      "difficulty": "Hard",
+      "effort": "hard",
+      "daily": true
+    },
+    {
+      "id": "story-challenging",
+      "opportunity_id": "story",
+      "title": "Write a six-sentence story \u00b7 challenging",
+      "description": "You do not need a whole novel to make someone feel something. Try a fresh idea each day.",
+      "steps": [
+        "Choose a fictional student doing something kind.",
+        "Write six sentences: a beginning, a challenge, and a hopeful ending.",
+        "Read it aloud and improve one sentence.",
+        "Create a concrete first draft or prototype from your plan.",
+        "Test your idea with two different scenarios and note what fails.",
+        "Revise your work and write a short reflection on what you learned."
+      ],
+      "points": 150,
+      "minutes": 45,
+      "difficulty": "Challenging",
+      "effort": "challenging",
+      "daily": true
+    },
+    {
+      "id": "class-hard",
+      "opportunity_id": "class",
+      "title": "Outline a lesson \u00b7 hard",
+      "description": "A little focused practice for your next chapter. Use a fresh idea each day.",
+      "steps": [
+        "Choose a concept related to your goal.",
+        "Read your own class notes or a textbook page.",
+        "Explain it in your own words and create one example.",
+        "Create a concrete first draft or prototype from your plan.",
+        "Review it and write down one improvement."
+      ],
+      "points": 100,
+      "minutes": 30,
+      "difficulty": "Hard",
+      "effort": "hard",
+      "daily": true
+    },
+    {
+      "id": "class-challenging",
+      "opportunity_id": "class",
+      "title": "Outline a lesson \u00b7 challenging",
+      "description": "A little focused practice for your next chapter. Use a fresh idea each day.",
+      "steps": [
+        "Choose a concept related to your goal.",
+        "Read your own class notes or a textbook page.",
+        "Explain it in your own words and create one example.",
+        "Create a concrete first draft or prototype from your plan.",
+        "Test your idea with two different scenarios and note what fails.",
+        "Revise your work and write a short reflection on what you learned."
+      ],
+      "points": 150,
+      "minutes": 45,
+      "difficulty": "Challenging",
+      "effort": "challenging",
+      "daily": true
+    },
+    {
+      "id": "club-hard",
+      "opportunity_id": "club",
+      "title": "Bring an idea to the table \u00b7 hard",
+      "description": "A little focused practice for your next chapter. Use a fresh idea each day.",
+      "steps": [
+        "Choose a club theme you would enjoy.",
+        "Draft a short introduction and an idea for a club activity.",
+        "Write three ways you could contribute using your current skills.",
+        "Create a concrete first draft or prototype from your plan.",
+        "Review it and write down one improvement."
+      ],
+      "points": 100,
+      "minutes": 30,
+      "difficulty": "Hard",
+      "effort": "hard",
+      "daily": true
+    },
+    {
+      "id": "club-challenging",
+      "opportunity_id": "club",
+      "title": "Bring an idea to the table \u00b7 challenging",
+      "description": "A little focused practice for your next chapter. Use a fresh idea each day.",
+      "steps": [
+        "Choose a club theme you would enjoy.",
+        "Draft a short introduction and an idea for a club activity.",
+        "Write three ways you could contribute using your current skills.",
+        "Create a concrete first draft or prototype from your plan.",
+        "Test your idea with two different scenarios and note what fails.",
+        "Revise your work and write a short reflection on what you learned."
+      ],
+      "points": 150,
+      "minutes": 45,
+      "difficulty": "Challenging",
+      "effort": "challenging",
+      "daily": true
+    },
+    {
+      "id": "cert-hard",
+      "opportunity_id": "cert",
+      "title": "Plan your first learning sprint \u00b7 hard",
+      "description": "A little focused practice for your next chapter. Use a fresh idea each day.",
+      "steps": [
+        "Choose a skill you want to build.",
+        "List three topics and design a practice exercise for each.",
+        "Set a realistic schedule and try the first exercise.",
+        "Create a concrete first draft or prototype from your plan.",
+        "Review it and write down one improvement."
+      ],
+      "points": 100,
+      "minutes": 30,
+      "difficulty": "Hard",
+      "effort": "hard",
+      "daily": true
+    },
+    {
+      "id": "cert-challenging",
+      "opportunity_id": "cert",
+      "title": "Plan your first learning sprint \u00b7 challenging",
+      "description": "A little focused practice for your next chapter. Use a fresh idea each day.",
+      "steps": [
+        "Choose a skill you want to build.",
+        "List three topics and design a practice exercise for each.",
+        "Set a realistic schedule and try the first exercise.",
+        "Create a concrete first draft or prototype from your plan.",
+        "Test your idea with two different scenarios and note what fails.",
+        "Revise your work and write a short reflection on what you learned."
+      ],
+      "points": 150,
+      "minutes": 45,
+      "difficulty": "Challenging",
+      "effort": "challenging",
+      "daily": true
+    },
+    {
+      "id": "event-hard",
+      "opportunity_id": "event",
+      "title": "Build your event game plan \u00b7 hard",
+      "description": "A little focused practice for your next chapter. Use a fresh idea each day.",
+      "steps": [
+        "Choose a career topic that interests you.",
+        "Draft three questions and a short self-introduction.",
+        "Write a follow-up note template and rehearse it aloud.",
+        "Create a concrete first draft or prototype from your plan.",
+        "Review it and write down one improvement."
+      ],
+      "points": 100,
+      "minutes": 30,
+      "difficulty": "Hard",
+      "effort": "hard",
+      "daily": true
+    },
+    {
+      "id": "event-challenging",
+      "opportunity_id": "event",
+      "title": "Build your event game plan \u00b7 challenging",
+      "description": "A little focused practice for your next chapter. Use a fresh idea each day.",
+      "steps": [
+        "Choose a career topic that interests you.",
+        "Draft three questions and a short self-introduction.",
+        "Write a follow-up note template and rehearse it aloud.",
+        "Create a concrete first draft or prototype from your plan.",
+        "Test your idea with two different scenarios and note what fails.",
+        "Revise your work and write a short reflection on what you learned."
+      ],
+      "points": 150,
+      "minutes": 45,
+      "difficulty": "Challenging",
+      "effort": "challenging",
+      "daily": true
+    },
+    {
+      "id": "network-hard",
+      "opportunity_id": "network",
+      "title": "Practice your introduction \u00b7 hard",
+      "description": "A little focused practice for your next chapter. Use a fresh idea each day.",
+      "steps": [
+        "Imagine a professional you would like to learn from.",
+        "Draft a thoughtful introduction and two specific questions.",
+        "Read it aloud and revise for clarity. Keep it as a private practice draft.",
+        "Create a concrete first draft or prototype from your plan.",
+        "Review it and write down one improvement."
+      ],
+      "points": 100,
+      "minutes": 30,
+      "difficulty": "Hard",
+      "effort": "hard",
+      "daily": true
+    },
+    {
+      "id": "network-challenging",
+      "opportunity_id": "network",
+      "title": "Practice your introduction \u00b7 challenging",
+      "description": "A little focused practice for your next chapter. Use a fresh idea each day.",
+      "steps": [
+        "Imagine a professional you would like to learn from.",
+        "Draft a thoughtful introduction and two specific questions.",
+        "Read it aloud and revise for clarity. Keep it as a private practice draft.",
+        "Create a concrete first draft or prototype from your plan.",
+        "Test your idea with two different scenarios and note what fails.",
+        "Revise your work and write a short reflection on what you learned."
+      ],
+      "points": 150,
+      "minutes": 45,
+      "difficulty": "Challenging",
+      "effort": "challenging",
+      "daily": true
+    },
+    {
+      "id": "simulation-hard",
+      "opportunity_id": "simulation",
+      "title": "Be the product lead \u00b7 hard",
+      "description": "A little focused practice for your next chapter. Use a fresh idea each day.",
+      "steps": [
+        "Imagine students need a better way to find study groups.",
+        "Describe a user, three needs, and one feature you would prioritize.",
+        "Write your decision and one simple metric to evaluate it.",
+        "Create a concrete first draft or prototype from your plan.",
+        "Review it and write down one improvement."
+      ],
+      "points": 100,
+      "minutes": 30,
+      "difficulty": "Hard",
+      "effort": "hard",
+      "daily": true
+    },
+    {
+      "id": "simulation-challenging",
+      "opportunity_id": "simulation",
+      "title": "Be the product lead \u00b7 challenging",
+      "description": "A little focused practice for your next chapter. Use a fresh idea each day.",
+      "steps": [
+        "Imagine students need a better way to find study groups.",
+        "Describe a user, three needs, and one feature you would prioritize.",
+        "Write your decision and one simple metric to evaluate it.",
+        "Create a concrete first draft or prototype from your plan.",
+        "Test your idea with two different scenarios and note what fails.",
+        "Revise your work and write a short reflection on what you learned."
+      ],
+      "points": 150,
+      "minutes": 45,
+      "difficulty": "Challenging",
+      "effort": "challenging",
+      "daily": true
+    },
+    {
+      "id": "internship-hard",
+      "opportunity_id": "internship",
+      "title": "Draft your application story \u00b7 hard",
+      "description": "A little focused practice for your next chapter. Use a fresh idea each day.",
+      "steps": [
+        "Choose a fictional role you might enjoy.",
+        "Draft a short paragraph with one concrete accomplishment.",
+        "Identify one missing skill and create a practice plan to develop it.",
+        "Create a concrete first draft or prototype from your plan.",
+        "Review it and write down one improvement."
+      ],
+      "points": 100,
+      "minutes": 30,
+      "difficulty": "Hard",
+      "effort": "hard",
+      "daily": true
+    },
+    {
+      "id": "internship-challenging",
+      "opportunity_id": "internship",
+      "title": "Draft your application story \u00b7 challenging",
+      "description": "A little focused practice for your next chapter. Use a fresh idea each day.",
+      "steps": [
+        "Choose a fictional role you might enjoy.",
+        "Draft a short paragraph with one concrete accomplishment.",
+        "Identify one missing skill and create a practice plan to develop it.",
+        "Create a concrete first draft or prototype from your plan.",
+        "Test your idea with two different scenarios and note what fails.",
+        "Revise your work and write a short reflection on what you learned."
+      ],
+      "points": 150,
+      "minutes": 45,
+      "difficulty": "Challenging",
+      "effort": "challenging",
+      "daily": true
+    }
+  ]
 }
