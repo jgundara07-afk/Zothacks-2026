@@ -1,0 +1,11 @@
+.git
+.venv
+.env
+**/node_modules
+**/__pycache__
+**/*.pyc
+frontend/dist
+backend/demo.sqlite3
+opportunity_data
+design
+docs

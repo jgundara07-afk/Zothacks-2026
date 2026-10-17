@@ -29,7 +29,12 @@ npm install
 npm run dev
 ```
 
-Open http://127.0.0.1:5173. Vite proxies `/api` to Flask on port 5001. Sign in to the demo, choose preferences or skip, and browse the cached catalog. Initial catalog decoding takes a few seconds. Browsing requires no API credentials or upstream network access; following source links and browser location may require network access. Optionally set `GEMINI_API_KEY` in the ignored root `.env` to show a short Gemini-generated self-guided suggestion when no current catalog opportunity matches the selected interests/goals, and to generate the activity-based Wrapped recap. Recap prompts contain recorded completion summaries and recent completed quest details; profile fields and location are not sent. A local recap appears when Gemini is unavailable or the user has no completed quests.
+Open http://127.0.0.1:5173. Vite proxies `/api` to Flask on port 5001. Get started with a demo profile, choose preferences or skip, and browse the cached catalog. Initial catalog decoding takes a few seconds. Browsing requires no API credentials or upstream network access; following source links and browser location may require network access. Optionally set `GEMINI_API_KEY` in the ignored root `.env` to show a short Gemini-generated self-guided suggestion when no current catalog opportunity matches the selected interests/goals, and to generate the activity-based Wrapped recap. Recap prompts contain recorded completion summaries and recent completed quest details; profile fields and location are not sent. A local recap appears when Gemini is unavailable or the user has no completed quests.
+
+## One-URL demo deployment
+The root `Dockerfile` builds the frontend and serves it with the Flask API on one port. Deploy this repository as a Docker web service, set its public health check to `/api/health`, and use the assigned HTTPS URL for judging. No API key is required. For a one-off demo, the default SQLite store is enough, but a host with ephemeral files will lose saves and progress after a restart. Use a persistent disk or set `MONGO_URI` for durable data. The demo shares one fictional profile among all visitors; do not use it to collect private accounts or real applicant information.
+
+For a local production-style check after `npm run build`, run `python -c "from backend.wsgi import app; from werkzeug.serving import run_simple; run_simple('127.0.0.1', 5002, app)"` from the repository root and visit http://127.0.0.1:5002. The UI uses `/api` on the same origin. Docker was not available in the development environment, so the image itself has not been built locally.
 
 On macOS/Linux use `.venv/bin/python`, `cp`, and normal shell syntax. Keep existing `.env` credentials when updating the project.
 
@@ -86,7 +91,7 @@ Tests use temporary profile storage and the bundled catalog, without calling ups
 - `opportunity_data/`: manually invoked collectors, taxonomy, enrichment/export and audits.
 - `design/references/`: art direction references, not app assets.
 
-The existing phone-width UI, sign-in placeholder, preference checklist, list/image toggle, streak calendar, climb rewards and template recap are retained. Resume Lab has been removed from the app navigation and screens. This remains a shared local hackathon demo rather than a public multi-user service.
+The phone-width UI has a cinematic intro, preference checklist, list/image toggle, streak calendar, map chapters, and an activity-based recap. The sign-in placeholder and Resume Lab have been removed. This remains a shared hackathon demo rather than a public multi-user service.
 
 ## Automatic feed pagination
 Discover loads the next API page automatically when the bottom of the image feed or text-only list approaches the viewport. Requests are serialized, appended cards are deduplicated by stable opportunity ID, and a filter change invalidates older responses. Scrolling stays in place while cards are appended. A load-more button remains as an accessible/manual fallback, failures show a retry action, and an explicit end message appears when `has_more` is false. Saved items keep their existing list behavior.
