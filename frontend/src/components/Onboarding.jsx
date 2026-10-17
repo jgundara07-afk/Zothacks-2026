@@ -1,6 +1,7 @@
 import React,{useState,useEffect,useRef} from 'react';
 import {ArrowRight,ArrowLeft,Check,Clock3} from 'lucide-react';
 import {options} from './PreferenceFields';
+import InterestPicker from './InterestPicker';
 import {OPENING_HALFTONE} from '../constants';
 import PixelFlame from './PixelFlame';
 import {photoFor,scenePhoto,INTEREST_SCENES} from '../utils/photos';
@@ -114,8 +115,8 @@ export default function Onboarding({data,busy,error,hasProfile,interests,setInte
   <main className="ob-body">
    <span className="ob-chapter">Chapter II · Your kind of things</span>
    <Title><span ref={heading} tabIndex={-1}>What draws you <em>in?</em></span></Title>
-   <p className="ob-help">Choose up to three. <b>{interests.length}/3</b></p>
-   <div className="ob-tiles" role="group" aria-label="Interests">{options.interests.map(t=><button key={t} className="ob-tile" aria-pressed={interests.includes(t)} disabled={!interests.includes(t)&&interests.length>=3} onClick={()=>toggle(interests,setInterests,t,3)} style={{'--tile':`url(${scenePhoto(INTEREST_SCENES[t]||'train',t)})`}}><span>{t}</span>{interests.includes(t)&&<i className="ob-seal"><Check size={13}/></i>}</button>)}</div>
+   <p className="ob-help">Choose up to ten. <b>{interests.length}/10</b></p>
+   <InterestPicker images value={interests} onChange={setInterests} help="Search or browse a category. Choose up to ten interests."/>
    <h2 className="ob-sub eva">What could you bring or <em>practice?</em></h2>
    <div className="choice-tags" role="group" aria-label="Skills">{SKILLS.map(s=><button key={s} type="button" aria-pressed={skills.includes(s)} onClick={()=>toggle(skills,setSkills,s)}>{skills.includes(s)&&<Check size={13}/>} {s}</button>)}</div>
   </main>

@@ -7,7 +7,7 @@ const options=JSON.parse(readFileSync(new URL('../../shared/preferences.json',im
 const base={challenges:[],time:[],locations:[],commitment:'A mix of both'};
 function matching(interests=[],goals=[],preferences=base){return seed.opportunities.filter(o=>matchesOpportunity(o,{interests,goals,preferences})&&chooseVariant(o,seed.quests,{preferences,stepSize:'Any',defaultEffort:'small'}))}
 test('all requested topics, goals, challenge levels and time windows have sample coverage',()=>{
- for(const topic of options.interests)assert.ok(matching([topic]).length,topic);
+ for(const topic of JSON.parse(readFileSync(new URL('../../shared/interest_catalog.json',import.meta.url))).groups[0].interests)assert.ok(matching([topic]).length,topic);
  for(const goal of options.goals)assert.ok(matching([],[goal]).length,goal);
  for(const challenge of options.challenges)assert.ok(matching([],[],{...base,challenges:[challenge]}).length,challenge);
  for(const time of options.time)assert.ok(matching([],[],{...base,time:[time]}).length,time);

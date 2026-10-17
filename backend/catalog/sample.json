@@ -14,7 +14,8 @@
       "sample": false,
       "tags": [
         "Software Engineering",
-        "Web & App Development"
+        "Web & App Development",
+        "Web development"
       ],
       "goals": [
         "Land a software engineering internship",
@@ -34,10 +35,11 @@
       "city": null,
       "coordinates": null,
       "personalization": {
-        "taxonomy_version": "onething-personalization-v1",
+        "taxonomy_version": "onething-personalization-v2",
         "interests": [
           "Software Engineering",
-          "Web & App Development"
+          "Web & App Development",
+          "Web development"
         ],
         "goals": [
           "Land a software engineering internship",
@@ -102,13 +104,15 @@
         },
         "filter_interests": [
           "Software Engineering",
-          "Web & App Development"
+          "Web & App Development",
+          "Web development"
         ],
         "classification": {
           "method": "Assistant-authored evidence rules; estimates require source verification",
           "interest_evidence": {
             "Software Engineering": "programming",
-            "Web & App Development": "JavaScript"
+            "Web & App Development": "JavaScript",
+            "Web development": "Title/amenity evidence: JavaScript"
           },
           "fallback": false,
           "goal_basis": "Inferred relevance to the listed topics and opportunity type; not promised outcomes",
@@ -157,7 +161,7 @@
       "city": null,
       "coordinates": null,
       "personalization": {
-        "taxonomy_version": "onething-personalization-v1",
+        "taxonomy_version": "onething-personalization-v2",
         "interests": [
           "Career Development"
         ],
@@ -273,7 +277,7 @@
       "city": null,
       "coordinates": null,
       "personalization": {
-        "taxonomy_version": "onething-personalization-v1",
+        "taxonomy_version": "onething-personalization-v2",
         "interests": [
           "Career Development"
         ],
@@ -398,7 +402,7 @@
       "city": null,
       "coordinates": null,
       "personalization": {
-        "taxonomy_version": "onething-personalization-v1",
+        "taxonomy_version": "onething-personalization-v2",
         "interests": [
           "Career Development"
         ],
@@ -509,7 +513,8 @@
       "sample": false,
       "tags": [
         "Productivity & Personal Growth",
-        "Hike"
+        "Hike",
+        "Hiking"
       ],
       "goals": [
         "Progress toward an outdoor adventure goal"
@@ -527,10 +532,11 @@
         "basis": "Approximate representative point of source geometry; not an entrance or trailhead"
       },
       "personalization": {
-        "taxonomy_version": "onething-personalization-v1",
+        "taxonomy_version": "onething-personalization-v2",
         "interests": [
           "Productivity & Personal Growth",
-          "Hike"
+          "Hike",
+          "Hiking"
         ],
         "goals": [
           "Progress toward an outdoor adventure goal"
@@ -588,12 +594,14 @@
         },
         "filter_interests": [
           "Productivity & Personal Growth",
-          "Hike"
+          "Hike",
+          "Hiking"
         ],
         "classification": {
           "method": "Assistant-authored evidence rules; estimates require source verification",
           "interest_evidence": {
             "Hike": "Trails",
+            "Hiking": "Title/amenity evidence: Trails",
             "Productivity & Personal Growth": "Self-paced outdoor recreation and wellbeing at an official public park"
           },
           "fallback": false,
@@ -632,7 +640,10 @@
       "tags": [
         "Productivity & Personal Growth",
         "Hike",
-        "Sports"
+        "Sports",
+        "Hiking",
+        "Soccer",
+        "Baseball"
       ],
       "goals": [
         "Progress toward an outdoor adventure goal"
@@ -652,11 +663,14 @@
         "basis": "Approximate representative point of source geometry; not an entrance or trailhead"
       },
       "personalization": {
-        "taxonomy_version": "onething-personalization-v1",
+        "taxonomy_version": "onething-personalization-v2",
         "interests": [
           "Productivity & Personal Growth",
           "Hike",
-          "Sports"
+          "Sports",
+          "Hiking",
+          "Soccer",
+          "Baseball"
         ],
         "goals": [
           "Progress toward an outdoor adventure goal"
@@ -715,13 +729,19 @@
         "filter_interests": [
           "Productivity & Personal Growth",
           "Hike",
-          "Sports"
+          "Sports",
+          "Hiking",
+          "Soccer",
+          "Baseball"
         ],
         "classification": {
           "method": "Assistant-authored evidence rules; estimates require source verification",
           "interest_evidence": {
             "Hike": "TRAIL",
             "Sports": "Athletic",
+            "Hiking": "Title/amenity evidence: TRAIL",
+            "Soccer": "Title/amenity evidence: SOCCER",
+            "Baseball": "Title/amenity evidence: BASEBALL",
             "Productivity & Personal Growth": "Self-paced outdoor recreation and wellbeing at an official public park"
           },
           "fallback": false,
@@ -781,7 +801,7 @@
       "city": null,
       "coordinates": null,
       "personalization": {
-        "taxonomy_version": "onething-personalization-v1",
+        "taxonomy_version": "onething-personalization-v2",
         "interests": [
           "Career Development"
         ],
@@ -915,7 +935,7 @@
       "city": null,
       "coordinates": null,
       "personalization": {
-        "taxonomy_version": "onething-personalization-v1",
+        "taxonomy_version": "onething-personalization-v2",
         "interests": [
           "Software Engineering",
           "AI & Machine Learning",
@@ -1053,7 +1073,7 @@
       "city": null,
       "coordinates": null,
       "personalization": {
-        "taxonomy_version": "onething-personalization-v1",
+        "taxonomy_version": "onething-personalization-v2",
         "interests": [
           "Career Development"
         ],
@@ -1158,7 +1178,7 @@
       "city": null,
       "coordinates": null,
       "personalization": {
-        "taxonomy_version": "onething-personalization-v1",
+        "taxonomy_version": "onething-personalization-v2",
         "interests": [
           "Productivity & Personal Growth"
         ],

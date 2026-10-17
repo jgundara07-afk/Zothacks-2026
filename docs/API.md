@@ -11,7 +11,7 @@ Feed filters: every selected interest, goal, and skill must match (AND). Difficu
 
 | Parameter | Meaning |
 | --- | --- |
-| `interests`, `goals` | Exact UI labels in `shared/preferences.json`; at most three interests and three goals. `Internship` maps to the catalog software-internship goal. |
+| `interests`, `goals` | Exact UI labels in `shared/preferences.json`; at most ten interests and three goals. `Internship` maps to the catalog software-internship goal. |
 | `challenges`, `time` | Match `personalization.challenge_levels` and `personalization.time_buckets` of the full opportunity. Preparation step size remains independent. |
 | `locations` | Online / Remote, On campus, In-person events, Near me. |
 | `commitment` | Full opportunity commitment; A mix of both accepts either. |
@@ -29,7 +29,7 @@ Normal time buckets are disjoint: under 5, [5,15), [15,30), [30,60), [60,180), a
 Past source events are excluded from discovery using export status and parseable source end dates at request time. Unknown availability remains explicitly unverified. Schools, providers and employers determine eligibility, deadlines and access; read the original source.
 
 ## Profiles and daily pace
-- `POST /profiles`: `{goals: string[], interests: string[], skills: string[], preferences:{challenges:[],time:[],locations:[],commitment}}` returns `{profile}`. Up to three supported interests and three supported goals; excess selections return HTTP 400. Legacy singular `goal` and legacy interest tags remain accepted. Updates do not reset activity. Internship labels normalize on load/save. Both selection counters stop at three in the UI; old larger stored selections prefill the first three for review. All choice groups may be empty; existing skill validation still requires a nonempty skill list.
+- `POST /profiles`: `{goals: string[], interests: string[], skills: string[], preferences:{challenges:[],time:[],locations:[],commitment}}` returns `{profile}`. Up to ten supported interests and three supported goals; excess selections return HTTP 400. Legacy singular `goal` and legacy interest tags remain accepted. Updates do not reset activity. Internship labels normalize on load/save. Interest selection stops at ten and goal selection at three; stored selections are restored up to their respective limits. All choice groups may be empty; existing skill validation still requires a nonempty skill list.
 - `GET /checkins`: `{checkin, date, timezone}`.
 - `POST /checkins`: `{mood:"Low"|"Okay"|"Good",effort:"small"|"medium"|"big"}`. One updatable Pacific-day check-in, requires a profile. A check-in alone earns no points. With no explicit size/time/challenge filter the daily effort is a preference for selecting a quest.
 

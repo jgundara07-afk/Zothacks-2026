@@ -5,15 +5,15 @@ import {toggleSelection} from '../src/utils/preferences.js';
 import {chooseVariant,matchesOpportunity} from '../src/utils/filtering.js';
 const options=JSON.parse(readFileSync(new URL('../../shared/preferences.json',import.meta.url)));
 
-test('interests and goals stop at three; deselecting allows another selection',()=>{
+test('interests stop at ten and goals at three; deselection frees a slot',()=>{
  for(const field of ['interests','goals']){
-  const limit=options[`max_selected_${field}`];assert.equal(limit,3);
+  const limit=options[`max_selected_${field}`];assert.equal(limit,field==='interests'?10:3);
   let selected=[];
-  for(const item of options[field].slice(0,4))selected=toggleSelection(selected,item,limit);
-  assert.deepEqual(selected,options[field].slice(0,3));
+  for(const item of options[field].slice(0,limit+1))selected=toggleSelection(selected,item,limit);
+  assert.deepEqual(selected,options[field].slice(0,limit));
   selected=toggleSelection(selected,options[field][1],limit);
-  selected=toggleSelection(selected,options[field][3],limit);
-  assert.deepEqual(selected,[options[field][0],options[field][2],options[field][3]]);
+  selected=toggleSelection(selected,options[field][limit],limit);
+  assert.deepEqual(selected,[...options[field].slice(0,limit).filter(v=>v!==options[field][1]),options[field][limit]]);
  }
 });
 

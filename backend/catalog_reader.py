@@ -51,8 +51,8 @@ class CatalogReader:
                 raise ValueError(f"Unknown {key}; use /catalog/options")
         if len(set(goals)) > self.taxonomy["max_selected_goals"]:
             raise ValueError("Choose up to 3 goals")
-        if len(set(interests)) > self.taxonomy.get("max_selected_interests", 3):
-            raise ValueError("Choose up to 3 interests")
+        if len(set(interests)) > self.taxonomy.get("max_selected_interests", 10):
+            raise ValueError("Choose up to 10 interests")
         if commitment is not None and commitment not in self.taxonomy["commitment_preferences"]:
             raise ValueError("Unknown commitment preference")
         if not isinstance(q, str) or len(q) > 300:

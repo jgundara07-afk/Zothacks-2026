@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from .effort import assess, FILTER_OPTIONS
 from .duration import estimate
+from .interests import granular_matches, CATALOG as INTEREST_CATALOG
 
 TAXONOMY = json.loads((Path(__file__).parent / "taxonomy.json").read_text(encoding="utf-8"))
 TAXONOMY["filter_options"] = FILTER_OPTIONS
@@ -27,6 +28,7 @@ RULES = {
 }
 TECHNICAL = {"Software Engineering", "AI & Machine Learning", "Web & App Development", "Data Science", "Cybersecurity", "Design & UI/UX"}
 
+TECHNICAL.update(INTEREST_CATALOG["groups"][1]["interests"])
 
 def bucket(minutes, multi_day=False):
     if multi_day or minutes >= 1440:
@@ -51,6 +53,10 @@ def classify(row):
         if match:
             interests.append(label)
             evidence[label] = match[0]
+    for label, basis in granular_matches(row).items():
+        if label not in interests:
+            interests.append(label)
+            evidence[label] = basis
     kind = row["kind"]
     if kind in {"Job", "Internship", "Networking event"} and "Career Development" not in interests:
         interests.append("Career Development")

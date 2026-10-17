@@ -71,26 +71,27 @@ class CollectedJourneyTest(unittest.TestCase):
             self.assertTrue(all(not r['opportunity_id'].startswith('sample-') for r in result['recommendations']))
             self.assertEqual(client.post('/saved',json={'opportunity_id':'invalid'}).status_code,400)
 
-    def test_three_choice_limits_and_canonical_filter_options(self):
+    def test_ten_interest_three_goal_limits_and_canonical_filter_options(self):
         from preferences import PREFERENCES
         with tempfile.TemporaryDirectory() as directory:
             client = create_app(Store(path=directory+'/limits.sqlite3'),data_mode='catalog').test_client()
             options = client.get('/catalog/options').json
-            self.assertEqual(options['max_selected_interests'],3)
+            self.assertEqual(options['max_selected_interests'],10)
             for ui,stored in [('interests','interests'),('challenges','challenge_levels'),('time','time_buckets'),('locations','location_preferences'),('commitments','commitment_preferences')]:
                 self.assertEqual(PREFERENCES[ui],options[stored])
             self.assertEqual(['Internship' if g=='Land a software engineering internship' else g for g in options['goals']],PREFERENCES['goals'])
             for field in ['interests','goals']:
-                values = PREFERENCES[field][:4]
+                maximum = 10 if field=='interests' else 3
+                values = PREFERENCES[field][:maximum+1]
                 profile = dict(interests=['Software Engineering'],goals=[],skills=['Coding'])
                 profile[field] = values
                 self.assertEqual(client.post('/profiles',json=profile).status_code,400)
                 self.assertEqual(client.get('/opportunities',query_string=[(field,v) for v in values]).status_code,400)
-                canonical = options[field][:4]
+                canonical = options[field][:maximum+1]
                 self.assertEqual(client.get('/catalog/opportunities',query_string=[(field,v) for v in canonical]).status_code,400)
-                profile[field] = values[:3]
+                profile[field] = values[:maximum]
                 self.assertEqual(client.post('/profiles',json=profile).status_code,200)
-                self.assertEqual(client.get('/opportunities').json['profile'][field],values[:3])
+                self.assertEqual(client.get('/opportunities').json['profile'][field],values[:maximum])
 
     def test_strict_topics_metadata_and_time_cap_on_both_apis(self):
         with tempfile.TemporaryDirectory() as directory:

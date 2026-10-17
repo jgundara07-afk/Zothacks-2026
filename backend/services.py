@@ -68,8 +68,9 @@ class OneThing:
     def feed_page(self, filters, offset, limit):
         """Filter before pagination; require every interest, goal and skill."""
         for field in ('interests', 'goals'):
-            if len(set(filters.get(field, []))) > 3:
-                raise ValueError('Choose up to 3 '+field)
+            maximum = PREFERENCES['max_selected_interests'] if field == 'interests' else PREFERENCES['max_selected_goals']
+            if len(set(filters.get(field, []))) > maximum:
+                raise ValueError('Choose up to '+str(maximum)+' '+field)
         if self.catalog is None:
             rows = self.opportunities()
             return dict(opportunities=rows, quests=self.mark_quests(self.db.all('quests')), total=len(rows), offset=0, limit=len(rows), has_more=False, data_mode='sample')
