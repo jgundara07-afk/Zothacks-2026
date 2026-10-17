@@ -104,12 +104,12 @@ export default function App(){
  const loadMoreRef=useRef(null);loadMoreRef.current=()=>fetchFeed(true);
  useEffect(()=>{
   const root=feedRef.current,target=endOfFeedRef.current;
-  if(!signedIn||opening||page!=='Discover'||modalOpen||feedLoading||feedError||!data?.has_more||!root||!target||!('IntersectionObserver' in window))return;
+  if(opening||page!=='Discover'||modalOpen||feedLoading||feedError||!data?.has_more||!root||!target||!('IntersectionObserver' in window))return;
   const observer=new IntersectionObserver(entries=>{
    if(entries.some(entry=>entry.isIntersecting)&&feedRequest.current===null)loadMoreRef.current().catch(()=>{});
   },{root,rootMargin:'0px 0px 240px 0px',threshold:0});
   observer.observe(target);return()=>observer.disconnect();
- },[signedIn,opening,page,modalOpen,feedLoading,feedError,data?.has_more,data?.opportunities.length,listView]);
+ },[opening,page,modalOpen,feedLoading,feedError,data?.has_more,data?.opportunities.length,listView]);
  async function startQuest(){if(!selected.saved){await api.save(selected.id);await load(false)}setDetail(null);setActive(selectedQuest);setChecked([])}
  function nextCard(e){const card=e.currentTarget.closest('article'),sibling=card.nextElementSibling,next=sibling?.tagName==='ARTICLE'||data?.has_more?sibling:card.parentElement.firstElementChild;card.parentElement.scrollTo({top:next.offsetTop-card.parentElement.firstElementChild.offsetTop,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'})}
  const errorBox=error&&<div role="alert" className="error"><span>{error}</span><button type="button" disabled={busy} onClick={()=>action(load)}>Retry</button></div>;
