@@ -1,11 +1,26 @@
-import React,{useState,useRef} from 'react';
-import {ArrowRight,ArrowLeft,Sparkles,FileText,Check} from 'lucide-react';
-import {api} from '../api';
+import React,{useState} from 'react';
+import {ArrowRight,ArrowLeft} from 'lucide-react';
+
+// Wrapped-style recap: every slide is one label, one big number, one plain line. color = a .wrapped.<color> plate.
+function buildSlides(data){
+ const p=data.progress;
+ return [
+  {label:'Completed',big:String(p.completed_count),unit:p.completed_count===1?'quest':'quests',color:'purple'},
+  {label:'Practice',big:String(data.estimated_minutes),unit:'minutes, estimated',color:'orange'},
+  {label:'Top skill',big:data.top_skill||'None yet',unit:data.top_category?`Mostly ${data.top_category}`:'Complete a quest to find yours',color:'lime'},
+  {label:'Best streak',big:String(p.longest_streak),unit:p.longest_streak===1?'day':'days',color:'pink'},
+ ];
+}
+
 export default function Recap({data,onExplore}){
  const [slide,setSlide]=useState(0);
  if(!data)return <p>Loading your recap…</p>;
- const p=data.progress;
- const slides=[{label:'YOUR ONE THING RECAP',headline:p.completed_count?'Look what your little steps became.':'Every great climb starts somewhere.',big:String(p.completed_count),unit:'quests completed',text:'1% every day. One real step at a time.',color:'purple'},{label:'YOU MADE ROOM FOR GROWTH',headline:'A little time. A lot of possibility.',big:String(data.estimated_minutes),unit:'estimated minutes of practice',text:'Based on quest durations, not a running timer.',color:'orange'},{label:'YOUR CAREER SIDE QUEST',headline:data.top_skill?`You kept coming back to ${data.top_skill.toLowerCase()}.`:'Your next skill is waiting.',big:data.top_skill||'Curiosity',unit:data.top_category?`Your top path: ${data.top_category}`:'Start a quest to discover your path.',text:'A reflection of quest tags, not a judgment of your ability.',color:'lime'},{label:'KEEP CLIMBING, AT YOUR PACE',headline:'Baby steps. Real momentum.',big:String(p.longest_streak),unit:'days in your best streak',text:`${p.points} points earned. ${data.active_days} active days. Your next little step is waiting.`,color:'pink'}];
- const item=slides[slide];
- return <section className={'wrapped '+item.color} aria-label="Progress recap"><div className="recap-dots">{slides.map((s,i)=><button key={s.label} aria-label={`Recap slide ${i+1}`} aria-current={i===slide?'step':undefined} onClick={()=>setSlide(i)}/>)}</div><span className="eyebrow">{item.label}</span><h2>{item.headline}</h2><div className="recap-big" aria-live="polite" key={slide}>{item.big}<small>{item.unit}</small></div><p>{item.text}</p><div className="recap-navigation"><button disabled={slide===0} onClick={()=>setSlide(slide-1)}><ArrowLeft size={18}/> Back</button>{slide<slides.length-1?<button onClick={()=>setSlide(slide+1)}>Next <ArrowRight size={18}/></button>:<button onClick={onExplore}>Find my next step <ArrowRight size={18}/></button>}</div><small className="recap-method">Your real activity · offline template recap · no AI-generated claims</small></section>
+ const slides=buildSlides(data),item=slides[slide],last=slide===slides.length-1;
+ return <section className={'wrapped '+item.color} aria-label="Progress recap">
+  <div className="recap-dots">{slides.map((s,i)=><button key={s.label} aria-label={`Recap slide ${i+1}`} aria-current={i===slide?'step':undefined} onClick={()=>setSlide(i)}/>)}</div>
+  <span className="eyebrow">{item.label}</span>
+  <div className="recap-big" aria-live="polite" key={slide}>{item.big}<small>{item.unit}</small></div>
+  <div className="recap-navigation"><button disabled={slide===0} onClick={()=>setSlide(slide-1)}><ArrowLeft size={18}/> Back</button>{last?<button onClick={onExplore}>Find a quest <ArrowRight size={18}/></button>:<button onClick={()=>setSlide(slide+1)}>Next <ArrowRight size={18}/></button>}</div>
+  <details className="recap-method"><summary>How this is counted</summary>From your completed quests. Minutes are estimated from quest durations; skills reflect quest tags, not measured ability.</details>
+ </section>
 }

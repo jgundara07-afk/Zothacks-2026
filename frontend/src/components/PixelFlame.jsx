@@ -24,14 +24,14 @@ function makeFrame(f){
 }
 const FRAME_CELLS=Array.from({length:FRAMES},(_,f)=>makeFrame(f));
 
-export default function PixelFlame({className=''}){
+export default function PixelFlame({className='',style}){
  const [frame,setFrame]=useState(0);
  useEffect(()=>{
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
   const id=setInterval(()=>setFrame(f=>(f+1)%FRAMES),95);
   return()=>clearInterval(id);
  },[]);
- return <svg className={'pixel-flame '+className} viewBox={`0 0 ${W} ${H}`} shapeRendering="crispEdges" aria-hidden="true">
+ return <svg className={'pixel-flame '+className} style={style} viewBox={`0 0 ${W} ${H}`} shapeRendering="crispEdges" aria-hidden="true">
   {FRAME_CELLS[frame].map(([x,y,l])=><rect key={`${x}-${y}`} x={x} y={y} width="1.02" height="1.02" fill={COLORS[l]}/>)}
  </svg>
 }

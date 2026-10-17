@@ -19,15 +19,18 @@ const PACE=[
 // Only places the catalog can answer without asking for the user's location.
 const PLACES=['Online / Remote','On campus'];
 
+// Pixel embers that break off the words as they burn: position across the text, rise height, drift, delay, size.
+const ASH=Array.from({length:46},(_,i)=>{const r=n=>((Math.sin(i*12.9898+n*78.233)*43758.5453)%1+1)%1;return {'--x':`${4+r(1)*92}%`,'--y':`${20+r(2)*70}%`,'--rise':`${70+r(3)*130}px`,'--drift':`${(r(4)-.5)*60}px`,'--d':`${r(5)*1.1}s`,'--s':`${3+Math.round(r(6)*3)}px`}});
+
 function Title({children,className=''}){return <h1 className={'eva '+className}>{children}</h1>}
 
 export default function Onboarding({data,busy,error,hasProfile,interests,setInterests,goals,setGoals,skills,setSkills,preferences,setPreferences,stepSize,setStepSize,sample,topPick,topQuest,onSave,onEnter,onWiden,onSkip}){
  const [step,setStep]=useState(0);
  // Intro plays once per visit; reduced motion goes straight to the finished first screen.
- const [phase,setPhase]=useState(()=>window.matchMedia('(prefers-reduced-motion: reduce)').matches?'ui':'spark');
+ const [phase,setPhase]=useState(()=>window.matchMedia('(prefers-reduced-motion: reduce)').matches?'ui':'words');
  useEffect(()=>{
   if(phase==='ui')return;
-  const next={spark:['flame',450],flame:['flare',1900],flare:['card',520],card:['ui',2300]}[phase];
+  const next={words:['burn',2700],burn:['card',1700],card:['ui',2400]}[phase];
   const id=setTimeout(()=>setPhase(next[0]),next[1]);
   return()=>clearTimeout(id);
  },[phase]);
@@ -49,28 +52,29 @@ export default function Onboarding({data,busy,error,hasProfile,interests,setInte
  </header>;
 
  // ---------- 0: intro sequence → title card → first screen ----------
- // spark → flame → flare (light floods the screen) → card (full-screen title) → ui (title rises, panel slides in)
+ // words ("Move forward, every day" arrive one by one) → burn (they burn away into pixel embers and ash)
+ // → card (letterboxed title card) → ui (title rises, panel slides in)
  if(step===0)return <div className={`phone-shell ob ob-title phase-${phase}`} onClick={phase==='ui'?undefined:skipIntro}>
   <div className="ob-title-photo" aria-hidden="true"/>
-  <div className="ob-intro" aria-hidden="true">
-   <div className="ob-glow"/>
-   <PixelFlame className="ob-flame"/>
-   <div className="ob-embers">{Array.from({length:10},(_,i)=><i key={i} style={{'--i':i}}/>)}</div>
+  <div className="ob-words" aria-hidden="true">
+   <p className="ob-words-line"><span style={{'--i':0}}>Move</span> <span style={{'--i':1}}>forward,</span></p>
+   <p className="ob-words-line"><span style={{'--i':2}}>every</span> <span style={{'--i':3}}>day.</span></p>
+   <div className="ob-burn-flames">{[0,1,2,3,4].map(i=><PixelFlame key={i} className="ob-burn-flame" style={{'--i':i}}/>)}</div>
+   <div className="ob-ash">{ASH.map((a,i)=><i key={i} style={a}/>)}</div>
   </div>
-  <div className="ob-flash" aria-hidden="true"/>
-  <div className="ob-letterbox ob-letterbox-top" aria-hidden="true"><span>A ZotHacks 2026 Picture</span></div>
-  <div className="ob-letterbox ob-letterbox-bottom" aria-hidden="true"><span>One small step at a time</span></div>
+  <div className="ob-letterbox ob-letterbox-top" aria-hidden="true"/>
+  <div className="ob-letterbox ob-letterbox-bottom" aria-hidden="true"/>
   <div className="ob-title-card">
    <span className="ob-ep eva">EPISODE:01</span>
    <h1 className="ob-logo eva">OneThing</h1>
-   <p className="ob-tagline eva">A PLACE TO START.</p>
+   <p className="ob-tagline eva">MOVE FORWARD, EVERY DAY.</p>
   </div>
   <div className="ob-title-panel" inert={phase==='ui'?undefined:true}>
    <img className="ob-halftone" src={OPENING_HALFTONE} alt="" aria-hidden="true"/>
-   <p className="ob-lede" ref={heading} tabIndex={-1}>One small, real step at a time, found for you and worth your while.</p>
-   <button className="primary wide" disabled={!data} onClick={next}>{data?'Get started':'Opening the map…'}<ArrowRight size={18}/></button>
-   {hasProfile&&<button className="ob-text" disabled={busy} onClick={onSkip}>Continue my journey</button>}
-   <small className="ob-fine">ZotHacks demo · fictional profile & sample opportunities · no account needed</small>
+   <p className="ob-lede" ref={heading} tabIndex={-1}>Find one real opportunity and take the first step today.</p>
+   <button className="primary wide" disabled={!data} onClick={next}>{data?'Get started':'Loading…'}<ArrowRight size={18}/></button>
+   {hasProfile&&<button className="ob-text" disabled={busy} onClick={onSkip}>Continue where I left off</button>}
+   <small className="ob-fine">Demo profile · no account needed</small>
   </div>
   {phase!=='ui'&&<button className="ob-skip-intro" onClick={skipIntro}>Skip intro</button>}
  </div>;

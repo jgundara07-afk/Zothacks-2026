@@ -138,5 +138,20 @@
  "map-2": {
   "source": "https://stocksnap.io/photo/vintage-compass-F0K1NRJJ4D",
   "license": "CC0 (StockSnap)"
+ },
+ "cafe-real": {
+  "source": "https://unsplash.com/photos/two-men-stand-outside-central-cafe-with-neon-signs-hlQhPRcSYzg",
+  "license": "Unsplash License",
+  "photographer": "Barney Goodman"
+ },
+ "sketch-real": {
+  "source": "https://unsplash.com/photos/man-sketching-at-an-outdoor-cafe-table-6AQB5XgIpxU",
+  "license": "Unsplash License",
+  "photographer": "Kristina Bekher"
+ },
+ "writing-real": {
+  "source": "https://unsplash.com/photos/a-woman-sitting-on-a-train-reading-a-book-UI0n-qhjTYQ",
+  "license": "Unsplash License",
+  "photographer": "Valeria Kodra"
  }
 }

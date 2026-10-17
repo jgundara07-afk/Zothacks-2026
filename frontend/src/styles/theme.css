@@ -213,3 +213,70 @@ select { background: var(--paper-hi); border: 1px solid rgba(36,24,13,.3); color
 .mountain .peak-shade { fill: #b39a6c; }
 .mountain .peak-hatch line { stroke: #3a2716; stroke-width: .7; opacity: .55; }
 .mountain .peak-ink { fill: none; stroke: #3a2716; stroke-width: 1.6; stroke-linejoin: round; }
+
+/* ===================== Simplification pass (Oct 17) ===================== */
+
+/* A vertical app: nothing scrolls sideways, and scroll tracks stay hidden. Compressed Eva titles are wider than
+   they look (transform does not shrink layout), so every scroll container clips horizontal overflow. */
+html, body, #root { overflow-x: clip; }
+.phone-shell, .app-surface, .feed-page, .page-scroll, .opportunity-feed, .opportunity-list, .modal, .ob, .ob-body, .wrapped { overflow-x: clip; }
+* { scrollbar-width: none; }
+*::-webkit-scrollbar { display: none; }
+.period-chart { overflow-x: visible; width: 100%; min-width: 0; gap: 4px; }
+.period-chart > div { min-width: 0; }
+
+/* page titles: one word or two, no eyebrows or taglines */
+.page-title { font-family: var(--font-title) !important; font-weight: 900 !important; font-size: 40px; line-height: 1; letter-spacing: 0; margin: 6px 0 0; color: var(--on-paper); transform: scaleX(.78); transform-origin: left center; }
+.feed-heading { align-items: flex-end; padding: 18px 6px 14px; }
+.feed-total { font-style: normal !important; font-size: 13px !important; letter-spacing: .12em; text-transform: uppercase; padding-bottom: 6px; }
+.page-heading { margin-bottom: 18px; }
+
+/* one control language: solid oxblood, 8px corners, 48px tall */
+.primary, .primary:hover:not(:disabled) { border-radius: 8px; min-height: 48px; font-size: 15px; letter-spacing: .06em; box-shadow: 0 8px 20px -12px rgba(80,10,6,.9); }
+.primary { background: var(--red); }
+.primary:hover:not(:disabled) { background: var(--red-hi); }
+.secondary { border-radius: 8px; min-height: 48px; letter-spacing: .06em; }
+
+/* ---------- the quest card (AURA reference 02): one unified crimson card, one photo, a name, chips, a line ---------- */
+.opportunity-feed { scroll-snap-type: y proximity; gap: 18px; padding-bottom: 24px; border-radius: 0; }
+.quest-card {
+  position: relative; flex: 0 0 auto; scroll-snap-align: start;
+  background: linear-gradient(180deg, #571b1b, #321010); border: 1px solid #a8443b; border-radius: 18px;
+  box-shadow: 0 0 18px rgba(138,38,32,.24), inset 0 0 10px rgba(168,51,42,.18), 0 24px 40px -26px rgba(0,0,0,.9);
+  color: var(--on-ink); overflow: hidden;
+}
+.quest-card-open { display: block; width: 100%; text-align: left; padding: 10px 10px 16px; border-radius: 18px; color: inherit; }
+.quest-card-photo { position: relative; height: 262px; border-radius: 10px; overflow: hidden; background: var(--ink-1); }
+.quest-card-photo .print { position: absolute; inset: 0; aspect-ratio: auto; border-radius: 10px; }
+.quest-card-body { padding: 14px 6px 0; }
+.quest-card-title { font-family: var(--font-title); font-weight: 900; font-size: 28px; line-height: 1.1; margin: 0; color: #efe3cb; transform: scaleX(.82); transform-origin: left top; width: calc(100% / .82); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.quest-card-sub { font-family: var(--font-serif); font-size: 14px; line-height: 18px; color: #d6c3aa; margin: 4px 0 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.quest-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.quest-chips span { font-family: var(--font-serif); font-size: 13px; line-height: 16px; padding: 5px 10px; border-radius: 999px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); color: #efe3cb; }
+.quest-card-desc { font-family: var(--font-serif); font-size: 16px; line-height: 22px; color: #d6c3aa; margin: 12px 0 0; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.quest-card .save-float { top: 20px; right: 20px; width: 44px; height: 44px; }
+.opportunity-list .quest-card-open { padding: 6px 10px 14px; }
+.opportunity-list .quest-card-title { font-size: 22px; }
+
+/* detail sheet: photo, chips, name, one line, short description, first step, actions; the rest behind "More details" */
+.detail-chips { margin: 2px 0 6px; }
+.detail-chips span { background: var(--ink-1); border-color: rgba(168,68,59,.6); color: var(--on-ink); }
+.detail-sheet h2 { margin: 10px 0 6px; }
+.detail-desc { font-family: var(--font-serif); font-size: 16px; line-height: 1.5; color: var(--on-paper); }
+.more-details { margin-top: 18px; border-top: 1px solid var(--paper-line); padding-top: 12px; }
+.more-details summary { cursor: pointer; font-family: var(--font-serif); font-size: 14px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--on-paper-mute); }
+.more-details .opportunity-facts { margin-top: 12px; }
+.more-details .opportunity-facts p { margin: 0 0 10px; }
+
+/* reward: the points first, then the climb */
+.celebration .reward-points { margin: 6px 0 0; font-size: 64px; }
+.celebration h2 { margin: 4px 0 14px; }
+
+/* recap: one number per slide, generous space, plain plates (no map behind the last one) */
+.wrapped { min-height: 520px; justify-content: flex-start; }
+.wrapped.pink { background: var(--paper-hi); }
+.wrapped .eyebrow { font-size: 13px; letter-spacing: .24em; margin-top: 8px; }
+.wrapped .recap-big { margin: auto 0; font-size: 120px; line-height: .9; overflow-wrap: anywhere; }
+.wrapped .recap-big small { margin-top: 18px; font-size: 14px; }
+.recap-method { margin-top: 16px; font-size: 13px; opacity: .8; }
+.recap-method summary { cursor: pointer; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; font-style: normal; font-size: 11px; }

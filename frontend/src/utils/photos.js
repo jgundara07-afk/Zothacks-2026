@@ -3,19 +3,19 @@
 // so the feed reads as a single body of work rather than a pile of stock.
 
 export const SCENES = {
- cafe: ['cafe-1', 'cafe-2'],
+ cafe: ['cafe-real', 'cafe-1', 'cafe-2'],
  hike: ['hike-1', 'hike-2'],
  stream: ['stream-1'],
  garden: ['garden-1', 'garden-2'],
  code: ['code-1', 'code-2'],
- writing: ['writing-1', 'writing-2'],
+ writing: ['writing-real', 'writing-1', 'writing-2'],
  library: ['library-1', 'library-2'],
- sketch: ['sketch-1', 'sketch-2'],
+ sketch: ['sketch-real', 'sketch-1', 'sketch-2'],
  friends: ['friends-1', 'friends-2'],
  evening: ['evening-1'],
  finance: ['finance-1', 'finance-2'],
  lab: ['garden-2'],
- maker: ['maker-1'],
+ maker: ['sketch-real', 'maker-1'],
  audio: ['audio-1', 'audio-2'],
  citynight: ['citynight-1', 'citynight-2'],
  window: ['window-1', 'window-2'],
@@ -35,6 +35,8 @@ const RULES = [
  ['sports', /badminton|sport|rally/],
  ['garden', /compost|plant|green|reroot|garden|reuse|refill|repair|sustainab|climate|solar|energy/],
  ['audio', /audio|radio|podcast|fm\b|story sprint/],
+ // Technical courses and roles go to the coding scenes before the generic library scene.
+ ['code', /code|coding|python|java|javascript|sql|backend|frontend|web|api|cloud|html|developer|software|program|hack|machine|classifier|llm|\bai\b|react|pandas|database|unity|data|devops|kubernetes/],
  ['lab', /lab |lab-|biolog|science|biotech|sample log|biosketch|medical/],
  ['maker', /robot|rover|maker|cad|desk tool|hardware|sensor|delivery bot/],
  ['citynight', /security|phishing|privacy|suspicious|cyber/],
@@ -48,7 +50,6 @@ const RULES = [
  ['friends', /club|picnic|circle|crew|neighbors|founder/],
  ['evening', /event|night|fair|tea/],
  ['library', /class|sql|course|certification|badge|research|library|interview|study/],
- ['code', /code|python|javascript|backend|frontend|web|api|cloud|html|developer|hack|machine|classifier|data/],
  ['window', /intern/],
  ['train', /.*/],
 ];
@@ -65,7 +66,13 @@ export function scenePhoto(scene, key = '') {
  return `/photos/scenes/${list[hash(key) % list.length]}.jpg`;
 }
 
-export function photoFor(opportunity) { return scenePhoto(sceneFor(opportunity), opportunity.id); }
+// Hand-picked photos for specific quests (the user's real-photo shortlist, design/references/aura-real-photos).
+const OVERRIDES = { network: 'cafe-real', 'sample-networking-backend': 'cafe-real', code: 'sketch-real', club: 'sketch-real', story: 'writing-real' };
+
+export function photoFor(opportunity) {
+ const fixed = OVERRIDES[opportunity.id];
+ return fixed ? `/photos/scenes/${fixed}.jpg` : scenePhoto(sceneFor(opportunity), opportunity.id);
+}
 
 // Photo tiles for onboarding interests.
 export const INTEREST_SCENES = {
@@ -74,3 +81,15 @@ export const INTEREST_SCENES = {
  'Networking & Mentorship': 'cafe', 'Leadership': 'chess', 'Personal Finance & Investing': 'finance',
  'Productivity & Personal Growth': 'journal', 'Design & UI/UX': 'sketch', 'Hike': 'hike', 'Sports': 'sports',
 };
+
+// For a list (the feed), rotate through each scene's photos in order so neighbouring cards from the same scene
+// don't repeat a photo when the scene has more than one. Returns Map(id → src).
+export function photosForList(list) {
+ const seen = {}, out = new Map();
+ for (const o of list) {
+  if (OVERRIDES[o.id]) { out.set(o.id, `/photos/scenes/${OVERRIDES[o.id]}.jpg`); continue; }
+  const scene = sceneFor(o), photos = SCENES[scene] || SCENES.train, n = seen[scene] = (seen[scene] ?? -1) + 1;
+  out.set(o.id, `/photos/scenes/${photos[(hash(scene) + n) % photos.length]}.jpg`);
+ }
+ return out;
+}
