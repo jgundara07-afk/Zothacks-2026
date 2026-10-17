@@ -1,0 +1,18 @@
+/* Design tokens: the shared fonts and key colors. Change a value here and it updates everywhere it's used.
+   Most other colors in the stylesheets are one-off tints; promote one to a token here once it's reused. */
+
+:root {
+  --font-serif: Georgia,'Times New Roman',serif;  /* headlines, sticky notes, big numbers */
+  --font-sans: Arial,Helvetica,sans-serif;        /* body text and controls */
+
+  --color-ink: #303c30;      /* default text */
+  --color-page: #f8f7f1;     /* page background */
+  --color-primary: #465c3d;  /* main buttons, selected pills */
+  --color-focus: #b46c43;    /* keyboard focus outline */
+
+  /* My recap slide backgrounds */
+  --recap-purple: #6548e9;
+  --recap-orange: #f67943;
+  --recap-lime: #d1ef62;
+  --recap-pink: #f0a8ce;
+}

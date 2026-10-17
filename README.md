@@ -24,7 +24,37 @@ cd frontend
 npm install
 npm run dev
 ```
+On Windows, use `.venv\Scripts\pip` and `.venv\Scripts\python` instead of `.venv/bin/...`, and `copy` instead of `cp`.
+
 Open http://127.0.0.1:5173. Vite proxies `/api` to Flask on port 5001. No runtime internet access, keys, external APIs, login, or remote fonts are needed. Dependencies require internet for initial installation.
+
+## Project layout
+```
+backend/
+  app.py              Flask app: loads the seed, error handlers, /health, registers the route modules
+  store.py            Storage: MongoDB when MONGO_URI is set, otherwise local SQLite
+  services.py         Shared logic: profile, activity, check-in, streaks/progress, personalized feed
+  routes/             One file per feature: profile.py (profile + check-ins), feed.py (opportunities,
+                      quests, saves), progress.py (progress, analytics, completions), resume.py
+  seed.json           Canonical fictional sample data
+  test_app.py         Backend journey tests
+frontend/src/
+  main.jsx            Starts the app
+  App.jsx             Shared state and API calls; picks which page to show
+  api.js              The single API client
+  constants.js        Option lists (goals, skills, filters, nav items) and card icons
+  pages/              One file per sidebar page (Discover + Saved share OpportunitiesPage.jsx)
+  components/         Reusable pieces: OpportunityCard, MountainClimb, DailyCheckin, Analytics, ...
+    layout/           Sidebar, Header, Footer, PageIntro, RightColumn
+    modals/           Onboarding, Quest, Reward popups
+  hooks/ utils/       Popup focus handling; feed filtering helpers
+  styles/             index.css imports the rest in order. tokens.css holds shared fonts and colors;
+                      the other files match the areas of the app (layout, feed, modals, recap, ...)
+design/
+  references/         Visual references for the frontend, with notes in design/notes.md
+docs/API.md           Request/response contract
+```
+New data source adapters (APIs and scrapers) will go in their own backend folder when they are added.
 
 ## Storage
 With an empty `MONGO_URI`, the app automatically uses persistent SQLite at `backend/demo.sqlite3`. It mirrors the four document collections and supports the entire demo offline. This is an explicit demo adapter, not an in-memory mock.

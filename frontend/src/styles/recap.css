@@ -1,0 +1,123 @@
+/* My recap: the colorful Wrapped-style slides. */
+
+.wrapped {
+  background: var(--recap-purple);
+  color: #f6f1ff;
+  border-radius: 14px;
+  min-height: 620px;
+  padding: 30px;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+}
+.wrapped:before {
+  content: '✳';
+  position: absolute;
+  right: -100px;
+  top: 120px;
+  font-size: 420px;
+  color: #f2ffab22;
+  z-index: -1;
+  transform: rotate(17deg);
+}
+.wrapped.orange {
+  background: var(--recap-orange);
+  color: #3e254b;
+}
+.wrapped.lime {
+  background: var(--recap-lime);
+  color: #354634;
+}
+.wrapped.pink {
+  background: var(--recap-pink);
+  color: #56355b;
+}
+.wrapped .eyebrow {
+  color: inherit;
+  letter-spacing: 2px;
+  font-size: 10px;
+}
+.wrapped h2 {
+  font: bold 42px/1.1 var(--font-serif);
+  margin: 26px 0;
+  max-width: 440px;
+  letter-spacing: -1.5px;
+}
+.recap-big {
+  font-size: 90px;
+  font-weight: 800;
+  letter-spacing: -5px;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+  margin: 35px 0;
+}
+.recap-big small {
+  display: block;
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 0;
+  margin-top: 14px;
+}
+.wrapped>p {
+  font-size: 13px;
+  line-height: 1.8;
+  max-width: 370px;
+}
+.recap-dots {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 30px;
+}
+.recap-dots button {
+  height: 6px;
+  flex: 1;
+  background: currentColor;
+  opacity: .3;
+  border-radius: 4px;
+  padding: 0;
+}
+.recap-dots button[aria-current] {
+  opacity: 1;
+}
+.recap-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 30px;
+  gap: 10px;
+}
+.recap-navigation button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #ffffff30;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 12px;
+}
+.recap-method {
+  font-size: 8px;
+  line-height: 1.6;
+  opacity: .8;
+  margin-top: 20px;
+}
+
+@media (max-width:650px) {
+  .wrapped {
+    padding: 24px;
+    min-height: 590px;
+  }
+  .wrapped h2 {
+    font-size: 36px;
+  }
+  .recap-big {
+    font-size: 65px;
+    letter-spacing: -3px;
+  }
+  .recap-big small {
+    font-size: 13px;
+  }
+}

@@ -37,7 +37,7 @@ Retain the curated dummy document and canonical `backend/seed.json` fixture as a
 - Visual references live in `design/references/`, with notes on what to take from each in `design/notes.md`. Check them before frontend design work.
 
 ## Stack and shared contract
-React + Vite frontend; Python + Flask REST API; MongoDB via PyMongo. Preserve the existing persistent SQLite demo adapter when `MONGO_URI` is empty so local setup requires no database service. Keep `MONGO_URI` and optional service secrets in the ignored root `.env`, never Git. Keep one frontend API client and canonical seed JSON.
+React + Vite frontend; Python + Flask REST API; MongoDB via PyMongo. Follow the folder layout in the README's "Project layout" section: new pages go in `frontend/src/pages/`, reusable UI in `frontend/src/components/`, styles in the matching `frontend/src/styles/` area file with shared fonts/colors in `tokens.css`, and new API routes in a `backend/routes/` module registered in `app.py`. Preserve the existing persistent SQLite demo adapter when `MONGO_URI` is empty so local setup requires no database service. Keep `MONGO_URI` and optional service secrets in the ignored root `.env`, never Git. Keep one frontend API client and canonical seed JSON.
 
 Core collections: `profiles`, `opportunities`, `quests`, `activity`. Extend the model as needed for source configuration, gathering runs, provenance, daily quest assignments, resume-derived skill summaries, and recap metadata. Use one fictional demo profile; no login. Persist preferences, saves, completions, and progress across refreshes and restarts.
 

@@ -1,0 +1,597 @@
+/* Discover + Saved things: topic pills, dropdown filters, daily check-in, opportunity cards, scrolling feed. */
+
+.curated {
+  font-size: 9px;
+  color: #8e9682;
+  display: flex;
+  gap: 5px;
+  white-space: nowrap;
+}
+.filters {
+  display: flex;
+  gap: 6px;
+  margin: 21px 0 23px;
+  flex-wrap: wrap;
+}
+.filters button {
+  font-size: 10px;
+  padding: 8px 11px;
+  border: 1px solid #e0e2d6;
+  border-radius: 20px;
+  color: #838977;
+}
+.filters button.selected {
+  color: #fff;
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 18px;
+}
+.card {
+  padding: 21px 20px 0;
+  border: 1px solid #e0ded2;
+  border-radius: 8px;
+  background: #f2e9e4;
+  overflow: hidden;
+}
+.card.yellow {
+  background: #f3edda;
+}
+.card.green {
+  background: #e9eddf;
+}
+.card.blue {
+  background: #e6eceb;
+}
+.card-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 23px;
+}
+.card-icon {
+  height: 42px;
+  width: 42px;
+  display: grid;
+  place-items: center;
+  background: #ffffff70;
+  border-radius: 10px;
+  transform: rotate(-5deg);
+  color: #8d7060;
+}
+.green .card-icon {
+  color: #70835e;
+}
+.blue .card-icon {
+  color: #718781;
+}
+.sample {
+  font-size: 7px;
+  letter-spacing: 1px;
+  color: #968e7e;
+}
+.bookmark {
+  margin-left: auto;
+  padding: 3px;
+  color: #9b9d89;
+}
+.bookmark.is-saved {
+  color: #61754e;
+  opacity: 1;
+}
+.card-kind {
+  font-size: 9px;
+  color: #7d826f;
+}
+.card-kind span {
+  font-size: 8px;
+  color: #999b8b;
+}
+.card h3 {
+  font-family: var(--font-serif);
+  font-size: 23px;
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -.5px;
+  min-height: 51px;
+  margin: 12px 0;
+}
+.card>p {
+  font-size: 11px;
+  line-height: 1.8;
+  color: #818473;
+  min-height: 59px;
+  margin: 0 0 17px;
+}
+.match {
+  font-size: 8px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #8a8d76;
+  margin: 15px 0 18px;
+}
+.card-footer {
+  border-top: 1px solid #9da68d33;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+  padding: 14px 0;
+}
+.card-footer>span {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  font-size: 9px;
+  color: #8d907d;
+}
+.card-footer button {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 4px 0;
+}
+.sample-disclaimer {
+  display: flex;
+  gap: 8px;
+  font-size: 9px;
+  line-height: 1.6;
+  color: #9b9e8d;
+  margin: 22px 0;
+}
+.sample-disclaimer span {
+  color: #9caa81;
+}
+
+@media (min-width:1450px) {
+  .cards {
+    gap: 24px;
+  }
+  .card {
+    padding: 25px 25px 0;
+  }
+  .card h3 {
+    font-size: 28px;
+  }
+  .card>p {
+    font-size: 12px;
+  }
+}
+
+@media (max-width:1150px) {
+  .curated {
+    display: none;
+  }
+  .card {
+    padding: 18px 15px 0;
+  }
+  .card-kind span {
+    display: block;
+    margin-top: 4px;
+  }
+  .card h3 {
+    font-size: 21px;
+  }
+  .card-top {
+    gap: 5px;
+  }
+  .sample {
+    font-size: 6px;
+  }
+  .cards {
+    gap: 12px;
+  }
+}
+
+@media (max-width:650px) {
+  .cards {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .card {
+    padding: 22px 23px 0;
+  }
+  .card-top {
+    margin-bottom: 18px;
+  }
+  .sample {
+    font-size: 8px;
+  }
+  .card-kind span {
+    display: inline;
+    font-size: 9px;
+  }
+  .card h3 {
+    font-size: 28px;
+    min-height: 0;
+  }
+  .card>p {
+    font-size: 12px;
+    min-height: 0;
+  }
+  .match {
+    font-size: 10px;
+  }
+  .card-footer>span, .card-footer button {
+    font-size: 11px;
+  }
+  .filters {
+    gap: 5px;
+  }
+  .filters button {
+    font-size: 9px;
+    padding: 7px 9px;
+  }
+}
+
+@media (prefers-reduced-motion:no-preference) {
+  .card {
+    transition: transform .2s,box-shadow .2s;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px #46513c0b;
+  }
+}
+
+.daily-checkin {
+  background: #eeefdf;
+  border: 1px solid #dce1cb;
+  border-radius: 12px;
+  padding: 24px;
+  margin: 0 0 28px;
+}
+.checkin-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.checkin-heading h2 {
+  font: 26px var(--font-serif);
+  margin: 9px 0 18px;
+}
+.streak-badge {
+  background: #e6d9af;
+  color: #725c2f;
+  padding: 10px 13px;
+  border-radius: 20px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.daily-checkin form {
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.daily-checkin fieldset {
+  margin: 0;
+}
+.daily-checkin>small {
+  display: block;
+  font-size: 10px;
+  color: #6c775e;
+  margin-top: 16px;
+  line-height: 1.6;
+}
+.checkin-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.checkin-summary p {
+  font-size: 12px;
+  line-height: 1.8;
+  color: #626f57;
+}
+.checkin-summary .text-link {
+  width: auto;
+  gap: 12px;
+  padding: 0;
+  white-space: nowrap;
+}
+.feed-hint {
+  font-size: 10px;
+  color: #76826c;
+  margin: 0 0 12px;
+}
+.cards.opportunity-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  height: 650px;
+  max-height: 80svh;
+  min-height: 440px;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  overscroll-behavior-y: contain;
+  padding: 0 8px 0 0;
+  scrollbar-width: thin;
+  scrollbar-color: #a5af92 transparent;
+}
+.opportunity-feed .card {
+  flex: 0 0 auto;
+  min-height: 100%;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  padding: 28px 32px 0;
+  display: flex;
+  flex-direction: column;
+  border-radius: 14px;
+}
+.opportunity-feed .card:hover {
+  transform: none;
+  box-shadow: none;
+}
+.opportunity-feed .card-top {
+  margin-bottom: 12px;
+}
+.feed-art {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 170px;
+  position: relative;
+  color: #8e7969;
+}
+.feed-art>svg {
+  transform: rotate(-10deg);
+  width: 110px;
+  height: 110px;
+  background: #ffffff45;
+  border-radius: 35%;
+  padding: 18px;
+  box-shadow: 10px 12px 0 #ffffff30;
+}
+.green .feed-art {
+  color: #76865a;
+}
+.blue .feed-art {
+  color: #748c87;
+}
+.feed-art>span {
+  position: absolute;
+  right: 0;
+  bottom: 15px;
+  letter-spacing: 2px;
+  font-size: 10px;
+}
+.opportunity-feed .card h3 {
+  font-size: 40px;
+  min-height: 0;
+  max-width: 450px;
+  margin: 13px 0 17px;
+}
+.opportunity-feed .card>p {
+  font-size: 14px;
+  min-height: 0;
+  max-width: 430px;
+}
+.opportunity-feed .tags span {
+  font-size: 10px;
+}
+.opportunity-feed .match {
+  font-size: 11px;
+}
+.opportunity-feed .card-footer {
+  margin-top: auto;
+  min-height: 72px;
+}
+.opportunity-feed .card-footer button {
+  font-size: 13px;
+  background: var(--color-primary);
+  color: white;
+  padding: 12px 16px;
+  border-radius: 6px;
+}
+.opportunity-feed .card-footer>span {
+  font-size: 11px;
+}
+
+@media (max-width:650px) {
+  .daily-checkin {
+    padding: 18px;
+    margin-bottom: 23px;
+  }
+  .checkin-heading h2 {
+    font-size: 23px;
+  }
+  .streak-badge {
+    font-size: 10px;
+    padding: 8px;
+  }
+  .daily-checkin form {
+    gap: 16px;
+  }
+  .daily-checkin .choice-tags button {
+    font-size: 10px;
+  }
+  .checkin-summary {
+    display: block;
+  }
+  .checkin-summary .text-link {
+    padding-top: 6px;
+  }
+  .cards.opportunity-feed {
+    height: 620px;
+    max-height: 82svh;
+    min-height: 480px;
+  }
+  .opportunity-feed .card {
+    padding: 22px 22px 0;
+  }
+  .opportunity-feed .card h3 {
+    font-size: 33px;
+  }
+  .opportunity-feed .card>p {
+    font-size: 12px;
+  }
+  .feed-art {
+    min-height: 110px;
+  }
+  .feed-art>svg {
+    width: 85px;
+    height: 85px;
+  }
+  .opportunity-feed .match {
+    font-size: 10px;
+  }
+  .opportunity-feed .card-footer button {
+    font-size: 11px;
+    padding: 11px;
+  }
+  .opportunity-feed .card-footer>span {
+    font-size: 9px;
+  }
+}
+
+.feed-filters {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 12px;
+  margin: 0 0 20px;
+}
+.feed-filters label {
+  font-size: 10px;
+  color: #6b785e;
+  display: grid;
+  gap: 6px;
+}
+.feed-filters select, .resume-lab select {
+  font: inherit;
+  color: #41533a;
+  background: #f0f1e6;
+  border: 1px solid #d4dbc7;
+  border-radius: 5px;
+  padding: 10px;
+  width: 100%;
+  min-width: 0;
+}
+.feed-filters>.text-link {
+  padding: 0;
+  text-decoration: underline;
+  width: auto;
+  justify-content: flex-start;
+}
+.gap-filter {
+  padding: 12px;
+  background: #e6ebd8;
+  font-size: 11px;
+  color: #586d45;
+  line-height: 1.7;
+}
+.gap-filter button {
+  text-decoration: underline;
+  margin-left: 6px;
+}
+.difficulty-tag {
+  background: #dce5ce!important;
+  color: #476336!important;
+}
+.feed-next {
+  font-size: 10px;
+  color: #657454;
+  align-self: center;
+  padding: 14px;
+}
+.feed-end {
+  font-size: 10px;
+  text-align: center;
+  color: #86947a;
+  padding: 10px;
+  line-height: 1.6;
+}
+
+@media (max-width:650px) {
+  .feed-filters {
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    gap: 10px;
+  }
+  .feed-filters label {
+    font-size: 9px;
+  }
+  .feed-filters select {
+    font-size: 11px;
+  }
+  .cards.opportunity-feed {
+    min-height: 540px;
+    max-height: 90svh;
+  }
+  .opportunity-feed .card>p {
+    line-height: 1.6;
+  }
+  .opportunity-feed .card h3 {
+    font-size: 29px;
+  }
+  .opportunity-feed .card-kind {
+    line-height: 1.7;
+  }
+  .opportunity-feed .card-footer {
+    min-height: 60px;
+  }
+  .feed-next {
+    padding: 10px;
+  }
+}
+
+.opportunity-feed .feed-art {
+  min-height: 80px;
+  flex: 1;
+}
+.opportunity-feed .feed-art>svg {
+  height: 85px;
+  width: 85px;
+}
+.opportunity-feed .card h3 {
+  font-size: 34px;
+  margin: 10px 0 14px;
+}
+.opportunity-feed .card>p {
+  font-size: 12px;
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+.opportunity-feed .card-top {
+  margin-bottom: 10px;
+}
+.opportunity-feed .match {
+  margin: 12px 0;
+}
+.opportunity-feed .card-footer {
+  min-height: 62px;
+}
+.opportunity-feed {
+  position: relative;
+}
+
+@media (max-width:650px) {
+  .opportunity-feed .feed-art {
+    min-height: 45px;
+  }
+  .opportunity-feed .feed-art>svg {
+    width: 60px;
+    height: 60px;
+    padding: 12px;
+  }
+  .opportunity-feed .card h3 {
+    font-size: 28px;
+  }
+  .opportunity-feed .card-kind span {
+    font-size: 8px;
+  }
+  .opportunity-feed .match {
+    font-size: 9px;
+    margin: 10px 0;
+  }
+  .opportunity-feed .card-footer {
+    min-height: 55px;
+  }
+}
