@@ -1,4 +1,7 @@
 from uuid import uuid4
+import hashlib
+import json
+import os
 from flask import jsonify, request
 from collections import Counter
 from datetime import timedelta, date, datetime
@@ -171,7 +174,32 @@ def register(app, svc):
             'history_end': history[-1]['date'] if history else None,
             'completed_quests': history,
         }
-        narrative = generate_recap_narrative(context) if completed else None
+        model=os.getenv('GEMINI_MODEL','gemini-3.5-flash-lite').strip()
+        stable_context={key:value for key,value in context.items() if key!='earned_badges'}
+        fingerprint=hashlib.sha256(json.dumps({'version':2,'model':model,'context':stable_context},sort_keys=True).encode()).hexdigest()
+        cached_record=db.get('recap_cache',fingerprint) if completed else None
+        cached=bool(cached_record)
+        generation={'status':'no_activity','message':'Complete a quest in this period to generate a Gemini recap.','retryable':False}
+        narrative=None
+        if cached_record:
+            narrative=cached_record['narrative']
+            generation=dict(status='ready',message='Using your saved Gemini story for this quest history.',retryable=False)
+        elif completed:
+            scope=hashlib.sha256((model+'|'+os.getenv('GEMINI_API_KEY','').strip()).encode()).hexdigest()
+            cooldown=db.get('recap_state',scope)
+            now=svc.real_clock()
+            if cooldown and datetime.fromisoformat(cooldown['retry_at'])>now:
+                generation={**cooldown['generation'],'retry_at':cooldown['retry_at']}
+            else:
+                generation=dict(status='unavailable',message='Gemini did not return a story. Your local story is ready; you can retry.',retryable=True)
+                narrative=generate_recap_narrative(context,diagnostics=generation)
+                if narrative:
+                    generation=dict(status='ready',message='Your Gemini story is ready.',retryable=False)
+                    db.put('recap_cache',dict(id=fingerprint,narrative=narrative,model=model,created_at=now.isoformat()))
+                elif generation['status']=='quota_exceeded':
+                    retry_at=(now+timedelta(seconds=60)).isoformat()
+                    db.put('recap_state',dict(id=scope,generation=generation,retry_at=retry_at))
+                    generation={**generation,'retry_at':retry_at}
         source = 'gemini' if narrative else 'local'
         if not narrative:
             categories = summary['categories']
@@ -216,7 +244,7 @@ def register(app, svc):
         for badge in badges:
             earned_day=completion_day({'completed_at':badge['earned_at']}).isoformat() if badge['earned_at'] else None
             badge['earned_in_period']=bool(earned_day and (period=='lifetime' or summary['start']<=earned_day<summary['end']))
-        return jsonify(narrative=narrative, source=source, activity_count=len(completed),recap_id=recap_id,highlights=highlights,
+        return jsonify(narrative=narrative, source=source, generation=generation,cached=cached,activity_count=len(completed),recap_id=recap_id,highlights=highlights,
                        period=period, start=summary['start'], end=summary['end'], badges=badges)
 
     @app.get('/progress/data')

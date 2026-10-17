@@ -8,7 +8,7 @@ try:
 except ImportError:
     from filter_rules import matches_search, searchable, term_matches
 
-OPTIONS=json.loads((Path(__file__).resolve().parents[1]/'shared/user_context.json').read_text())
+OPTIONS=json.loads((Path(__file__).resolve().parents[1]/'shared/user_context.json').read_text(encoding='utf-8'))
 TEXT_FIELDS={'country','state','city','school'}
 CHOICES={'situation','experience','availability','days','budget','transportation','travel','relocate'}
 

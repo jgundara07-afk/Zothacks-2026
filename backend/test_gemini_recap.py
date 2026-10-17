@@ -3,6 +3,7 @@ import os
 import tempfile
 import unittest
 from unittest.mock import patch
+from urllib.error import HTTPError
 
 from app import Store, create_app
 from gemini_recommendation import RECAP_FIELDS, generate_recap_narrative
@@ -34,6 +35,15 @@ class GeminiRecapClientTest(unittest.TestCase):
         with patch.dict(os.environ, {}, clear=True):
             self.assertIsNone(generate_recap_narrative({'completed_count': 1}))
 
+    def test_quota_failure_is_reported_without_leaking_provider_details(self):
+        diagnostics={}
+        with patch.dict(os.environ, {'GEMINI_API_KEY':'private-test-key'}), patch('gemini_recommendation.urlopen',side_effect=HTTPError('https://example.test',429,'private-test-key',{},None)):
+            self.assertIsNone(generate_recap_narrative({'completed_count':1},diagnostics=diagnostics))
+        self.assertEqual(diagnostics['status'],'quota_exceeded')
+        self.assertTrue(diagnostics['retryable'])
+        self.assertNotIn('private-test-key',json.dumps(diagnostics))
+
+    def test_malformed_output_fails_closed(self):
         class Response:
             def __enter__(self): return self
             def __exit__(self, *args): return False
@@ -44,6 +54,42 @@ class GeminiRecapClientTest(unittest.TestCase):
 
 
 class RecapNarrativeRouteTest(unittest.TestCase):
+    def prepare_history(self,directory):
+        client=create_app(data_mode='sample',store=Store(path=directory+'/cache.sqlite3')).test_client()
+        client.post('/profiles',json={'goal':'Build my skills','interests':['Design'],'skills':['Writing']})
+        client.post('/saved',json={'opportunity_id':'design'})
+        client.post('/completions',json={'quest_id':'design-small'})
+        return client
+
+    def test_success_is_reused_until_completed_history_changes(self):
+        story={field:f'Generated {field}' for field in RECAP_FIELDS}
+        with tempfile.TemporaryDirectory() as directory, patch('routes.progress.generate_recap_narrative',return_value=story) as generate:
+            client=self.prepare_history(directory)
+            first=client.post('/recap/narrative').json
+            second=client.post('/recap/narrative').json
+            self.assertFalse(first['cached'])
+            self.assertTrue(second['cached'])
+            self.assertEqual(second['source'],'gemini')
+            self.assertEqual(generate.call_count,1)
+            client.post('/saved',json={'opportunity_id':'code'})
+            client.post('/completions',json={'quest_id':'code-small'})
+            third=client.post('/recap/narrative').json
+            self.assertFalse(third['cached'])
+            self.assertEqual(generate.call_count,2)
+
+    def test_quota_cooldown_survives_repeated_page_requests(self):
+        def quota(context,diagnostics):
+            diagnostics.update(status='quota_exceeded',message='Gemini quota reached.',retryable=True)
+            return None
+        with tempfile.TemporaryDirectory() as directory, patch('routes.progress.generate_recap_narrative',side_effect=quota) as generate:
+            client=self.prepare_history(directory)
+            first=client.post('/recap/narrative').json
+            second=client.post('/recap/narrative').json
+            self.assertEqual(first['source'],'local')
+            self.assertEqual(second['generation']['status'],'quota_exceeded')
+            self.assertIn('retry_at',second['generation'])
+            self.assertEqual(generate.call_count,1)
+
     def test_completed_activity_is_sent_to_gemini_and_returned_to_frontend(self):
         story = {field: f"Generated {field}" for field in RECAP_FIELDS}
         with tempfile.TemporaryDirectory() as directory, patch('routes.progress.generate_recap_narrative', return_value=story) as generate:

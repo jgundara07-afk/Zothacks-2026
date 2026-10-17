@@ -25,14 +25,17 @@ function badgeMonth(timestamp){
 }
 export default function Recap({data,onExplore}){
  const [period,setPeriod]=useState('lifetime'),[month,setMonth]=useState(data?.progress?.today?.slice(0,7)||new Date().toISOString().slice(0,7));
+ const [retry,setRetry]=useState(0),[now,setNow]=useState(Date.now());
  const [year,setYear]=useState(data?.progress?.today?.slice(0,4)||String(new Date().getFullYear()));
  const [tab,setTab]=useState('story'),[slide,setSlide]=useState(0),[summary,setSummary]=useState(data),[result,setResult]=useState(null),[loading,setLoading]=useState(true),[error,setError]=useState('');
  useEffect(()=>{
   let active=true;setSlide(0);setResult(null);setSummary(period==='lifetime'?data:null);setLoading(true);setError('');
   api.analytics(period==='month'?{period:'month',date:month+'-01'}:period==='year'?{period:'year',date:year+'-01-01'}:{}).then(value=>{if(active)setSummary(value)}).catch(e=>{if(active)setError(e.message)});
-  api.recapNarrative({period,...(period==='month'?{month}:period==='year'?{year}:{})}).then(value=>{if(active){setResult(value);publishAchievements(value.badges)}}).catch(e=>{if(active)setError(e.message)}).finally(()=>{if(active)setLoading(false)});
+  api.recapNarrative({period,...(period==='month'?{month}:period==='year'?{year}:{})}).then(value=>{if(active){setNow(Date.now());setResult(value);publishAchievements(value.badges)}}).catch(e=>{if(active)setError(e.message)}).finally(()=>{if(active)setLoading(false)});
   return()=>{active=false};
- },[period,month,year,data]);
+ },[period,month,year,data,retry]);
+ useEffect(()=>{if(!result?.generation?.retry_at)return;const timer=setInterval(()=>setNow(Date.now()),1000);return()=>clearInterval(timer)},[result?.generation?.retry_at]);
+ const retryWait=result?.generation?.retry_at?Math.max(0,Math.ceil((Date.parse(result.generation.retry_at)-now)/1000)):0;
  const story=result?.narrative||localStory(summary),slides=slidesFor(story),item=slides[slide],last=slide===slides.length-1;
  const badges=(result?.badges||data?.progress?.achievements||[]).map(badge=>({...badge,earned_in_period:badge.unlocked&&(period==='lifetime'||(period==='year'?badgeMonth(badge.earned_at).startsWith(year+'-'):badgeMonth(badge.earned_at)===month))}));
  function updateBadges(badges){const id=result?.recap_id;setResult(old=>old?.recap_id===id?{...old,badges}:old)}
@@ -41,6 +44,7 @@ export default function Recap({data,onExplore}){
   <div className="recap-controls"><div className="period-tabs" role="group" aria-label="Recap period"><button aria-pressed={period==='lifetime'} onClick={()=>setPeriod('lifetime')}>Lifetime</button><button aria-pressed={period==='month'} onClick={()=>setPeriod('month')}>Monthly</button><button aria-pressed={period==='year'} onClick={()=>setPeriod('year')}>Yearly</button></div>{period==='month'&&<label>Recap month <input aria-label="Recap month" type="month" value={month} min="2000-01" max="2100-12" onChange={e=>/^\d{4}-\d{2}$/.test(e.target.value)&&setMonth(e.target.value)}/></label>}{period==='year'&&<label>Recap year <select aria-label="Recap year" value={year} onChange={e=>setYear(e.target.value)}>{Array.from({length:101},(_,i)=>String(2000+i)).map(value=><option key={value}>{value}</option>)}</select></label>}</div>
   <div className="recap-section-tabs" role="group" aria-label="Recap section"><button aria-pressed={tab==='story'} onClick={()=>setTab('story')}><Sparkles size={16}/> Your story</button><button aria-pressed={tab==='badges'} onClick={()=>setTab('badges')}><Award size={16}/> Badges</button><button aria-pressed={tab==='highlights'} onClick={()=>setTab('highlights')}>Highlights</button></div>
   {error&&<p role="alert" className="field-help">{error} Your recorded activity is still available in Progress.</p>}
+  {loading?<p role="status" className="recap-generation">Gemini is writing your story. You can browse the local preview while it works.</p>:result?.source==='local'&&<aside className="recap-generation" role="status"><p>{result.generation?.message||'This request finished with a local story.'}</p>{result.generation?.retryable&&<button className="secondary" disabled={loading||retryWait>0} onClick={()=>setRetry(value=>value+1)}>{retryWait>0?`Retry in ${retryWait}s`:'Retry Gemini'}</button>}{result.generation?.status==='quota_exceeded'&&<a href="https://aistudio.google.com/usage" target="_blank" rel="noopener noreferrer">Check Gemini quota</a>}</aside>}
   {tab==='badges'?<AchievementGallery badges={badges} monthly={period==='month'} periodLabel={period==='year'?'year':null}/>:tab==='highlights'?<RecapHighlights key={result?.recap_id||'pending'} result={result} onRecorded={updateBadges}/>:<>
    <p className="recap-scope">{period==='lifetime'?'Your whole journey':period==='year'?year:new Date(month+'-15T12:00:00').toLocaleDateString(undefined,{month:'long',year:'numeric'})}{loading?' · Writing your story…':result?.source==='gemini'?' · Written with Gemini':' · OneThing local story'}</p>
    {!summary?<p role="status">Loading this chapter…</p>:<ActivityWitness event={result?.source==='local'?'fallback_read':null} recapId={result?.recap_id} onRecorded={updateBadges}><section className={'wrapped recap-narrative '+item.color} aria-label="Progress recap">
@@ -49,7 +53,7 @@ export default function Recap({data,onExplore}){
     <div className="recap-big" aria-live="polite">{item.big}{item.unit&&<small>{item.unit}</small>}</div>
     <p className="recap-story">{item.body}</p>
     <div className="recap-navigation"><button disabled={slide===0} onClick={()=>setSlide(i=>i-1)}><ArrowLeft size={18}/> Back</button>{last?<button onClick={onExplore}>Find a quest <ArrowRight size={18}/></button>:<button onClick={()=>setSlide(i=>i+1)}>Next <ArrowRight size={18}/></button>}</div>
-    <details className="recap-method"><summary>Behind this story</summary>This playful story uses every recorded quest in {period==='month'?'the selected month':period==='year'?'the selected year':'your lifetime history'}. It describes activity, not ability. {result?.source==='gemini'?'Gemini wrote this chapter.':'OneThing provides a local story while Gemini is unavailable or still writing.'} Badges are calculated from recorded activity and remain in your lifetime collection.</details>
+    <details className="recap-method"><summary>Behind this story</summary>This playful story uses every recorded quest in {period==='month'?'the selected month':period==='year'?'the selected year':'your lifetime history'}. It describes activity, not ability. {loading?'Gemini is still writing. This is a local preview.':result?.source==='gemini'?'Gemini wrote this chapter.':'This request finished with a local story. See the generation status above for the reason.'} Badges are calculated from recorded activity and remain in your lifetime collection.</details>
    </section></ActivityWitness>}
   </>}
  </div>;

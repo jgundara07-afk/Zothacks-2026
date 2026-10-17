@@ -12,7 +12,7 @@ def generate_recommendation(preferences, timeout=6):
     if not api_key:
         return None
 
-    model = os.getenv('GEMINI_MODEL', 'gemini-3.8-flash').strip()
+    model = os.getenv('GEMINI_MODEL', 'gemini-3.5-flash-lite').strip()
     if not model or any(char not in 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._' for char in model):
         return None
     prompt = (
@@ -60,14 +60,18 @@ RECAP_FIELDS = {
 }
 
 
-def generate_recap_narrative(context, timeout=45):
+def generate_recap_narrative(context, timeout=45, diagnostics=None):
     """Generate a grounded Wrapped-style recap from recorded completion data."""
+    def fail(status, message, retryable=True):
+        if diagnostics is not None:
+            diagnostics.update(status=status, message=message, retryable=retryable)
+        return None
     api_key = os.getenv('GEMINI_API_KEY', '').strip()
     if not api_key:
-        return None
-    model = os.getenv('GEMINI_MODEL', 'gemini-3.8-flash').strip()
+        return fail('not_configured', 'Gemini is not configured. Showing your OneThing local story.', False)
+    model = os.getenv('GEMINI_MODEL', 'gemini-3.5-flash-lite').strip()
     if not model or any(char not in 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._' for char in model):
-        return None
+        return fail('configuration_error', 'The configured Gemini model is invalid. Showing your OneThing local story.', False)
 
     prompt = (
         "You are the witty editorial voice inside OneThing, a student progress app built around "
@@ -113,8 +117,21 @@ def generate_recap_narrative(context, timeout=45):
     try:
         with urlopen(request, timeout=timeout) as response:
             payload = json.loads(response.read().decode('utf-8'))
-    except (HTTPError, URLError, TimeoutError, OSError, ValueError):
-        return None
+    except HTTPError as error:
+        error.close()
+        if error.code == 429:
+            return fail('quota_exceeded', 'Gemini has reached its request quota. Check the project quota in Google AI Studio or try after it resets. Your local story is ready.')
+        if error.code in {401, 403}:
+            return fail('authentication_error', 'Gemini rejected the API credentials or project permissions. Showing your OneThing local story.', False)
+        if error.code == 404:
+            return fail('model_unavailable', 'The configured Gemini model is unavailable. Showing your OneThing local story.', False)
+        return fail('provider_error', 'Gemini could not finish this request. Your OneThing local story is ready.')
+    except TimeoutError:
+        return fail('timeout', 'Gemini took too long to respond. Your local story is ready; you can retry.')
+    except (URLError, OSError):
+        return fail('connection_error', 'The server could not connect to Gemini. Your local story is ready; you can retry.')
+    except ValueError:
+        return fail('invalid_response', 'Gemini returned an unreadable response. Your local story is ready; you can retry.')
     candidates = payload.get('candidates') or [] if isinstance(payload, dict) else []
     content = candidates[0].get('content') if candidates and isinstance(candidates[0], dict) else None
     parts = content.get('parts') or [] if isinstance(content, dict) else []
@@ -123,12 +140,14 @@ def generate_recap_narrative(context, timeout=45):
     try:
         result = json.loads(raw)
     except (TypeError, ValueError):
-        return None
+        return fail('invalid_response', 'Gemini did not return a complete story. Your local story is ready; you can retry.')
     if not isinstance(result, dict):
-        return None
+        return fail('invalid_response', 'Gemini did not return a complete story. Your local story is ready; you can retry.')
     if any(not isinstance(result.get(field), str) for field in RECAP_FIELDS):
-        return None
+        return fail('invalid_response', 'Gemini did not return a complete story. Your local story is ready; you can retry.')
     cleaned = {field: str(result.get(field, '')).strip()[:limit] for field, limit in RECAP_FIELDS.items()}
     if not all(cleaned.values()):
-        return None
+        return fail('invalid_response', 'Gemini did not return a complete story. Your local story is ready; you can retry.')
+    if diagnostics is not None:
+        diagnostics.update(status='ready', message='Your Gemini story is ready.', retryable=False)
     return cleaned

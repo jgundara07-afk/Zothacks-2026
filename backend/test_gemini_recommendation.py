@@ -18,7 +18,7 @@ class GeminiRecommendationTests(unittest.TestCase):
         response.__enter__.return_value.read.return_value = json.dumps({
             'candidates': [{'content': {'parts': [{'text': 'Draft a small project idea in 15 minutes.'}]}}]
         }).encode()
-        with patch.dict(os.environ, {'GEMINI_API_KEY': 'test-secret', 'GEMINI_MODEL': 'gemini-3.8-flash'}), \
+        with patch.dict(os.environ, {'GEMINI_API_KEY': 'test-secret', 'GEMINI_MODEL': 'gemini-3.5-flash-lite'}), \
              patch.object(gemini_recommendation, 'urlopen', return_value=response) as call:
             result = gemini_recommendation.generate_recommendation({'interests': ['Robotics'], 'time': ['15–30 min']})
         self.assertEqual(result, 'Draft a small project idea in 15 minutes.')

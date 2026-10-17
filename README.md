@@ -3,6 +3,8 @@ OneThing turns scrolling into a useful next step: choose interests and goals, ex
 
 ## Current integration
 
+Recap distinguishes active generation from completed local fallbacks, including quota, credential, connection and response errors. Retryable failures offer a manual retry; quota failures enforce a 60-second cooldown. Successful Gemini stories are cached locally by selected period, completed history and model so reopening an unchanged recap does not request another story. The local story remains available when Gemini cannot respond.
+
 The Progress tracker is now an interactive achievement atlas. Ten selectable regions contain 95 mountain pieces with distinct numbered badges; unlocking an achievement permanently reveals its mountain as explored and climbed. Select a piece to see its rule and progress. The badge journal supports region filters. Five requested but currently unreachable achievements were excluded (classes, job simulations, two resume-analyzer goals and ten distinct skills).
 
 Optional completion logs record actual minutes and explicitly self-reported outcomes for effort, application, attendance and outreach achievements. Preparation quests never silently count as completed applications, certifications or attended events. Yearly recaps and Top Quests highlight cards support the new recap milestones alongside Lifetime and Monthly stories. View milestones use visible content, not background API fetches.

@@ -59,3 +59,6 @@
 .highlight-card li { margin: 15px 0; line-height: 1.4; }
 .highlight-card small { display: block; color: var(--brass); margin-top: 4px; }
 .recap-controls select { background: var(--ink-1); color: var(--on-ink); border: 1px solid var(--brass); border-radius: 4px; padding: 9px; }
+.recap-generation { margin: 14px 0; padding: 12px 14px; border: 1px solid #967b50; border-radius: 5px; background: #eee1c5; color: #342514; font-size: 14px; line-height: 1.5; }
+.recap-generation p { margin: 0 0 8px; }
+.recap-generation a { display: inline-block; margin: 8px 12px; text-decoration: underline; }
