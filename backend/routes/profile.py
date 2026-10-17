@@ -1,3 +1,4 @@
+from uuid import uuid4
 from flask import jsonify, request
 from collections import Counter
 from datetime import timedelta
@@ -58,6 +59,9 @@ def register(app, svc):
             raise ValueError('Choose a valid commitment.')
         normalized['commitment'] = commitment
         p = dict(id='demo', name='Alex', goal=goal, goals=list(dict.fromkeys(goals)), interests=list(dict.fromkeys(data['interests'])), skills=list(dict.fromkeys(data['skills'])), preferences=normalized)
+        previous = profile()
+        if previous and (previous.get('goals',[]) != p['goals'] or previous.get('goal') != p['goal']):
+            db.put('activity',dict(id='profile-update:'+str(uuid4()),profile_id='demo',kind='profile_update',recorded_at=clock().isoformat()))
         db.put('profiles', p)
         return jsonify(profile=p)
 

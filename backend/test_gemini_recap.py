@@ -18,7 +18,7 @@ class GeminiRecapClientTest(unittest.TestCase):
             def read(self):
                 return json.dumps({'candidates': [{'content': {'parts': [{'text': json.dumps(expected)}]}}]}).encode()
 
-        context = {'recent_completed_quests': [{'title': 'Design a prototype', 'category': 'Design', 'skills': ['UI/UX']}], 'completed_count': 1}
+        context = {'completed_quests': [{'date': '2026-10-01', 'title': 'Design a prototype', 'category': 'Design', 'skills': ['UI/UX']}], 'completed_count': 1}
         with patch.dict(os.environ, {'GEMINI_API_KEY': 'test-key'}), patch('gemini_recommendation.urlopen', return_value=Response()) as urlopen:
             result = generate_recap_narrative(context)
 
@@ -60,9 +60,32 @@ class RecapNarrativeRouteTest(unittest.TestCase):
         self.assertEqual(response.json['activity_count'], 1)
         context = generate.call_args.args[0]
         self.assertEqual(context['completed_count'], 1)
-        self.assertEqual(context['recent_completed_quests'][0]['title'], 'Find one tiny friction')
+        self.assertEqual(context['completed_quests'][0]['title'], 'Find one tiny friction')
         self.assertEqual(context['category_counts'], {'Creative project': 1})
         self.assertNotIn('profile', context)
+
+    def test_all_months_of_completions_are_included_in_the_gemini_context(self):
+        story = {field: f"Generated {field}" for field in RECAP_FIELDS}
+        with tempfile.TemporaryDirectory() as directory, patch('routes.progress.generate_recap_narrative', return_value=story) as generate:
+            store = Store(path=directory + '/history.sqlite3')
+            client = create_app(data_mode='sample', store=store).test_client()
+            client.post('/profiles', json={'goal': 'Build my skills', 'interests': ['Design'], 'skills': ['Writing']})
+            store.put_many('activity', [{
+                'id': f'history:{index}', 'profile_id': 'demo', 'kind': 'completion',
+                'quest_id': 'design-1', 'title': f'Quest {index}', 'category': 'Creative project',
+                'skills': ['Writing'], 'difficulty': 'Easy', 'minutes': 10, 'points': 20,
+                'completed_at': f'2026-{index // 31 + 1:02d}-{index % 28 + 1:02d}T12:00:00+00:00',
+            } for index in range(35)])
+
+            response = client.post('/recap/narrative')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json['activity_count'], 35)
+        context = generate.call_args.args[0]
+        self.assertEqual(len(context['completed_quests']), 35)
+        self.assertEqual(context['completed_quests'][0]['title'], 'Quest 0')
+        self.assertEqual(context['completed_quests'][-1]['title'], 'Quest 34')
+        self.assertIn('date', context['completed_quests'][0])
 
     def test_no_completions_uses_local_first_step_story_without_api_call(self):
         with tempfile.TemporaryDirectory() as directory, patch('routes.progress.generate_recap_narrative') as generate:
@@ -73,6 +96,30 @@ class RecapNarrativeRouteTest(unittest.TestCase):
         self.assertEqual(response.json['source'], 'local')
         self.assertEqual(response.json['narrative']['archetype'], 'The First-Step Scout')
         generate.assert_not_called()
+
+    def test_month_scope_observes_pacific_boundaries_and_empty_month_skips_model(self):
+        story = {field: f'Generated {field}' for field in RECAP_FIELDS}
+        with tempfile.TemporaryDirectory() as directory, patch('routes.progress.generate_recap_narrative', return_value=story) as generate:
+            store = Store(path=directory + '/monthly.sqlite3')
+            client = create_app(data_mode='sample', store=store).test_client()
+            for index, stamp in enumerate(['2026-10-01T06:59:00+00:00','2026-10-01T07:00:00+00:00','2026-11-01T06:59:00+00:00','2026-11-01T07:00:00+00:00']):
+                store.put('activity', dict(id=f'row:{index}',profile_id='demo',kind='completion',quest_id='design-1',title=f'Quest {index}',category='Creative project',skills=['Writing'],difficulty='Easy',minutes=10,points=20,completed_at=stamp))
+            response = client.post('/recap/narrative',json={'period':'month','month':'2026-10'})
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.json['activity_count'], 2)
+            self.assertEqual(response.json['period'], 'month')
+            context = generate.call_args.args[0]
+            self.assertEqual([q['title'] for q in context['completed_quests']], ['Quest 1','Quest 2'])
+            self.assertEqual(context['points'], 40)
+            self.assertEqual(context['period_start'], '2026-10-01')
+            self.assertEqual(context['period_end_exclusive'], '2026-11-01')
+            generate.reset_mock()
+            response=client.post('/recap/narrative',json={'period':'month','month':'2025-01'})
+            self.assertEqual(response.json['activity_count'],0)
+            self.assertEqual(response.json['source'],'local')
+            generate.assert_not_called()
+            for choices in [{'period':'week'},{'period':'month','month':'2026-13'},{'period':'month','month':'oops'},[]]:
+                self.assertEqual(client.post('/recap/narrative',json=choices).status_code,400)
 
 
 if __name__ == '__main__':

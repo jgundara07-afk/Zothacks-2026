@@ -2,6 +2,7 @@ from collections import Counter, defaultdict, deque
 from datetime import timedelta, datetime
 from zoneinfo import ZoneInfo
 try:
+    from .achievements import achievements
     from .program_catalog import program_catalog, preparation_quests, available, distance_km
     from .preferences import PREFERENCES, INTEREST_GROUPS
     from .filter_rules import supported_interests, validate_extra, matches_extra
@@ -9,6 +10,7 @@ try:
     from .neutral import is_neutral, fallback_info, sprinkle
     from .gemini_recommendation import generate_recommendation
 except ImportError:
+    from achievements import achievements
     from program_catalog import program_catalog, preparation_quests, available, distance_km
     from preferences import PREFERENCES, INTEREST_GROUPS
     from filter_rules import supported_interests, validate_extra, matches_extra
@@ -189,6 +191,8 @@ class OneThing:
         return next((a for a in self.activity('checkin') if a['date'] == self.today().isoformat()), None)
     def completion_day(self, a):
         return datetime.fromisoformat(a['completed_at']).astimezone(DAY_ZONE).date()
+    def achievements(self):
+        return achievements(self)
     def progress(self):
         done = sorted(self.activity('completion'), key=lambda a: a['completed_at'], reverse=True)
         dates = {self.completion_day(a) for a in done}
@@ -203,7 +207,7 @@ class OneThing:
             run = run + 1 if previous and date == previous + timedelta(days=1) else 1
             best = max(best, run)
             previous = date
-        return dict(demo_clock=self.demo_state(), streak=streak, longest_streak=best, active_today=self.today() in dates, today=self.today().isoformat(), timezone='America/Los_Angeles', points=sum((a['points'] for a in done)), completed_count=len(done), saved_count=len(self.activity('save')), completed_ids=[a['quest_id'] for a in done], activity=done)
+        return dict(achievements=self.achievements(), demo_clock=self.demo_state(), streak=streak, longest_streak=best, active_today=self.today() in dates, today=self.today().isoformat(), timezone='America/Los_Angeles', points=sum((a['points'] for a in done)), completed_count=len(done), saved_count=len(self.activity('save')), completed_ids=[a['quest_id'] for a in done], activity=done)
     def opportunities(self):
         if self.catalog is not None:
             return self.decorate([o for o in self.catalog.values() if available(o,self.real_clock())])

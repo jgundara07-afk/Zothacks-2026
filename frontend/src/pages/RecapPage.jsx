@@ -1,48 +1,56 @@
 import React,{useEffect,useState} from 'react';
-import {ArrowRight,ArrowLeft} from 'lucide-react';
-import PointsTimeline from '../components/PointsTimeline';
+import {ArrowRight,ArrowLeft,Sparkles,Award} from 'lucide-react';
+import AchievementGallery from '../components/AchievementGallery';
+import ActivityWitness,{publishAchievements} from '../components/ActivityWitness';
+import RecapHighlights from '../components/RecapHighlights';
 import {api} from '../api';
 
 function localStory(data){
- const category=data.categories?Object.entries(data.categories).sort((a,b)=>b[1]-a[1])[0]:null;
- const skill=data.top_skill;
- const labels={'General task':'The Small-Step Strategist','Online course':'The Skill Collector','Certification':'The Skill Collector',Class:'The Curious Scholar',Internship:'The Career Pathfinder','Job simulation':'The Career Pathfinder',Networking:'The Connector',Club:'The Community Builder',Park:'The Trailblazer'};
- const done=data.completed_count||0;
- if(!done)return {source:'local',narrative:{archetype:'The First-Step Scout',evidence:'Your recap is ready for your first completed quest.',description:'Your OneThing story is just getting started. One small step will give the next recap its first chapter.',quest_line:'The opening track is still yours to choose.',onething_line:'No points yet, and all the possibility in front of you.',next_step:'Pick one short quest and take its first step.'}};
- const [kind,count]=category||['quest',done];
- return {source:'local',narrative:{archetype:labels[kind]||'The OneThing Climber',evidence:`${count} completed ${kind} quests${skill?` · most practiced skill: ${skill}`:''}`,description:`Your completed work leaned toward ${kind}. You kept turning a little time into visible progress, one quest at a time.`,quest_line:'Your completed quests made quite a highlight reel. OneThing saw you show up.',onething_line:`${done} completed steps and ${data.points||0} points: proof that small things add up.`,next_step:skill?`Choose one manageable quest that builds on ${skill}.`:'Choose one manageable quest to start your next chapter.'}};
+ const category=data?.top_category,skill=data?.top_skill,done=data?.completed_count||0;
+ const labels={'General task':'The Small-Step Strategist','Online course':'The Skill Collector',Certification:'The Skill Collector',Class:'The Curious Scholar',Internship:'The Career Pathfinder',Networking:'The Connector',Club:'The Community Builder',Park:'The Trailblazer'};
+ return {archetype:done?(labels[category]||'The OneThing Climber'):'The First-Step Scout',evidence:done?`Your story leaned toward ${category}.`:'Every story starts somewhere.',description:done?'A little time became something you can point to. You kept giving your future self a useful head start.':'Your OneThing story is just getting started. One small quest will give it its first chapter.',quest_line:done?'Your completed quests made the highlight reel. OneThing saw you show up.':'The opening track is still yours to choose.',signature_move:done?`You kept finding your way back to ${skill||category}. Follow that thread into your next quest.`:'Start with a quest that fits the energy you have today.',plot_twist:done?'The small things were the story all along. Finishing one manageable action gave the next one somewhere to begin.':'You do not need a grand plan to begin. A small, finished action is a perfectly good plot twist.',onething_line:done?'You turned “I should do something” into “I did OneThing.” That is a habit worth keeping.':'Your next chapter only needs one thing.',next_step:skill?`Choose one manageable quest that builds on ${skill}.`:'Pick one short quest and take its first step.'};
 }
-
-function buildSlides(data,story){
- const p=data.progress||{};
- const n=story.narrative;
- return [
-  {label:'Completed',big:String(p.completed_count||0),unit:(p.completed_count||0)===1?'quest':'quests',color:'purple'},
-  {label:'Practice',big:String(data.estimated_minutes||0),unit:'minutes, estimated',color:'orange'},
-  {label:'Your archetype',big:n.archetype,unit:n.evidence,body:n.description,color:'lime',ai:true},
-  {label:'Quest highlights',big:'You did the thing.',unit:'and made it count.',body:n.quest_line,color:'pink',ai:true},
-  {label:'Top skill',big:data.top_skill||'None yet',unit:data.top_category?`Mostly ${data.top_category}`:'Complete a quest to find yours',color:'purple'},
-  {label:'OneThing energy',big:'Small steps.',unit:'big plot.',body:n.onething_line,color:'orange',ai:true},
-  {label:'Next chapter',big:'Your next move',unit:'One thing at a time',body:n.next_step,color:'lime',ai:true},
-  {label:'Best streak',big:String(p.longest_streak||0),unit:(p.longest_streak||0)===1?'day':'days',color:'pink'},
- ];
+function slidesFor(n){return [
+ {label:'Your climbing alter ego',big:n.archetype,unit:n.evidence,body:n.description,color:'lime'},
+ {label:'Your signature move',big:'A habit worth keeping.',body:n.signature_move,color:'purple'},
+ {label:'The highlight reel',big:'You did the thing.',body:n.quest_line,color:'pink'},
+ {label:'The plot twist',big:'Small was the secret.',body:n.plot_twist,color:'orange'},
+ {label:'The OneThing effect',big:'Future you says thanks.',body:n.onething_line,color:'purple'},
+ {label:'Your next chapter',big:'Leave room for more.',body:n.next_step,color:'lime'},
+]}
+function badgeMonth(timestamp){
+ if(!timestamp)return '';
+ const parts=Object.fromEntries(new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',year:'numeric',month:'2-digit'}).formatToParts(new Date(timestamp)).map(part=>[part.type,part.value]));
+ return `${parts.year}-${parts.month}`;
 }
-
 export default function Recap({data,onExplore}){
- const [slide,setSlide]=useState(0);
- const [story,setStory]=useState(()=>localStory(data||{}));
- useEffect(()=>{let active=true;api.recapNarrative().then(result=>{if(active&&result?.narrative)setStory(result)}).catch(()=>{});return()=>{active=false}},[]);
- if(!data)return <p>Loading your recap…</p>;
- const slides=buildSlides(data,story),item=slides[slide],last=slide===slides.length-1;
- return <><section className={'wrapped '+item.color} aria-label="Progress recap">
-  <div className="recap-dots">{slides.map((s,i)=><button key={s.label} aria-label={`Recap slide ${i+1}: ${s.label}`} aria-current={i===slide?'step':undefined} onClick={()=>setSlide(i)}/>)}</div>
-  <span className="eyebrow">{item.label}</span>
-  <div className="recap-big" aria-live="polite" key={slide}>{item.big}<small>{item.unit}</small></div>
-  {item.body&&<p className="recap-story">{item.body}</p>}
-  {item.ai&&story.source==='gemini'&&<span className="recap-ai-label">Gemini story · based on your completed quests</span>}
-  <div className="recap-navigation"><button disabled={slide===0} onClick={()=>setSlide(slide-1)}><ArrowLeft size={18}/> Back</button>{last?<button onClick={onExplore}>Find a quest <ArrowRight size={18}/></button>:<button onClick={()=>setSlide(slide+1)}>Next <ArrowRight size={18}/></button>}</div>
-  <details className="recap-method"><summary>How this is counted</summary>Counts and skills come from recorded quest completions. Quest time is estimated. The archetype and story are playful descriptions of this activity, not assessments of ability. {story.source==='gemini'?'Gemini wrote the recap from your category, skill, difficulty, and recent completed-quest records.':'A local recap is shown because Gemini was unavailable.'}</details>
- </section>
- <PointsTimeline activity={data.progress.activity||[]} today={data.progress.today}/>
- </>
+ const [period,setPeriod]=useState('lifetime'),[month,setMonth]=useState(data?.progress?.today?.slice(0,7)||new Date().toISOString().slice(0,7));
+ const [year,setYear]=useState(data?.progress?.today?.slice(0,4)||String(new Date().getFullYear()));
+ const [tab,setTab]=useState('story'),[slide,setSlide]=useState(0),[summary,setSummary]=useState(data),[result,setResult]=useState(null),[loading,setLoading]=useState(true),[error,setError]=useState('');
+ useEffect(()=>{
+  let active=true;setSlide(0);setResult(null);setSummary(period==='lifetime'?data:null);setLoading(true);setError('');
+  api.analytics(period==='month'?{period:'month',date:month+'-01'}:period==='year'?{period:'year',date:year+'-01-01'}:{}).then(value=>{if(active)setSummary(value)}).catch(e=>{if(active)setError(e.message)});
+  api.recapNarrative({period,...(period==='month'?{month}:period==='year'?{year}:{})}).then(value=>{if(active){setResult(value);publishAchievements(value.badges)}}).catch(e=>{if(active)setError(e.message)}).finally(()=>{if(active)setLoading(false)});
+  return()=>{active=false};
+ },[period,month,year,data]);
+ const story=result?.narrative||localStory(summary),slides=slidesFor(story),item=slides[slide],last=slide===slides.length-1;
+ const badges=(result?.badges||data?.progress?.achievements||[]).map(badge=>({...badge,earned_in_period:badge.unlocked&&(period==='lifetime'||(period==='year'?badgeMonth(badge.earned_at).startsWith(year+'-'):badgeMonth(badge.earned_at)===month))}));
+ function updateBadges(badges){const id=result?.recap_id;setResult(old=>old?.recap_id===id?{...old,badges}:old)}
+ return <div className="recap-page">
+  <div className="recap-heading"><span className="eyebrow">Your OneThing story · The climb, remembered.</span></div>
+  <div className="recap-controls"><div className="period-tabs" role="group" aria-label="Recap period"><button aria-pressed={period==='lifetime'} onClick={()=>setPeriod('lifetime')}>Lifetime</button><button aria-pressed={period==='month'} onClick={()=>setPeriod('month')}>Monthly</button><button aria-pressed={period==='year'} onClick={()=>setPeriod('year')}>Yearly</button></div>{period==='month'&&<label>Recap month <input aria-label="Recap month" type="month" value={month} min="2000-01" max="2100-12" onChange={e=>/^\d{4}-\d{2}$/.test(e.target.value)&&setMonth(e.target.value)}/></label>}{period==='year'&&<label>Recap year <select aria-label="Recap year" value={year} onChange={e=>setYear(e.target.value)}>{Array.from({length:101},(_,i)=>String(2000+i)).map(value=><option key={value}>{value}</option>)}</select></label>}</div>
+  <div className="recap-section-tabs" role="group" aria-label="Recap section"><button aria-pressed={tab==='story'} onClick={()=>setTab('story')}><Sparkles size={16}/> Your story</button><button aria-pressed={tab==='badges'} onClick={()=>setTab('badges')}><Award size={16}/> Badges</button><button aria-pressed={tab==='highlights'} onClick={()=>setTab('highlights')}>Highlights</button></div>
+  {error&&<p role="alert" className="field-help">{error} Your recorded activity is still available in Progress.</p>}
+  {tab==='badges'?<AchievementGallery badges={badges} monthly={period==='month'} periodLabel={period==='year'?'year':null}/>:tab==='highlights'?<RecapHighlights key={result?.recap_id||'pending'} result={result} onRecorded={updateBadges}/>:<>
+   <p className="recap-scope">{period==='lifetime'?'Your whole journey':period==='year'?year:new Date(month+'-15T12:00:00').toLocaleDateString(undefined,{month:'long',year:'numeric'})}{loading?' · Writing your story…':result?.source==='gemini'?' · Written with Gemini':' · OneThing local story'}</p>
+   {!summary?<p role="status">Loading this chapter…</p>:<ActivityWitness event={result?.source==='local'?'fallback_read':null} recapId={result?.recap_id} onRecorded={updateBadges}><section className={'wrapped recap-narrative '+item.color} aria-label="Progress recap">
+    <div className="recap-dots">{slides.map((s,i)=><button key={s.label} aria-label={`Recap slide ${i+1}: ${s.label}`} aria-current={i===slide?'step':undefined} onClick={()=>setSlide(i)}/>)}</div>
+    <span className="eyebrow">{item.label}</span>
+    <div className="recap-big" aria-live="polite">{item.big}{item.unit&&<small>{item.unit}</small>}</div>
+    <p className="recap-story">{item.body}</p>
+    <div className="recap-navigation"><button disabled={slide===0} onClick={()=>setSlide(i=>i-1)}><ArrowLeft size={18}/> Back</button>{last?<button onClick={onExplore}>Find a quest <ArrowRight size={18}/></button>:<button onClick={()=>setSlide(i=>i+1)}>Next <ArrowRight size={18}/></button>}</div>
+    <details className="recap-method"><summary>Behind this story</summary>This playful story uses every recorded quest in {period==='month'?'the selected month':period==='year'?'the selected year':'your lifetime history'}. It describes activity, not ability. {result?.source==='gemini'?'Gemini wrote this chapter.':'OneThing provides a local story while Gemini is unavailable or still writing.'} Badges are calculated from recorded activity and remain in your lifetime collection.</details>
+   </section></ActivityWitness>}
+  </>}
+ </div>;
 }

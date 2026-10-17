@@ -1,3 +1,4 @@
+from uuid import uuid4
 from flask import jsonify, request
 from collections import Counter
 from datetime import timedelta, date, datetime
@@ -6,10 +7,14 @@ from io import BytesIO
 import re
 from pypdf import PdfReader
 try:
+    from ..achievement_expansion import OUTCOMES
+    from ..achievements import completion_facts
     from . import body
     from ..gemini_recommendation import generate_recap_narrative
     from ..preferences import PREFERENCES
 except ImportError:
+    from achievement_expansion import OUTCOMES
+    from achievements import completion_facts
     from routes import body
     from gemini_recommendation import generate_recap_narrative
     from preferences import PREFERENCES
@@ -109,24 +114,62 @@ def register(app, svc):
 
     @app.post('/recap/narrative')
     def recap_narrative():
-        summary = analytics_payload()
-        completed = sorted(activity('completion'), key=lambda item: item.get('completed_at', ''), reverse=True)
-        recent = [{
+        options = request.get_json(silent=True)
+        if options is None and request.data:
+            raise ValueError('Provide recap choices as a JSON object.')
+        options = {} if options is None else options
+        if not isinstance(options, dict):
+            raise ValueError('Provide recap choices as a JSON object.')
+        period = options.get('period', 'lifetime')
+        if period not in {'lifetime', 'month', 'year'}:
+            raise ValueError('Choose a lifetime, month or year recap.')
+        anchor = today().isoformat()
+        if period == 'month':
+            month = options.get('month', today().strftime('%Y-%m'))
+            if not isinstance(month, str) or not re.fullmatch(r'\d{4}-\d{2}', month):
+                raise ValueError('Choose a valid recap month (YYYY-MM).')
+            anchor = month + '-01'
+        if period == 'year':
+            year = str(options.get('year', today().year))
+            if not re.fullmatch(r'\d{4}', year) or not 2000 <= int(year) <= 2100:
+                raise ValueError('Choose a valid recap year from 2000 to 2100.')
+            anchor = year + '-01-01'
+        summary = analytics_payload(period if period in {'month','year'} else None, anchor)
+        completed = sorted(activity('completion'), key=lambda item: item.get('completed_at', ''))
+        if period != 'lifetime':
+            completed = [row for row in completed if summary['start'] <= completion_day(row).isoformat() < summary['end']]
+        badges = svc.achievements()
+        for badge in badges:
+            earned_day = completion_day({'completed_at': badge['earned_at']}).isoformat() if badge['earned_at'] else None
+            badge['earned_in_period'] = bool(earned_day and (period == 'lifetime' or summary['start'] <= earned_day < summary['end']))
+        history = [{
+            'date': completion_day(item).isoformat(),
             'title': str(item.get('title') or 'Completed quest')[:180],
             'category': str(item.get('category') or 'Other')[:80],
             'skills': [str(skill)[:80] for skill in item.get('skills', [])[:8]],
             'difficulty': str(item.get('difficulty') or 'Unknown')[:40],
-        } for item in completed[:30]]
+        } for item in completed]
+        days = sorted({completion_day(row) for row in completed})
+        best = run = 0
+        previous = None
+        for day in days:
+            run = run + 1 if previous and day == previous + timedelta(days=1) else 1
+            best = max(best, run)
+            previous = day
         context = {
+            'period': period, 'period_start': summary['start'], 'period_end_exclusive': summary['end'],
+            'earned_badges': [badge['name'] for badge in badges if badge['earned_in_period']],
             'completed_count': summary['completed_count'],
             'estimated_minutes': summary['estimated_minutes'],
             'points': summary['points'],
             'active_days': summary['active_days'],
-            'best_streak': summary['progress']['longest_streak'],
+            'best_streak': best,
             'category_counts': summary['categories'],
             'skill_counts': summary['skills'],
             'difficulty_counts': summary['difficulties'],
-            'recent_completed_quests': recent,
+            'history_start': history[0]['date'] if history else None,
+            'history_end': history[-1]['date'] if history else None,
+            'completed_quests': history,
         }
         narrative = generate_recap_narrative(context) if completed else None
         source = 'gemini' if narrative else 'local'
@@ -160,11 +203,21 @@ def register(app, svc):
                     'archetype': archetypes.get(category, 'The OneThing Climber'),
                     'evidence': f'{count} completed {category} quests' + (f' · {skill} appeared {skill_count} times' if skill else ''),
                     'description': f'Your completed work leaned toward {category}. You kept turning a little time into visible progress, one quest at a time.',
-                    'quest_line': f'“{recent[0]["title"]}” made the highlight reel. Your quest list has range.',
+                    'quest_line': f'“{completed[-1].get("title") or "Completed quest"}” made the highlight reel. Your quest list has range.',
                     'onething_line': f'{summary["completed_count"]} completed steps and {summary["points"]} points: proof that small things add up.',
                     'next_step': 'Choose one manageable quest that builds on your most-practiced skill.' if skill else 'Choose one manageable quest to start your next chapter.',
                 }
-        return jsonify(narrative=narrative, source=source, activity_count=len(completed))
+        narrative.setdefault('signature_move', f'You kept returning to {summary["top_category"]}. That is a thread worth following.' if completed else 'Start with a quest that fits the energy you have today.')
+        narrative.setdefault('plot_twist', 'Your smallest finished actions still made the story move. Keep the next chapter manageable.' if completed else 'The plot twist is that you do not need a grand plan to begin.')
+        recap_id = 'recap:'+str(uuid4())
+        highlights = [dict(title=row.get('title','Completed quest'),date=completion_day(row).isoformat()) for row in sorted(completed,key=lambda row:(row.get('points',0),row['completed_at']),reverse=True)[:5]]
+        db.put('activity',dict(id=recap_id,profile_id='demo',kind='recap',period=period,month=anchor[:7],source=source,archetype=narrative['archetype'],has_highlights=bool(highlights),recorded_at=clock().isoformat()))
+        badges = svc.achievements()
+        for badge in badges:
+            earned_day=completion_day({'completed_at':badge['earned_at']}).isoformat() if badge['earned_at'] else None
+            badge['earned_in_period']=bool(earned_day and (period=='lifetime' or summary['start']<=earned_day<summary['end']))
+        return jsonify(narrative=narrative, source=source, activity_count=len(completed),recap_id=recap_id,highlights=highlights,
+                       period=period, start=summary['start'], end=summary['end'], badges=badges)
 
     @app.get('/progress/data')
     def progress_data():
@@ -200,5 +253,40 @@ def register(app, svc):
             raise ValueError('Save this opportunity before completing its quest.')
         completion_id = 'completion:demo:' + q['id'] + (':' + today().isoformat() if q.get('daily') else '')
         opportunity = svc.opportunity(q['opportunity_id']) or {}
-        created = db.put('activity', dict(opportunity_id=q['opportunity_id'], category=opportunity.get('kind', 'Other'), skills=opportunity.get('skills', []), difficulty=q.get('difficulty', 'Easy'), minutes=q.get('minutes', 0), id=completion_id, profile_id='demo', kind='completion', quest_id=q['id'], title=q['title'], points=q['points'], completed_at=clock().isoformat()), once=True)
+        actual_minutes = data.get('actual_minutes')
+        if actual_minutes is not None and (type(actual_minutes) is not int or not 1 <= actual_minutes <= 1440):
+            raise ValueError('Log between 1 and 1440 actual minutes, or leave time blank.')
+        outcomes=data.get('outcomes',[])
+        if not isinstance(outcomes,list) or len(outcomes)>3 or any(not isinstance(value,str) or value not in OUTCOMES for value in outcomes):
+            raise ValueError('Choose up to 3 valid self-reported outcomes.')
+        outcome_kinds={'applied':{'Job','Internship'},'certification_completed':{'Online course','Certification'},'simulation_completed':{'Job simulation'},'event_attended':{'Local event','Networking','Networking event','Campus event','Club','Campus initiative'}}
+        if any(value in outcome_kinds and opportunity.get('kind') not in outcome_kinds[value] for value in outcomes):
+            raise ValueError('Choose an outcome that belongs to this opportunity type.')
+        saved_record=db.get('activity','save:demo:'+q['opportunity_id']) or {}
+        goals=set((profile() or {}).get('goals',[])+[(profile() or {}).get('goal','')])
+        work_log=dict(actual_minutes=actual_minutes,outcomes=list(dict.fromkeys(outcomes)),saved_at=saved_record.get('saved_at'),lazy_filter=saved_record.get('lazy_filter',False),goal_match=bool(goals.intersection(opportunity.get('career_goals',[]))))
+        created = db.put('activity', dict(**work_log, **completion_facts(q, opportunity), opportunity_id=q['opportunity_id'], category=opportunity.get('kind', 'Other'), skills=opportunity.get('skills', []), difficulty=q.get('difficulty', 'Easy'), minutes=q.get('minutes', 0), id=completion_id, profile_id='demo', kind='completion', quest_id=q['id'], title=q['title'], points=q['points'], completed_at=clock().isoformat()), once=True)
         return jsonify(already_completed=not created, points_earned=q['points'] if created else 0, progress=progress())
+
+    @app.get('/achievement-options')
+    def achievement_options():
+        return jsonify(outcomes=[dict(value=value,label=label) for value,label in OUTCOMES.items() if value != 'simulation_completed'])
+
+    @app.post('/activity/events')
+    def record_event():
+        data=body('event')
+        event=data['event']
+        if event not in {'analytics_view','skills_view','fallback_read','highlight_view','share_click'}:
+            raise ValueError('Choose a supported activity event.')
+        recap_id=data.get('recap_id')
+        if recap_id is not None and not isinstance(recap_id,str):
+            raise ValueError('Provide a recap identifier as a string.')
+        if event in {'fallback_read','highlight_view','share_click'}:
+            if not isinstance(recap_id,str): raise ValueError('Choose a generated recap.')
+            recap=db.get('activity',recap_id)
+            if not recap or recap.get('kind')!='recap' or recap.get('profile_id')!='demo': raise ValueError('Recap not found.')
+            if event=='fallback_read' and recap['source']!='local': raise ValueError('This recap is not a local fallback.')
+            if event in {'highlight_view','share_click'} and not recap.get('has_highlights'): raise ValueError('This recap has no completed quests to share.')
+        identifier='event:demo:'+event+':'+(recap_id if recap_id else today().isoformat())
+        db.put('activity',dict(id=identifier,profile_id='demo',kind='ui_event',event=event,recorded_at=clock().isoformat()),once=True)
+        return jsonify(recorded=True,achievements=svc.achievements())

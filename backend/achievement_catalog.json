@@ -1,0 +1,852 @@
+[
+  {
+    "id": "mount-01",
+    "name": "Mount Unstoppable",
+    "metric": "daily_streak",
+    "target": 5,
+    "criteria": "Complete a daily quest 5 days in a row.",
+    "region": "ascent",
+    "flavor": "Mount Unstoppable is on your horizon. One more foothold. The mountain is learning your name.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-02",
+    "name": "Mount Momentum",
+    "metric": "week_quests",
+    "target": 10,
+    "criteria": "Complete 10 quests in a single Pacific calendar week.",
+    "region": "ascent",
+    "flavor": "Mount Momentum is on your horizon. One more foothold. The mountain is learning your name.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-03",
+    "name": "Mount Marathon",
+    "metric": "logged_minutes",
+    "target": 3000,
+    "criteria": "Accumulate 50 hours of explicitly logged effort.",
+    "region": "ascent",
+    "flavor": "Mount Marathon is on your horizon. One more foothold. The mountain is learning your name.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-04",
+    "name": "Mount Centurion",
+    "metric": "quests",
+    "target": 100,
+    "criteria": "Complete your 100th quest.",
+    "region": "ascent",
+    "flavor": "Mount Centurion is on your horizon. One more foothold. The mountain is learning your name.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-05",
+    "name": "Mount Daily Grind",
+    "metric": "early_micro",
+    "target": 1,
+    "criteria": "Finish a daily micro-goal before 9:00 AM Pacific.",
+    "region": "ascent",
+    "flavor": "Mount Daily Grind is on your horizon. One more foothold. The mountain is learning your name.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-06",
+    "name": "Mount Night Owl",
+    "metric": "night",
+    "target": 1,
+    "criteria": "Complete a quest from midnight up to 4:00 AM Pacific.",
+    "region": "ascent",
+    "flavor": "Mount Night Owl is on your horizon. One more foothold. The mountain is learning your name.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-07",
+    "name": "Mount Weekend Warrior",
+    "metric": "weekend_day",
+    "target": 5,
+    "criteria": "Complete 5 quests on one Saturday or Sunday.",
+    "region": "ascent",
+    "flavor": "Mount Weekend Warrior is on your horizon. One more foothold. The mountain is learning your name.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-08",
+    "name": "Mount Everest of Effort",
+    "metric": "points",
+    "target": 10000,
+    "criteria": "Accumulate 10,000 total points.",
+    "region": "ascent",
+    "flavor": "Mount Everest of Effort is on your horizon. One more foothold. The mountain is learning your name.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-09",
+    "name": "Mount Relentless",
+    "metric": "weekly_run",
+    "target": 13,
+    "criteria": "Complete a quest in each of 13 consecutive calendar weeks (about 3 months).",
+    "region": "ascent",
+    "flavor": "Mount Relentless is on your horizon. One more foothold. The mountain is learning your name.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-10",
+    "name": "Mount Iron Will",
+    "metric": "daily_streak",
+    "target": 30,
+    "criteria": "Complete a daily quest on 30 consecutive Pacific days.",
+    "region": "ascent",
+    "flavor": "Mount Iron Will is on your horizon. One more foothold. The mountain is learning your name.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-11",
+    "name": "Mount Couch Potato",
+    "metric": "lazy",
+    "target": 10,
+    "criteria": "Complete 10 Lazy quests.",
+    "region": "climb",
+    "flavor": "Mount Couch Potato is on your horizon. The slope got steeper. You found another gear.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-12",
+    "name": "Mount Stepping Stone",
+    "metric": "easy",
+    "target": 5,
+    "criteria": "Complete 5 Easy quests.",
+    "region": "climb",
+    "flavor": "Mount Stepping Stone is on your horizon. The slope got steeper. You found another gear.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-13",
+    "name": "Mount Sweat Equity",
+    "metric": "hard",
+    "target": 1,
+    "criteria": "Complete your first Hard quest.",
+    "region": "climb",
+    "flavor": "Mount Sweat Equity is on your horizon. The slope got steeper. You found another gear.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-14",
+    "name": "Mount Crucible",
+    "metric": "challenging",
+    "target": 1,
+    "criteria": "Complete your first Challenging quest.",
+    "region": "climb",
+    "flavor": "Mount Crucible is on your horizon. The slope got steeper. You found another gear.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-15",
+    "name": "Mount Titan",
+    "metric": "challenging",
+    "target": 5,
+    "criteria": "Complete 5 Challenging quests.",
+    "region": "climb",
+    "flavor": "Mount Titan is on your horizon. The slope got steeper. You found another gear.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-16",
+    "name": "Mount Underachiever (affectionate)",
+    "metric": "lazy_filter_day",
+    "target": 3,
+    "criteria": "Select only the Lazy difficulty filter, save from that feed, and complete 3 of those Lazy quests in one day.",
+    "region": "climb",
+    "flavor": "Mount Underachiever (affectionate) is on your horizon. The slope got steeper. You found another gear.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-17",
+    "name": "Mount Overachiever",
+    "metric": "overtime",
+    "target": 1,
+    "criteria": "Complete a Challenging quest and explicitly log more time than its estimate.",
+    "region": "climb",
+    "flavor": "Mount Overachiever is on your horizon. The slope got steeper. You found another gear.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-18",
+    "name": "Mount Escalation",
+    "metric": "escalation",
+    "target": 4,
+    "criteria": "Complete Lazy, Easy, Hard and Challenging quests in that order.",
+    "region": "climb",
+    "flavor": "Mount Escalation is on your horizon. The slope got steeper. You found another gear.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-19",
+    "name": "Mount Heavyweight",
+    "metric": "hard_points",
+    "target": 500,
+    "criteria": "Earn 500 points from Hard or Challenging quests.",
+    "region": "climb",
+    "flavor": "Mount Heavyweight is on your horizon. The slope got steeper. You found another gear.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-20",
+    "name": "Mount Breeze",
+    "metric": "easy",
+    "target": 20,
+    "criteria": "Complete 20 Easy quests.",
+    "region": "climb",
+    "flavor": "Mount Breeze is on your horizon. The slope got steeper. You found another gear.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-22",
+    "name": "Mount Social Butterfly",
+    "metric": "network",
+    "target": 3,
+    "criteria": "Complete 3 Networking quests.",
+    "region": "explorer",
+    "flavor": "Mount Social Butterfly is on your horizon. A different trail, a wider horizon.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-23",
+    "name": "Mount Academic",
+    "metric": "certification_completed",
+    "target": 3,
+    "criteria": "Self-report completing 3 different online certifications, not just preparation quests.",
+    "region": "explorer",
+    "flavor": "Mount Academic is on your horizon. A different trail, a wider horizon.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-24",
+    "name": "Mount Handshake",
+    "metric": "applied",
+    "target": 1,
+    "criteria": "Self-report submitting an application through a Jobs or Internships quest.",
+    "region": "explorer",
+    "flavor": "Mount Handshake is on your horizon. A different trail, a wider horizon.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-26",
+    "name": "Mount Local Legend",
+    "metric": "event_attended",
+    "target": 3,
+    "criteria": "Self-report attending 3 different Local Events through their quests.",
+    "region": "explorer",
+    "flavor": "Mount Local Legend is on your horizon. A different trail, a wider horizon.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-27",
+    "name": "Mount Renaissance",
+    "metric": "categories",
+    "target": 5,
+    "criteria": "Complete quests in 5 different categories.",
+    "region": "explorer",
+    "flavor": "Mount Renaissance is on your horizon. A different trail, a wider horizon.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-28",
+    "name": "Mount Specialist",
+    "metric": "specialist",
+    "target": 10,
+    "criteria": "Complete 10 quests in one category.",
+    "region": "explorer",
+    "flavor": "Mount Specialist is on your horizon. A different trail, a wider horizon.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-29",
+    "name": "Mount Out of Comfort Zone",
+    "metric": "categories",
+    "target": 2,
+    "criteria": "Complete a quest in a second category you have not previously explored.",
+    "region": "explorer",
+    "flavor": "Mount Out of Comfort Zone is on your horizon. A different trail, a wider horizon.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-30",
+    "name": "Mount Collector",
+    "metric": "save_categories",
+    "target": 1,
+    "criteria": "Save an opportunity from every currently available opportunity category.",
+    "region": "explorer",
+    "flavor": "Mount Collector is on your horizon. A different trail, a wider horizon.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-32",
+    "name": "Mount Skill Builder",
+    "metric": "skill_repeat",
+    "target": 5,
+    "criteria": "Practice the same skill tag in 5 completed quests.",
+    "region": "strategist",
+    "flavor": "Mount Skill Builder is on your horizon. Your toolkit just earned a sharper edge.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-35",
+    "name": "Mount Portfolio",
+    "metric": "portfolio_updated",
+    "target": 1,
+    "criteria": "Self-report adding a project or certification to your resume or portfolio.",
+    "region": "strategist",
+    "flavor": "Mount Portfolio is on your horizon. Your toolkit just earned a sharper edge.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-36",
+    "name": "Mount Polish",
+    "metric": "resume_polish",
+    "target": 1,
+    "criteria": "Complete a resume review or optimization quest.",
+    "region": "strategist",
+    "flavor": "Mount Polish is on your horizon. Your toolkit just earned a sharper edge.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-37",
+    "name": "Mount Endorsement",
+    "metric": "goal_skill",
+    "target": 1,
+    "criteria": "Complete a skill-tagged quest matching one of your stated career goals.",
+    "region": "strategist",
+    "flavor": "Mount Endorsement is on your horizon. Your toolkit just earned a sharper edge.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-38",
+    "name": "Mount Architect",
+    "metric": "technical",
+    "target": 5,
+    "criteria": "Complete 5 quests tagged with technical skills.",
+    "region": "strategist",
+    "flavor": "Mount Architect is on your horizon. Your toolkit just earned a sharper edge.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-39",
+    "name": "Mount Diplomat",
+    "metric": "soft",
+    "target": 5,
+    "criteria": "Complete 5 quests tagged with soft skills such as writing, communication or leadership.",
+    "region": "strategist",
+    "flavor": "Mount Diplomat is on your horizon. Your toolkit just earned a sharper edge.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-40",
+    "name": "Mount Metamorphosis",
+    "metric": "goal_changes",
+    "target": 1,
+    "criteria": "Change your career goals after setting up your profile.",
+    "region": "strategist",
+    "flavor": "Mount Metamorphosis is on your horizon. Your toolkit just earned a sharper edge.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-41",
+    "name": "Mount Hoarder",
+    "metric": "save_total",
+    "target": 20,
+    "criteria": "Save 20 different opportunities.",
+    "region": "backlog",
+    "flavor": "Mount Hoarder is on your horizon. A plan left the notebook and met the trail.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-42",
+    "name": "Mount Action Taker",
+    "metric": "old_week",
+    "target": 1,
+    "criteria": "Complete a quest saved more than 7 days earlier.",
+    "region": "backlog",
+    "flavor": "Mount Action Taker is on your horizon. A plan left the notebook and met the trail.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-43",
+    "name": "Mount Spring Cleaning",
+    "metric": "clean_day",
+    "target": 5,
+    "criteria": "Complete or dismiss 5 different saved opportunities in one Pacific day.",
+    "region": "backlog",
+    "flavor": "Mount Spring Cleaning is on your horizon. A plan left the notebook and met the trail.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-44",
+    "name": "Mount Decisive",
+    "metric": "same_day",
+    "target": 1,
+    "criteria": "Complete a quest on the same Pacific day you saved its opportunity.",
+    "region": "backlog",
+    "flavor": "Mount Decisive is on your horizon. A plan left the notebook and met the trail.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-45",
+    "name": "Mount Commitment",
+    "metric": "converted",
+    "target": 10,
+    "criteria": "Complete quests for 10 different saved opportunities.",
+    "region": "backlog",
+    "flavor": "Mount Commitment is on your horizon. A plan left the notebook and met the trail.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-46",
+    "name": "Mount Dust Off",
+    "metric": "old_month",
+    "target": 1,
+    "criteria": "Complete a quest saved more than one calendar month earlier.",
+    "region": "backlog",
+    "flavor": "Mount Dust Off is on your horizon. A plan left the notebook and met the trail.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-47",
+    "name": "Mount Curated",
+    "metric": "filtered_saves",
+    "target": 3,
+    "criteria": "Use discovery filters to find and save 3 different opportunities.",
+    "region": "backlog",
+    "flavor": "Mount Curated is on your horizon. A plan left the notebook and met the trail.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-48",
+    "name": "Mount Zero Inbox",
+    "metric": "zero_inbox",
+    "target": 1,
+    "criteria": "Finish every opportunity you saved, then clear your saved list.",
+    "region": "backlog",
+    "flavor": "Mount Zero Inbox is on your horizon. A plan left the notebook and met the trail.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-49",
+    "name": "Mount Second Thought",
+    "metric": "unsaves",
+    "target": 5,
+    "criteria": "Unsave 5 different unfinished opportunities.",
+    "region": "backlog",
+    "flavor": "Mount Second Thought is on your horizon. A plan left the notebook and met the trail.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-50",
+    "name": "Mount Conversion Rate",
+    "metric": "conversion",
+    "target": 50,
+    "criteria": "Complete quests for at least 50 percent of the different opportunities you have saved.",
+    "region": "backlog",
+    "flavor": "Mount Conversion Rate is on your horizon. A plan left the notebook and met the trail.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-51",
+    "name": "Mount Icebreaker",
+    "metric": "outreach_sent",
+    "target": 1,
+    "criteria": "Self-report sending a cold outreach email or message.",
+    "region": "community",
+    "flavor": "Mount Icebreaker is on your horizon. Your route now has a few more friendly faces.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-52",
+    "name": "Mount Alumni",
+    "metric": "alumni_connected",
+    "target": 1,
+    "criteria": "Self-report connecting with a university alum.",
+    "region": "community",
+    "flavor": "Mount Alumni is on your horizon. Your route now has a few more friendly faces.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-53",
+    "name": "Mount Coffee Chat",
+    "metric": "coffee_chat",
+    "target": 1,
+    "criteria": "Self-report scheduling or attending a virtual coffee chat.",
+    "region": "community",
+    "flavor": "Mount Coffee Chat is on your horizon. Your route now has a few more friendly faces.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-54",
+    "name": "Mount Presence",
+    "metric": "presence",
+    "target": 1,
+    "criteria": "Complete a LinkedIn profile or professional headline update quest.",
+    "region": "community",
+    "flavor": "Mount Presence is on your horizon. Your route now has a few more friendly faces.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-55",
+    "name": "Mount Wingman",
+    "metric": "peer_endorsed",
+    "target": 1,
+    "criteria": "Self-report endorsing a peer or colleague for a skill.",
+    "region": "community",
+    "flavor": "Mount Wingman is on your horizon. Your route now has a few more friendly faces.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-56",
+    "name": "Mount Forum",
+    "metric": "community_posted",
+    "target": 1,
+    "criteria": "Self-report posting an introduction or question in a professional community.",
+    "region": "community",
+    "flavor": "Mount Forum is on your horizon. Your route now has a few more friendly faces.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-57",
+    "name": "Mount Handraiser",
+    "metric": "volunteered",
+    "target": 1,
+    "criteria": "Self-report volunteering for a local event or project.",
+    "region": "community",
+    "flavor": "Mount Handraiser is on your horizon. Your route now has a few more friendly faces.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-58",
+    "name": "Mount Follow Up",
+    "metric": "thank_you_sent",
+    "target": 1,
+    "criteria": "Self-report sending a thank-you note after an event or meeting.",
+    "region": "community",
+    "flavor": "Mount Follow Up is on your horizon. Your route now has a few more friendly faces.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-59",
+    "name": "Mount Curator",
+    "metric": "followed_five",
+    "target": 1,
+    "criteria": "Self-report following 5 new industry leaders or companies.",
+    "region": "community",
+    "flavor": "Mount Curator is on your horizon. Your route now has a few more friendly faces.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-60",
+    "name": "Mount Mentor",
+    "metric": "mentor_contacted",
+    "target": 1,
+    "criteria": "Self-report reaching out for advice or mentorship.",
+    "region": "community",
+    "flavor": "Mount Mentor is on your horizon. Your route now has a few more friendly faces.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-61",
+    "name": "Mount Ergonomic",
+    "metric": "ergonomic",
+    "target": 1,
+    "criteria": "Complete a workspace posture or setup check.",
+    "region": "wellness",
+    "flavor": "Mount Ergonomic is on your horizon. A rested climber is still a climber.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-62",
+    "name": "Mount Hydration",
+    "metric": "hydration",
+    "target": 1,
+    "criteria": "Complete a daily goal related to drinking water.",
+    "region": "wellness",
+    "flavor": "Mount Hydration is on your horizon. A rested climber is still a climber.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-63",
+    "name": "Mount Zen",
+    "metric": "zen",
+    "target": 1,
+    "criteria": "Complete a breathing or meditation micro-goal.",
+    "region": "wellness",
+    "flavor": "Mount Zen is on your horizon. A rested climber is still a climber.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-64",
+    "name": "Mount Screen Break",
+    "metric": "screen_break",
+    "target": 1,
+    "criteria": "Complete the 20-20-20 eye-rest task.",
+    "region": "wellness",
+    "flavor": "Mount Screen Break is on your horizon. A rested climber is still a climber.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-65",
+    "name": "Mount Unplugged",
+    "metric": "phone_free_walk",
+    "target": 1,
+    "criteria": "Self-report taking a walk without your phone or music.",
+    "region": "wellness",
+    "flavor": "Mount Unplugged is on your horizon. A rested climber is still a climber.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-66",
+    "name": "Mount Deep Sleep",
+    "metric": "screens_off_30",
+    "target": 1,
+    "criteria": "Self-report stopping screen use 30 minutes before bed.",
+    "region": "wellness",
+    "flavor": "Mount Deep Sleep is on your horizon. A rested climber is still a climber.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-67",
+    "name": "Mount Clean Desk",
+    "metric": "clean_desk",
+    "target": 1,
+    "criteria": "Complete a workspace decluttering task.",
+    "region": "wellness",
+    "flavor": "Mount Clean Desk is on your horizon. A rested climber is still a climber.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-68",
+    "name": "Mount Boundary",
+    "metric": "boundary_set",
+    "target": 1,
+    "criteria": "Self-report declining or delaying a non-essential task.",
+    "region": "wellness",
+    "flavor": "Mount Boundary is on your horizon. A rested climber is still a climber.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-69",
+    "name": "Mount Focus",
+    "metric": "focused_pomodoro",
+    "target": 1,
+    "criteria": "Self-report a distraction-free Pomodoro and log at least 25 minutes of effort.",
+    "region": "wellness",
+    "flavor": "Mount Focus is on your horizon. A rested climber is still a climber.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-70",
+    "name": "Mount Reflection",
+    "metric": "three_wins",
+    "target": 1,
+    "criteria": "Record 3 wins for the week.",
+    "region": "wellness",
+    "flavor": "Mount Reflection is on your horizon. A rested climber is still a climber.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-71",
+    "name": "Mount Pitch",
+    "metric": "pitch",
+    "target": 1,
+    "criteria": "Write or record a 30-second elevator pitch.",
+    "region": "hustle",
+    "flavor": "Mount Pitch is on your horizon. Quiet preparation. A stronger next move.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-72",
+    "name": "Mount STAR",
+    "metric": "star",
+    "target": 1,
+    "criteria": "Write a success story using the STAR method.",
+    "region": "hustle",
+    "flavor": "Mount STAR is on your horizon. Quiet preparation. A stronger next move.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-73",
+    "name": "Mount Market Research",
+    "metric": "salary",
+    "target": 1,
+    "criteria": "Research the salary range for your target role.",
+    "region": "hustle",
+    "flavor": "Mount Market Research is on your horizon. Quiet preparation. A stronger next move.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-74",
+    "name": "Mount Scout",
+    "metric": "job_alert",
+    "target": 1,
+    "criteria": "Set up a job alert for your target industry.",
+    "region": "hustle",
+    "flavor": "Mount Scout is on your horizon. Quiet preparation. A stronger next move.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-75",
+    "name": "Mount Audit",
+    "metric": "workday_audit",
+    "target": 1,
+    "criteria": "Self-report tracking your time for an entire workday.",
+    "region": "hustle",
+    "flavor": "Mount Audit is on your horizon. Quiet preparation. A stronger next move.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-76",
+    "name": "Mount Prioritize",
+    "metric": "prioritize",
+    "target": 1,
+    "criteria": "Write your top 3 tasks for tomorrow.",
+    "region": "hustle",
+    "flavor": "Mount Prioritize is on your horizon. Quiet preparation. A stronger next move.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-77",
+    "name": "Mount Shortcut",
+    "metric": "shortcut_five",
+    "target": 1,
+    "criteria": "Self-report learning and using a keyboard shortcut 5 times.",
+    "region": "hustle",
+    "flavor": "Mount Shortcut is on your horizon. Quiet preparation. A stronger next move.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-78",
+    "name": "Mount Inbox Zero",
+    "metric": "unsubscribed_five",
+    "target": 1,
+    "criteria": "Self-report unsubscribing from 5 junk newsletters.",
+    "region": "hustle",
+    "flavor": "Mount Inbox Zero is on your horizon. Quiet preparation. A stronger next move.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-79",
+    "name": "Mount Documentarian",
+    "metric": "public_update",
+    "target": 1,
+    "criteria": "Self-report publishing a project update to GitHub or a public portfolio.",
+    "region": "hustle",
+    "flavor": "Mount Documentarian is on your horizon. Quiet preparation. A stronger next move.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-80",
+    "name": "Mount Niche",
+    "metric": "industry_joined",
+    "target": 1,
+    "criteria": "Self-report joining an industry-specific job board or forum.",
+    "region": "hustle",
+    "flavor": "Mount Niche is on your horizon. Quiet preparation. A stronger next move.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-81",
+    "name": "Mount First Recap",
+    "metric": "monthly_recaps",
+    "target": 1,
+    "criteria": "Generate your first Monthly Recap.",
+    "region": "milestones",
+    "flavor": "Mount First Recap is on your horizon. A chapter worth keeping in your field journal.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-82",
+    "name": "Mount Quarterly Review",
+    "metric": "recap_run",
+    "target": 3,
+    "criteria": "Generate recaps for 3 consecutive calendar months.",
+    "region": "milestones",
+    "flavor": "Mount Quarterly Review is on your horizon. A chapter worth keeping in your field journal.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-83",
+    "name": "Mount Annual Summit",
+    "metric": "yearly_recaps",
+    "target": 1,
+    "criteria": "Generate a Yearly Recap.",
+    "region": "milestones",
+    "flavor": "Mount Annual Summit is on your horizon. A chapter worth keeping in your field journal.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-84",
+    "name": "Mount Storyteller",
+    "metric": "gemini_recaps",
+    "target": 1,
+    "criteria": "Receive your first Gemini-generated career archetype.",
+    "region": "milestones",
+    "flavor": "Mount Storyteller is on your horizon. A chapter worth keeping in your field journal.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-85",
+    "name": "Mount Shapeshifter",
+    "metric": "archetype_change",
+    "target": 1,
+    "criteria": "Receive different Gemini archetypes in consecutive monthly recaps.",
+    "region": "milestones",
+    "flavor": "Mount Shapeshifter is on your horizon. A chapter worth keeping in your field journal.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-86",
+    "name": "Mount Loyal Subject",
+    "metric": "fallback_read",
+    "target": 1,
+    "criteria": "View a local fallback story while Gemini is unavailable.",
+    "region": "milestones",
+    "flavor": "Mount Loyal Subject is on your horizon. A chapter worth keeping in your field journal.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-87",
+    "name": "Mount Highlight Reel",
+    "metric": "highlight_view",
+    "target": 1,
+    "criteria": "View the Top Quests share card for a nonempty recap.",
+    "region": "milestones",
+    "flavor": "Mount Highlight Reel is on your horizon. A chapter worth keeping in your field journal.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-88",
+    "name": "Mount Viral",
+    "metric": "share_click",
+    "target": 1,
+    "criteria": "Click Share on your recap highlight card.",
+    "region": "milestones",
+    "flavor": "Mount Viral is on your horizon. A chapter worth keeping in your field journal.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-89",
+    "name": "Mount Data Nerd",
+    "metric": "analytics_view",
+    "target": 1,
+    "criteria": "View your progress analytics dashboard.",
+    "region": "milestones",
+    "flavor": "Mount Data Nerd is on your horizon. A chapter worth keeping in your field journal.",
+    "tracking_hint": ""
+  },
+  {
+    "id": "mount-90",
+    "name": "Mount Self-Aware",
+    "metric": "skills_view",
+    "target": 1,
+    "criteria": "View the Skills Practiced breakdown.",
+    "region": "milestones",
+    "flavor": "Mount Self-Aware is on your horizon. A chapter worth keeping in your field journal.",
+    "tracking_hint": ""
+  }
+]

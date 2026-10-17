@@ -55,6 +55,8 @@ RECAP_FIELDS = {
     'quest_line': 280,
     'onething_line': 240,
     'next_step': 180,
+    'signature_move': 240,
+    'plot_twist': 240,
 }
 
 
@@ -76,12 +78,15 @@ def generate_recap_narrative(context, timeout=45):
         "of work. Prefer the category with the highest completion count; use skill counts and the "
         "actual quest titles to break ties. The evidence must name the observed category or skill. "
         "Do not infer personality, intelligence, mental health, ability, or career outcomes.\n\n"
-        "Then write: (1) a warm, colorful two-sentence description of this pattern; (2) one witty "
-        "line about their actual completed quests, referencing only titles present in the data; "
+        "Review every supplied completion from the selected lifetime, monthly, or yearly period. Never use activity outside that period. Notice changes "
+        "over time as well as the overall pattern; do not treat the first or last few records as "
+        "the whole story. Then write: (1) a warm, colorful two-sentence description of this "
+        "pattern; (2) one witty line about their actual completed quests, referencing only titles "
+        "present in the data; "
         "(3) one witty line connecting their recorded points, minutes, streak, or completion count "
         "to OneThing's small-steps idea; and (4) one practical, low-pressure next step. Never claim "
         "a future action is already done. Do not invent activity, numbers, skills, or opportunities. "
-        "Keep the humor kind, concise, and suitable for a student audience. Return only the JSON "
+        "Also write signature_move: a memorable recurring habit evidenced by these quests; and plot_twist: a surprising but grounded connection or contrast in this history (with little activity, celebrate beginning without inventing a pattern). These are story slides: avoid repeating the analytics charts. Keep the humor kind, concise, and suitable for a student audience. Return only the JSON "
         "object requested by the schema.\n\nRecorded activity JSON:\n"
         + json.dumps(context, ensure_ascii=False, sort_keys=True)
     )
@@ -94,7 +99,7 @@ def generate_recap_narrative(context, timeout=45):
         'contents': [{'parts': [{'text': prompt}]}],
         'generationConfig': {
             'temperature': 0.8,
-            'maxOutputTokens': 600,
+            'maxOutputTokens': 900,
             'responseMimeType': 'application/json',
             'responseSchema': schema,
         },
@@ -120,6 +125,8 @@ def generate_recap_narrative(context, timeout=45):
     except (TypeError, ValueError):
         return None
     if not isinstance(result, dict):
+        return None
+    if any(not isinstance(result.get(field), str) for field in RECAP_FIELDS):
         return None
     cleaned = {field: str(result.get(field, '')).strip()[:limit] for field, limit in RECAP_FIELDS.items()}
     if not all(cleaned.values()):

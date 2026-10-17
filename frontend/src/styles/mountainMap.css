@@ -1,0 +1,61 @@
+.mountain-atlas { margin: 20px 0; border: 1px solid #76603e; border-radius: 8px; overflow: hidden; background: var(--paper); color: var(--on-paper); box-shadow: 0 8px 26px #231b1220; }
+.atlas-heading { padding: 22px 20px 12px; background: linear-gradient(#e7d8bba8,#d8c39b70),var(--map) center/cover; }
+.atlas-heading .eyebrow { color: #57432b !important; font-size: 9px; }
+.atlas-heading h2 { font-size: 30px; line-height: 1.1; margin: 10px 0; }
+.atlas-heading p { margin: 0; font-size: 15px; line-height: 1.5; max-width: 38ch; }
+.atlas-totals { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 14px 18px; font-size: 12px; border-block: 1px solid #76603e50; background: #d0b98f; }
+.atlas-totals > span:first-child { display: flex; align-items: center; gap: 6px; }
+.atlas-totals strong { font-size: 16px; }
+.atlas-region-label { display: block; font-size: 12px; padding: 14px 18px 4px; }
+.atlas-region-label select { display: block; width: 100%; min-width: 0; margin-top: 7px; background: var(--ink-1); color: var(--on-ink); border: 1px solid var(--brass); border-radius: 4px; padding: 11px 9px; }
+.achievement-gallery .atlas-region-label { padding: 0 0 18px; }
+.atlas-legend { display: flex; justify-content: center; gap: 18px; padding: 12px 6px; font-size: 10px; }
+.atlas-legend span { display: flex; align-items: center; gap: 5px; }
+.atlas-legend i { display: inline-block; width: 9px; height: 9px; border: 1px solid #857663; background: #a69c8a; }
+.atlas-legend .explored-key { background: #99764c; border-color: #6b432d; }
+.atlas-pieces { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); padding: 10px; background: #453c2c; gap: 2px; }
+.map-piece { position: relative; height: 179px; min-width: 0; isolation: isolate; padding: 0; color: #342514; background: #d5c29b; clip-path: polygon(0 0,44% 0,50% 5%,56% 0,100% 0,100% 44%,95% 50%,100% 56%,100% 100%,56% 100%,50% 95%,44% 100%,0 100%,0 56%,5% 50%,0 44%); }
+.map-piece:hover { background-color: #e6d4ad; }
+.map-piece:focus-visible { outline: none; box-shadow: inset 0 0 0 4px #8a2620; }
+.map-piece.is-uncharted { background: #aaa18e; }
+.map-piece.is-uncharted::after { content: ''; position: absolute; inset: 0; pointer-events: none; z-index: -1; background-image: radial-gradient(#615d5430 .7px,transparent 1px); background-size: 4px 4px; }
+.piece-terrain { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; }
+.piece-hills { fill: #948c65; opacity: .45; }
+.piece-mountain { fill: #99836c; stroke: #51432d; stroke-width: 1; }
+.piece-snow { fill: #f3e9ce; opacity: .8; }
+.piece-ridges { fill: none; stroke: #5f4e38; stroke-width: .9; }
+.piece-route { fill: none; stroke: #8a2620; stroke-width: 2.2; stroke-dasharray: 3 3; }
+.piece-flag { fill: #8a2620; stroke: #3d2416; stroke-width: .9; }
+.piece-mist { stroke: #e0d9c7; fill: none; stroke-width: 8; stroke-linecap: round; opacity: .65; }
+.is-uncharted .piece-mountain { fill: #908b80; stroke: #6f685a; opacity: .6; }
+.is-uncharted .piece-ridges,.is-uncharted .piece-snow { opacity: .25; }
+.map-piece .badge-medallion { position: absolute; top: 0; left: calc(50% - 46px); transform: scale(.5); transform-origin: center top; margin: 0; pointer-events: none; }
+.piece-name { position: absolute; bottom: 26px; left: 10px; right: 10px; font-weight: 600; font-size: 13px; line-height: 1.15; text-shadow: 0 1px 2px #e6d6b8; }
+.piece-status { position: absolute; bottom: 10px; left: 0; right: 0; display: flex; align-items: center; justify-content: center; gap: 3px; font-size: 8px; text-transform: uppercase; letter-spacing: .08em; }
+.atlas-navigation { display: flex; align-items: center; justify-content: space-between; padding: 15px 8px; font-size: 12px; }
+.atlas-navigation button { display: inline-flex; align-items: center; padding: 8px 5px; min-height: 44px; }
+.badge-journal { border: 1px solid #9a8056; border-radius: 6px; margin: 14px 0 24px; background: #d8c39bb0; }
+.badge-journal > summary { cursor: pointer; padding: 16px; font-size: 16px; }
+.badge-journal .achievement-gallery { margin: 0; border-radius: 0 0 6px 6px; }
+.mountain-dialog { width: min(90vw,400px); max-height: 85dvh; padding: 0; background: var(--ink-1); color: var(--on-ink); border: 1px solid var(--brass); border-radius: 10px; box-shadow: 0 25px 80px #0009; }
+.mountain-dialog::backdrop { background: #0b0806b8; backdrop-filter: blur(3px); }
+.mountain-detail { padding: 28px 24px; text-align: center; position: relative; }
+.mountain-dialog-close { position: absolute; top: 12px; right: 10px; padding: 8px; color: var(--on-ink); min-width: 44px; min-height: 44px; }
+.mountain-detail .eyebrow { display: block; color: var(--brass) !important; }
+.mountain-detail h2 { font-size: 32px; line-height: 1.1; margin: 14px 0 6px; }
+.mountain-detail h3 { font-size: 16px; font-weight: 400; color: var(--brass); margin: 8px 0 18px; }
+.mountain-detail p,.mountain-detail blockquote { font-size: 16px; line-height: 1.5; }
+.mountain-detail blockquote { font-style: italic; margin: 22px 0; padding-block: 14px; border-block: 1px solid #b8904a40; }
+.mountain-detail progress { display: block; width: 100%; accent-color: var(--brass); height: 6px; margin: 20px 0 7px; }
+.mountain-detail small { font-size: 12px; }
+.mountain-earned { display: flex; justify-content: center; align-items: center; gap: 5px; color: var(--brass); }
+@media(prefers-reduced-motion:no-preference){.map-piece.is-explored { animation: reveal-mountain .7s ease-out both; }@keyframes reveal-mountain { from { filter: grayscale(1); opacity: .55; } to { filter: grayscale(0); opacity: 1; } }}
+.work-log { padding: 12px; border: 1px solid #977c5350; margin: 14px 0; border-radius: 6px; }
+.work-log summary { cursor: pointer; }
+.work-log label { display: block; margin-top: 14px; font-size: 14px; }
+.work-log input,.work-log select { display: block; width: 100%; padding: 10px; margin-top: 6px; background: var(--ink-1); color: var(--on-ink); border: 1px solid var(--brass); border-radius: 4px; }
+.work-log small { display: block; font-size: 12px; line-height: 1.4; margin-top: 10px; }
+.highlight-card { padding: 22px; margin: 16px 0; background: var(--ink-1); color: var(--on-ink); border: 1px solid var(--brass); border-radius: 6px; }
+.highlight-card li { margin: 15px 0; line-height: 1.4; }
+.highlight-card small { display: block; color: var(--brass); margin-top: 4px; }
+.recap-controls select { background: var(--ink-1); color: var(--on-ink); border: 1px solid var(--brass); border-radius: 4px; padding: 9px; }
