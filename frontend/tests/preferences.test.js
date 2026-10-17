@@ -18,7 +18,7 @@ test('interests and goals stop at three; deselecting allows another selection',(
 });
 
 test('collected filters use catalog challenge/time independently of preparation steps',()=>{
- const raw=JSON.parse(readFileSync(new URL('../../backend/catalog/sample.json',import.meta.url))).opportunities[0];
+ const raw=JSON.parse(readFileSync(new URL('../../backend/catalog/sample.json',import.meta.url))).opportunities.find(o=>o.personalization.filter_interests?.length&&o.difficulty!=='Lazy');
  const p=raw.personalization;
  const o={...raw,topics:p.interests,career_goals:[],venues:p.location_preferences};
  const preferences={challenges:p.challenge_levels,time:p.time_buckets,locations:[],commitment:p.commitment};

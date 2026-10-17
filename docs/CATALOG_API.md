@@ -21,7 +21,7 @@ These read-only routes expose `backend/catalog/opportunities.json.gz`, also used
 | `include_past` | `false` by default; `true` includes historical events. |
 | `offset`, `limit` | Offset defaults to 0; page size defaults to 20 and is limited to 1–100. |
 
-Selections are **OR within a group and AND between groups**. Goal relevance is inferred; choosing a goal does not promise that an opportunity achieves it. Some records have no defensible match to any of the ten goals and keep `goals: []` rather than inventing relevance.
+Every selected interest, goal and skill must match (**AND**); broad fallback topics are not supported matches. Difficulty/time/metadata selections remain alternatives within their groups. Groups are combined with AND, and Near me always requires the radius constraint even alongside another venue choice. Goal relevance is inferred; choosing a goal does not promise that an opportunity achieves it. Some records have no defensible match to any of the ten goals and keep `goals: []` rather than inventing relevance.
 
 Response: `opportunities`, `total`, `offset`, `limit`, `scope`, and `facets`. Each card includes `match` identifying the time/challenge/commitment scope actually used and, when calculable, distance in kilometers. Facets count matching records, rather than the entire unfiltered catalog. Labels are exact; read them from the options route rather than retyping punctuation.
 
@@ -51,3 +51,6 @@ Invoke-RestMethod 'http://127.0.0.1:5001/catalog/opportunities?source=irvine&lim
 Invoke-RestMethod 'http://127.0.0.1:5001/catalog/opportunities?scope=micro_step&challenge_levels=Lazy&limit=5'
 Invoke-RestMethod 'http://127.0.0.1:5001/catalog/opportunities?locations=Near%20me&lat=33.7&lon=-117.8&radius_km=10&limit=5'
 ```
+
+## Additional strict filters
+`skills`, `experience`, `cost`, `prerequisites`, `duration_quality`, and `schedule` accept repeated values. Metadata options are returned in `/catalog/options.filter_options`. `max_minutes` caps the full-opportunity upper duration bound (or the selected first/micro-step minutes); missing full totals are excluded. Unknown metadata matches only Unknown. Invalid source/kind/skills/metadata values return 400. See the effort-v2 fields and definitions in [API.md](API.md#effort-assessment-v2).

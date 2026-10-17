@@ -3,42 +3,102 @@
     "difficulty": "Easy",
     "first_step_minutes": 15,
     "suggested_first_step": "Read the Python course prerequisites and write a tiny example using a function and a return value.",
-    "inferred_skills": ["Coding"],
+    "inferred_skills": [
+      "Coding"
+    ],
     "reason": "Reviewed the source description: introductory Python syntax, control flow and functions; 15 minutes estimates only the preparation exercise."
   },
   "anteater-afd0e77a5900531644d3": {
     "difficulty": "Hard",
     "first_step_minutes": 15,
     "suggested_first_step": "Review the MATLAB requirements and list one psychology research question you could explore with data.",
-    "inferred_skills": ["Coding", "Data analysis", "Research"],
+    "inferred_skills": [
+      "Coding",
+      "Data analysis",
+      "Research"
+    ],
     "reason": "Reviewed the graduate course description: introductory programming applied to experimental psychology, probability and simulation; more demanding than a general beginner course."
   },
   "coursera-034308fcb39257cbf479": {
     "difficulty": "Hard",
     "first_step_minutes": 10,
     "suggested_first_step": "Review the lab prerequisites and identify what the NCAA model is trying to predict before starting the lab.",
-    "inferred_skills": ["Data analysis"],
+    "inferred_skills": [
+      "Data analysis"
+    ],
     "reason": "Reviewed the self-paced machine-learning lab description and reported one-hour workload; the 10-minute estimate is preparation only, not the full lab."
   },
   "zotspot-8ed83eca38c581f5ee66": {
     "difficulty": "Easy",
     "first_step_minutes": 5,
     "suggested_first_step": "Draft a two-sentence introduction and one informational interview question; check the source date before attending.",
-    "inferred_skills": ["Community", "Writing"],
+    "inferred_skills": [
+      "Community",
+      "Writing"
+    ],
     "reason": "Reviewed Networking 101's introductory practice scenarios. Historical calendar record: this is a preparation suggestion, not a claim the event is upcoming."
   },
   "zotspot-a5c68a72cbcef60ece7f": {
     "difficulty": "Easy",
     "first_step_minutes": 5,
     "suggested_first_step": "Check the UCI Law student eligibility restriction and source date, then draft a short elevator pitch.",
-    "inferred_skills": ["Community", "Writing"],
+    "inferred_skills": [
+      "Community",
+      "Writing"
+    ],
     "reason": "Reviewed the workshop description, including its UCI Law students-only restriction. Do not treat this historical event as open to every student."
   },
   "zotspot-778b72c1d8db032eeeaf": {
     "difficulty": "Easy",
     "first_step_minutes": 10,
     "suggested_first_step": "Check registration and eligibility, then prepare two questions about the employer's recruitment process.",
-    "inferred_skills": ["Community"],
+    "inferred_skills": [
+      "Community"
+    ],
     "reason": "Reviewed the ESC x SHPE employer networking session description; ten minutes estimates preparation, while the source event lasts ninety minutes."
+  },
+  "coursera-02ab87df1cc0b3bd710a": {
+    "difficulty": "Hard",
+    "reason": "Reviewed computer-vision course description: dataset preparation, augmentation, model evaluation, training stability and gradient failures demand applied ML knowledge; guided wording alone is not a low-effort signal."
+  },
+  "coursera-0015609c81f53d9d4c34": {
+    "difficulty": "Easy",
+    "reason": "Reviewed the 60-minute Gemini multimodality console lab. It explores model use cases with guidance, but cloud-console setup and unknown prerequisites make Easy more defensible than Lazy."
+  },
+  "coursera-99dab250ebc75c69b32e": {
+    "difficulty": "Hard",
+    "reason": "Reviewed Splunk Enterprise administration description: distributed search, authentication, forwarders, production configuration and certification preparation require independent technical understanding despite step-by-step guidance."
+  },
+  "coursera-4e66e32c1b3690d398d4": {
+    "difficulty": "Medium",
+    "reason": "Reviewed DevOps foundations syllabus: CI/CD, GitHub project workflows, Linux and Python application exercises. No prior experience is explicitly required, but practical multi-tool setup adds effort beyond passive introductory learning."
+  },
+  "anteater-e04f94cb148024d76033": {
+    "difficulty": "Hard",
+    "reason": "Reviewed introductory graduate Python/AI course: Jupyter, NumPy, pandas and visualization. Graduate academic context plus programming practice warrants Hard; introductory content does not justify automatic Challenging."
+  },
+  "coursera-9e2f10170a6bd28526e0": {
+    "difficulty": "Challenging",
+    "reason": "Reviewed CASP+ preparation description: advanced endpoint/cloud security, risk assessment, indicators of compromise and strategic incident decisions support a specialist-level challenge."
+  },
+  "coursera-b539b207bf3e1d6c1b2f": {
+    "difficulty": "Easy",
+    "reason": "Reviewed the source one-hour beginner Tableau project: connect a dataset, build basic charts, and assemble a dashboard with guidance. Keep 60 minutes of source workload separate from first-step preparation."
+  },
+  "coursera-9bae3ac3bdc451544530": {
+    "difficulty": "Medium",
+    "reason": "Reviewed introductory Terraform course: installation, HCL configurations, providers, variables and resource dependencies with labs. Beginner audience, but active environment setup/configuration requires moderate effort; total workload is not supplied."
+  },
+  "coursera-622b5c319ca00c20d8cc": {
+    "difficulty": "Medium",
+    "reason": "Reviewed finance fundamentals description: NPV, annuities/perpetuities, fixed-income/equity valuation, and risk/return calculations. Introductory title understates the quantitative practice involved."
+  },
+  "coursera-213f3dcc32c142fc1dae": {
+    "difficulty": "Easy",
+    "reason": "Reviewed four-hour time-management course using everyday AI prompts and personal schedules; source explicitly requires no technical experience. Full source workload is four hours, not a two-minute micro-step."
+  },
+  "coursera-09ac22e0eaa349590457": {
+    "difficulty": "Easy",
+    "reason": "Reviewed mindfulness/introspection description: guided personal reflection about values, work fulfillment and focus; no technical deliverable. Missing workload remains an explicit planning estimate."
   }
 }

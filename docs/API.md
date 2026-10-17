@@ -7,7 +7,7 @@ All requests and responses are JSON except PDF uploads. Vite proxies `/api/...` 
 - `GET /health`: `{status, storage, data_mode, catalog_records}`.
 - `GET /opportunities`: `{profile, checkin, opportunities, quests, total, offset, limit, has_more, data_mode, kinds}`. Default page size 40, maximum 100. Filtering happens before pagination. Each card includes a stable collected ID, `sample:false`, source URL/provider, collection time, availability, original source facts and personalization estimates. `saved`, `matching_tags`, and a matching `suggested_quest_id` are added for the app. The page embeds its quests so details and filters use the same records.
 
-Feed filters (repeat list parameters; OR within groups, AND between groups):
+Feed filters: every selected interest, goal, and skill must match (AND). Difficulty, time, type, and metadata choices are alternatives within their groups; all groups are combined with AND. Near me always imposes the radius constraint, even alongside another location choice. Broad personal-growth fallback tags do not qualify as supported interest matches.
 
 | Parameter | Meaning |
 | --- | --- |
@@ -20,6 +20,9 @@ Feed filters (repeat list parameters; OR within groups, AND between groups):
 | `q` | Space-separated text terms in title/description/organization/location. |
 | `lat`, `lon`, `radius_km` | Near me requires finite coordinates. Default radius 25 km; maximum 500. Unknown source coordinates are excluded. |
 | `offset`, `limit` | Nonnegative offset; limit 1-100. |
+| `source` | Repeated exact provider IDs. Unknown types, skills, providers, and metadata values return 400. |
+| `experience`, `cost`, `prerequisites`, `duration_quality`, `schedule` | Repeated exact values from `/catalog/options.filter_options` (shared/catalog_filters.json). Unknown facts match only the explicit Unknown choice. Experience is an editorial estimate, not eligibility verification. None stated means an explicit source statement; missing prerequisite information is Unknown. |
+| `max_minutes` | Positive finite cap on the full duration range upper bound. Unknown totals are excluded. |
 
 Normal time buckets are disjoint: under 5, [5,15), [15,30), [30,60), [60,180), and 180+ minutes. They describe the full opportunity, using source durations or labeled planning estimates. Full opportunity duration and inferred/source facts stay in `personalization.duration`. Multi-day is a planning category for the larger opportunity. Near me comes from distance to approximate City GIS points, not a claim about a trailhead or accessibility. The browser asks for location only when selected; denied access requires choosing another location or allowing access.
 
@@ -57,3 +60,8 @@ Monthly analytics series has one bin per calendar day. The UI offers Weekly, Mon
 
 ### Complete Progress handoff
 `GET /progress/data?date=YYYY-MM-DD` is a read-only versioned payload containing lifetime `progress`, `climb`, calendar active-day counts, `analytics` for week/month/year, and lifetime `recap`. The optional date controls analytics only. See `data/README.md` for field mappings and `data/progress.json` for a persisted demo snapshot. Refresh the file using `python backend/export_progress.py` from an environment with the backend requirements installed. Live completions remain stored in the configured MongoDB/SQLite store; the JSON snapshot is not a replacement database.
+
+## Effort assessment v2
+Every collected card includes `personalization.assessment`: evidence-based difficulty, estimated experience level, prerequisite status/basis, source-backed cost (Free/Paid/Unknown), duration quality, schedule type, languages, and eligibility text/verification flag. Unknown costs and eligibility are not fabricated. Difficulty describes the source activity, independently of preparation quests or duration. Lazy means a guided low-barrier activity or passive attendance, Easy means introductory practice, Medium means applied/intermediate work, Hard means advanced independent work, and Challenging means graduate/research/complex specialist material. Counts are reported honestly rather than forced into equal bins. The assistant-authored rubric processes each record; explicitly reviewed exceptions are in editorial_overrides.json. This is not a claim of individual manual review of every listing.
+
+`personalization.duration` now includes `min_minutes`, `max_minutes`, `minutes` (only when exact bounds agree), `quality`, `scope`, and `basis`. Provider weekly ranges are multiplied only when a week count is supplied; unsupported/missing workload becomes a labeled planning range or Unknown. Class/job/internship totals remain Unknown/Multi-day rather than invented hours. Range upper bounds drive time filtering, so a 1?3 hour estimate does not pass a 60-minute cap. Map segments do not establish a whole hike duration. Source-reported event elapsed time can include breaks and overnight time.

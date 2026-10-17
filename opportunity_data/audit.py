@@ -50,7 +50,7 @@ def main():
             problems.append({"issue": "JSON export count differs from database"})
     report = {"audited_at": datetime.now(timezone.utc).isoformat(),
               "database": "opportunity_data/data/opportunities.sqlite3",
-              "json_export": "opportunity_data/data/opportunities.json",
+              "json_export": "opportunity_data/data/opportunities.json" if export_path.exists() else None,
               "total_opportunities": sum(counts.values()), "by_source": counts,
               "export_count": exported, "sqlite_integrity": integrity,
               "validation_issues": problems, "individually_reviewed_estimates": reviewed,
@@ -61,7 +61,7 @@ def main():
                               "Anteater records without titles are excluded",
                               "Eventbrite covers manually discovered public IDs, not global search",
                               "Most difficulty/skill/first-step fields use an authored estimation rubric",
-                              "Existing demo feed is not connected to this separate catalog"]}
+                              "The app serves the curated compressed catalog; SQLite is the normalized source for manual refinement/publication"]}
     output = ROOT / "reports" / "collection-summary.json"
     output.parent.mkdir(exist_ok=True)
     output.write_text(json.dumps(report, indent=2), encoding="utf-8")

@@ -30,6 +30,30 @@ class FakeFetcher:
 
 
 class PipelineTests(unittest.TestCase):
+    def test_requested_catalog_focus_excludes_uci_and_generic_courses(self):
+        self.assertFalse(inclusion({'source':'anteater','kind':'Class','title':'Python programming'})[0])
+        self.assertFalse(inclusion({'source':'coursera','kind':'Online course','title':'History of Medicine','description':'Improve your career, communication, and personal growth.'})[0])
+        for title in ('Build websites with HTML5 and CSS3','Fundamentals of Investing','Python for Beginners'):
+            self.assertTrue(inclusion({'source':'coursera','kind':'Online course','title':title})[0],title)
+
+    def test_catalog_storage_excludes_unrelated_and_prunes_to_published_ids(self):
+        with tempfile.TemporaryDirectory() as directory:
+            catalog = Catalog(Path(directory) / 'curated.sqlite3')
+            facts = {"source": "test", "source_id": "1", "source_url": "https://example.org/1",
+                     "kind": "Class", "title": "Python programming", "provenance": {"collected_at": "2026-10-17T00:00:00+00:00"}}
+            first = enrich(facts)
+            self.assertTrue(catalog.put(first))
+            self.assertTrue(catalog.put(enrich({**facts, 'source_id':'2', 'source_url':'https://example.org/2'})))
+            self.assertFalse(catalog.put(enrich({**facts, 'source_id':'3', 'source_url':'https://example.org/3', 'kind':'Job', 'title':'Physician'})))
+            with self.assertRaises(ValueError):
+                catalog.retain_ids([])
+            with self.assertRaises(ValueError):
+                catalog.retain_ids(['missing'])
+            self.assertEqual(catalog.stats(),{'test':2})
+            self.assertEqual(catalog.retain_ids([first['id']]),1)
+            self.assertEqual(catalog.stats(),{'test':1})
+            catalog.close()
+
     def test_relevance_curation_keeps_personal_benefit_and_rejects_unrelated_roles(self):
         self.assertEqual(inclusion({"kind": "Park", "title": "Quiet neighborhood green space"}),
                          (True, "personal_wellbeing_or_recreation"))
@@ -63,13 +87,16 @@ class PipelineTests(unittest.TestCase):
         self.assertIn("Coding", row["editorial"]["inferred_skills"])
         self.assertTrue(row["editorial"]["difficulty_is_estimate"])
         self.assertIsNone(row["duration"]["total_minutes"])
+        # Anteater parsing remains testable, but UCI records are intentionally
+        # excluded from active storage. Use a neutral fixture for deduplication.
+        row = enrich({**facts[0], "source": "test"})
         with tempfile.TemporaryDirectory() as directory:
             catalog = Catalog(Path(directory) / "catalog.sqlite3")
             catalog.put(row)
             catalog.put(row)
             # Another upstream ID with the same canonical URL still counts once.
-            catalog.put(enrich({**facts[0], "source_id": "alias"}))
-            self.assertEqual(catalog.stats(), {"anteater": 1})
+            catalog.put(enrich({**facts[0], "source": "test", "source_id": "alias"}))
+            self.assertEqual(catalog.stats(), {"test": 1})
             output = Path(directory) / "catalog.json"
             catalog.export(output)
             self.assertEqual(len(json.loads(output.read_text())["opportunities"]), 1)

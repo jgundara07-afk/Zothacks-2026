@@ -70,9 +70,10 @@ class PersonalizationTests(unittest.TestCase):
         self.assertEqual(result["opportunities"][0]["match"]["scope"], "micro_step")
         self.assertEqual(reader.query(commitment="A mix of both")["total"], 1)
 
-    def test_and_between_groups_or_within_group_and_pagination(self):
+    def test_all_interests_required_and_pagination(self):
         reader = CatalogReader([example(), example(source_id="other", title="Basketball", description="Sports practice")], TAXONOMY)
-        self.assertEqual(reader.query(interests=["Software Engineering", "Sports"])["total"], 2)
+        self.assertEqual(reader.query(interests=["Software Engineering", "Sports"])["total"], 0)
+        self.assertEqual(reader.query(interests=["Software Engineering", "Web & App Development"])["total"], 1)
         self.assertEqual(reader.query(interests=["Sports"], goals=["Build a strong project portfolio"])["total"], 0)
         self.assertEqual(len(reader.query(offset=1, limit=1)["opportunities"]), 1)
         self.assertEqual(reader.query(q="Python Flask")["total"], 1)
@@ -121,7 +122,7 @@ class PersonalizationTests(unittest.TestCase):
         from backend.app import create_app, Store
         reader = CatalogReader([example()], TAXONOMY)
         with tempfile.TemporaryDirectory() as directory, patch("backend.catalog_routes.load_catalog", return_value=reader):
-            client = create_app(Store(path=str(Path(directory) / "demo.sqlite3"))).test_client()
+            client = create_app(Store(path=str(Path(directory) / "demo.sqlite3")), data_mode="sample").test_client()
             self.assertEqual(client.get("/catalog/options").json["max_selected_goals"], 3)
             response = client.get("/catalog/opportunities", query_string={"scope": "micro_step", "challenge_levels": "Lazy"})
             self.assertEqual(response.status_code, 200)

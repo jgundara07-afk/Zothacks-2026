@@ -41,7 +41,7 @@ def preparation_quests(o):
             for key,size,difficulty,minutes,bucket,points,title,steps in plans]
 
 def available(o, now):
-    if o['status'] == 'past':
+    if o['status'] in {'past', 'cancelled'}:
         return False
     end = o.get('source_facts', {}).get('end')
     if isinstance(end, dict):

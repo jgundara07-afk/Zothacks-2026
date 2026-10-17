@@ -2,279 +2,6 @@
   "note": "Small preview, not the full catalog",
   "opportunities": [
     {
-      "id": "anteater-0008e7184a980cb39d80",
-      "title": "Toxic Chemicals in the Environment Laboratory",
-      "description": "Covers field sampling techniques and laboratory analysis methods for assessing the occurrence and effects of toxic chemicals in environmental compartments, including water, soils, sediments, air, and food resources.",
-      "description_truncated": false,
-      "organization": "University of California, Irvine",
-      "source": "anteater",
-      "source_id": "PUBHLTH164L",
-      "source_url": "https://anteaterapi.com/v2/rest/courses/PUBHLTH164L",
-      "kind": "Class",
-      "sample": false,
-      "tags": [
-        "Productivity & Personal Growth"
-      ],
-      "goals": [],
-      "skills": [
-        "Research",
-        "Sustainability"
-      ],
-      "minutes": 15,
-      "difficulty": "Hard",
-      "mode": null,
-      "color": "yellow",
-      "location": "UC Irvine",
-      "city": null,
-      "coordinates": null,
-      "personalization": {
-        "taxonomy_version": "onething-personalization-v1",
-        "interests": [
-          "Productivity & Personal Growth"
-        ],
-        "goals": [],
-        "challenge_levels": [
-          "Hard"
-        ],
-        "time_buckets": [
-          "Multi-day"
-        ],
-        "location_preferences": [
-          "On campus"
-        ],
-        "commitment": "Long-term opportunities and projects",
-        "first_step": {
-          "minutes": 15,
-          "time_bucket": "15–30 min",
-          "challenge_level": "Easy",
-          "commitment": "Quick tasks I can finish immediately"
-        },
-        "micro_step": {
-          "minutes": 2,
-          "time_bucket": "Under 5 min",
-          "challenge_level": "Lazy",
-          "commitment": "Quick tasks I can finish immediately",
-          "action": "Open the source, check whether this opportunity suits you, and write one question or next step."
-        },
-        "duration": {
-          "minutes": null,
-          "bucket": "Multi-day",
-          "estimated": true,
-          "basis": "Planning assumption for education/employment when exact total effort is unavailable; source workload: unknown"
-        },
-        "classification": {
-          "method": "Assistant-authored evidence rules; estimates require source verification",
-          "interest_evidence": {
-            "Productivity & Personal Growth": "Broad personal exploration fallback; no specific checklist topic detected"
-          },
-          "fallback": true,
-          "goal_basis": "Inferred relevance to the listed topics and opportunity type; not promised outcomes",
-          "challenge_is_estimate": true,
-          "challenge_basis": "UCI catalog course level; relative academic effort, not an eligibility assessment",
-          "location_basis": [
-            "UCI catalog affiliation or explicit campus venue; class delivery must be checked"
-          ],
-          "location_is_inferred": true
-        }
-      },
-      "suggested_first_step": "Read the prerequisites and outline one topic you want to learn.",
-      "availability": "Catalog entry; current enrollment and schedule not checked",
-      "status": "verify_at_source",
-      "source_facts": {
-        "units": {
-          "min": 4,
-          "max": 4
-        },
-        "prerequisites": "PUBHLTH 1 and PUBHLTH 2. Prerequisite or corequisite: PUBHLTH 164.",
-        "restrictions": "Public Health Sciences and Public Health Policy majors have first consideration for enrollment.",
-        "terms": [],
-        "course_level": "Upper Division (100-199)",
-        "attribution": "Data from Anteater API (ICSSC): https://icssc.link/about-anteaterapi"
-      },
-      "collected_at": "2026-10-17T19:02:14.456318+00:00"
-    },
-    {
-      "id": "anteater-00136db8fde236674c11",
-      "title": "Psychology and Emotion",
-      "description": "General theories of emotion and research regarding cognitive, behavioral, physiological, and subjective experience of emotion. Specific topics include emotion regulation, emotion and health, emotional intelligence, and emotional development.",
-      "description_truncated": false,
-      "organization": "University of California, Irvine",
-      "source": "anteater",
-      "source_id": "PSYCH127E",
-      "source_url": "https://anteaterapi.com/v2/rest/courses/PSYCH127E",
-      "kind": "Class",
-      "sample": false,
-      "tags": [
-        "Productivity & Personal Growth"
-      ],
-      "goals": [],
-      "skills": [
-        "Research"
-      ],
-      "minutes": 15,
-      "difficulty": "Hard",
-      "mode": null,
-      "color": "yellow",
-      "location": "UC Irvine",
-      "city": null,
-      "coordinates": null,
-      "personalization": {
-        "taxonomy_version": "onething-personalization-v1",
-        "interests": [
-          "Productivity & Personal Growth"
-        ],
-        "goals": [],
-        "challenge_levels": [
-          "Hard"
-        ],
-        "time_buckets": [
-          "Multi-day"
-        ],
-        "location_preferences": [
-          "On campus"
-        ],
-        "commitment": "Long-term opportunities and projects",
-        "first_step": {
-          "minutes": 15,
-          "time_bucket": "15–30 min",
-          "challenge_level": "Easy",
-          "commitment": "Quick tasks I can finish immediately"
-        },
-        "micro_step": {
-          "minutes": 2,
-          "time_bucket": "Under 5 min",
-          "challenge_level": "Lazy",
-          "commitment": "Quick tasks I can finish immediately",
-          "action": "Open the source, check whether this opportunity suits you, and write one question or next step."
-        },
-        "duration": {
-          "minutes": null,
-          "bucket": "Multi-day",
-          "estimated": true,
-          "basis": "Planning assumption for education/employment when exact total effort is unavailable; source workload: unknown"
-        },
-        "classification": {
-          "method": "Assistant-authored evidence rules; estimates require source verification",
-          "interest_evidence": {
-            "Productivity & Personal Growth": "Broad personal exploration fallback; no specific checklist topic detected"
-          },
-          "fallback": true,
-          "goal_basis": "Inferred relevance to the listed topics and opportunity type; not promised outcomes",
-          "challenge_is_estimate": true,
-          "challenge_basis": "UCI catalog course level; relative academic effort, not an eligibility assessment",
-          "location_basis": [
-            "UCI catalog affiliation or explicit campus venue; class delivery must be checked"
-          ],
-          "location_is_inferred": true
-        }
-      },
-      "suggested_first_step": "Read the prerequisites and outline one topic you want to learn.",
-      "availability": "Catalog entry; current enrollment and schedule not checked",
-      "status": "verify_at_source",
-      "source_facts": {
-        "units": {
-          "min": 4,
-          "max": 4
-        },
-        "prerequisites": "PSY BEH 9 or PSY BEH 11C or PSYCH 7A or PSYCH 9C.",
-        "restrictions": "Psychology and Social Behavior, Social Ecology, and Psychology majors have first consideration for enrollment.",
-        "terms": [
-          "2006 Winter",
-          "2012 Fall",
-          "2014 Fall"
-        ],
-        "course_level": "Upper Division (100-199)",
-        "attribution": "Data from Anteater API (ICSSC): https://icssc.link/about-anteaterapi"
-      },
-      "collected_at": "2026-10-17T19:02:12.498382+00:00"
-    },
-    {
-      "id": "coursera-0001c3c78d0024c55b84",
-      "title": "Teamwork and Creativity",
-      "description": "In this course, you will enhance your ability and opportunity to work creatively within any organization, learn to understand the importance and role of teamwork within the organization, and develop skills that differentiate yourself as a team player. The professional business skills related to teamwork and creativity gained through this course will help you to succeed working in any organization.",
-      "description_truncated": false,
-      "organization": "Coursera (see course page for provider)",
-      "source": "coursera",
-      "source_id": "bN-ys-ZvEeuHJQrkwLQpFQ",
-      "source_url": "https://www.coursera.org/learn/teamwork-and-creativity",
-      "kind": "Online course",
-      "sample": false,
-      "tags": [
-        "Productivity & Personal Growth"
-      ],
-      "goals": [],
-      "skills": [
-        "Business"
-      ],
-      "minutes": 10,
-      "difficulty": "Easy",
-      "mode": "Online",
-      "color": "pink",
-      "location": null,
-      "city": null,
-      "coordinates": null,
-      "personalization": {
-        "taxonomy_version": "onething-personalization-v1",
-        "interests": [
-          "Productivity & Personal Growth"
-        ],
-        "goals": [],
-        "challenge_levels": [
-          "Easy"
-        ],
-        "time_buckets": [
-          "Multi-day"
-        ],
-        "location_preferences": [
-          "Online / Remote"
-        ],
-        "commitment": "Long-term opportunities and projects",
-        "first_step": {
-          "minutes": 10,
-          "time_bucket": "5–15 min",
-          "challenge_level": "Easy",
-          "commitment": "Quick tasks I can finish immediately"
-        },
-        "micro_step": {
-          "minutes": 2,
-          "time_bucket": "Under 5 min",
-          "challenge_level": "Lazy",
-          "commitment": "Quick tasks I can finish immediately",
-          "action": "Open the source, check whether this opportunity suits you, and write one question or next step."
-        },
-        "duration": {
-          "minutes": null,
-          "bucket": "Multi-day",
-          "estimated": true,
-          "basis": "Planning assumption for education/employment when exact total effort is unavailable; source workload: unknown"
-        },
-        "classification": {
-          "method": "Assistant-authored evidence rules; estimates require source verification",
-          "interest_evidence": {
-            "Productivity & Personal Growth": "Broad personal exploration fallback; no specific checklist topic detected"
-          },
-          "fallback": true,
-          "goal_basis": "Inferred relevance to the listed topics and opportunity type; not promised outcomes",
-          "challenge_is_estimate": true,
-          "challenge_basis": "Title keyword rubric; provider difficulty was not supplied by this catalog endpoint",
-          "location_basis": [
-            "Source delivery-mode or explicit remote location"
-          ],
-          "location_is_inferred": false
-        }
-      },
-      "suggested_first_step": "Review the syllabus and choose one lesson to try.",
-      "availability": "Catalog entry; enrollment, price and certificate availability not checked",
-      "status": "verify_at_source",
-      "source_facts": {
-        "workload": "",
-        "languages": [
-          "en"
-        ]
-      },
-      "collected_at": "2026-10-17T19:02:56.669835+00:00"
-    },
-    {
       "id": "coursera-0003761ad3a7976e56c2",
       "title": "Advanced JavaScript 1: Objects, Loops, Hoisting",
       "description": "This advanced JavaScript course deepens your understanding of key programming concepts, equipping you with the tools to write more efficient and scalable code. \n\nThrough hands-on lessons and challenges, you’ll explore key JavaScript features like hoisting, loops, and object destructuring, along with ternary operators and asynchronous functions like setTimeout and setInterval.\n\nYou’ll also focus heavily on loops and methods for manipulating objects and arrays, gaining practical experience in modern function handling techniques such as arrow functions, default parameters, and callback functions.\n\nThis interactive course is designed to enhance your learning with coding challenges and real-world problem-solving tasks. You'll be writing, testing, and refining code throughout, ensuring that you not only understand the concepts but also have the practical skills to implement them in various scenarios.\n\nBy the end of this course, you will be able to solve complex challenges and apply best practices for structuring your code to handle real-world problems.",
@@ -343,10 +70,40 @@
         },
         "duration": {
           "minutes": null,
+          "min_minutes": 1200,
+          "max_minutes": 3600,
           "bucket": "Multi-day",
           "estimated": true,
-          "basis": "Planning assumption for education/employment when exact total effort is unavailable; source workload: unknown"
+          "quality": "Estimated",
+          "basis": "Authored planning range for advanced/program-level learning; provider workload unverified",
+          "scope": "Full opportunity"
         },
+        "assessment": {
+          "version": "onething-effort-v2",
+          "difficulty": "Challenging",
+          "difficulty_basis": "Advanced topic in title: Advanced",
+          "difficulty_is_estimate": true,
+          "review_method": "Assistant-authored per-record evidence rubric with explicit reviewed overrides; not individual manual review of every listing",
+          "experience_level": "Advanced",
+          "experience_is_estimate": true,
+          "experience_basis": "Advanced",
+          "prerequisite_status": "Unknown",
+          "prerequisite_basis": "Provider did not explicitly report prerequisites",
+          "cost": "Unknown",
+          "cost_basis": "No verified price; public listing/free preview does not prove free participation",
+          "duration_quality": "Estimated",
+          "languages": [
+            "en"
+          ],
+          "eligibility_text": null,
+          "eligibility_verified": false,
+          "registration_required": null,
+          "schedule_type": "Self-paced"
+        },
+        "filter_interests": [
+          "Software Engineering",
+          "Web & App Development"
+        ],
         "classification": {
           "method": "Assistant-authored evidence rules; estimates require source verification",
           "interest_evidence": {
@@ -356,7 +113,7 @@
           "fallback": false,
           "goal_basis": "Inferred relevance to the listed topics and opportunity type; not promised outcomes",
           "challenge_is_estimate": true,
-          "challenge_basis": "Title keyword rubric; provider difficulty was not supplied by this catalog endpoint",
+          "challenge_basis": "Advanced topic in title: Advanced",
           "location_basis": [
             "Source delivery-mode or explicit remote location"
           ],
@@ -373,6 +130,121 @@
         ]
       },
       "collected_at": "2026-10-17T19:03:06.954536+00:00"
+    },
+    {
+      "id": "coursera-0003ae64dd0418488ec0",
+      "title": "Practice Exam for AIPMM Certified Product Manager (CPM)",
+      "description": "Are you ready to elevate your product management career? Stand out from the competition with the AIPMM - Certified Product Manager© (CPM) certification.\n\nThis course guides you through the exam preparation journey, providing you with the knowledge, strategies, and practice opportunities to ready you for exam success.\n\nFirst, you’ll review the exam qualifications and sign-up process. Then, delve into the exam topics, grading weights, and essential test-taking strategies. Put your skills to the test with two untimed 20-minute practice exams to gauge your readiness. Then, prepare for AIPMM-CPM exam success with a timed simulated exam. With a total of 120 questions, this exam features four 30-minute, 30-question module exams built to prepare you for actual exam conditions.\n\nTake the next step in your product management career with confidence and competence. Enroll now and equip yourself with the expertise and support essential to prepare for the AIPMM - CPM exam.",
+      "description_truncated": false,
+      "organization": "Coursera (see course page for provider)",
+      "source": "coursera",
+      "source_id": "TjnGPr-8Ee6Newq-PzDcDw",
+      "source_url": "https://www.coursera.org/learn/practice-exam-for-aipmm-certified-product-manager-cpm",
+      "kind": "Online course",
+      "sample": false,
+      "tags": [
+        "Career Development"
+      ],
+      "goals": [],
+      "skills": [
+        "Business"
+      ],
+      "minutes": 10,
+      "difficulty": "Medium",
+      "mode": "Online",
+      "color": "pink",
+      "location": null,
+      "city": null,
+      "coordinates": null,
+      "personalization": {
+        "taxonomy_version": "onething-personalization-v1",
+        "interests": [
+          "Career Development"
+        ],
+        "goals": [],
+        "challenge_levels": [
+          "Medium"
+        ],
+        "time_buckets": [
+          "Multi-day"
+        ],
+        "location_preferences": [
+          "Online / Remote"
+        ],
+        "commitment": "Long-term opportunities and projects",
+        "first_step": {
+          "minutes": 10,
+          "time_bucket": "5–15 min",
+          "challenge_level": "Easy",
+          "commitment": "Quick tasks I can finish immediately"
+        },
+        "micro_step": {
+          "minutes": 2,
+          "time_bucket": "Under 5 min",
+          "challenge_level": "Lazy",
+          "commitment": "Quick tasks I can finish immediately",
+          "action": "Open the source, check whether this opportunity suits you, and write one question or next step."
+        },
+        "duration": {
+          "minutes": null,
+          "min_minutes": 240.0,
+          "max_minutes": 360.0,
+          "bucket": "Multi-day",
+          "estimated": false,
+          "quality": "Source range",
+          "basis": "Provider workload: 2 weeks, 2-3 hours/week; range upper bound used for time filtering",
+          "scope": "Total learning effort"
+        },
+        "assessment": {
+          "version": "onething-effort-v2",
+          "difficulty": "Medium",
+          "difficulty_basis": "General learning activity; incomplete level information, conservative editorial estimate",
+          "difficulty_is_estimate": true,
+          "review_method": "Assistant-authored per-record evidence rubric with explicit reviewed overrides; not individual manual review of every listing",
+          "experience_level": "Unknown",
+          "experience_is_estimate": true,
+          "experience_basis": "Provider did not explicitly report prerequisites",
+          "prerequisite_status": "Unknown",
+          "prerequisite_basis": "Provider did not explicitly report prerequisites",
+          "cost": "Unknown",
+          "cost_basis": "No verified price; public listing/free preview does not prove free participation",
+          "duration_quality": "Source range",
+          "languages": [
+            "en"
+          ],
+          "eligibility_text": null,
+          "eligibility_verified": false,
+          "registration_required": null,
+          "schedule_type": "Self-paced"
+        },
+        "filter_interests": [
+          "Career Development"
+        ],
+        "classification": {
+          "method": "Assistant-authored evidence rules; estimates require source verification",
+          "interest_evidence": {
+            "Career Development": "career"
+          },
+          "fallback": false,
+          "goal_basis": "Inferred relevance to the listed topics and opportunity type; not promised outcomes",
+          "challenge_is_estimate": true,
+          "challenge_basis": "General learning activity; incomplete level information, conservative editorial estimate",
+          "location_basis": [
+            "Source delivery-mode or explicit remote location"
+          ],
+          "location_is_inferred": false
+        }
+      },
+      "suggested_first_step": "Review the syllabus and choose one lesson to try.",
+      "availability": "Catalog entry; enrollment, price and certificate availability not checked",
+      "status": "verify_at_source",
+      "source_facts": {
+        "workload": "2 weeks, 2-3 hours/week",
+        "languages": [
+          "en"
+        ]
+      },
+      "collected_at": "2026-10-17T19:02:38.838793+00:00"
     },
     {
       "id": "eventbrite-3e3eea58424b115d6e50",
@@ -394,7 +266,7 @@
       ],
       "skills": [],
       "minutes": 5,
-      "difficulty": "Easy",
+      "difficulty": "Lazy",
       "mode": "Local",
       "color": "green",
       "location": "8 MacArthur Place, Santa Ana, CA 92707",
@@ -410,7 +282,7 @@
           "Improve my resume and interview skills"
         ],
         "challenge_levels": [
-          "Easy"
+          "Lazy"
         ],
         "time_buckets": [
           "1–3 hours"
@@ -434,10 +306,37 @@
         },
         "duration": {
           "minutes": 120.0,
+          "min_minutes": 120.0,
+          "max_minutes": 120.0,
           "bucket": "1–3 hours",
           "estimated": false,
-          "basis": "Difference between source start and end timestamps"
+          "quality": "Source reported",
+          "basis": "Elapsed time between provider start/end; may include breaks or overnight time",
+          "scope": "Event elapsed time"
         },
+        "assessment": {
+          "version": "onething-effort-v2",
+          "difficulty": "Lazy",
+          "difficulty_basis": "Attend/listen/connect without an assessed deliverable; eligibility still requires verification",
+          "difficulty_is_estimate": true,
+          "review_method": "Assistant-authored per-record evidence rubric with explicit reviewed overrides; not individual manual review of every listing",
+          "experience_level": "Unknown",
+          "experience_is_estimate": true,
+          "experience_basis": "Provider did not explicitly report prerequisites",
+          "prerequisite_status": "Unknown",
+          "prerequisite_basis": "Provider did not explicitly report prerequisites",
+          "cost": "Free",
+          "cost_basis": "Provider is_free=true",
+          "duration_quality": "Source reported",
+          "languages": [],
+          "eligibility_text": null,
+          "eligibility_verified": false,
+          "registration_required": null,
+          "schedule_type": "Scheduled"
+        },
+        "filter_interests": [
+          "Career Development"
+        ],
         "classification": {
           "method": "Assistant-authored evidence rules; estimates require source verification",
           "interest_evidence": {
@@ -446,7 +345,7 @@
           "fallback": false,
           "goal_basis": "Inferred relevance to the listed topics and opportunity type; not promised outcomes",
           "challenge_is_estimate": true,
-          "challenge_basis": "Low-effort event preparation; event participation may take substantially longer",
+          "challenge_basis": "Attend/listen/connect without an assessed deliverable; eligibility still requires verification",
           "location_basis": [
             "Source reports a physical event"
           ],
@@ -492,7 +391,7 @@
       ],
       "skills": [],
       "minutes": 5,
-      "difficulty": "Easy",
+      "difficulty": "Lazy",
       "mode": "Local",
       "color": "green",
       "location": "311 West Peltason Dr, Irvine, CA 92697",
@@ -508,7 +407,7 @@
           "Improve my resume and interview skills"
         ],
         "challenge_levels": [
-          "Easy"
+          "Lazy"
         ],
         "time_buckets": [
           "3+ hours"
@@ -532,10 +431,37 @@
         },
         "duration": {
           "minutes": 360.0,
+          "min_minutes": 360.0,
+          "max_minutes": 360.0,
           "bucket": "3+ hours",
           "estimated": false,
-          "basis": "Difference between source start and end timestamps"
+          "quality": "Source reported",
+          "basis": "Elapsed time between provider start/end; may include breaks or overnight time",
+          "scope": "Event elapsed time"
         },
+        "assessment": {
+          "version": "onething-effort-v2",
+          "difficulty": "Lazy",
+          "difficulty_basis": "Attend/listen/connect without an assessed deliverable; eligibility still requires verification",
+          "difficulty_is_estimate": true,
+          "review_method": "Assistant-authored per-record evidence rubric with explicit reviewed overrides; not individual manual review of every listing",
+          "experience_level": "Unknown",
+          "experience_is_estimate": true,
+          "experience_basis": "Provider did not explicitly report prerequisites",
+          "prerequisite_status": "Unknown",
+          "prerequisite_basis": "Provider did not explicitly report prerequisites",
+          "cost": "Paid",
+          "cost_basis": "Provider is_free=false",
+          "duration_quality": "Source reported",
+          "languages": [],
+          "eligibility_text": null,
+          "eligibility_verified": false,
+          "registration_required": null,
+          "schedule_type": "Scheduled"
+        },
+        "filter_interests": [
+          "Career Development"
+        ],
         "classification": {
           "method": "Assistant-authored evidence rules; estimates require source verification",
           "interest_evidence": {
@@ -544,7 +470,7 @@
           "fallback": false,
           "goal_basis": "Inferred relevance to the listed topics and opportunity type; not promised outcomes",
           "challenge_is_estimate": true,
-          "challenge_basis": "Low-effort event preparation; event participation may take substantially longer",
+          "challenge_basis": "Attend/listen/connect without an assessed deliverable; eligibility still requires verification",
           "location_basis": [
             "Source reports a physical event"
           ],
@@ -582,6 +508,7 @@
       "kind": "Park",
       "sample": false,
       "tags": [
+        "Productivity & Personal Growth",
         "Hike"
       ],
       "goals": [
@@ -589,7 +516,7 @@
       ],
       "skills": [],
       "minutes": 10,
-      "difficulty": "Medium",
+      "difficulty": "Lazy",
       "mode": "Local",
       "color": "green",
       "location": "150 Tomato Springs",
@@ -602,13 +529,14 @@
       "personalization": {
         "taxonomy_version": "onething-personalization-v1",
         "interests": [
+          "Productivity & Personal Growth",
           "Hike"
         ],
         "goals": [
           "Progress toward an outdoor adventure goal"
         ],
         "challenge_levels": [
-          "Medium"
+          "Lazy"
         ],
         "time_buckets": [
           "30–60 min"
@@ -629,20 +557,49 @@
           "action": "Open the source, check whether this opportunity suits you, and write one question or next step."
         },
         "duration": {
-          "minutes": 45,
+          "minutes": null,
+          "min_minutes": 15,
+          "max_minutes": 45,
           "bucket": "30–60 min",
           "estimated": true,
-          "basis": "OneThing planning estimate for one visit/session; not provider-reported duration"
+          "quality": "Estimated",
+          "basis": "Optional self-paced visit, excluding travel; not a scheduled activity",
+          "scope": "Full opportunity"
         },
+        "assessment": {
+          "version": "onething-effort-v2",
+          "difficulty": "Lazy",
+          "difficulty_basis": "Optional self-paced park visit; no performance target",
+          "difficulty_is_estimate": true,
+          "review_method": "Assistant-authored per-record evidence rubric with explicit reviewed overrides; not individual manual review of every listing",
+          "experience_level": "Unknown",
+          "experience_is_estimate": true,
+          "experience_basis": "Provider did not explicitly report prerequisites",
+          "prerequisite_status": "Unknown",
+          "prerequisite_basis": "Provider did not explicitly report prerequisites",
+          "cost": "Unknown",
+          "cost_basis": "No verified price; public listing/free preview does not prove free participation",
+          "duration_quality": "Estimated",
+          "languages": [],
+          "eligibility_text": null,
+          "eligibility_verified": false,
+          "registration_required": null,
+          "schedule_type": "Self-paced"
+        },
+        "filter_interests": [
+          "Productivity & Personal Growth",
+          "Hike"
+        ],
         "classification": {
           "method": "Assistant-authored evidence rules; estimates require source verification",
           "interest_evidence": {
-            "Hike": "Trails"
+            "Hike": "Trails",
+            "Productivity & Personal Growth": "Self-paced outdoor recreation and wellbeing at an official public park"
           },
           "fallback": false,
           "goal_basis": "Inferred relevance to the listed topics and opportunity type; not promised outcomes",
           "challenge_is_estimate": true,
-          "challenge_basis": "Estimated effort for a self-paced outdoor/recreation visit; terrain and accessibility unknown",
+          "challenge_basis": "Optional self-paced park visit; no performance target",
           "location_basis": [],
           "location_is_inferred": false
         }
@@ -673,6 +630,7 @@
       "kind": "Park",
       "sample": false,
       "tags": [
+        "Productivity & Personal Growth",
         "Hike",
         "Sports"
       ],
@@ -683,7 +641,7 @@
         "Community"
       ],
       "minutes": 10,
-      "difficulty": "Medium",
+      "difficulty": "Lazy",
       "mode": "Local",
       "color": "green",
       "location": "14701 Harvard Ave",
@@ -696,6 +654,7 @@
       "personalization": {
         "taxonomy_version": "onething-personalization-v1",
         "interests": [
+          "Productivity & Personal Growth",
           "Hike",
           "Sports"
         ],
@@ -703,7 +662,7 @@
           "Progress toward an outdoor adventure goal"
         ],
         "challenge_levels": [
-          "Medium"
+          "Lazy"
         ],
         "time_buckets": [
           "30–60 min"
@@ -724,21 +683,51 @@
           "action": "Open the source, check whether this opportunity suits you, and write one question or next step."
         },
         "duration": {
-          "minutes": 45,
+          "minutes": null,
+          "min_minutes": 15,
+          "max_minutes": 45,
           "bucket": "30–60 min",
           "estimated": true,
-          "basis": "OneThing planning estimate for one visit/session; not provider-reported duration"
+          "quality": "Estimated",
+          "basis": "Optional self-paced visit, excluding travel; not a scheduled activity",
+          "scope": "Full opportunity"
         },
+        "assessment": {
+          "version": "onething-effort-v2",
+          "difficulty": "Lazy",
+          "difficulty_basis": "Optional self-paced park visit; no performance target",
+          "difficulty_is_estimate": true,
+          "review_method": "Assistant-authored per-record evidence rubric with explicit reviewed overrides; not individual manual review of every listing",
+          "experience_level": "Unknown",
+          "experience_is_estimate": true,
+          "experience_basis": "Provider did not explicitly report prerequisites",
+          "prerequisite_status": "Unknown",
+          "prerequisite_basis": "Provider did not explicitly report prerequisites",
+          "cost": "Unknown",
+          "cost_basis": "No verified price; public listing/free preview does not prove free participation",
+          "duration_quality": "Estimated",
+          "languages": [],
+          "eligibility_text": null,
+          "eligibility_verified": false,
+          "registration_required": null,
+          "schedule_type": "Self-paced"
+        },
+        "filter_interests": [
+          "Productivity & Personal Growth",
+          "Hike",
+          "Sports"
+        ],
         "classification": {
           "method": "Assistant-authored evidence rules; estimates require source verification",
           "interest_evidence": {
             "Hike": "TRAIL",
-            "Sports": "Athletic"
+            "Sports": "Athletic",
+            "Productivity & Personal Growth": "Self-paced outdoor recreation and wellbeing at an official public park"
           },
           "fallback": false,
           "goal_basis": "Inferred relevance to the listed topics and opportunity type; not promised outcomes",
           "challenge_is_estimate": true,
-          "challenge_basis": "Estimated effort for a self-paced outdoor/recreation visit; terrain and accessibility unknown",
+          "challenge_basis": "Optional self-paced park visit; no performance target",
           "location_basis": [],
           "location_is_inferred": false
         }
@@ -785,7 +774,7 @@
         "Sustainability"
       ],
       "minutes": 20,
-      "difficulty": "Hard",
+      "difficulty": "Medium",
       "mode": null,
       "color": "blue",
       "location": "Shanghai, China",
@@ -800,7 +789,7 @@
           "Improve my resume and interview skills"
         ],
         "challenge_levels": [
-          "Hard"
+          "Medium"
         ],
         "time_buckets": [
           "Multi-day"
@@ -822,10 +811,37 @@
         },
         "duration": {
           "minutes": null,
+          "min_minutes": null,
+          "max_minutes": null,
           "bucket": "Multi-day",
           "estimated": true,
-          "basis": "Planning assumption for education/employment when exact total effort is unavailable; source workload: unknown"
+          "quality": "Unknown",
+          "basis": "Academic/employment commitment is multi-day; total effort not provided. Do not treat preparation minutes as completion time.",
+          "scope": "Full opportunity"
         },
+        "assessment": {
+          "version": "onething-effort-v2",
+          "difficulty": "Medium",
+          "difficulty_basis": "Employment responsibilities, not application preparation; internship learning role",
+          "difficulty_is_estimate": true,
+          "review_method": "Assistant-authored per-record evidence rubric with explicit reviewed overrides; not individual manual review of every listing",
+          "experience_level": "Unknown",
+          "experience_is_estimate": true,
+          "experience_basis": "Provider did not explicitly report prerequisites",
+          "prerequisite_status": "Unknown",
+          "prerequisite_basis": "Provider did not explicitly report prerequisites",
+          "cost": "Unknown",
+          "cost_basis": "No verified price; public listing/free preview does not prove free participation",
+          "duration_quality": "Unknown",
+          "languages": [],
+          "eligibility_text": null,
+          "eligibility_verified": false,
+          "registration_required": null,
+          "schedule_type": "Ongoing"
+        },
+        "filter_interests": [
+          "Career Development"
+        ],
         "classification": {
           "method": "Assistant-authored evidence rules; estimates require source verification",
           "interest_evidence": {
@@ -834,7 +850,7 @@
           "fallback": false,
           "goal_basis": "Inferred relevance to the listed topics and opportunity type; not promised outcomes",
           "challenge_is_estimate": true,
-          "challenge_basis": "Application preparation typically involves tailoring materials; estimated by OneThing",
+          "challenge_basis": "Employment responsibilities, not application preparation; internship learning role",
           "location_basis": [],
           "location_is_inferred": false
         }
@@ -892,7 +908,7 @@
         "Sustainability"
       ],
       "minutes": 20,
-      "difficulty": "Hard",
+      "difficulty": "Medium",
       "mode": null,
       "color": "blue",
       "location": "New York, NY",
@@ -920,7 +936,7 @@
           "Develop leadership experience"
         ],
         "challenge_levels": [
-          "Hard"
+          "Medium"
         ],
         "time_buckets": [
           "Multi-day"
@@ -942,10 +958,44 @@
         },
         "duration": {
           "minutes": null,
+          "min_minutes": null,
+          "max_minutes": null,
           "bucket": "Multi-day",
           "estimated": true,
-          "basis": "Planning assumption for education/employment when exact total effort is unavailable; source workload: unknown"
+          "quality": "Unknown",
+          "basis": "Academic/employment commitment is multi-day; total effort not provided. Do not treat preparation minutes as completion time.",
+          "scope": "Full opportunity"
         },
+        "assessment": {
+          "version": "onething-effort-v2",
+          "difficulty": "Medium",
+          "difficulty_basis": "Employment responsibilities, not application preparation; internship learning role",
+          "difficulty_is_estimate": true,
+          "review_method": "Assistant-authored per-record evidence rubric with explicit reviewed overrides; not individual manual review of every listing",
+          "experience_level": "Unknown",
+          "experience_is_estimate": true,
+          "experience_basis": "Provider did not explicitly report prerequisites",
+          "prerequisite_status": "Unknown",
+          "prerequisite_basis": "Provider did not explicitly report prerequisites",
+          "cost": "Unknown",
+          "cost_basis": "No verified price; public listing/free preview does not prove free participation",
+          "duration_quality": "Unknown",
+          "languages": [],
+          "eligibility_text": null,
+          "eligibility_verified": false,
+          "registration_required": null,
+          "schedule_type": "Ongoing"
+        },
+        "filter_interests": [
+          "Software Engineering",
+          "AI & Machine Learning",
+          "Data Science",
+          "Entrepreneurship & Startups",
+          "Career Development",
+          "Networking & Mentorship",
+          "Leadership",
+          "Personal Finance & Investing"
+        ],
         "classification": {
           "method": "Assistant-authored evidence rules; estimates require source verification",
           "interest_evidence": {
@@ -961,7 +1011,7 @@
           "fallback": false,
           "goal_basis": "Inferred relevance to the listed topics and opportunity type; not promised outcomes",
           "challenge_is_estimate": true,
-          "challenge_basis": "Application preparation typically involves tailoring materials; estimated by OneThing",
+          "challenge_basis": "Employment responsibilities, not application preparation; internship learning role",
           "location_basis": [],
           "location_is_inferred": false
         }
@@ -996,7 +1046,7 @@
       "goals": [],
       "skills": [],
       "minutes": 5,
-      "difficulty": "Easy",
+      "difficulty": "Lazy",
       "mode": null,
       "color": "green",
       "location": "Sign in to download the location",
@@ -1009,7 +1059,7 @@
         ],
         "goals": [],
         "challenge_levels": [
-          "Easy"
+          "Lazy"
         ],
         "time_buckets": [
           "1–3 hours"
@@ -1031,10 +1081,37 @@
         },
         "duration": {
           "minutes": 60.0,
+          "min_minutes": 60.0,
+          "max_minutes": 60.0,
           "bucket": "1–3 hours",
           "estimated": false,
-          "basis": "Difference between source start and end timestamps"
+          "quality": "Source reported",
+          "basis": "Elapsed time between provider start/end; may include breaks or overnight time",
+          "scope": "Event elapsed time"
         },
+        "assessment": {
+          "version": "onething-effort-v2",
+          "difficulty": "Lazy",
+          "difficulty_basis": "Attend/listen/connect without an assessed deliverable; eligibility still requires verification",
+          "difficulty_is_estimate": true,
+          "review_method": "Assistant-authored per-record evidence rubric with explicit reviewed overrides; not individual manual review of every listing",
+          "experience_level": "Unknown",
+          "experience_is_estimate": true,
+          "experience_basis": "Provider did not explicitly report prerequisites",
+          "prerequisite_status": "Unknown",
+          "prerequisite_basis": "Provider did not explicitly report prerequisites",
+          "cost": "Unknown",
+          "cost_basis": "No verified price; public listing/free preview does not prove free participation",
+          "duration_quality": "Source reported",
+          "languages": [],
+          "eligibility_text": null,
+          "eligibility_verified": false,
+          "registration_required": null,
+          "schedule_type": "Scheduled"
+        },
+        "filter_interests": [
+          "Career Development"
+        ],
         "classification": {
           "method": "Assistant-authored evidence rules; estimates require source verification",
           "interest_evidence": {
@@ -1043,7 +1120,7 @@
           "fallback": false,
           "goal_basis": "Inferred relevance to the listed topics and opportunity type; not promised outcomes",
           "challenge_is_estimate": true,
-          "challenge_basis": "Low-effort event preparation; event participation may take substantially longer",
+          "challenge_basis": "Attend/listen/connect without an assessed deliverable; eligibility still requires verification",
           "location_basis": [],
           "location_is_inferred": false
         }
@@ -1074,7 +1151,7 @@
       "goals": [],
       "skills": [],
       "minutes": 5,
-      "difficulty": "Easy",
+      "difficulty": "Lazy",
       "mode": null,
       "color": "green",
       "location": "Sign in to download the location",
@@ -1087,7 +1164,7 @@
         ],
         "goals": [],
         "challenge_levels": [
-          "Easy"
+          "Lazy"
         ],
         "time_buckets": [
           "1–3 hours"
@@ -1108,11 +1185,36 @@
           "action": "Open the source, check whether this opportunity suits you, and write one question or next step."
         },
         "duration": {
-          "minutes": 90,
+          "minutes": null,
+          "min_minutes": 60,
+          "max_minutes": 120,
           "bucket": "1–3 hours",
           "estimated": true,
-          "basis": "OneThing planning estimate for one visit/session; not provider-reported duration"
+          "quality": "Estimated",
+          "basis": "Authored event planning range; source did not provide a usable start/end pair",
+          "scope": "Full opportunity"
         },
+        "assessment": {
+          "version": "onething-effort-v2",
+          "difficulty": "Lazy",
+          "difficulty_basis": "Attend/listen/connect without an assessed deliverable; eligibility still requires verification",
+          "difficulty_is_estimate": true,
+          "review_method": "Assistant-authored per-record evidence rubric with explicit reviewed overrides; not individual manual review of every listing",
+          "experience_level": "Unknown",
+          "experience_is_estimate": true,
+          "experience_basis": "Provider did not explicitly report prerequisites",
+          "prerequisite_status": "Unknown",
+          "prerequisite_basis": "Provider did not explicitly report prerequisites",
+          "cost": "Unknown",
+          "cost_basis": "No verified price; public listing/free preview does not prove free participation",
+          "duration_quality": "Estimated",
+          "languages": [],
+          "eligibility_text": null,
+          "eligibility_verified": false,
+          "registration_required": null,
+          "schedule_type": "Scheduled"
+        },
+        "filter_interests": [],
         "classification": {
           "method": "Assistant-authored evidence rules; estimates require source verification",
           "interest_evidence": {
@@ -1121,7 +1223,7 @@
           "fallback": true,
           "goal_basis": "Inferred relevance to the listed topics and opportunity type; not promised outcomes",
           "challenge_is_estimate": true,
-          "challenge_basis": "Low-effort event preparation; event participation may take substantially longer",
+          "challenge_basis": "Attend/listen/connect without an assessed deliverable; eligibility still requires verification",
           "location_basis": [],
           "location_is_inferred": false
         }

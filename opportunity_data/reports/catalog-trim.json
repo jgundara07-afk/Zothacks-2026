@@ -1,0 +1,13 @@
+{
+  "previous_total": 28678,
+  "current_total": 11254,
+  "removed_by_source": {
+    "anteater": 6305,
+    "coursera": 11119
+  },
+  "reasons": {
+    "uci_classes_removed_by_request": 6305,
+    "online_course_without_direct_checklist_title_topic": 11119
+  },
+  "policy": "No Anteater/UCI classes; online courses require a direct checklist topic in title; no random limits or language quota."
+}

@@ -4,9 +4,11 @@ from zoneinfo import ZoneInfo
 try:
     from .program_catalog import program_catalog, preparation_quests, available, distance_km
     from .preferences import PREFERENCES
+    from .filter_rules import supported_interests, validate_extra, matches_extra
 except ImportError:
     from program_catalog import program_catalog, preparation_quests, available, distance_km
     from preferences import PREFERENCES
+    from filter_rules import supported_interests, validate_extra, matches_extra
 
 DAY_ZONE = ZoneInfo("America/Los_Angeles")
 
@@ -64,7 +66,7 @@ class OneThing:
         done = self.activity('completion')
         return [{**q, 'completed': any(a['quest_id'] == q['id'] and (not q.get('daily') or self.completion_day(a) == self.today()) for a in done)} for q in quests]
     def feed_page(self, filters, offset, limit):
-        """Filter before pagination. All repeated choices are OR; groups are AND."""
+        """Filter before pagination; require every interest, goal and skill."""
         for field in ('interests', 'goals'):
             if len(set(filters.get(field, []))) > 3:
                 raise ValueError('Choose up to 3 '+field)
@@ -72,6 +74,13 @@ class OneThing:
             rows = self.opportunities()
             return dict(opportunities=rows, quests=self.mark_quests(self.db.all('quests')), total=len(rows), offset=0, limit=len(rows), has_more=False, data_mode='sample')
         import math
+        validate_extra(filters)
+        for field in ('kind', 'skills', 'source'):
+            known = {value for row in self.catalog.values() for value in (row.get('skills', []) if field == 'skills' else [row[field]])}
+            if any(value not in known for value in filters.get(field, [])):
+                raise ValueError('Unknown '+field+' filter')
+        if len(filters.get('q', '')) > 300:
+            raise ValueError('Search text must be at most 300 characters')
         if offset < 0 or not 1 <= limit <= 100:
             raise ValueError('offset must be nonnegative and limit must be 1–100')
         for field, option in [('interests','interests'),('goals','goals'),('challenges','challenges'),('time','time'),('locations','locations')]:
@@ -96,12 +105,17 @@ class OneThing:
             p = o['personalization']
             if filters.get('challenges') and not set(filters['challenges']).intersection(p['challenge_levels']): continue
             if filters.get('time') and not set(filters['time']).intersection(p['time_buckets']): continue
-            if any(filters.get(key) and not set(filters[key]).intersection(o[field]) for key,field in [('interests','topics'),('goals','career_goals'),('skills','skills')]): continue
+            if filters.get('interests') and not set(filters['interests']).issubset(supported_interests(p)): continue
+            if any(filters.get(key) and not set(filters[key]).issubset(o[field]) for key,field in [('goals','career_goals'),('skills','skills')]): continue
+            if not matches_extra(o, filters): continue
             if filters.get('kind') and o['kind'] not in filters['kind']: continue
+            if filters.get('source') and o['source'] not in filters['source']: continue
             if filters.get('q') and not all(t in ' '.join(str(o.get(k) or '') for k in ['title','description','organization','location']).casefold() for t in filters['q'].casefold().split()): continue
             venues = list(o['venues'])
             if lat is not None and o.get('coordinates') and distance_km(lat,lon,o['coordinates']) <= radius: venues.append('Near me')
-            if filters.get('locations') and not set(filters['locations']).intersection(venues): continue
+            if 'Near me' in filters.get('locations', []) and 'Near me' not in venues: continue
+            other_locations = set(filters.get('locations', [])) - {'Near me'}
+            if other_locations and not other_locations.intersection(venues): continue
             commitment = filters.get('commitment', 'A mix of both')
             if commitment != 'A mix of both' and commitment != o['commitment']: continue
             candidates = [q for q in preparation_quests(o)

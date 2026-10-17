@@ -23,12 +23,19 @@ def main():
     # Materialize IDs/documents before writing, avoiding a long-lived reader lock.
     rows = catalog.connection.execute("SELECT document FROM opportunities").fetchall()
     count = 0
-    for (document,) in rows:
-        row = json.loads(document)
-        if args.sources and row["source"] not in args.sources:
-            continue
-        catalog.put(enrich(row, overrides))
-        count += 1
+    # Apply a complete offline refinement atomically, avoiding a commit/fsync
+    # per record and leaving the previous dataset intact if refinement fails.
+    with catalog.connection:
+        for (document,) in rows:
+            row = json.loads(document)
+            if args.sources and row["source"] not in args.sources:
+                continue
+            # This is the same stored source, not a newly gathered brief HTML
+            # record; Catalog.put's richer-source guard must not skip it.
+            refined = enrich(row, overrides)
+            catalog.connection.execute("UPDATE opportunities SET document=? WHERE id=?",
+                                       (json.dumps(refined, ensure_ascii=False), row["id"]))
+            count += 1
     if args.export:
         catalog.export(args.data_dir / "opportunities.json")
     catalog.close()

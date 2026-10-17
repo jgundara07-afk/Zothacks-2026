@@ -2,7 +2,7 @@
 OneThing turns scrolling into a useful next step: choose interests and goals, explore opportunities, save one, complete a preparation quest, and track progress.
 
 ## Current integration
-The app now uses the **42,908-record collected catalog by default**, including 294 City of Irvine public trail segments, parks and sports facilities. Sources include Anteater, Coursera, The Muse, ZotSpot and Eventbrite. Cards are cached source records with original links and collection dates; availability and assistant-estimated categories/effort need verification at the source. Expired dated events are excluded from discovery. No collection runs at startup or during browsing.
+The app now uses the **11,254-record curated catalog by default**, including 294 City of Irvine public trail segments, parks and sports facilities. Sources include Anteater, Coursera, The Muse, ZotSpot and Eventbrite. Cards are cached source records with original links and collection dates; availability and assistant-estimated categories/effort need verification at the source. Expired dated events are excluded from discovery. No collection runs at startup or during browsing.
 
 The main feed filters on the server before pagination, loads 40 cards at a time, and supports Load more. Preferences cover up to three interests, up to three goals, opportunity challenge and duration, location, commitment and opportunity type. OR applies within each choice group and AND across groups. The UI label Internship maps to the catalog's software-internship goal. Near me requests browser location only when selected and checks known source coordinates within 25 km; unknown locations do not count as nearby. Denied location access returns a recoverable error. City coordinates represent approximate points, not validated trailheads or entrances.
 
@@ -43,7 +43,7 @@ $env:ONETHING_DATA_MODE = 'sample'
 Remove-Item Env:ONETHING_DATA_MODE
 ```
 
-An empty `MONGO_URI` uses persistent `backend/demo.sqlite3`. A configured MongoDB must be reachable. No account authentication is implemented: all sessions share the fictional Alex profile. Switching storage does not migrate state. Switching data modes preserves existing activity; it does not delete saved items or points. Startup never imports 42,908 records into the profile store or overwrites activity.
+An empty `MONGO_URI` uses persistent `backend/demo.sqlite3`. A configured MongoDB must be reachable. No account authentication is implemented: all sessions share the fictional Alex profile. Switching storage does not migrate state. Switching data modes preserves existing activity; it does not delete saved items or points. Startup never imports 11,254 records into the profile store or overwrites activity.
 
 The missing/corrupt catalog fails startup with a clear file/checksum error; there is no silent sample fallback. After a manual refresh, restart Flask to load the new catalog.
 
@@ -95,3 +95,9 @@ Discover loads the next API page automatically when the bottom of the image feed
 In Progress, use the Demo time machine date picker or Next demo day, then complete a saved daily quest. Dates persist across refreshes and daily duplicates count once per quest per simulated day. Use real today resets the clock without deleting history. Catalog availability still uses real time. Set `ONETHING_DEMO_TOOLS=0` to disable date changes. This is a shared fictional demo profile, not an authenticated production feature.
 
 Analytics supports Weekly (Monday–Sunday), Monthly (daily bars fitted to the screen), and Yearly views, with period navigation. Donut charts show opportunity categories, challenges, and skill-tag shares for the selected period. Skills can overlap; percentages are rounded. Recap and the mountain retain lifetime totals.
+
+### Catalog effort and filter update
+
+Collected opportunities now carry five-level difficulty estimates with evidence, source/estimated duration ranges, experience, cost, prerequisite and schedule metadata. Discovery requires every selected interest, goal and skill, supports explicit metadata filters and a maximum total time, and treats unknown details explicitly. Full source activities and preparation quests remain separate. Rebuild the stored app catalog manually with `python -m opportunity_data.refine --export` followed by `python -m opportunity_data.export_app`; no automatic data refreshing is enabled. See [the data package](opportunity_data/README.md#effort-and-strict-filtering-update) for limitations and provenance.
+
+The current catalog excludes all UCI/Anteater classes and retains 9,275 focused online courses, 941 internships, 122 jobs, 616 campus events, 294 Irvine recreation places and 6 networking events (11,254 total). Online courses require a direct checklist-topic match in their title, preventing incidental description text or fallback tags from qualifying them.

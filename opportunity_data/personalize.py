@@ -3,8 +3,11 @@ import json
 import re
 from datetime import datetime, timezone
 from pathlib import Path
+from .effort import assess, FILTER_OPTIONS
+from .duration import estimate
 
 TAXONOMY = json.loads((Path(__file__).parent / "taxonomy.json").read_text(encoding="utf-8"))
+TAXONOMY["filter_options"] = FILTER_OPTIONS
 RULES = {
     "Software Engineering": r"\b(software engineer\w*|software develop\w*|programming|computer science|python|java|c\+\+|coding|algorithms?|devops)\b",
     "AI & Machine Learning": r"\b(artificial intelligence|machine learning|deep learning|neural networks?|generative ai|llms?|large language models?|natural language processing|computer vision|chatgpt|gemini|vertex ai|inteligencia artificial|inteligência artificial|apprentissage automatique|aprendizaje autom[aá]tico)\b|(?-i:\bAI\b)",
@@ -35,27 +38,8 @@ def bucket(minutes, multi_day=False):
 
 
 def length(row):
-    """Prefer known event duration. Unknown values use labeled planning estimates."""
-    actual = row.get("duration", {}).get("total_minutes")
-    if actual is not None and actual > 0:
-        return {"minutes": actual, "bucket": bucket(actual), "estimated": False,
-                "basis": "Difference between source start and end timestamps"}
-    workload = str(row.get("workload") or "")
-    # Only an unambiguous, single-session English hour/minute expression is converted.
-    if workload and re.fullmatch(r"\s*(?:\d+(?:\.\d+)?\s*hours?\s*)?(?:\d+\s*minutes?\s*)?", workload, re.I):
-        hours = re.search(r"(\d+(?:\.\d+)?)\s*hours?", workload, re.I)
-        mins = re.search(r"(\d+)\s*minutes?", workload, re.I)
-        total = (float(hours[1]) * 60 if hours else 0) + (int(mins[1]) if mins else 0)
-        if total:
-            return {"minutes": total, "bucket": bucket(total), "estimated": False,
-                    "basis": "Provider-reported single-session workload: " + workload}
-    if row["kind"] in {"Class", "Job", "Internship", "Online course"}:
-        # A course may be shorter; this is explicitly an estimate, not fabricated workload.
-        return {"minutes": None, "bucket": "Multi-day", "estimated": True,
-                "basis": "Planning assumption for education/employment when exact total effort is unavailable; source workload: " + (workload or "unknown")}
-    minutes = 60 if row["kind"] == "Trail" else 45 if row["kind"] in {"Park", "Sports facility"} else 90
-    return {"minutes": minutes, "bucket": bucket(minutes), "estimated": True,
-            "basis": "OneThing planning estimate for one visit/session; not provider-reported duration"}
+    """Source workload or clearly labeled planning range; never preparation time."""
+    return estimate(row, bucket)
 
 
 def classify(row):
@@ -77,6 +61,9 @@ def classify(row):
     if kind == "Sports facility" and "Sports" not in interests:
         interests.append("Sports")
         evidence["Sports"] = "Official City of Irvine recreation facility"
+    if kind == "Park" and "Productivity & Personal Growth" not in interests:
+        interests.append("Productivity & Personal Growth")
+        evidence["Productivity & Personal Growth"] = "Self-paced outdoor recreation and wellbeing at an official public park"
     if not interests:
         interests = ["Productivity & Personal Growth"]
         evidence[interests[0]] = "Broad personal exploration fallback; no specific checklist topic detected"
@@ -96,15 +83,9 @@ def classify(row):
     goal(7, kind in {"Job", "Internship"} or bool(re.search(r"\b(resume|résumé|interview|career fair|job fair)\b", text, re.I)))
     goal(8, "Leadership" in interests)
     goal(9, "Hike" in interests or kind in {"Trail", "Park"})
-    if kind in {"Trail", "Park", "Sports facility"}:
-        challenge, challenge_basis = "Medium", "Estimated effort for a self-paced outdoor/recreation visit; terrain and accessibility unknown"
-    elif row.get("course_level") and "Lower" in row["course_level"]:
-        challenge, challenge_basis = "Medium", "Estimated relative effort for lower-division academic work"
-    elif re.search(r"\b(intermediate|moderate)\b", row.get("title", ""), re.I):
-        challenge, challenge_basis = "Medium", "Intermediate/moderate title wording"
-    else:
-        challenge, challenge_basis = row["editorial"]["difficulty"], row["editorial"]["difficulty_basis"]
     duration = length(row)
+    assessment = assess(row, duration)
+    challenge, challenge_basis = assessment["difficulty"], assessment["difficulty_basis"]
     mode = row.get("mode")
     locations = []
     location_basis = []
@@ -134,7 +115,9 @@ def classify(row):
             "micro_step": {"minutes": 2, "time_bucket": "Under 5 min", "challenge_level": "Lazy",
                            "commitment": TAXONOMY["commitment_preferences"][0],
                            "action": "Open the source, check whether this opportunity suits you, and write one question or next step."},
-            "duration": duration, "classification": {"method": "Assistant-authored evidence rules; estimates require source verification",
+            "duration": duration, "assessment": assessment,
+            "filter_interests": [] if "fallback" in next(iter(evidence.values()), "").lower() else interests,
+            "classification": {"method": "Assistant-authored evidence rules; estimates require source verification",
                 "interest_evidence": evidence, "fallback": "fallback" in next(iter(evidence.values()), "").lower(),
                 "goal_basis": "Inferred relevance to the listed topics and opportunity type; not promised outcomes",
                 "challenge_is_estimate": True, "challenge_basis": challenge_basis,
@@ -143,6 +126,8 @@ def classify(row):
 
 def status(row, now=None):
     now = now or datetime.now(timezone.utc)
+    if re.search(r"\b(cancelled|canceled)\b", row.get("title", ""), re.I):
+        return "cancelled"
     end = row.get("end")
     if isinstance(end, dict):
         end = end.get("utc")

@@ -24,12 +24,12 @@ def register(app, svc):
 
     @app.get('/opportunities')
     def feed():
-        allowed = {'interests','goals','challenges','time','locations','skills','kind','commitment','step_size','q','offset','limit','lat','lon','radius_km'}
+        allowed = {'interests','goals','challenges','time','locations','skills','kind','commitment','step_size','q','offset','limit','lat','lon','radius_km','source','experience','cost','prerequisites','duration_quality','schedule','max_minutes'}
         if set(request.args) - allowed:
             raise ValueError('Unknown feed filter parameter')
-        filters = {key:request.args.getlist(key) for key in ['interests','goals','challenges','time','locations','skills','kind']}
+        filters = {key:request.args.getlist(key) for key in ['interests','goals','challenges','time','locations','skills','kind','source','experience','cost','prerequisites','duration_quality','schedule']}
         filters.update({key:request.args[key] for key in ['commitment','step_size','q'] if key in request.args})
-        filters.update({key:float(request.args[key]) for key in ['lat','lon','radius_km'] if key in request.args})
+        filters.update({key:float(request.args[key]) for key in ['lat','lon','radius_km','max_minutes'] if key in request.args})
         result = svc.feed_page(filters, int(request.args.get('offset',0)), int(request.args.get('limit',40)))
         return jsonify(profile=profile(), checkin=checkin(), **result)
 

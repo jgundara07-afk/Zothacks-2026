@@ -12,11 +12,17 @@ test('all requested topics, goals, challenge levels and time windows have sample
  for(const challenge of options.challenges)assert.ok(matching([],[],{...base,challenges:[challenge]}).length,challenge);
  for(const time of options.time)assert.ok(matching([],[],{...base,time:[time]}).length,time);
 });
-test('OR within groups; AND across groups; exact quest matches chosen challenge and time',()=>{
+test('every topic and goal is required; challenge/time remain alternatives',()=>{
  const preferences={...base,challenges:['Easy','Medium'],time:['5–15 min','15–30 min'],locations:['Online / Remote'],commitment:'Long-term opportunities and projects'};
- const results=matching(['Software Engineering','Data Science'],['Internship','Build a strong project portfolio'],preferences);
+ const results=matching(['Software Engineering'],['Internship'],preferences);
  assert.ok(results.length);
- for(const o of results){assert.ok(o.venues.includes('Online / Remote'));assert.equal(o.commitment_type,'long-term');const q=chooseVariant(o,seed.quests,{preferences,stepSize:'Any',defaultEffort:'small'});assert.ok(preferences.challenges.includes(q.difficulty));assert.ok(preferences.time.includes(q.time_bucket));}
+ for(const o of results){assert.ok(o.topics.includes('Software Engineering'));assert.ok(o.career_goals.includes('Internship'));assert.ok(o.venues.includes('Online / Remote'));assert.equal(o.commitment_type,'long-term');const q=chooseVariant(o,seed.quests,{preferences,stepSize:'Any',defaultEffort:'small'});assert.ok(preferences.challenges.includes(q.difficulty));assert.ok(preferences.time.includes(q.time_bucket));}
+});
+
+test('one matching topic cannot satisfy several requested interests',()=>{
+ assert.equal(matching(['Software Engineering','Sports']).length,0);
+ const record={personalization:{interests:['Productivity & Personal Growth'],filter_interests:[],challenge_levels:['Easy'],time_buckets:['Multi-day'],commitment:base.commitment},career_goals:[],venues:[]};
+ assert.equal(matchesOpportunity(record,{interests:['Productivity & Personal Growth'],goals:[],preferences:base}),false);
 });
 test('empty selections show everything, impossible combinations stay empty, saved records remain independent',()=>{
  assert.equal(matching().length,seed.opportunities.length);

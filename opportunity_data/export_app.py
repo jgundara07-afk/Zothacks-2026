@@ -11,6 +11,8 @@ from pathlib import Path
 
 from .personalize import TAXONOMY, status
 from .relevance import inclusion
+from .enrich import enrich
+from .effort import FILTER_OPTIONS
 
 ROOT = Path(__file__).resolve().parent
 DESTINATION = ROOT.parent / "backend" / "catalog"
@@ -30,6 +32,18 @@ def validate(row):
         raise ValueError(f"{row['id']}: invalid commitment")
     if "Near me" in p["location_preferences"]:
         raise ValueError("Near me must be calculated from user coordinates")
+    if "assessment" in p:
+        assessment = p["assessment"]
+        for field, option in (("experience_level", "experience_levels"), ("cost", "costs"),
+                              ("prerequisite_status", "prerequisite_statuses"), ("duration_quality", "duration_qualities")):
+            if assessment[field] not in FILTER_OPTIONS[option]:
+                raise ValueError(f"{row['id']}: invalid assessment {field}")
+        if assessment["difficulty"] != p["challenge_levels"][0]:
+            raise ValueError("Difficulty assessment and filters disagree")
+        duration = p["duration"]
+        low, high = duration.get("min_minutes"), duration.get("max_minutes")
+        if (low is None) != (high is None) or (low is not None and (not math.isfinite(low) or not math.isfinite(high) or low <= 0 or high < low)):
+            raise ValueError("Invalid duration range")
     for scope in ("first_step", "micro_step"):
         step = p[scope]
         if step["time_bucket"] not in TAXONOMY["time_buckets"] or step["challenge_level"] not in TAXONOMY["challenge_levels"]:
@@ -83,6 +97,9 @@ def publish(database=ROOT / "data" / "opportunities.sqlite3", destination=DESTIN
     excluded_counts = Counter()
     exclusion_reasons = Counter()
     connection = sqlite3.connect(database)
+    overrides = json.loads((ROOT / "editorial_overrides.json").read_text(encoding="utf-8"))
+    assessment_coverage = {key: Counter() for key in ("experience_level", "cost", "prerequisite_status", "duration_quality", "schedule_type")}
+    reviewed_count = 0
     try:
         with temporary.open("wb") as raw, gzip.GzipFile(filename="", fileobj=raw, mode="wb", mtime=0) as compressed:
             compressed.write(b'{"schema_version":1,"opportunities":[')
@@ -94,7 +111,13 @@ def publish(database=ROOT / "data" / "opportunities.sqlite3", destination=DESTIN
                     excluded_counts[source_row["source"]] += 1
                     exclusion_reasons[reason] += 1
                     continue
+                # Reassess original full facts on every explicit publication.
+                # This never fetches data or changes the raw collection archive.
+                source_row = enrich(source_row, overrides)
+                reviewed_count += bool(source_row["editorial"].get("override_reason"))
                 row = project(source_row, now)
+                for field in assessment_coverage:
+                    assessment_coverage[field][row["personalization"]["assessment"][field]] += 1
                 if row["id"] in ids:
                     raise ValueError("Duplicate opportunity ID")
                 ids.add(row["id"])
@@ -127,8 +150,14 @@ def publish(database=ROOT / "data" / "opportunities.sqlite3", destination=DESTIN
                                  "included_from_source_counts": dict(included_counts),
                                  "excluded_from_source_counts": dict(excluded_counts),
                                  "exclusion_reasons": dict(exclusion_reasons),
-                                 "note": "The app catalog excludes records without evidence of a checklist interest, goal, personal-growth benefit, club/community value, or outdoor/recreation benefit. Raw collected records remain in the local source database."},
+                                 "note": "The app and normalized collector retain relevant opportunities. Rejected provider records may remain in raw HTTP provenance, which is not an active opportunity database."},
                     "coverage": coverage, "broad_fallback_records": fallback_count,
+                    "assessment_coverage": assessment_coverage,
+                    "effort_review": {"version": "onething-effort-v2", "assigned_records": len(ids),
+                                      "explicitly_reviewed_records": reviewed_count,
+                                      "method": "Assistant-authored evidence rubric plus individually reviewed exceptions; counts are not forced into equal difficulty bins",
+                                      "time_filter_policy": "Upper duration bound; unknown total cannot match max_minutes",
+                                      "strict_topic_policy": "All selected supported interests/goals/skills required; broad fallback topics excluded from interest matches"},
                     "records_without_supported_checklist_goals": no_goals,
                     "coordinate_records": coordinates_count, "step_coverage": step_coverage,
                     "sha256": hashlib.sha256(temporary.read_bytes()).hexdigest(),

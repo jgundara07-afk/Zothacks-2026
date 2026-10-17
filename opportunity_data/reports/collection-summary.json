@@ -1,23 +1,22 @@
 {
-  "audited_at": "2026-10-17T19:15:36.015225+00:00",
+  "audited_at": "2026-10-17T20:43:31.426335+00:00",
   "database": "opportunity_data/data/opportunities.sqlite3",
-  "json_export": "opportunity_data/data/opportunities.json",
-  "total_opportunities": 42908,
+  "json_export": null,
+  "total_opportunities": 11254,
   "by_source": {
-    "anteater": 9299,
-    "coursera": 24990,
-    "eventbrite": 11,
+    "coursera": 9275,
+    "eventbrite": 6,
     "irvine": 294,
-    "muse": 7261,
-    "zotspot": 1053
+    "muse": 1063,
+    "zotspot": 616
   },
-  "export_count": 42908,
+  "export_count": null,
   "sqlite_integrity": "ok",
   "validation_issues": [],
-  "individually_reviewed_estimates": 6,
+  "individually_reviewed_estimates": 11,
   "event_timing_at_collection": {
-    "past": 541,
-    "upcoming_or_in_progress": 523
+    "past": 321,
+    "upcoming_or_in_progress": 301
   },
   "automatic_refresh": false,
   "latest_source_runs": {
@@ -103,6 +102,6 @@
     "Anteater records without titles are excluded",
     "Eventbrite covers manually discovered public IDs, not global search",
     "Most difficulty/skill/first-step fields use an authored estimation rubric",
-    "Existing demo feed is not connected to this separate catalog"
+    "The app serves the curated compressed catalog; SQLite is the normalized source for manual refinement/publication"
   ]
 }

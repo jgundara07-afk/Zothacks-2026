@@ -1,0 +1,94 @@
+{
+  "generated_at": "2026-10-17T20:43:29.714454+00:00",
+  "version": "onething-effort-v2",
+  "published_records": 11254,
+  "difficulty_counts": {
+    "Challenging": 558,
+    "Medium": 5409,
+    "Hard": 2458,
+    "Easy": 2014,
+    "Lazy": 815
+  },
+  "duration_quality_counts": {
+    "Estimated": 5523,
+    "Source range": 1727,
+    "Source reported": 2941,
+    "Unknown": 1063
+  },
+  "explicitly_reviewed_records": 11,
+  "reviewed_examples": [
+    {
+      "id": "coursera-0015609c81f53d9d4c34",
+      "title": "Multimodality with Gemini",
+      "difficulty": "Easy",
+      "reason": "Reviewed the 60-minute Gemini multimodality console lab. It explores model use cases with guidance, but cloud-console setup and unknown prerequisites make Easy more defensible than Lazy."
+    },
+    {
+      "id": "coursera-02ab87df1cc0b3bd710a",
+      "title": "Optimizing and Deploying Computer Vision Models",
+      "difficulty": "Hard",
+      "reason": "Reviewed computer-vision course description: dataset preparation, augmentation, model evaluation, training stability and gradient failures demand applied ML knowledge; guided wording alone is not a low-effort signal."
+    },
+    {
+      "id": "coursera-034308fcb39257cbf479",
+      "title": "Bracketology with Google Machine Learning",
+      "difficulty": "Hard",
+      "reason": "Reviewed the self-paced machine-learning lab description and reported one-hour workload; the 10-minute estimate is preparation only, not the full lab."
+    },
+    {
+      "id": "coursera-09ac22e0eaa349590457",
+      "title": "Fulfillment And Happiness With Mindfulness And Introspection",
+      "difficulty": "Easy",
+      "reason": "Reviewed mindfulness/introspection description: guided personal reflection about values, work fulfillment and focus; no technical deliverable. Missing workload remains an explicit planning estimate."
+    },
+    {
+      "id": "coursera-213f3dcc32c142fc1dae",
+      "title": "AI-Powered Time Management",
+      "difficulty": "Easy",
+      "reason": "Reviewed four-hour time-management course using everyday AI prompts and personal schedules; source explicitly requires no technical experience. Full source workload is four hours, not a two-minute micro-step."
+    },
+    {
+      "id": "coursera-4e66e32c1b3690d398d4",
+      "title": "DevOps Foundations & Development Workflow",
+      "difficulty": "Medium",
+      "reason": "Reviewed DevOps foundations syllabus: CI/CD, GitHub project workflows, Linux and Python application exercises. No prior experience is explicitly required, but practical multi-tool setup adds effort beyond passive introductory learning."
+    },
+    {
+      "id": "coursera-9bae3ac3bdc451544530",
+      "title": "Terraform Essentials: IaC and HCL for Beginners",
+      "difficulty": "Medium",
+      "reason": "Reviewed introductory Terraform course: installation, HCL configurations, providers, variables and resource dependencies with labs. Beginner audience, but active environment setup/configuration requires moderate effort; total workload is not supplied."
+    },
+    {
+      "id": "coursera-b539b207bf3e1d6c1b2f",
+      "title": "Tableau Public for Beginners: Data Visualization Basics",
+      "difficulty": "Easy",
+      "reason": "Reviewed the source one-hour beginner Tableau project: connect a dataset, build basic charts, and assemble a dashboard with guidance. Keep 60 minutes of source workload separate from first-step preparation."
+    },
+    {
+      "id": "zotspot-778b72c1d8db032eeeaf",
+      "title": "ESC x SHPE: Space X Networking Session",
+      "difficulty": "Easy",
+      "reason": "Reviewed the ESC x SHPE employer networking session description; ten minutes estimates preparation, while the source event lasts ninety minutes."
+    },
+    {
+      "id": "zotspot-8ed83eca38c581f5ee66",
+      "title": "Beyond Ring Road: Networking 101",
+      "difficulty": "Easy",
+      "reason": "Reviewed Networking 101's introductory practice scenarios. Historical calendar record: this is a preparation suggestion, not a claim the event is upcoming."
+    },
+    {
+      "id": "zotspot-a5c68a72cbcef60ece7f",
+      "title": "Networking Skills Workshop",
+      "difficulty": "Easy",
+      "reason": "Reviewed the workshop description, including its UCI Law students-only restriction. Do not treat this historical event as open to every student."
+    }
+  ],
+  "validation_issues": [],
+  "notes": [
+    "Every published record has an explained difficulty and metadata assessment. Assignments use an assistant-authored per-record evidence rubric; this is not individual manual review of all records.",
+    "Difficulty counts are not forced into equal bins at the expense of credible ratings.",
+    "Source workloads are parsed where supported. Missing workload remains an explicitly estimated range or unknown total; actual personal completion time is not guaranteed.",
+    "All selected supported interests, goals and skills must match; difficulty/time alternatives remain OR; Near me always applies radius."
+  ]
+}

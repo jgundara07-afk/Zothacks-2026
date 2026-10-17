@@ -14,11 +14,12 @@ class CollectedJourneyTest(unittest.TestCase):
             client = reopen()
             health = client.get('/health').json
             self.assertEqual(health['data_mode'], 'catalog')
-            self.assertEqual(health['catalog_records'], 28678)
+            self.assertEqual(health['catalog_records'], 11254)
             self.assertEqual(Store(path=path).all('opportunities'), [])
             first = client.get('/opportunities?limit=10').json
             second = client.get('/opportunities?limit=10&offset=10').json
-            self.assertGreater(first['total'], 25000)
+            self.assertGreater(first['total'], 10000)
+            self.assertTrue(all(o['source']!='anteater' and o['kind']!='Class' for o in first['opportunities']))
             self.assertTrue(first['has_more'])
             self.assertFalse({o['id'] for o in first['opportunities']} & {o['id'] for o in second['opportunities']})
             self.assertTrue(all(not o['sample'] and o['source_url'] for o in first['opportunities']))
@@ -90,6 +91,27 @@ class CollectedJourneyTest(unittest.TestCase):
                 profile[field] = values[:3]
                 self.assertEqual(client.post('/profiles',json=profile).status_code,200)
                 self.assertEqual(client.get('/opportunities').json['profile'][field],values[:3])
+
+    def test_strict_topics_metadata_and_time_cap_on_both_apis(self):
+        with tempfile.TemporaryDirectory() as directory:
+            client = create_app(Store(path=directory+'/strict.sqlite3'),data_mode='catalog').test_client()
+            for route in ('/opportunities', '/catalog/opportunities'):
+                query=[('interests','Software Engineering'),('interests','AI & Machine Learning'),
+                       ('duration_quality','Source reported'),('max_minutes','120'),('limit','10')]
+                result=client.get(route,query_string=query)
+                self.assertEqual(result.status_code,200)
+                self.assertGreater(result.json['total'],0)
+                for row in result.json['opportunities']:
+                    p=row['personalization']
+                    self.assertTrue({'Software Engineering','AI & Machine Learning'}.issubset(p['filter_interests']))
+                    self.assertEqual(p['assessment']['duration_quality'],'Source reported')
+                    self.assertLessEqual(p['duration']['max_minutes'],120)
+                free=client.get(route,query_string={'cost':'Free'}).json
+                self.assertTrue(all(row['personalization']['assessment']['cost']=='Free' for row in free['opportunities']))
+                for query in ('max_minutes=nan','experience=Impossible','cost=Cheap','skills=Magic','source=imaginary','kind=imaginary'):
+                    self.assertEqual(client.get(route+'?'+query).status_code,400,route+'?'+query)
+                nearby=client.get(route,query_string=[('locations','Near me'),('locations','Online / Remote'),('lat','0'),('lon','0')])
+                self.assertEqual(nearby.json['total'],0)
 
 if __name__ == '__main__':
     unittest.main()

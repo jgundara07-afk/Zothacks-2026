@@ -6,6 +6,29 @@ are published to the app-readable catalog.
 """
 import re
 
+# Online courses need a topic in the title itself, not incidental promotional
+# language or the former broad personal-growth fallback. Keep useful technical,
+# career, design, finance, wellbeing and outdoor skills without a language quota.
+COURSE_TITLE_TOPICS = re.compile(
+    r"\b(software|programming|python|java|javascript|typescript|coding|algorithms?|"
+    r"data|datos|donn[eé]es|dados|analytics|statistics|statistical|sql|mysql|postgresql|sqlite|mongodb|redis|tableau|power bi|power query|excel|"
+    r"computer science|web development|app development|full.stack|front.end|back.end|"
+    r"react|django|flask|html\d*|css\d*|sass|android|ios|git|github|devops|linux|"
+    r"cloud|aws|azure|docker|kubernetes|terraform|cybersecurity|cyber security|"
+    r"information security|network security|cloud security|ethical hacking|"
+    r"cryptography|penetration testing|artificial intelligence|machine learning|"
+    r"deep learning|neural networks?|generative|llms?|chatgpt|gemini|vertex|"
+    r"computer vision|natural language processing|autogen|multi.agent|pytorch|tensorflow|foundation models|inteligencia artificial|"
+    r"apprentissage automatique|ciencia de datos|"
+    r"entrepreneur\w*|startups?|business model|product management|product manager|product design|"
+    r"hackathons?|resume|résumé|interview\w*|job search|career development|"
+    r"professional networking|mentorship|mentoring|leadership|people leader|public speaking|"
+    r"personal finance|financial literacy|budgeting|investing|investment|stock market|technical analysis|trading signals|"
+    r"productivity|personal growth|time management|mindfulness|wellbeing|"
+    r"well.being|stress management|study skills|goal setting|"
+    r"user experience|user interface|ux|ui|figma|graphic design|design thinking|"
+    r"hiking|hike|wilderness|outdoor|fitness|sports|nutrition)\b|(?-i:\bAI\b)|\bc[+#]{1,2}(?!\w)", re.I)
+
 
 TECHNICAL = re.compile(
     r"\b(software|programming|computer science|coding|python|java|javascript|"
@@ -50,8 +73,17 @@ def inclusion(row):
     kind = row.get("kind", "")
     text = evidence_text(row)
 
+    if row.get("source") == "anteater":
+        return False, "uci_classes_removed_by_request"
+
     if EXCLUDED_TEST.search(text):
         return False, "test_or_placeholder_record"
+
+    if kind == "Online course":
+        match = COURSE_TITLE_TOPICS.search(row.get("title", ""))
+        if match:
+            return True, "online_course_direct_checklist_title_topic"
+        return False, "online_course_without_direct_checklist_title_topic"
 
     # The explicit user-requested personal-benefit exception: outdoor access and
     # sports/recreation facilities remain useful even without career relevance.

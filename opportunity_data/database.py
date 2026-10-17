@@ -2,6 +2,7 @@
 import json
 import sqlite3
 from contextlib import closing
+from .relevance import inclusion
 
 
 class Catalog:
@@ -23,6 +24,8 @@ class Catalog:
         return sqlite3.connect(self.path)
 
     def put(self, row):
+        if not inclusion(row)[0]:
+            return False
         with self.connection as connection:
             existing = connection.execute(
                 "SELECT id, document FROM opportunities WHERE source=? AND (source_id=? OR source_url=?)",
@@ -37,6 +40,24 @@ class Catalog:
             connection.execute("INSERT INTO opportunities VALUES (?,?,?,?,?,?,?,?)", (
                 row["id"], row["source"], row["source_id"], row["source_url"], row["title"],
                 row["kind"], row["provenance"]["collected_at"], json.dumps(row, ensure_ascii=False)))
+        return True
+
+    def retain_ids(self, identifiers):
+        """Keep the exact published set, verifying every ID before deleting anything."""
+        identifiers = set(identifiers)
+        if not identifiers:
+            raise ValueError("Refusing to empty the catalog")
+        with self.connection as connection:
+            connection.execute("CREATE TEMP TABLE IF NOT EXISTS retained_ids (id TEXT PRIMARY KEY)")
+            connection.execute("DELETE FROM retained_ids")
+            connection.executemany("INSERT INTO retained_ids VALUES (?)", ((identifier,) for identifier in identifiers))
+            found = connection.execute("SELECT count(*) FROM opportunities JOIN retained_ids USING(id)").fetchone()[0]
+            if found != len(identifiers):
+                raise ValueError("Published IDs missing from collector database; no records removed")
+            removed = connection.execute("DELETE FROM opportunities WHERE id NOT IN (SELECT id FROM retained_ids)").rowcount
+            connection.execute("DROP TABLE retained_ids")
+        self.connection.execute("VACUUM")
+        return removed
 
     def stats(self):
         with closing(self.connect()) as connection:

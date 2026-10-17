@@ -1,0 +1,7 @@
+{
+  "experience_levels": ["No experience", "Beginner", "Intermediate", "Advanced", "Unknown"],
+  "costs": ["Free", "Paid", "Unknown"],
+  "prerequisite_statuses": ["None stated", "Required", "Unknown"],
+  "duration_qualities": ["Source reported", "Source range", "Estimated", "Unknown"],
+  "schedules": ["Ongoing", "Academic term", "Scheduled", "Self-paced", "Unknown"]
+}

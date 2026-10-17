@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parent
 def main():
     load_dotenv(ROOT.parent / ".env")
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--sources", nargs="+", choices=ADAPTERS, default=list(ADAPTERS))
+    parser.add_argument("--sources", nargs="+", choices=ADAPTERS, default=[source for source in ADAPTERS if source != "anteater"])
     parser.add_argument("--max-pages", type=int, default=500, help="Per-source pagination safety budget")
     parser.add_argument("--muse-pages", type=int, default=400, help="Total category-page request budget, 20 rows/page; respect hourly caps across runs")
     parser.add_argument("--delay", type=float, default=0.25, help="Minimum seconds between requests")
@@ -32,10 +32,11 @@ def main():
     catalog = Catalog(args.data_dir / "opportunities.sqlite3")
     overrides = json.loads((ROOT / "editorial_overrides.json").read_text(encoding="utf-8"))
     report = {"id": run_id, "started_at": utcnow(), "automatic_refresh": False,
-              "selection": "Full Anteater/Coursera catalogs; Muse Entry Level and Internship across configured career categories; public ZotSpot calendar; configured Eventbrite events; official City of Irvine trails/parks/sports facilities",
+              "selection": "No UCI classes; direct checklist-topic Coursera courses; relevant Muse Entry Level and Internship roles; beneficial public ZotSpot/Eventbrite events and official City of Irvine recreation places",
               "sources": {}}
     for name in args.sources:
         count = 0
+        excluded = 0
         errors = []
         print(f"Collecting {name} ...", flush=True)
         state = "complete"
@@ -43,7 +44,8 @@ def main():
             budget = min(args.max_pages, args.muse_pages) if name == "muse" else args.max_pages
             for facts in ADAPTERS[name](fetcher, budget):
                 try:
-                    catalog.put(enrich(facts, overrides))
+                    retained = catalog.put(enrich(facts, overrides))
+                    excluded += retained is False
                     count += 1
                     if count % 500 == 0:
                         print(f"  {name}: {count} records processed", flush=True)
@@ -54,7 +56,7 @@ def main():
             errors.append({"error": str(error)})
         if errors and state == "complete":
             state = "partial"
-        report["sources"][name] = {"status": state, "records_processed": count, "errors": errors}
+        report["sources"][name] = {"status": state, "records_processed": count, "excluded_by_relevance": excluded, "errors": errors}
         print(f"{name}: {state}, {count} records, {len(errors)} errors", flush=True)
         # Persist progress even if a later source fails or the process is interrupted.
         report["counts"] = catalog.stats()

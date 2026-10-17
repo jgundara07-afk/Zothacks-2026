@@ -6,6 +6,11 @@ import math
 from collections import Counter
 from functools import lru_cache
 from pathlib import Path
+from datetime import datetime, timezone
+try:
+    from .filter_rules import supported_interests, validate_extra, matches_extra
+except ImportError:
+    from filter_rules import supported_interests, validate_extra, matches_extra
 
 CATALOG_DIRECTORY = Path(__file__).resolve().parent / "catalog"
 
@@ -29,7 +34,16 @@ class CatalogReader:
 
     def query(self, *, interests=(), goals=(), challenge_levels=(), time_buckets=(), locations=(),
               commitment=None, q="", scope="opportunity", lat=None, lon=None, radius_km=25,
-              include_past=False, source=None, kind=None, offset=0, limit=20):
+              include_past=False, source=None, kind=None, offset=0, limit=20,
+              skills=(), experience=(), cost=(), prerequisites=(), duration_quality=(), schedule=(), max_minutes=None):
+        extra = dict(experience=experience, cost=cost, prerequisites=prerequisites,
+                     duration_quality=duration_quality, schedule=schedule, max_minutes=max_minutes)
+        validate_extra(extra)
+        for label, value, field in (("source", source, "source"), ("kind", kind, "kind")):
+            if value and value not in {row[field] for row in self.rows}:
+                raise ValueError("Unknown " + label + " filter")
+        if any(value not in {skill for row in self.rows for skill in row.get("skills", [])} for value in skills):
+            raise ValueError("Unknown skills filter")
         if scope not in {"opportunity", "first_step", "micro_step"}:
             raise ValueError("scope must be opportunity, first_step or micro_step")
         for key, values in (("interests", interests), ("goals", goals), ("challenge_levels", challenge_levels), ("time_buckets", time_buckets), ("location_preferences", locations)):
@@ -57,16 +71,32 @@ class CatalogReader:
         matches = []
         facets = {key: Counter() for key in ("interests", "goals", "challenge_levels", "time_buckets", "location_preferences")}
         for row in self.rows:
-            if not include_past and row["status"] == "past":
+            if row["status"] == "cancelled":
+                continue
+            end = row.get("source_facts", {}).get("end")
+            if isinstance(end, dict):
+                end = end.get("utc")
+            ended = False
+            if isinstance(end, str):
+                try:
+                    parsed = datetime.fromisoformat(end.replace("Z", "+00:00"))
+                    ended = parsed.tzinfo is not None and parsed < datetime.now(timezone.utc)
+                except ValueError:
+                    pass
+            if not include_past and (row["status"] == "past" or ended):
                 continue
             if source and row["source"] != source or kind and row["kind"] != kind:
                 continue
             if terms and not all(term in self.search_text[row["id"]] for term in terms):
                 continue
             p = row["personalization"]
-            if interests and not set(interests).intersection(p["interests"]):
+            if interests and not set(interests).issubset(supported_interests(p)):
                 continue
-            if goals and not set(goals).intersection(p["goals"]):
+            if goals and not set(goals).issubset(p["goals"]):
+                continue
+            if skills and not set(skills).issubset(row.get("skills", [])):
+                continue
+            if not matches_extra(row, extra, scope):
                 continue
             plan = p if scope == "opportunity" else p[scope]
             challenges = p["challenge_levels"] if scope == "opportunity" else [plan["challenge_level"]]
@@ -84,8 +114,11 @@ class CatalogReader:
             if lat is not None and coordinates is not None:
                 km = distance_km(lat, lon, coordinates)
                 nearby = km <= radius_km
+            if "Near me" in locations and not nearby:
+                continue
             resolved_locations = p["location_preferences"] + (["Near me"] if nearby else [])
-            if locations and not set(locations).intersection(resolved_locations):
+            other_locations = set(locations) - {"Near me"}
+            if other_locations and not other_locations.intersection(resolved_locations):
                 continue
             facets["interests"].update(p["interests"])
             facets["goals"].update(p["goals"])

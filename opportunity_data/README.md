@@ -2,23 +2,23 @@
 
 This package gathers source data, parses it into a common schema, adds explicitly labeled OneThing estimates, and creates a separate opportunity database. **Nothing runs on app startup, on a timer, or in response to browsing the feed.** Run the CLI explicitly whenever a new collection is wanted.
 
-## Collected snapshot — October 17, 2026
+## Current curated snapshot — October 17, 2026
 
 | Source | Unique records |
 | --- | ---: |
-| Anteater classes | 9,299 |
-| Coursera online courses | 24,990 |
-| Muse jobs and internships | 7,261 |
-| ZotSpot campus events | 1,053 |
-| Eventbrite local networking/career events | 11 |
+| Anteater classes (removed) | 0 |
+| Coursera online courses | 9,275 |
+| Muse jobs and internships | 1,063 |
+| ZotSpot campus events | 616 |
+| Eventbrite local networking/career events | 6 |
 | City of Irvine parks, trail segments and sports facilities | 294 |
-| **Total** | **42,908** |
+| **Total** | **11,254** |
 
 See [the consolidated audit](reports/collection-summary.json). The Anteater catalog was exhausted, with seven untitled entries excluded. Coursera pagination was exhausted. ZotSpot covers the public calendar export, including 541 past events and 512 upcoming/in-progress events as of collection. Eventbrite covers 11 public event IDs discovered manually; no organizations were accessible to the supplied account. Muse combines retained earlier records with refreshed category queries, deduplicated into 7,261 listings; category pagination is capped by the provider. City records include 162 mapped public-trail segments, 63 parks and 69 sports facilities; parking/concert features are excluded. These are snapshots, not a promise that every opportunity is currently available.
 
 ## App-readable personalization export
 
-Every published catalog record has `personalization` using the exact [checklist labels](taxonomy.json), including Medium. App export applies the versioned relevance policy in `relevance.py`: it removes courses without a supported topic, generic unrelated jobs/internships, and events without an evident benefit. Parks, trails, and sports facilities are retained as personal wellbeing/recreation activities. The source SQLite catalog remains intact as a local review archive. Run these explicit commands after collecting:
+Every published catalog record has `personalization` using the exact [checklist labels](taxonomy.json), including Medium. App export applies the versioned relevance policy in `relevance.py`: it removes courses without a supported topic, generic unrelated jobs/internships, and events without an evident benefit. Parks, trails, and sports facilities are retained as personal wellbeing/recreation activities. The normalized SQLite catalog retains the same current curated IDs as the app; excluded source records are removed. UCI classes are excluded entirely, and online courses must directly name a checklist-related topic in their title. Anteater is omitted from default manual collection. Future manual collections reject irrelevant records before storage. Run these explicit commands after collecting:
 
 ```powershell
 .\.venv\Scripts\python.exe -m opportunity_data.refine --export
@@ -41,7 +41,7 @@ Topics and goal relevance use evidence-based editorial rules. When no specific i
 Default output, ignored by Git:
 
 - `data/opportunities.sqlite3`: persistent normalized catalog, indexed by source, with unique source IDs and source URLs.
-- `data/opportunities.json`: portable `{ "opportunities": [...] }` export when `--export` is supplied.
+- `data/opportunities.json`: optional portable export when `--export` is supplied; the obsolete full collection copy was deleted. The app uses only `backend/catalog/opportunities.json.gz`.
 - `data/raw/<run-id>/`: original response bytes and a `receipts.jsonl` manifest with URL, HTTP status, UTC collection time, SHA-256, and local snapshot path. Credentials are removed from receipt URLs and authorization headers are never recorded.
 - `data/latest_run.json`: per-source counts, errors, completeness, selection, and request count. Run history is also stored in the database's `runs` table.
 
@@ -100,3 +100,15 @@ Six source entries have individually reviewed suggestions in `editorial_override
 `--max-pages` defaults to 500 per source; `--muse-pages` defaults to 400 (at most 8,000 rows before deduplication). Collection is sequential with a minimum 0.25-second request interval, connection/read timeouts, and bounded retries. Long rate-limit pauses stop that source for a later manual run. Adjust `--delay` upward for stricter provider limits. Do not increase request budgets beyond provider limits. The scraper checks robots directives before requesting pages or the advertised export.
 
 Code layout: `http.py` handles gathering/raw snapshots; `sources.py` handles source schemas and pagination; `enrich.py` adds editorial suggestions; `database.py` handles persistence/deduplication/export; `collect.py` orchestrates the explicit one-time command. No cron jobs, background refresh services, or application hooks are installed.
+
+## Effort and strict filtering update
+
+The current export assigns every published record a difficulty and an evidence/basis explanation using `effort.py` (onething-effort-v2). The rubric separates cognitive/participation challenge from total duration. It covers all five levels and preserves record-specific reviewed exceptions in `editorial_overrides.json`. Difficulty bins are not filled randomly to achieve equal counts. Source details are sometimes incomplete; ratings and experience levels remain explicit estimates rather than verified eligibility. The full catalog has not been individually manually reviewed.
+
+`duration.py` parses supported source hour/minute units, ranges and week-count ? weekly-effort schedules, retaining original workload. Unsupported/missing source workload gets an explicitly labeled planning range or Unknown. Classes/jobs/internships have unknown full totals; a GIS segment does not establish an entire trail duration. `personalization.assessment` adds experience level, prerequisite status/evidence, cost/evidence, duration quality, schedule, languages and eligibility text. Missing prices, prerequisites, registration, and eligibility are not invented.
+
+Run `python -m opportunity_data.refine --export` to update local normalized records, then `python -m opportunity_data.export_app` to publish the curated app file. Publication always reassesses full stored facts with current rules and overrides; it never requests source data. Both search APIs require all selected interests/goals/skills. Broad fallback topics do not qualify as supported matches. Maximum-minute filters use range upper bounds and exclude unknown totals; metadata options come from `shared/catalog_filters.json`. The UI filter sheet exposes the new metadata and detailed cards show duration provenance. See [API details](../docs/API.md#effort-assessment-v2).
+
+The previous 42,908-row normalized collection was trimmed to the current 28,678 published IDs and compacted; the redundant large local JSON file was removed. Source request history and raw response receipts remain collection provenance. They are not used as another opportunity database. Fictional seed data is retained only for explicit sample mode and existing saved history.
+
+Latest cleanup: removed all 6,305 UCI classes and 11,119 additional courses from the previous curated set, leaving 11,254 items including 9,275 online courses. See `reports/catalog-trim.json`. Earlier collection counts in source-run history describe provider gathering before curation.
