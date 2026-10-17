@@ -29,3 +29,4 @@ html,body,#root{width:100%;max-width:100%;overflow-x:clip}
 .period-chart{overflow-x:hidden;gap:4px}.period-chart>div{min-width:0;flex:1}.period-chart small{font-size:9px}
 .feed-filters{grid-template-columns:repeat(2,minmax(0,1fr))}.feed-filters>*{min-width:0}.feed-filters select,.feed-filters input{max-width:100%;min-width:0}
 .phone-shell{max-width:480px}
+.completed-quests summary{cursor:pointer;padding:16px 0;font-weight:600;font-size:16px}.completed-quests summary:focus-visible{outline:2px solid var(--red);outline-offset:3px}
