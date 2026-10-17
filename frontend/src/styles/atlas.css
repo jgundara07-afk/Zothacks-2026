@@ -1,0 +1,35 @@
+.atlas{border:1px solid var(--paper-line);border-radius:6px;overflow:hidden;background:var(--paper-hi) var(--map) center/cover;color:var(--on-paper)}
+.atlas>.climb{border:0;border-radius:0;background:transparent}
+.atlas-ledger{padding:0 20px 22px;font-family:var(--font-serif)}
+.atlas-heading{border-top:1px solid var(--paper-line);padding-top:17px}
+.atlas-kicker{font:11px var(--font-mono);letter-spacing:.16em;color:var(--red)}
+.atlas-heading p{font-size:17px;line-height:1.25;margin:8px 0 15px;max-width:32ch}
+.atlas-periods{display:flex;gap:5px;padding:4px;border:1px solid var(--paper-line);border-radius:4px;background:rgba(36,24,13,.07)}
+.atlas-periods button{flex:1;min-height:36px;padding:5px 3px;font:14px var(--font-serif);white-space:nowrap}
+.atlas-periods button[aria-pressed="true"]{background:var(--ink-1);color:var(--on-ink);border-radius:3px}
+.atlas-period-stat{font-size:17px;line-height:1.3;margin:16px 0;color:var(--on-paper-mute)}
+.atlas-period-stat strong{color:var(--red);font:700 24px var(--font-title)}
+.atlas-chapters{list-style:none;margin:12px 0 14px;padding:0 0 0 16px;border-left:1px dashed rgba(58,39,22,.55)}
+.atlas-chapters li{display:flex;align-items:center;gap:13px;min-height:54px;position:relative;margin-left:-29px}
+.atlas-node{display:grid;place-items:center;width:26px;height:26px;flex:none;border:1px solid var(--on-paper-mute);background:var(--paper-hi);border-radius:50%;font:12px var(--font-mono)}
+.atlas-chapters .explored .atlas-node,.atlas-chapters .current .atlas-node{background:var(--red);border-color:var(--red);color:#fff}
+.atlas-chapters .unseen{opacity:.55}
+.atlas-chapters strong,.atlas-chapters small{display:block}
+.atlas-chapters strong{font-size:15px;font-weight:600}
+.atlas-chapters small,.atlas-footnote{font-size:12px;color:var(--on-paper-mute)}
+.atlas-footnote{display:block;font-style:italic;line-height:1.35}
+.recap-stage{display:flex;flex-direction:column;min-height:520px}
+.recap-stage-head{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+.recap-play{display:grid;place-items:center;width:38px;height:38px;border:1px solid currentColor;border-radius:50%;opacity:.8}
+.recap-scene{display:flex;flex:1;flex-direction:column;justify-content:center;min-height:300px}
+.recap-stage .recap-big{font-size:clamp(42px,16vw,108px);line-height:.9;margin:0;overflow-wrap:anywhere}
+.recap-stage .recap-big small{display:block;margin-top:16px}
+.recap-stage .recap-story{margin:25px 0 0;max-width:30ch}
+.recap-dots button{position:relative;overflow:hidden}
+.recap-dots button span{display:block;width:100%;height:100%;background:currentColor;opacity:.2}
+.recap-dots button[aria-current="step"] span{opacity:1}
+.recap-navigation{flex-wrap:wrap}
+.recap-empty{display:flex;flex-direction:column;justify-content:center;gap:18px;padding:28px}
+.recap-empty h2{font-size:42px}
+@media(prefers-reduced-motion:no-preference){.recap-scene{animation:recap-arrive .7s ease-out both}.recap-dot-playing{transform-origin:left;animation:recap-fill var(--recap-duration) linear both}@keyframes recap-arrive{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}@keyframes recap-fill{from{transform:scaleX(0)}to{transform:scaleX(1)}}}
+@media(prefers-reduced-motion:reduce){.recap-scene,.recap-dot-playing{animation:none!important}}

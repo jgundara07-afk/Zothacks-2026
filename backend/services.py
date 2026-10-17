@@ -1,4 +1,5 @@
 from collections import Counter, defaultdict, deque
+import re
 from datetime import timedelta, datetime
 from zoneinfo import ZoneInfo
 try:
@@ -115,6 +116,9 @@ class OneThing:
         default_effort = (self.checkin() or {}).get('effort')
         for o in self.catalog.values():
             if not available(o, self.real_clock()): continue
+            # The current onboarding is for undergraduates; without an
+            # education-level control, graduate-only titles are misleading.
+            if re.search(r'\b(?:MBA|Ph\.?D\.?|graduate[- ]only)\b', o.get('title') or '', re.I): continue
             p = o['personalization']
             if filters.get('challenges') and not set(filters['challenges']).intersection(p['challenge_levels']): continue
             if filters.get('time') and not set(filters['time']).intersection(p['time_buckets']): continue
@@ -150,6 +154,14 @@ class OneThing:
         if using_fallback: matches = neutral
         # Evidence-based tier, score and reason per card (relevance.py); tag overlap only breaks ties.
         info = {} if using_fallback else {o['id']: assess(o, sorted(interest_tags), sorted(goal_tags), interest_tags.intersection(supported_interests(o['personalization']))) for o,_,_ in matches.values()}
+        if interest_tags and any(value['tier'] == 'specific' for value in info.values()) and not any(filters.get(key) for key in ('q', 'kind', 'source')) and not using_fallback:
+            # A passing description mention is too little evidence to push a
+            # high-commitment role or event into someone's discovery feed.
+            # Explicit search and kind filters still expose the full catalog.
+            matches = {key: entry for key, entry in matches.items()
+                       if info[key]['tier'] != 'adjacent' or not any(term in (entry[0].get('kind') or '').lower()
+                           for term in ('intern', 'job', 'event'))}
+            info = {key: value for key, value in info.items() if key in matches}
         for o,_,_ in matches.values():
             if o['id'] in info:
                 k = (o.get('kind') or '').lower()

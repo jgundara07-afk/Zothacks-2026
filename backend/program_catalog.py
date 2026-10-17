@@ -1,6 +1,7 @@
 """Adapt the immutable collected catalog to the app's card and preparation-quest contract."""
 from datetime import datetime, timezone
 from functools import lru_cache
+import re
 try:
     from .catalog_reader import load_catalog, distance_km
     from .preferences import PREFERENCES
@@ -83,6 +84,16 @@ def preparation_quests(o):
 def available(o, now):
     if o['status'] in {'past', 'cancelled'}:
         return False
+    # Some imported internship records have no closing date. Do not offer a
+    # cohort whose named season has already ended as a current opportunity.
+    title = o.get('title') or ''
+    season = re.search(r'\b(summer|spring|winter|fall)\s+(20\d{2})\b|\b(20\d{2})\s+(summer|spring|winter|fall)\b', title, re.I)
+    if season:
+        name = (season.group(1) or season.group(4)).lower()
+        year = int(season.group(2) or season.group(3))
+        end_month = {'winter': 3, 'spring': 5, 'summer': 8, 'fall': 12}[name]
+        if (now.year, now.month) > (year, end_month):
+            return False
     end = o.get('source_facts', {}).get('end')
     if isinstance(end, dict):
         end = end.get('utc')

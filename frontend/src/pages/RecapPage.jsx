@@ -1,48 +1,42 @@
 import React,{useEffect,useState} from 'react';
-import {ArrowRight,ArrowLeft} from 'lucide-react';
+import {ArrowRight,ArrowLeft,Pause,Play,RotateCcw} from 'lucide-react';
 import PointsTimeline from '../components/PointsTimeline';
 import {api} from '../api';
 
-function localStory(data){
- const category=data.categories?Object.entries(data.categories).sort((a,b)=>b[1]-a[1])[0]:null;
- const skill=data.top_skill;
- const labels={'General task':'The Small-Step Strategist','Online course':'The Skill Collector','Certification':'The Skill Collector',Class:'The Curious Scholar',Internship:'The Career Pathfinder','Job simulation':'The Career Pathfinder',Networking:'The Connector',Club:'The Community Builder',Park:'The Trailblazer'};
- const done=data.completed_count||0;
- if(!done)return {source:'local',narrative:{archetype:'The First-Step Scout',evidence:'Your recap is ready for your first completed quest.',description:'Your OneThing story is just getting started. One small step will give the next recap its first chapter.',quest_line:'The opening track is still yours to choose.',onething_line:'No points yet, and all the possibility in front of you.',next_step:'Pick one short quest and take its first step.'}};
- const [kind,count]=category||['quest',done];
- return {source:'local',narrative:{archetype:labels[kind]||'The OneThing Climber',evidence:`${count} completed ${kind} quests${skill?` · most practiced skill: ${skill}`:''}`,description:`Your completed work leaned toward ${kind}. You kept turning a little time into visible progress, one quest at a time.`,quest_line:'Your completed quests made quite a highlight reel. OneThing saw you show up.',onething_line:`${done} completed steps and ${data.points||0} points: proof that small things add up.`,next_step:skill?`Choose one manageable quest that builds on ${skill}.`:'Choose one manageable quest to start your next chapter.'}};
-}
+const DURATION=4600;
 
-function buildSlides(data,story){
+function slidesFor(data,story){
  const p=data.progress||{};
- const n=story.narrative;
+ const latest=[...(p.activity||[])].sort((a,b)=>b.completed_at.localeCompare(a.completed_at))[0];
+ const completed=p.completed_count||0;
+ const chapter=Math.floor((p.points||0)/100)+1;
  return [
-  {label:'Completed',big:String(p.completed_count||0),unit:(p.completed_count||0)===1?'quest':'quests',color:'purple'},
-  {label:'Practice',big:String(data.estimated_minutes||0),unit:'minutes, estimated',color:'orange'},
-  {label:'Your archetype',big:n.archetype,unit:n.evidence,body:n.description,color:'lime',ai:true},
-  {label:'Quest highlights',big:'You did the thing.',unit:'and made it count.',body:n.quest_line,color:'pink',ai:true},
-  {label:'Top skill',big:data.top_skill||'None yet',unit:data.top_category?`Mostly ${data.top_category}`:'Complete a quest to find yours',color:'purple'},
-  {label:'OneThing energy',big:'Small steps.',unit:'big plot.',body:n.onething_line,color:'orange',ai:true},
-  {label:'Next chapter',big:'Your next move',unit:'One thing at a time',body:n.next_step,color:'lime',ai:true},
-  {label:'Best streak',big:String(p.longest_streak||0),unit:(p.longest_streak||0)===1?'day':'days',color:'pink'},
+  {label:'Your story so far',big:String(p.points||0),unit:'points earned',body:`From ${completed} completed ${completed===1?'step':'steps'}. Every mark on your map came from something you actually did.`,color:'purple'},
+  {label:'Time you gave yourself',big:String(data.estimated_minutes||0),unit:'minutes estimated',body:latest?`Most recently: “${latest.title}.” Your time estimate is based on the quests you marked complete.`:'Complete a quest to start your story.',color:'orange'},
+  {label:'What you practiced',big:data.top_skill||'A first skill',unit:data.top_category?`Most steps: ${data.top_category}`:'Your skills emerge as you complete steps',body:data.top_skill?`${data.top_skill} appears most often in your completed quest tags. This shows practice, not measured proficiency.`:'Your first quest will give this chapter a focus.',color:'pink'},
+  {label:'The route keeps growing',big:`CHAPTER ${chapter}`,unit:`${p.points||0} lifetime points`,body:`${p.longest_streak||0} ${p.longest_streak===1?'day':'days'} at your best streak. Your next region opens at ${chapter*100} points.`,color:'lime'},
+  {label:'Your next chapter',big:story?.archetype||'Keep going',unit:story?.evidence||`${completed} completed steps`,body:story?.next_step||'Choose one manageable next step.',color:'purple'},
  ];
 }
 
 export default function Recap({data,onExplore}){
  const [slide,setSlide]=useState(0);
- const [story,setStory]=useState(()=>localStory(data||{}));
+ const [playing,setPlaying]=useState(()=>!window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+ const [story,setStory]=useState(null);
  useEffect(()=>{let active=true;api.recapNarrative().then(result=>{if(active&&result?.narrative)setStory(result)}).catch(()=>{});return()=>{active=false}},[]);
- if(!data)return <p>Loading your recap…</p>;
- const slides=buildSlides(data,story),item=slides[slide],last=slide===slides.length-1;
- return <><section className={'wrapped '+item.color} aria-label="Progress recap">
-  <div className="recap-dots">{slides.map((s,i)=><button key={s.label} aria-label={`Recap slide ${i+1}: ${s.label}`} aria-current={i===slide?'step':undefined} onClick={()=>setSlide(i)}/>)}</div>
-  <span className="eyebrow">{item.label}</span>
-  <div className="recap-big" aria-live="polite" key={slide}>{item.big}<small>{item.unit}</small></div>
-  {item.body&&<p className="recap-story">{item.body}</p>}
-  {item.ai&&story.source==='gemini'&&<span className="recap-ai-label">Gemini story · based on your completed quests</span>}
-  <div className="recap-navigation"><button disabled={slide===0} onClick={()=>setSlide(slide-1)}><ArrowLeft size={18}/> Back</button>{last?<button onClick={onExplore}>Find a quest <ArrowRight size={18}/></button>:<button onClick={()=>setSlide(slide+1)}>Next <ArrowRight size={18}/></button>}</div>
-  <details className="recap-method"><summary>How this is counted</summary>Counts and skills come from recorded quest completions. Quest time is estimated. The archetype and story are playful descriptions of this activity, not assessments of ability. {story.source==='gemini'?'Gemini wrote the recap from your category, skill, difficulty, and recent completed-quest records.':'A local recap is shown because Gemini was unavailable.'}</details>
- </section>
- <PointsTimeline activity={data.progress.activity||[]} today={data.progress.today}/>
- </>
+ const complete=data?.progress?.completed_count||0;
+ const slides=data?slidesFor(data,story?.narrative):[];
+ useEffect(()=>{if(!playing||!complete||slide>=slides.length-1)return;const timer=setTimeout(()=>setSlide(s=>s+1),DURATION);return()=>clearTimeout(timer)},[playing,complete,slide,slides.length]);
+ if(!data)return <p role="status">Loading your recap…</p>;
+ if(!complete)return <section className="wrapped purple recap-empty"><span className="eyebrow">YOUR STORY STARTS HERE</span><h2>No completed quests yet.</h2><p>Save a promising opportunity and finish one preparation step. Your recap will grow from what you actually do.</p><button className="primary" onClick={onExplore}>Find my first quest <ArrowRight size={18}/></button></section>;
+ const item=slides[slide],last=slide===slides.length-1;
+ function go(index){setPlaying(false);setSlide(index)}
+ return <><section className={`wrapped ${item.color} recap-stage`} aria-label="Progress recap" aria-roledescription="slideshow">
+  <div className="recap-dots">{slides.map((s,i)=><button key={s.label} aria-label={`Recap slide ${i+1}: ${s.label}`} aria-current={i===slide?'step':undefined} onClick={()=>go(i)}><span className={playing&&i===slide?'recap-dot-playing':''} style={{'--recap-duration':`${DURATION}ms`}}/></button>)}</div>
+  <div className="recap-stage-head"><span className="eyebrow">{String(slide+1).padStart(2,'0')} / {String(slides.length).padStart(2,'0')} · {item.label}</span><button className="recap-play" aria-label={playing?'Pause recap':'Play recap'} onClick={()=>setPlaying(v=>!v)}>{playing?<Pause size={16}/>:<Play size={16}/>}</button></div>
+  <div className="recap-scene" key={slide}><div className="recap-big">{item.big}<small>{item.unit}</small></div><p className="recap-story">{item.body}</p></div>
+  {last&&story?.source==='gemini'&&<span className="recap-ai-label">Narrative by Gemini · counts from your completed quests</span>}
+  <div className="recap-navigation"><button disabled={slide===0} onClick={()=>go(slide-1)}><ArrowLeft size={18}/> Back</button>{last?<><button onClick={()=>{setSlide(0);setPlaying(!window.matchMedia('(prefers-reduced-motion: reduce)').matches)}}><RotateCcw size={16}/> Replay</button><button onClick={onExplore}>Find a quest <ArrowRight size={18}/></button></>:<button onClick={()=>go(slide+1)}>Next <ArrowRight size={18}/></button>}</div>
+  <details className="recap-method"><summary>How this is counted</summary>Counts and skills come from recorded quest completions. Quest time is estimated. Chapter numbers use lifetime points. The archetype is a playful description, not an assessment of ability.</details>
+ </section><PointsTimeline activity={data.progress.activity||[]} today={data.progress.today}/></>;
 }

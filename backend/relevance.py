@@ -164,8 +164,8 @@ def _rotate(ids, info):
     return order
 
 
-def mix(ids_by_tier, info=None, pattern=('specific', 'specific', 'adjacent')):
-    """Interleave tiers (two specific, then one adjacent), rotating interests within each tier."""
+def mix(ids_by_tier, info=None, pattern=('specific', 'specific', 'specific', 'specific', 'adjacent')):
+    """Keep direct evidence dominant, with an occasional exploratory pick."""
     queues = {tier: (_rotate(ids, info) if info else list(ids)) for tier, ids in ids_by_tier.items()}
     out = []
     while any(queues.values()):

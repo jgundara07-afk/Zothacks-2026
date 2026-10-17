@@ -3,7 +3,6 @@ import {ArrowRight,ArrowLeft,Check,Clock3} from 'lucide-react';
 import {options} from './PreferenceFields';
 import InterestPicker from './InterestPicker';
 import {OPENING_HALFTONE} from '../constants';
-import SignIn from './SignIn';
 import {photoFor,scenePhoto,INTEREST_SCENES} from '../utils/photos';
 
 // First-run story, screen by screen (see frontend/ONBOARDING_FLOW.md).
@@ -23,9 +22,8 @@ const ASH=Array.from({length:46},(_,i)=>{const r=n=>((Math.sin(i*12.9898+n*78.23
 
 function Title({children,className=''}){return <h1 className={'eva '+className}>{children}</h1>}
 
-export default function Onboarding({data,busy,error,hasProfile,interests,setInterests,goals,setGoals,skills,setSkills,preferences,setPreferences,stepSize,setStepSize,sample,topPick,topQuest,onSave,onEnter,onWiden,onSkip,onLogin}){
+export default function Onboarding({data,busy,error,hasProfile,interests,setInterests,goals,setGoals,skills,setSkills,preferences,setPreferences,stepSize,setStepSize,sample,topPick,topQuest,onSave,onEnter,onWiden,onSkip}){
  const [step,setStep]=useState(0);
- const [loginOpen,setLoginOpen]=useState(false);
  // Intro plays once per visit; reduced motion goes straight to the finished first screen.
  const [phase,setPhase]=useState(()=>window.matchMedia('(prefers-reduced-motion: reduce)').matches?'ui':'words');
  useEffect(()=>{
@@ -54,7 +52,6 @@ export default function Onboarding({data,busy,error,hasProfile,interests,setInte
  // ---------- 0: intro sequence → title card → first screen ----------
  // words ("Move forward every day" arrives word by word) → burn (they burn away into pixel embers and ash)
  // → card (letterboxed title card) → ui (title rises, panel slides in)
- if(loginOpen)return <SignIn onBack={()=>setLoginOpen(false)} onSignIn={name=>{onLogin?.(name);setLoginOpen(false);setStep(1)}}/>;
  if(step===0)return <div className={`phone-shell ob ob-title phase-${phase}`} onClick={phase==='ui'?undefined:skipIntro}>
   <div className="ob-title-photo" aria-hidden="true"/>
   <div className="ob-words" aria-hidden="true">
@@ -72,7 +69,7 @@ export default function Onboarding({data,busy,error,hasProfile,interests,setInte
   <div className="ob-title-panel" inert={phase==='ui'?undefined:true}>
    <img className="ob-halftone" src={OPENING_HALFTONE} alt="" aria-hidden="true"/>
    <p className="ob-lede" ref={heading} tabIndex={-1}>Find one real opportunity and take the first step today.</p>
-   <button className="primary wide" disabled={!data} onClick={()=>setLoginOpen(true)}>{data?'Get started':'Loading…'}<ArrowRight size={18}/></button>
+   <button className="primary wide" disabled={!data} onClick={()=>setStep(1)}>{data?'Get started':'Loading…'}<ArrowRight size={18}/></button>
    {hasProfile&&<button className="ob-text" disabled={busy} onClick={onSkip}>Continue where I left off</button>}
    <small className="ob-fine">Demo profile · no account needed</small>
   </div>
@@ -150,7 +147,7 @@ export default function Onboarding({data,busy,error,hasProfile,interests,setInte
    {topPick?<article className="ob-reveal-card">
     <span className="ob-card-kicker">{topPick.recommendation_type==='neutral'?'Neutral suggestion':data?.data_mode==='catalog'?'From the catalog':'Sample'} · {topPick.kind}{topPick.mode?` · ${topPick.mode}`:''}</span>
     <h2 className="eva">{topPick.title}</h2>
-    <p className="ob-why">{topPick.recommendation_reason?topPick.recommendation_reason:topPick.recommendation_type==='neutral'?'No current match for your interests and goals. This wellbeing alternative fits your other preferences.':topPick.matching_tags?.length?`Because you chose ${topPick.matching_tags.slice(0,2).join(' and ')}.`:'A new direction worth a look.'}</p>
+    <p className="ob-why">{topPick.match_reason||topPick.recommendation_reason||(topPick.recommendation_type==='neutral'?'No current match for your interests and goals. This is a general step you can still take today.':'A new direction worth a look.')}</p>
     {data?.fallback?.recommendation&&<p className="ob-why gemini-recommendation"><strong>Gemini suggestion</strong><br/>{data.fallback.recommendation}</p>}
     {topQuest&&<div className="ob-first-step"><span>First step · {topQuest.minutes||topPick.minutes} min</span><strong>{topQuest.title}</strong></div>}
    </article>:<div className="ob-empty"><p className="ob-why">No current matches or neutral alternatives fit your remaining preferences.</p>{data?.fallback?.recommendation&&<p className="ob-why gemini-recommendation"><strong>Gemini suggestion</strong><br/>{data.fallback.recommendation}</p>}<p className="ob-note">Widen the search to start from your first interest, or change your answers.</p></div>}

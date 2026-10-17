@@ -2,12 +2,15 @@
 import tempfile
 import unittest
 import urllib.parse
+from datetime import datetime, timezone
 try:
     from .app import create_app, Store
     from .relevance import evidence, assess
+    from .program_catalog import available
 except ImportError:
     from app import create_app, Store
     from relevance import evidence, assess
+    from program_catalog import available
 
 
 def feed(client, interests, goals, limit=20):
@@ -36,6 +39,11 @@ class EvidenceTest(unittest.TestCase):
         result = assess(dict(title='The 20-20-20', kind='General task', general_task={'minutes': 1}), ['Product management'], [], set())
         self.assertEqual(result['tier'], 'general')
 
+    def test_named_past_season_is_not_current_without_an_end_date(self):
+        now = datetime(2026, 10, 17, tzinfo=timezone.utc)
+        self.assertFalse(available({'status': 'active', 'title': 'Product Internship Summer 2026'}, now))
+        self.assertTrue(available({'status': 'active', 'title': 'Product Internship Summer 2027'}, now))
+
 
 class ProfileFeedTest(unittest.TestCase):
     @classmethod
@@ -49,6 +57,8 @@ class ProfileFeedTest(unittest.TestCase):
         self.assertGreaterEqual(sum(r['match_tier'] == 'specific' for r in top), 6)
         self.assertTrue(any(r['kind'] == 'Internship' and 'product' in r['title'].lower() for r in top), 'a product internship should surface')
         self.assertTrue(any(r['match_tier'] == 'adjacent' for r in top), 'the feed mixes in adjacent picks')
+        self.assertFalse(any('MBA' in r['title'] or 'Summer 2026' in r['title'] for r in top))
+        self.assertFalse(any(r['match_tier'] == 'adjacent' and r['kind'] in {'Internship', 'Campus event'} for r in top))
 
     def test_music_and_creative_profile(self):
         rows = feed(self.client, ['Music production', 'Content creation', 'Creative writing'], ['Build a strong project portfolio', 'Explore careers and discover my interests'])
