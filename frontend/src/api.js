@@ -1,6 +1,6 @@
 async function request(path, data, method = 'POST') {
   let response;
-  try { response = await fetch(`/api${path}`, data === undefined ? {} : {method,headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}); }
+  try { response = await fetch(`/api${path}`, data === undefined ? {} : {method,...(data instanceof FormData?{body:data}:{headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})}); }
   catch { throw new Error('Cannot reach One Thing. Check that the backend is running, then try again.'); }
   let result;
   try { result = await response.json(); } catch { throw new Error('The server returned an unexpected response. Please try again.'); }
@@ -15,4 +15,4 @@ function catalogQuery(filters = {}) {
   }
   return request(`/catalog/opportunities?${query}`);
 }
-export const api = {catalogOptions:()=>request('/catalog/options'),catalogSearch:catalogQuery,analytics:()=>request('/analytics'),resume:data=>request('/resume-analysis',data),feed:()=>request('/opportunities'),quests:()=>request('/quests'),progress:()=>request('/progress'),checkin:data=>request('/checkins',data),profile:data=>request('/profiles',data),save:id=>request('/saved',{opportunity_id:id}),unsave:id=>request('/saved',{opportunity_id:id},'DELETE'),complete:id=>request('/completions',{quest_id:id})};
+export const api = {catalogOptions:()=>request('/catalog/options'),catalogSearch:catalogQuery,analytics:()=>request('/analytics'),resumePDF:(file,role)=>{const form=new FormData();form.append('file',file);form.append('role',role);return request('/resume-analysis/pdf',form)},resume:data=>request('/resume-analysis',data),feed:()=>request('/opportunities'),quests:()=>request('/quests'),progress:()=>request('/progress'),checkin:data=>request('/checkins',data),profile:data=>request('/profiles',data),save:id=>request('/saved',{opportunity_id:id}),unsave:id=>request('/saved',{opportunity_id:id},'DELETE'),complete:id=>request('/completions',{quest_id:id})};

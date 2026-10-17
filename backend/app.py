@@ -3,6 +3,7 @@ import os
 import sqlite3
 from datetime import datetime, timezone
 from flask import Flask, jsonify
+from werkzeug.exceptions import RequestEntityTooLarge
 from dotenv import load_dotenv
 from pymongo.errors import PyMongoError
 try:
@@ -18,6 +19,7 @@ load_dotenv(ROOT.parent / '.env')
 
 def create_app(store=None, now=None):
     app = Flask(__name__)
+    app.config['MAX_CONTENT_LENGTH'] = 6 * 1024 * 1024
     try:
         from .catalog_routes import register_catalog
     except ImportError:
@@ -37,6 +39,9 @@ def create_app(store=None, now=None):
     def unavailable(error):
         app.logger.error('Storage error: %s', error)
         return jsonify(error='Storage is unavailable. Please try again.'), 503
+    @app.errorhandler(RequestEntityTooLarge)
+    def too_large(error):
+        return jsonify(error='Upload a PDF under 5 MB.'), 413
     @app.errorhandler(404)
     def missing(error):
         return jsonify(error='This route does not exist.'), 404

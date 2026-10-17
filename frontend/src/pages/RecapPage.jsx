@@ -1,29 +1,11 @@
-import React,{useState} from 'react';
-import {ArrowRight,ArrowLeft} from 'lucide-react';
-
-// Spotify Wrapped-style slides built from real activity totals. color = a .wrapped.<color> theme in styles/recap.css.
-function buildSlides(data){
- const p=data.progress;
- return [
-  {label:'YOUR ONE THING RECAP',headline:p.completed_count?'Look what your little steps became.':'Every great climb starts somewhere.',big:String(p.completed_count),unit:'quests completed',text:'1% every day. One real step at a time.',color:'purple'},
-  {label:'YOU MADE ROOM FOR GROWTH',headline:'A little time. A lot of possibility.',big:String(data.estimated_minutes),unit:'estimated minutes of practice',text:'Based on quest durations, not a running timer.',color:'orange'},
-  {label:'YOUR CAREER SIDE QUEST',headline:data.top_skill?`You kept coming back to ${data.top_skill.toLowerCase()}.`:'Your next skill is waiting.',big:data.top_skill||'Curiosity',unit:data.top_category?`Your top path: ${data.top_category}`:'Start a quest to discover your path.',text:'A reflection of quest tags, not a judgment of your ability.',color:'lime'},
-  {label:'KEEP CLIMBING, AT YOUR PACE',headline:'Baby steps. Real momentum.',big:String(p.longest_streak),unit:'days in your best streak',text:`${p.points} points earned. ${data.active_days} active days. Your next little step is waiting.`,color:'pink'},
- ];
-}
-
-export default function RecapPage({data,onExplore}){
+import React,{useState,useRef} from 'react';
+import {ArrowRight,ArrowLeft,Sparkles,FileText,Check} from 'lucide-react';
+import {api} from '../api';
+export default function Recap({data,onExplore}){
  const [slide,setSlide]=useState(0);
  if(!data)return <p>Loading your recap…</p>;
- const slides=buildSlides(data);
+ const p=data.progress;
+ const slides=[{label:'YOUR ONE THING RECAP',headline:p.completed_count?'Look what your little steps became.':'Every great climb starts somewhere.',big:String(p.completed_count),unit:'quests completed',text:'1% every day. One real step at a time.',color:'purple'},{label:'YOU MADE ROOM FOR GROWTH',headline:'A little time. A lot of possibility.',big:String(data.estimated_minutes),unit:'estimated minutes of practice',text:'Based on quest durations, not a running timer.',color:'orange'},{label:'YOUR CAREER SIDE QUEST',headline:data.top_skill?`You kept coming back to ${data.top_skill.toLowerCase()}.`:'Your next skill is waiting.',big:data.top_skill||'Curiosity',unit:data.top_category?`Your top path: ${data.top_category}`:'Start a quest to discover your path.',text:'A reflection of quest tags, not a judgment of your ability.',color:'lime'},{label:'KEEP CLIMBING, AT YOUR PACE',headline:'Baby steps. Real momentum.',big:String(p.longest_streak),unit:'days in your best streak',text:`${p.points} points earned. ${data.active_days} active days. Your next little step is waiting.`,color:'pink'}];
  const item=slides[slide];
- return <section className={'wrapped '+item.color} aria-label="Progress recap">
-  <div className="recap-dots">{slides.map((s,i)=><button key={s.label} aria-label={`Recap slide ${i+1}`} aria-current={i===slide?'step':undefined} onClick={()=>setSlide(i)}/>)}</div>
-  <span className="eyebrow">{item.label}</span>
-  <h2>{item.headline}</h2>
-  <div className="recap-big" aria-live="polite" key={slide}>{item.big}<small>{item.unit}</small></div>
-  <p>{item.text}</p>
-  <div className="recap-navigation"><button disabled={slide===0} onClick={()=>setSlide(slide-1)}><ArrowLeft size={18}/> Back</button>{slide<slides.length-1?<button onClick={()=>setSlide(slide+1)}>Next <ArrowRight size={18}/></button>:<button onClick={onExplore}>Find my next step <ArrowRight size={18}/></button>}</div>
-  <small className="recap-method">Your real activity · offline template recap · no AI-generated claims</small>
- </section>
+ return <section className={'wrapped '+item.color} aria-label="Progress recap"><div className="recap-dots">{slides.map((s,i)=><button key={s.label} aria-label={`Recap slide ${i+1}`} aria-current={i===slide?'step':undefined} onClick={()=>setSlide(i)}/>)}</div><span className="eyebrow">{item.label}</span><h2>{item.headline}</h2><div className="recap-big" aria-live="polite" key={slide}>{item.big}<small>{item.unit}</small></div><p>{item.text}</p><div className="recap-navigation"><button disabled={slide===0} onClick={()=>setSlide(slide-1)}><ArrowLeft size={18}/> Back</button>{slide<slides.length-1?<button onClick={()=>setSlide(slide+1)}>Next <ArrowRight size={18}/></button>:<button onClick={onExplore}>Find my next step <ArrowRight size={18}/></button>}</div><small className="recap-method">Your real activity · offline template recap · no AI-generated claims</small></section>
 }

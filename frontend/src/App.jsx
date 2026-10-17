@@ -1,71 +1,99 @@
-import React,{useState,useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
+import {ArrowRight, ArrowLeft, Bookmark, Check, Compass, Flag, Mountain, Sparkles, Sprout, Clock3, X, SlidersHorizontal, Pencil, Flame, ChevronDown, List, Image} from 'lucide-react';
 import {api} from './api';
-import {DEFAULT_FILTERS} from './constants';
-import {useDialogFocus} from './hooks/useDialogFocus';
-import {withDifficultyVariants,filterOpportunities,toggleItem} from './utils/opportunities';
-import Sidebar from './components/layout/Sidebar';
-import Header from './components/layout/Header';
-import Footer from './components/layout/Footer';
-import PageIntro from './components/layout/PageIntro';
-import RightColumn from './components/layout/RightColumn';
-import DailyCheckin from './components/DailyCheckin';
-import OnboardingModal from './components/modals/OnboardingModal';
-import QuestModal from './components/modals/QuestModal';
-import RewardModal from './components/modals/RewardModal';
-import OpportunitiesPage from './pages/OpportunitiesPage';
-import ProgressPage from './pages/ProgressPage';
-import ResumeLabPage from './pages/ResumeLabPage';
-import RecapPage from './pages/RecapPage';
+import ResumeLab from './pages/ResumeLabPage';
+import Recap from './pages/RecapPage';
+import Analytics from './components/Analytics';
+import StreakCalendar from './components/StreakCalendar';
+import SignIn from './components/SignIn';
+import Climb from './components/Climb';
+import {crossedMilestone,climbPosition} from './utils/climbMath';
+import {options,emptyPreferences,PreferenceFields} from './components/PreferenceFields';
+import {chooseVariant,matchesOpportunity} from './utils/filtering';
 
-// Holds all shared state and talks to the API; the pages and components just display it.
+const GOALS=['Explore my interests','Build my skills','Make an impact'];
+const INTERESTS=['Design','Technology','Community','Sustainability','Arts'];
+const SKILLS=['Writing','Coding','Research','Design'];
+const SOURCES=['Class','Club','Certification','Local event','Networking','Job simulation','Internship','Creative project','Build challenge','Campus initiative'];
+const NAV=[['Discover','Discover',Compass],['Saved things','Saved',Bookmark],['My progress','Progress',Mountain],['Resume lab','Resume',Pencil],['My recap','Recap',Sparkles]];
+function imageFor(o){
+ if(o.id==='green')return ['nature','A young plant growing on a green hillside'];
+ if(['Class','Certification'].includes(o.kind))return ['learn','An open book and a little spark of inspiration'];
+ if(['Club','Networking','Local event'].includes(o.kind))return ['community','Two people sharing ideas around a table'];
+ if(o.kind==='Internship')return ['career','A satchel ready for a new career chapter'];
+ if(o.id==='code')return ['build','A laptop with code and a handwritten checklist'];
+ return ['creative','A sketchbook with colorful ideas and a pencil'];
+}
+function Art({opportunity}){const [name,alt]=imageFor(opportunity);return <img src={`/illustrations/${name}.svg`} alt={alt} loading="lazy" width="480" height="380"/>}
+function Modal({title,onClose,children,className=''}){
+ const ref=useRef(null),close=useRef(onClose);close.current=onClose;
+ useEffect(()=>{
+  const previous=document.activeElement;
+  const controls=()=>Array.from(ref.current?.querySelectorAll('button:not(:disabled),select,input,textarea,a[href],[tabindex="0"]')||[]);
+  controls()[0]?.focus();
+  const keydown=e=>{
+   if(e.key==='Escape'){e.preventDefault();close.current()}
+   if(e.key==='Tab'){const items=controls(),first=items[0],last=items[items.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus()}}
+  };
+  document.addEventListener('keydown',keydown);
+  return()=>{document.removeEventListener('keydown',keydown);previous?.focus()};
+ },[]);
+ return <div className="overlay"><section ref={ref} className={`modal ${className}`} role="dialog" aria-modal="true" aria-label={title}><div className="sheet-handle"/><div className="modal-heading"><span>{title}</span><button className="icon-button" onClick={onClose} aria-label={`Close ${title}`}><X size={20}/></button></div>{children}</section></div>
+}
+function ChoiceList({label,choices,value,onChange}){return <fieldset><legend>{label}</legend><div className="choice-tags">{choices.map(v=><button type="button" key={v} aria-pressed={value.includes(v)} onClick={()=>onChange(value.includes(v)?value.filter(x=>x!==v):[...value,v])}>{value.includes(v)&&<Check size={13}/>} {v}</button>)}</div></fieldset>}
 export default function App(){
+ const [signedIn,setSignedIn]=useState(false),[climbFrom,setClimbFrom]=useState(null);
  const [page,setPage]=useState('Discover'),[data,setData]=useState(null),[quests,setQuests]=useState([]),[progress,setProgress]=useState({points:0,completed_count:0,saved_count:0,activity:[]}),[analytics,setAnalytics]=useState(null);
- const [error,setError]=useState(''),[busy,setBusy]=useState(false);
- const [onboard,setOnboard]=useState(false),[active,setActive]=useState(null),[checked,setChecked]=useState([]),[reward,setReward]=useState(null);
- const [goal,setGoal]=useState('Explore my interests'),[interests,setInterests]=useState(['Design','Community']),[skills,setSkills]=useState(['Writing']);
- const [filters,setFilters]=useState(DEFAULT_FILTERS);
- const [mood,setMood]=useState('Okay'),[effort,setEffort]=useState('small'),[editingCheckin,setEditingCheckin]=useState(false);
+ const [opening,setOpening]=useState(true),[error,setError]=useState(''),[busy,setBusy]=useState(false),[detail,setDetail]=useState(null),[active,setActive]=useState(null),[checked,setChecked]=useState([]),[reward,setReward]=useState(null),[filtersOpen,setFiltersOpen]=useState(false),[calendarOpen,setCalendarOpen]=useState(false);
+ const [goal,setGoal]=useState(GOALS[0]),[interests,setInterests]=useState(['Software Engineering','Web & App Development']),[skills,setSkills]=useState(['Writing']),[mood,setMood]=useState('Okay'),[effort,setEffort]=useState('small');
+ const [goals,setGoals]=useState([]),[preferences,setPreferences]=useState({...emptyPreferences}),[listView,setListView]=useState(()=>localStorage.getItem('one-thing-view')==='list');
+ const [difficulty,setDifficulty]=useState('Any'),[kinds,setKinds]=useState([]),[mode,setMode]=useState('Anywhere'),[goalFilter,setGoalFilter]=useState('Any goal'),[skillFilter,setSkillFilter]=useState('Any skill'),[interestFilter,setInterestFilter]=useState('Any interest'),[gapSkills,setGapSkills]=useState([]);
+ const initialized=useRef(false),feedRef=useRef(null);
+ async function load(){
+  const [f,q,p,a]=await Promise.all([api.feed(),api.quests(),api.progress(),api.analytics()]);
+  setData(f);setQuests(q.quests);setProgress(p);setAnalytics(a);
+  if(!initialized.current){if(f.profile){setGoal(f.profile.goal);setInterests(f.profile.interests.filter(t=>options.interests.includes(t)));setGoals(f.profile.goals||[]);setPreferences({...emptyPreferences,...f.profile.preferences});setSkills(f.profile.skills)}if(f.checkin){setMood(f.checkin.mood);setEffort(f.checkin.effort)}initialized.current=true}
+ }
+ useEffect(()=>{load().catch(e=>setError(e.message))},[]);
+ async function action(fn){setBusy(true);setError('');try{await fn()}catch(e){setError(e.message)}finally{setBusy(false)}}
+ function resetFilters(){setInterests([]);setGoals([]);setPreferences({...emptyPreferences});setDifficulty('Any');setKinds([]);setMode('Anywhere');setGoalFilter('Any goal');setSkillFilter('Any skill');setInterestFilter('Any interest');setGapSkills([])}
+ function navigate(next){setPage(next);setError('')}
+ async function toggleSave(o){if(o.saved)await api.unsave(o.id);else await api.save(o.id);await load()}
+ const all=(data?.opportunities||[]).map(o=>{
+  const variant=chooseVariant(o,quests,{stepSize:difficulty,preferences,defaultEffort:data?.checkin?.effort||'small'});
+  return variant?{...o,minutes:variant.minutes,suggested_quest_id:variant.id,difficulty:variant.difficulty,effort:variant.effort,size:variant.size,hasVariant:true}:{...o,hasVariant:false};
+ });
+ const visible=all.filter(o=>page==='Saved things'?o.saved:o.hasVariant&&matchesOpportunity(o,{interests,goals,preferences})&&(!kinds.length||kinds.includes(o.kind))&&(!gapSkills.length||o.skills?.some(t=>gapSkills.includes(t))));
+ const selected=detail?all.find(o=>o.id===detail):null;
+ const selectedQuest=selected&&(quests.find(q=>q.id===selected.suggested_quest_id)||quests.find(q=>q.opportunity_id===selected.id));
+ const filterCount=(difficulty!=='Any')+interests.length+goals.length+preferences.challenges.length+preferences.time.length+preferences.locations.length+(preferences.commitment!=='A mix of both')+kinds.length+gapSkills.length;
+ const modalOpen=!!(detail||active||reward!==null||filtersOpen||calendarOpen);
+ async function startQuest(){if(!selected.saved){await api.save(selected.id);await load()}setDetail(null);setActive(selectedQuest);setChecked([])}
+ function nextCard(e){const card=e.currentTarget.closest('article'),next=card.nextElementSibling||card.parentElement.firstElementChild;card.parentElement.scrollTo({top:next.offsetTop-card.parentElement.firstElementChild.offsetTop,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'})}
+ const errorBox=error&&<div role="alert" className="error"><span>{error}</span><button type="button" disabled={busy} onClick={()=>action(load)}>Retry</button></div>;
 
- async function load(){try{const [f,q,p,a]=await Promise.all([api.feed(),api.quests(),api.progress(),api.analytics()]);setAnalytics(a);setData(f);if(f.checkin){setMood(f.checkin.mood);setEffort(f.checkin.effort)}setQuests(q.quests);setProgress(p);setError('');if(!f.profile)setOnboard(true);}catch(e){setError(e.message);}}
- useEffect(()=>{load()},[]);
- useDialogFocus(onboard||!!active||reward!==null,()=>{if(onboard&&data?.profile)setOnboard(false);else if(active)setActive(null);else if(reward!==null)setReward(null);},[onboard,active,reward]);
+ if(!signedIn)return <SignIn onSignIn={()=>setSignedIn(true)}/>;
+ if(opening)return <div className="phone-shell welcome-shell"><header className="welcome-header"><span className="brand">one thing<span>✳</span></span><button className="skip-button" disabled={busy||!data} onClick={()=>action(async()=>{if(!data.profile){await api.profile({goal:GOALS[0],interests:['Design','Community'],skills:['Writing']});await load()}resetFilters();setOpening(false);setPage('Discover')})}>Skip for now <ArrowRight size={14}/></button></header><main className="welcome-content"><div className="welcome-note"><Sprout size={25}/><span>A LITTLE SPACE TO CHECK IN</span></div><h1>Hey, you.<br/>What feels <em>right today?</em></h1><p className="welcome-copy">Pick your interests and goals, then choose what fits your day. Your next little step is waiting.</p>{errorBox}<form onSubmit={e=>{e.preventDefault();action(async()=>{await api.profile({goal:goals[0]||GOALS[0],goals,interests,skills,preferences});await load();setOpening(false);setDifficulty('Any');setMode('Anywhere');setGoalFilter('Any goal');setSkillFilter('Any skill');setInterestFilter('Any interest');setGapSkills([]);setPage('Discover')})}}>
+ <PreferenceFields interests={interests} setInterests={setInterests} goals={goals} setGoals={setGoals} preferences={preferences} setPreferences={setPreferences}/>
+ <div className="welcome-submit"><button className="primary wide" disabled={busy||!data||!skills.length}>{busy?'Setting your pace…':'Find my next little thing'}<ArrowRight size={18}/></button><small>Small steps count. You can change your plan anytime.</small></div></form><p className="fictional-note">ZotHacks demo · fictional profile & sample opportunities</p></main></div>;
 
- // Runs an API call with the busy flag on and any error shown to the user.
- async function action(fn){setBusy(true);setError('');try{await fn();}catch(e){setError(e.message);}finally{setBusy(false)}}
- function editProfile(){if(data?.profile){setGoal(data.profile.goal);setInterests(data.profile.interests);setSkills(data.profile.skills)}setOnboard(true)}
- async function save(o){await api.save(o.id);await load()}
- function openQuest(o){setActive(quests.find(q=>q.id===o.suggested_quest_id)||quests.find(q=>q.opportunity_id===o.id));setChecked([])}
- const toggleSave=o=>action(async()=>{if(o.saved){await api.unsave(o.id);await load()}else{await save(o)}});
- const startQuest=o=>action(async()=>{if(!o.saved)await save(o);openQuest(o)});
- const saveProfile=()=>action(async()=>{await api.profile({goal,interests,skills});setOnboard(false);await load()});
- const saveCheckin=()=>action(async()=>{await api.checkin({mood,effort});setEditingCheckin(false);await load()});
- const completeQuest=()=>action(async()=>{const result=await api.complete(active.id);await load();setActive(null);setReward(result.points_earned)});
-
- const updateFilter=(key,value)=>setFilters({...filters,[key]:value});
- const resetFilters=()=>setFilters(DEFAULT_FILTERS);
- const exploreGaps=gapSkills=>{setFilters({...DEFAULT_FILTERS,gapSkills});setPage('Discover')};
- const goTo=name=>{setPage(name);resetFilters()};
-
- const all=withDifficultyVariants(data?.opportunities||[],quests,page,filters.difficulty);
- const visible=filterOpportunities(all,page,filters);
-
- return <div className="app">
- <Sidebar page={page} savedCount={progress.saved_count} onHome={()=>setPage('Discover')} onNavigate={goTo} onEditProfile={editProfile}/>
- <main className={page==='Discover'?'discover-page':''}><Header/>
- {error&&<div role="alert" className="error">{error}<button onClick={load}>Try again</button></div>}
- {!data&&!error?<div className="loading">Finding your next little step…</div>:<>
- <PageIntro page={page}/>
- {page==='Discover'&&<DailyCheckin checkin={data?.checkin} hasProfile={!!data?.profile} streak={progress.streak} mood={mood} effort={effort} editing={editingCheckin} busy={busy} onMood={setMood} onEffort={setEffort} onEdit={()=>setEditingCheckin(true)} onSubmit={saveCheckin}/>}
- <div className="content-grid"><div className="main-column">
- {page==='Resume lab'?<ResumeLabPage onExplore={exploreGaps}/>
- :page==='My recap'?<RecapPage data={analytics} onExplore={()=>goTo('Discover')}/>
- :page==='My progress'?<ProgressPage progress={progress} analytics={analytics} onDiscover={()=>setPage('Discover')} onRecap={()=>setPage('My recap')}/>
- :<OpportunitiesPage page={page} all={all} visible={visible} quests={quests} filters={filters} effort={data?.checkin?.effort} busy={busy} onFilter={updateFilter} onReset={resetFilters} onToggleSave={toggleSave} onStart={startQuest} onExplore={()=>goTo('Discover')}/>}
- </div><RightColumn progress={progress} interests={data?.profile?.interests||interests} onSeeProgress={()=>setPage('My progress')} onEditProfile={editProfile}/></div>
- <Footer/></>}
+ return <div className="phone-shell"><div className="app-surface" inert={modalOpen?true:undefined}><header className="app-header"><a className="brand" href="#" onClick={e=>{e.preventDefault();navigate('Discover')}}>one thing<span>✳</span></a><div className="header-actions"><button className="streak-chip" aria-label={`View streak calendar, ${progress.streak||0} day streak`} onClick={()=>setCalendarOpen(true)}><Flame size={15}/>{progress.streak||0}</button></div></header>
+ {errorBox}
+ <main className={['Discover','Saved things'].includes(page)?'feed-page':'page-scroll'} key={page}>
+ {['Discover','Saved things'].includes(page)?<><div className="feed-heading"><div><span className="eyebrow">{page==='Discover'?'A LITTLE LESS SCROLL. A LITTLE MORE YOU.':'YOUR NEXT STEPS, KEPT CLOSE.'}</span><h1>{page==='Discover'?<>For <em>you.</em></>:<>Saved <em>things.</em></>}</h1></div><span className="feed-total">{visible.length} samples</span></div>
+ <div className={listView?'opportunity-list':'opportunity-feed'} ref={feedRef} tabIndex={0} role="region" aria-label={listView?'Text-only opportunity list':'Opportunity feed. Swipe or scroll to explore.'} key={page+JSON.stringify([difficulty,kinds,interests,goals,preferences,gapSkills,data?.checkin?.effort,listView])}>
+ {visible.map((o,index)=><article className={`feed-card ${o.color}`} key={o.id}><button className="card-open" aria-label={`View details: ${o.title}`} onClick={()=>{setError('');setDetail(o.id)}}><div className="card-description"><span className="card-kicker">{o.kind} <span>· {o.mode} · {o.size||'Small'} step</span></span><h2>{o.title}</h2><p>{o.description}</p></div>{!listView&&<div className="card-image"><Art opportunity={o}/><span className="image-note">a little possibility, just for you</span></div>}<div className="card-bottom"><span>SAMPLE OPPORTUNITY</span><span>Tap anywhere for details <ArrowRight size={13}/></span></div></button><button className={`save-float ${o.saved?'is-saved':''}`} aria-label={`${o.saved?'Unsave':'Save'} ${o.title}`} aria-pressed={o.saved} disabled={busy} onClick={()=>action(()=>toggleSave(o))}><Bookmark size={21} fill={o.saved?'currentColor':'none'}/></button>{!listView&&<div className="feed-pagination"><span>{String(index+1).padStart(2,'0')} / {String(visible.length).padStart(2,'0')}</span><button aria-label={index===visible.length-1?'Return to first opportunity':'Next opportunity'} onClick={nextCard}>{index===visible.length-1?'Back to the start':'Scroll for another little thing'} <ChevronDown size={14}/></button></div>}</article>)}
+ {!visible.length&&<div className="empty"><Sprout size={32}/><h2>{page==='Saved things'?'Keep a little possibility.':'A fresh direction?'}</h2><p>{page==='Saved things'?'Tap a bookmark while exploring to save an opportunity here.':'No samples match this mix. Try clearing a filter.'}</p><button className="primary" onClick={()=>{resetFilters();navigate('Discover')}}>{page==='Saved things'?'Explore opportunities':'Reset my filters'}<ArrowRight size={16}/></button></div>}
+ </div></>:<><div className="page-heading"><span className="eyebrow">ONE THING AT A TIME</span><h1>{page==='My progress'?<>Your little <em>climb.</em></>:page==='Resume lab'?<>Your next <em>chapter.</em></>:<>Your progress.<br/><em>In full color.</em></>}</h1></div>
+ {page==='Resume lab'?<ResumeLab onExplore={gaps=>{resetFilters();setGapSkills(gaps);navigate('Discover')}}/>:page==='My recap'?<Recap data={analytics} onExplore={()=>{resetFilters();navigate('Discover')}}/>:<><div className="progress-summary"><button className="streak-chip" aria-label="View streak calendar" onClick={()=>setCalendarOpen(true)}><Flame size={16}/>{progress.streak||0} day streak</button><p>{progress.active_today?"Today's little step is done. See you tomorrow.":'One completed quest today keeps your climb going.'}</p><small>Best: {progress.longest_streak||0} days · Pacific time</small></div><Climb progress={progress} fromPoints={climbFrom}/><section className="progress-panel"><div className="stats"><div><strong>{progress.completed_count}</strong><span>quests completed</span></div><div><strong>{progress.saved_count}</strong><span>things saved</span></div></div><h2>Your little wins</h2>{progress.activity.length?progress.activity.map(a=><div className="activity" key={a.id||a.quest_id}><span className="tick"><Check size={17}/></span><div><strong>{a.title}</strong><small>{new Date(a.completed_at).toLocaleDateString(undefined,{month:'short',day:'numeric'})} · Quest completed</small></div><b>+{a.points}</b></div>):<p className="field-help">Your first win is waiting. Complete a quest to start your trail.</p>}</section><Analytics data={analytics} onRecap={()=>navigate('My recap')}/></>}
+ <p className="fictional-note">Made for your in-between moments. One thing at a time.</p></>}
  </main>
- {onboard&&<OnboardingModal canClose={!!data?.profile} goal={goal} interests={interests} skills={skills} error={error} busy={busy} onGoal={setGoal} onToggleInterest={t=>setInterests(toggleItem(interests,t))} onToggleSkill={t=>setSkills(toggleItem(skills,t))} onClose={()=>setOnboard(false)} onSubmit={saveProfile}/>}
- {active&&<QuestModal quest={active} checked={checked} error={error} busy={busy} onToggleStep={i=>setChecked(toggleItem(checked,i))} onClose={()=>setActive(null)} onComplete={completeQuest}/>}
- {reward!==null&&<RewardModal points={reward} onSeeClimb={()=>{setReward(null);setPage('My progress')}} onClose={()=>setReward(null)}/>}
- </div>
+ {['Discover','Saved things'].includes(page)&&<div className="feed-toolbar"><button className="view-toggle" aria-label={listView?'Switch to image feed':'Switch to text-only list'} aria-pressed={listView} onClick={()=>{const next=!listView;setListView(next);localStorage.setItem('one-thing-view',next?'list':'images')}}>{listView?<Image size={17}/>:<List size={17}/>}<span>{listView?'Images':'List'}</span></button>{page==='Discover'&&<button onClick={()=>setFiltersOpen(true)}><SlidersHorizontal size={17}/>Filters{filterCount>0&&<span className="filter-count">{filterCount}</span>}</button>}</div>}
+ <nav className="bottom-nav" aria-label="Main navigation">{NAV.map(([value,label,Icon])=><button key={value} className={page===value?'active':''} aria-current={page===value?'page':undefined} onClick={()=>navigate(value)}><span className="nav-icon"><Icon size={21}/>{value==='Saved things'&&progress.saved_count>0&&<span className="nav-count">{progress.saved_count}</span>}</span><span>{label}</span></button>)}</nav></div>
+ {calendarOpen&&<Modal title="Your streak calendar" onClose={()=>setCalendarOpen(false)}><StreakCalendar progress={progress}/></Modal>}
+ {filtersOpen&&<Modal title="Your kind of things" onClose={()=>setFiltersOpen(false)} className="filter-sheet"><h2>A little more <em>you.</em></h2><p>Fine-tune your interests, goals, and preferences. Choose multiple options to keep your possibilities open.</p><div className="feed-filters"><label>Step size<select aria-label="Step size" value={difficulty} onChange={e=>setDifficulty(e.target.value)}>{['Any','Small','Medium','Big'].map(v=><option key={v}>{v}</option>)}</select></label></div><PreferenceFields interests={interests} setInterests={setInterests} goals={goals} setGoals={setGoals} preferences={preferences} setPreferences={setPreferences}/><ChoiceList label="Opportunity types · none selected means all" choices={SOURCES} value={kinds} onChange={setKinds}/>{gapSkills.length>0&&<p className="gap-filter">Resume keywords to explore: {gapSkills.join(', ')} <button onClick={()=>setGapSkills([])}>Clear</button></p>}{errorBox}<div className="sheet-actions"><button className="text-link" onClick={resetFilters}>Reset filters</button><button className="primary" disabled={busy||!skills.length} onClick={()=>action(async()=>{await api.profile({goal:goals[0]||GOALS[0],goals,interests,skills,preferences});await load();setFiltersOpen(false)})}>Show {visible.length} opportunities<ArrowRight size={16}/></button></div></Modal>}
+ {selected&&<Modal title="A little more detail" onClose={()=>setDetail(null)} className="detail-sheet"><div className="detail-image"><Art opportunity={selected}/></div><span className="eyebrow">FICTIONAL SAMPLE · {selected.kind.toUpperCase()}</span><h2>{selected.title}</h2><p>{selected.description}</p><p className="provider">{selected.organization} · {selected.mode}</p><div className="opportunity-facts">{selected.location&&<p><strong>Where</strong>{selected.location}</p>}{selected.commitment&&<p><strong>Sample commitment</strong>{selected.commitment}</p>}{selected.requirements?.length>0&&<div><strong>Who it suits</strong><ul>{selected.requirements.map(r=><li key={r}>{r}</li>)}</ul></div>}</div><div className="tags">{selected.tags.map(t=><span key={t}>{t}</span>)}</div><div className="match"><Sparkles size={16}/><span>{selected.matching_tags.length?`Matches your ${selected.matching_tags.join(', ')} interests and skills.`:'A new direction you might enjoy exploring.'}</span></div>{selectedQuest&&<div className="quest-preview"><span className="eyebrow">YOUR FIRST STEP</span><h3>{selectedQuest.title}</h3><p>{selectedQuest.description}</p><div className="quest-meta"><span>{selectedQuest.size||'Medium'} step</span><span>+{selectedQuest.points} points</span></div></div>}{errorBox}<div className="sheet-actions"><button className="secondary" disabled={busy} aria-pressed={selected.saved} onClick={()=>action(()=>toggleSave(selected))}><Bookmark size={17} fill={selected.saved?'currentColor':'none'}/>{selected.saved?'Unsave':'Save for later'}</button><button className="primary" disabled={busy||!selectedQuest} onClick={()=>action(startQuest)}>{selectedQuest?.completed?'View completed quest':'Open my quest'}<ArrowRight size={16}/></button></div><p className="fictional-note">A fictional opportunity for practice. No live listing or application.</p></Modal>}
+ {active&&<Modal title="Your little first step" onClose={()=>setActive(null)} className="quest-sheet"><h2>{active.title}</h2><div className="quest-meta"><span>{active.size||'Medium'} step</span><span>+{active.points} points</span>{active.daily&&<span>Daily practice</span>}</div><p>{active.description}</p><div className="checklist">{active.steps.map((step,i)=><label key={step}><input type="checkbox" checked={checked.includes(i)} onChange={()=>setChecked(checked.includes(i)?checked.filter(x=>x!==i):[...checked,i])}/><span>{step}</span></label>)}</div>{errorBox}<button className="primary wide" disabled={busy||active.completed||checked.length!==active.steps.length} onClick={()=>action(async()=>{const before=progress.points;const result=await api.complete(active.id);setClimbFrom(result.points_earned>0?before:null);await load();setActive(null);setReward(result.points_earned)})}>{active.completed?'Already completed':busy?'Saving your step…':'I did my one thing'}<Check size={18}/></button><p className="fictional-note">Take your time and do the steps offline. Completion is self-reported.</p></Modal>}
+ {reward!==null&&<Modal title="A little win" onClose={()=>setReward(null)} className="celebration">{climbFrom!==null&&crossedMilestone(climbFrom,progress.points)&&<div className="milestone-confetti" aria-hidden="true">{Array.from({length:12},(_,i)=><i key={i} style={{'--i':i}}/>)}</div>}<Climb progress={progress} fromPoints={climbFrom}/><span className="eyebrow">{climbFrom!==null&&crossedMilestone(climbFrom,progress.points)?'A NEW MILESTONE, JUST FOR YOU':'LOOK AT YOU, MOVING FORWARD'}</span><h2>{climbFrom!==null&&crossedMilestone(climbFrom,progress.points)?<>Level {climbPosition(progress.points).level}.<br/><em>Look how far you've come.</em></>:<>Small step.<br/><em>Real progress.</em></>}</h2><p>You turned a little time into something good.</p><div className="reward-points">+{reward}<span>points for your journey</span></div><button className="primary wide" onClick={()=>{setReward(null);navigate('My progress')}}>See my climb<ArrowRight size={18}/></button><button className="text-link" onClick={()=>setReward(null)}>Keep exploring</button></Modal>}
+ </div>;
 }

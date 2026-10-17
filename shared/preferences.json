@@ -1,0 +1,8 @@
+{
+ "interests":["Software Engineering","AI & Machine Learning","Web & App Development","Data Science","Cybersecurity","Entrepreneurship & Startups","Hackathons","Career Development","Networking & Mentorship","Leadership","Personal Finance & Investing","Productivity & Personal Growth","Design & UI/UX","Hike","Sports"],
+ "goals":["Internship","Build a strong project portfolio","Learn a new technical skill","Win or place in a hackathon","Join a technical club or organization","Find mentors and build a network","Launch a startup or personal product","Improve my resume and interview skills","Develop leadership experience","Progress toward an outdoor adventure goal"],
+ "challenges":["Lazy","Easy","Medium","Hard","Challenging"],
+ "time":["Under 5 min","5–15 min","15–30 min","30–60 min","1–3 hours","3+ hours","Multi-day"],
+ "locations":["Online / Remote","Near me","On campus","In-person events"],
+ "commitments":["Quick tasks I can finish immediately","Long-term opportunities and projects","A mix of both"]
+}

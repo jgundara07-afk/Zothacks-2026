@@ -1,10 +1,2 @@
-/* Import order matters: when two rules conflict, the file lower in this list wins. */
-@import './tokens.css';
-@import './base.css';
-@import './layout.css';
-@import './feed.css';
-@import './right-column.css';
-@import './modals.css';
-@import './progress.css';
-@import './resume.css';
-@import './recap.css';
+/* Mobile experience; other style modules are retained for reference. */
+@import './mobile.css';
