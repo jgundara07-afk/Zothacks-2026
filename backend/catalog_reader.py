@@ -10,9 +10,11 @@ from datetime import datetime, timezone
 try:
     from .filter_rules import supported_interests, validate_extra, matches_extra
     from .ranking import rank_records
+    from .goal_matching import with_goal_matches, RULES
 except ImportError:
     from filter_rules import supported_interests, validate_extra, matches_extra
     from ranking import rank_records
+    from goal_matching import with_goal_matches, RULES
 
 CATALOG_DIRECTORY = Path(__file__).resolve().parent / "catalog"
 
@@ -27,8 +29,9 @@ def distance_km(lat, lon, coordinates):
 
 class CatalogReader:
     def __init__(self, rows, taxonomy):
+        rows = [with_goal_matches(row) for row in rows]
         self.rows = rows
-        self.taxonomy = taxonomy
+        self.taxonomy = {**taxonomy, "goals": list(dict.fromkeys(taxonomy["goals"] + list(RULES)))}
         self.by_id = {row["id"]: row for row in rows}
         if len(self.by_id) != len(rows):
             raise ValueError("Duplicate IDs in app catalog")

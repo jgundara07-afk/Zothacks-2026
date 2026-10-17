@@ -1,5 +1,5 @@
 import React,{useState,useId} from 'react';
-import {interestCatalog,searchInterests} from '../utils/interests';
+import {interestCatalog,searchInterests,mixInterests} from '../utils/interests';
 import {toggleSelection} from '../utils/preferences';
 import options from '../../../shared/preferences.json';
 import {scenePhoto,INTEREST_SCENES} from '../utils/photos';
@@ -7,7 +7,9 @@ import {Check} from 'lucide-react';
 
 export default function InterestPicker({value,onChange,images=false,label='Interests',help='Choose up to ten. Match any selected interest.'}){
  const [query,setQuery]=useState(''),[category,setCategory]=useState('All categories'),[limit,setLimit]=useState(60);
- const id=useId(),choices=searchInterests(interestCatalog.groups,query,category);
+ const [mixed]=useState(()=>mixInterests(interestCatalog.groups));
+ const matches=searchInterests(interestCatalog.groups,query,category),allowed=new Set(matches);
+ const id=useId(),choices=category==='All categories'?mixed.filter(value=>allowed.has(value)):matches;
  const max=options.max_selected_interests;
  const toggle=interest=>onChange(toggleSelection(value,interest,max));
  const groupScenes={'Technology & Computer Science':'code','Business & Entrepreneurship':'finance','Design & Creative':'sketch','Science & Research':'lab','Education & Personal Development':'library','Health, Fitness & Sports':'sports','Finance & Investing':'finance','Social Impact & Community':'friends','Lifestyle, Travel & Culture':'map','Gaming, Media & Entertainment':'chess','Environment & Sustainability':'garden','Engineering & Making':'maker'};

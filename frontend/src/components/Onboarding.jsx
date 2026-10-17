@@ -9,7 +9,6 @@ import {photoFor,scenePhoto,INTEREST_SCENES} from '../utils/photos';
 // First-run story, screen by screen (see frontend/ONBOARDING_FLOW.md).
 // 0 title card · 1 problem · 2 promise · 3 goals · 4 interests + skills · 5 today · 6 reveal → feed
 const SKILLS=['Writing','Coding','Research','Design'];
-const NUMERALS=['I','II','III','IV','V','VI','VII','VIII','IX','X'];
 // "What can today hold?" sets the step size, which picks each quest's first step (Small / Big) without hiding
 // opportunities. The catalog's time windows describe whole opportunities, so they are not used here.
 const PACE=[
@@ -110,7 +109,7 @@ export default function Onboarding({data,busy,error,hasProfile,interests,setInte
    <span className="ob-chapter">Chapter I · Direction</span>
    <Title><span ref={heading} tabIndex={-1}>What are you moving <em>toward?</em></span></Title>
    <p className="ob-help">Choose up to three. You can change them anytime. <b>{goals.length}/3</b></p>
-   <div className="ob-rows" role="group" aria-label="Goals">{options.goals.map((g,i)=><button key={g} className="ob-row" aria-pressed={goals.includes(g)} disabled={!goals.includes(g)&&goals.length>=3} onClick={()=>toggle(goals,setGoals,g,3)}><span className="ob-numeral">{NUMERALS[i]||String(i+1).padStart(2,'0')}</span><span>{g}</span>{goals.includes(g)&&<Check size={16}/>}</button>)}</div>
+   <div className="ob-rows" role="group" aria-label="Goals">{options.goals.map((g,i)=><button key={g} className="ob-row" aria-pressed={goals.includes(g)} disabled={!goals.includes(g)&&goals.length>=3} onClick={()=>toggle(goals,setGoals,g,3)}><span className="ob-numeral">{String(i+1).padStart(2,'0')}</span><span>{g}</span>{goals.includes(g)&&<Check size={16}/>}</button>)}</div>
   </main>
   <footer className="ob-foot"><button className="primary wide" onClick={next}>Continue<ArrowRight size={18}/></button></footer>
  </div>;

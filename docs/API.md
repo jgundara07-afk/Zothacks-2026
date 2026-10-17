@@ -82,3 +82,5 @@ Responses include `fallback: {active, reason, relaxed_filters, message}`; active
 ## Authored general tasks
 
 The bundled catalog includes 60 self-guided OneThing activities from `opportunity_data/general_tasks.json`. They are authored app content, not live external opportunities. Each has explicit action steps and a real completion quest.
+
+New goals are connected to both `/opportunities` and `/catalog/opportunities` through conservative title-based classifications in `backend/goal_matching.py`. Returned `personalization.goals` includes these tags; `personalization.inferred_goal_matches` records the matched title text. These are app inferences, not provider claims. Catalog options include the new goals without modifying the immutable source export. Other filters continue to apply.

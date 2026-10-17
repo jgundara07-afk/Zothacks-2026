@@ -1,6 +1,12 @@
 export function chooseVariant(o,quests,{stepSize,preferences,defaultEffort}){
  const collected=!!o.personalization&&!o.sample;
  const candidates=quests.filter(q=>q.opportunity_id===o.id&&q.daily&&(collected||!preferences.challenges.length||preferences.challenges.includes(q.difficulty))&&(stepSize==='Any'||q.size===stepSize)&&(collected||!preferences.time.length||preferences.time.some(t=>t==='Multi-day'?o.multi_day:q.time_bucket===t)));
+ if(collected&&stepSize==='Any'&&!defaultEffort){
+  const suggested=candidates.find(q=>q.id===o.suggested_quest_id);
+  if(suggested)return suggested;
+  const matching=candidates.filter(q=>o.personalization.challenge_levels.includes(q.difficulty)).sort((a,b)=>a.minutes-b.minutes);
+  if(matching.length)return matching[0];
+ }
  const sorted=[...candidates].sort((a,b)=>(a.effort===defaultEffort?0:1)-(b.effort===defaultEffort?0:1)||a.minutes-b.minutes);
  return sorted[0]||null;
 }

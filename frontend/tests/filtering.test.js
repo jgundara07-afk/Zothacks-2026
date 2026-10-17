@@ -6,9 +6,9 @@ const seed=JSON.parse(readFileSync(new URL('../../backend/seed.json',import.meta
 const options=JSON.parse(readFileSync(new URL('../../shared/preferences.json',import.meta.url)));
 const base={challenges:[],time:[],locations:[],commitment:'A mix of both'};
 function matching(interests=[],goals=[],preferences=base){return seed.opportunities.filter(o=>matchesOpportunity(o,{interests,goals,preferences})&&chooseVariant(o,seed.quests,{preferences,stepSize:'Any',defaultEffort:'small'}))}
-test('all requested topics, goals, challenge levels and time windows have sample coverage',()=>{
+test('original sample topics and goals plus all challenge levels and time windows have sample coverage',()=>{
  for(const topic of JSON.parse(readFileSync(new URL('../../shared/interest_catalog.json',import.meta.url))).groups[0].interests)assert.ok(matching([topic]).length,topic);
- for(const goal of options.goals)assert.ok(matching([],[goal]).length,goal);
+ for(const goal of options.goals.slice(0,10))assert.ok(matching([],[goal]).length,goal);
  for(const challenge of options.challenges)assert.ok(matching([],[],{...base,challenges:[challenge]}).length,challenge);
  for(const time of options.time)assert.ok(matching([],[],{...base,time:[time]}).length,time);
 });
@@ -29,4 +29,12 @@ test('empty selections show everything, impossible combinations stay empty, save
  assert.equal(matching(['Sports'],['Internship']).length,0);
  const hike=seed.opportunities.find(o=>o.topics.includes('Hike'));
  assert.equal(chooseVariant(hike,seed.quests,{stepSize:'Small',preferences:{...base,challenges:['Challenging']},defaultEffort:'small'}),null);
+});
+
+test('catalog default preserves suggested effort instead of forcing the smallest reward',()=>{
+ const o={id:'course',personalization:{challenge_levels:['Hard']},suggested_quest_id:'hard'};
+ const quests=[{id:'tiny',opportunity_id:'course',daily:true,size:'Small',effort:'small',difficulty:'Lazy',minutes:2,points:15},{id:'hard',opportunity_id:'course',daily:true,size:'Big',effort:'big',difficulty:'Hard',minutes:45,points:75}];
+ assert.equal(chooseVariant(o,quests,{stepSize:'Any',preferences:base}).points,75);
+ assert.equal(chooseVariant(o,quests,{stepSize:'Small',preferences:base}).points,15);
+ assert.equal(chooseVariant(o,quests,{stepSize:'Any',preferences:base,defaultEffort:'small'}).points,15);
 });

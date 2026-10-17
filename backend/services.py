@@ -110,7 +110,7 @@ class OneThing:
         interest_tags = set(filters.get('interests') or profile.get('interests', []))
         skill_tags = set(filters.get('skills') or profile.get('skills', []))
         goal_tags = set(filters.get('goals') or profile.get('goals', []))
-        default_effort = (self.checkin() or {}).get('effort', 'small')
+        default_effort = (self.checkin() or {}).get('effort')
         for o in self.catalog.values():
             if not available(o, self.real_clock()): continue
             p = o['personalization']
@@ -131,7 +131,7 @@ class OneThing:
             candidates = [q for q in preparation_quests(o)
                 if filters.get('step_size','Any') == 'Any' or q['size'] == filters['step_size']]
             if not candidates: continue
-            chosen = min(candidates, key=lambda q:(q['effort'] != default_effort,q['minutes']))
+            chosen = min(candidates, key=lambda q: ((q['effort'] != default_effort) if default_effort else (q['difficulty'] not in p['challenge_levels']), q['minutes']))
             if is_neutral(o): neutral[o['id']] = (o,chosen,venues)
             if o.get('general_task'):
                 general[o['id']] = (o,chosen,venues)
