@@ -87,3 +87,11 @@ Tests use temporary profile storage and the bundled catalog, without calling ups
 - `design/references/`: art direction references, not app assets.
 
 The existing phone-width UI, sign-in placeholder, preference checklist, list/image toggle, streak calendar, climb rewards and template recap are retained. Resume PDFs/text are processed locally and not stored; keyword gaps are prompts to explore, not assessments of ability. This remains a shared local hackathon demo rather than a public multi-user service.
+
+## Automatic feed pagination
+Discover loads the next API page automatically when the bottom of the image feed or text-only list approaches the viewport. Requests are serialized, appended cards are deduplicated by stable opportunity ID, and a filter change invalidates older responses. Scrolling stays in place while cards are appended. A load-more button remains as an accessible/manual fallback, failures show a retry action, and an explicit end message appears when `has_more` is false. Saved items keep their existing list behavior.
+
+### Demo dates and analytics
+In Progress, use the Demo time machine date picker or Next demo day, then complete a saved daily quest. Dates persist across refreshes and daily duplicates count once per quest per simulated day. Use real today resets the clock without deleting history. Catalog availability still uses real time. Set `ONETHING_DEMO_TOOLS=0` to disable date changes. This is a shared fictional demo profile, not an authenticated production feature.
+
+Analytics supports Weekly (Monday–Sunday), Monthly (daily bars fitted to the screen), and Yearly views, with period navigation. Donut charts show opportunity categories, challenges, and skill-tag shares for the selected period. Skills can overlap; percentages are rounded. Recap and the mountain retain lifetime totals.

@@ -34,6 +34,7 @@ def create_app(store=None, now=None, data_mode=None):
         for collection, documents in seed.items():
             db.put_many(collection, documents)
     svc = OneThing(db, now or (lambda: datetime.now(timezone.utc)), mode)
+    svc.demo_enabled = os.getenv('ONETHING_DEMO_TOOLS', '1') == '1'
     @app.errorhandler(ValueError)
     def invalid(error):
         return jsonify(error=str(error)), 400

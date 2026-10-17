@@ -14,9 +14,21 @@ class OneThing:
     """Reads and personalization for the persistent demo profile."""
     def __init__(self, db, clock, data_mode='sample'):
         self.db = db
-        self.clock = clock
+        self.real_clock = clock
+        self.clock = self.demo_now
         self.data_mode = data_mode
         self.catalog = program_catalog() if data_mode == 'catalog' else None
+    def demo_state(self):
+        saved = (self.db.get('activity', 'demo-clock') or {}) if getattr(self, 'demo_enabled', True) else {}
+        real = self.real_clock().astimezone(DAY_ZONE)
+        return dict(enabled=getattr(self, 'demo_enabled', True), today=saved.get('date') or real.date().isoformat(), real_today=real.date().isoformat(), simulated=bool(saved.get('date')), timezone='America/Los_Angeles')
+    def demo_now(self):
+        real = self.real_clock().astimezone(DAY_ZONE)
+        state = self.demo_state()
+        if not state['enabled'] or not state['simulated']:
+            return real
+        target = datetime.fromisoformat(state['today'])
+        return target.replace(hour=real.hour, minute=real.minute, second=real.second, tzinfo=DAY_ZONE)
     def opportunity_rows(self):
         return list(self.catalog.values()) if self.catalog is not None else self.db.all('opportunities')
     def opportunity(self, opportunity_id):
@@ -80,7 +92,7 @@ class OneThing:
         tags = set(profile.get('interests', []) + profile.get('skills', []))
         default_effort = (self.checkin() or {}).get('effort', 'small')
         for o in self.catalog.values():
-            if not available(o, self.clock()): continue
+            if not available(o, self.real_clock()): continue
             p = o['personalization']
             if filters.get('challenges') and not set(filters['challenges']).intersection(p['challenge_levels']): continue
             if filters.get('time') and not set(filters['time']).intersection(p['time_buckets']): continue
@@ -136,10 +148,10 @@ class OneThing:
             run = run + 1 if previous and date == previous + timedelta(days=1) else 1
             best = max(best, run)
             previous = date
-        return dict(streak=streak, longest_streak=best, active_today=self.today() in dates, today=self.today().isoformat(), timezone='America/Los_Angeles', points=sum((a['points'] for a in done)), completed_count=len(done), saved_count=len(self.activity('save')), completed_ids=[a['quest_id'] for a in done], activity=done)
+        return dict(demo_clock=self.demo_state(), streak=streak, longest_streak=best, active_today=self.today() in dates, today=self.today().isoformat(), timezone='America/Los_Angeles', points=sum((a['points'] for a in done)), completed_count=len(done), saved_count=len(self.activity('save')), completed_ids=[a['quest_id'] for a in done], activity=done)
     def opportunities(self):
         if self.catalog is not None:
-            return self.decorate([o for o in self.catalog.values() if available(o,self.clock())])
+            return self.decorate([o for o in self.catalog.values() if available(o,self.real_clock())])
         p = self.profile() or {}
         tags = p.get('interests', []) + p.get('skills', [])
         saved = {a['opportunity_id'] for a in self.activity('save')}

@@ -1,0 +1,1639 @@
+{
+  "analytics": {
+    "month": {
+      "active_days": 4,
+      "categories": {
+        "Build challenge": 1,
+        "Campus initiative": 1,
+        "Certification": 2,
+        "Class": 4,
+        "Club": 2,
+        "Creative project": 3,
+        "Internship": 4,
+        "Local event": 1,
+        "Online course": 1
+      },
+      "completed_count": 19,
+      "difficulties": {
+        "Easy": 4,
+        "Hard": 1,
+        "Lazy": 13,
+        "Medium": 1
+      },
+      "end": "2026-11-01",
+      "estimated_minutes": 131,
+      "method": "Recorded activity; time is estimated from quest durations.",
+      "period": "month",
+      "points": 560,
+      "progress": {
+        "active_today": true,
+        "activity": [
+          {
+            "completed_at": "2026-10-17T19:18:59.115129+00:00",
+            "id": "completion:demo:sample-class-web-small:2026-10-17",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "sample-class-web-small",
+            "title": "Notice one thing: semantic page structure"
+          },
+          {
+            "completed_at": "2026-10-17T19:18:49.900896+00:00",
+            "id": "completion:demo:sample-internship-frontend-small:2026-10-17",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "sample-internship-frontend-small",
+            "title": "Notice one thing: accessible React forms"
+          },
+          {
+            "completed_at": "2026-10-17T19:18:40.650831+00:00",
+            "id": "completion:demo:sample-club-rover-small:2026-10-17",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "sample-club-rover-small",
+            "title": "Notice one thing: student rover navigation"
+          },
+          {
+            "completed_at": "2026-10-17T19:18:29.169342+00:00",
+            "id": "completion:demo:sample-club-data-small:2026-10-17",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "sample-club-data-small",
+            "title": "Notice one thing: community data visualization"
+          },
+          {
+            "completed_at": "2026-10-17T19:18:19.770383+00:00",
+            "id": "completion:demo:sample-certification-sql-small:2026-10-17",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "sample-certification-sql-small",
+            "title": "Notice one thing: grouped SQL reports"
+          },
+          {
+            "completed_at": "2026-10-17T19:18:05.536127+00:00",
+            "id": "completion:demo:sample-local-event-robot-small:2026-10-17",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "sample-local-event-robot-small",
+            "title": "Notice one thing: troubleshooting student robot sensors"
+          },
+          {
+            "completed_at": "2026-10-17T19:17:20.549389+00:00",
+            "id": "completion:demo:sample-internship-backend-big:2026-10-17",
+            "kind": "completion",
+            "points": 100,
+            "profile_id": "demo",
+            "quest_id": "sample-internship-backend-big",
+            "title": "Build something: Flask APIs and route validation"
+          },
+          {
+            "completed_at": "2026-10-17T19:15:09.365241+00:00",
+            "id": "completion:demo:sample-class-python-small:2026-10-17",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "sample-class-python-small",
+            "title": "Notice one thing: Python lists and simple data summaries"
+          },
+          {
+            "completed_at": "2026-10-17T19:14:46.748332+00:00",
+            "id": "completion:demo:internship-small:2026-10-17",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "internship-small",
+            "title": "One tiny step: internship"
+          },
+          {
+            "completed_at": "2026-10-17T19:14:38.687812+00:00",
+            "id": "completion:demo:cert-small:2026-10-17",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "cert-small",
+            "title": "One tiny step: certification"
+          },
+          {
+            "completed_at": "2026-10-17T17:45:41.833701+00:00",
+            "id": "completion:demo:story-big:2026-10-17",
+            "kind": "completion",
+            "points": 50,
+            "profile_id": "demo",
+            "quest_id": "story-big",
+            "title": "Write a six-sentence story \u2014 daily practice"
+          },
+          {
+            "completed_at": "2026-10-17T17:09:42.203971+00:00",
+            "id": "completion:demo:story-1",
+            "kind": "completion",
+            "points": 50,
+            "profile_id": "demo",
+            "quest_id": "story-1",
+            "title": "Write a six-sentence story"
+          },
+          {
+            "completed_at": "2026-10-17T17:09:35.625143+00:00",
+            "id": "completion:demo:green-1",
+            "kind": "completion",
+            "points": 40,
+            "profile_id": "demo",
+            "quest_id": "green-1",
+            "title": "Spot a greener possibility"
+          },
+          {
+            "completed_at": "2026-10-17T16:10:40.723771+00:00",
+            "id": "completion:demo:design-1",
+            "kind": "completion",
+            "points": 50,
+            "profile_id": "demo",
+            "quest_id": "design-1",
+            "title": "Find one tiny friction"
+          },
+          {
+            "completed_at": "2026-10-17T16:07:03.827504+00:00",
+            "id": "completion:demo:code-1",
+            "kind": "completion",
+            "points": 75,
+            "profile_id": "demo",
+            "quest_id": "code-1",
+            "title": "Sketch your tiny tool"
+          },
+          {
+            "completed_at": "2026-10-16T13:28:53-07:00",
+            "id": "completion:demo:muse-000d316b62d39c591834::small:2026-10-16",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "muse-000d316b62d39c591834::small",
+            "title": "Review the source: scientist intern"
+          },
+          {
+            "completed_at": "2026-10-16T13:28:22-07:00",
+            "id": "completion:demo:anteater-013bf5af250a2c2c5b30::small:2026-10-16",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "anteater-013bf5af250a2c2c5b30::small",
+            "title": "Review the source: Software Environments"
+          },
+          {
+            "completed_at": "2026-10-15T13:29:23-07:00",
+            "id": "completion:demo:anteater-013bf5af250a2c2c5b30::small:2026-10-15",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "anteater-013bf5af250a2c2c5b30::small",
+            "title": "Review the source: Software Environments"
+          },
+          {
+            "completed_at": "2026-10-14T13:28:08-07:00",
+            "id": "completion:demo:coursera-0003761ad3a7976e56c2::small:2026-10-14",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "coursera-0003761ad3a7976e56c2::small",
+            "title": "Review the source: Advanced JavaScript 1: Objects, Loops, Hoisting"
+          }
+        ],
+        "completed_count": 19,
+        "completed_ids": [
+          "sample-class-web-small",
+          "sample-internship-frontend-small",
+          "sample-club-rover-small",
+          "sample-club-data-small",
+          "sample-certification-sql-small",
+          "sample-local-event-robot-small",
+          "sample-internship-backend-big",
+          "sample-class-python-small",
+          "internship-small",
+          "cert-small",
+          "story-big",
+          "story-1",
+          "green-1",
+          "design-1",
+          "code-1",
+          "muse-000d316b62d39c591834::small",
+          "anteater-013bf5af250a2c2c5b30::small",
+          "anteater-013bf5af250a2c2c5b30::small",
+          "coursera-0003761ad3a7976e56c2::small"
+        ],
+        "demo_clock": {
+          "enabled": true,
+          "real_today": "2026-10-17",
+          "simulated": false,
+          "timezone": "America/Los_Angeles",
+          "today": "2026-10-17"
+        },
+        "longest_streak": 4,
+        "points": 560,
+        "saved_count": 3,
+        "streak": 4,
+        "timezone": "America/Los_Angeles",
+        "today": "2026-10-17"
+      },
+      "series": [
+        {
+          "count": 0,
+          "label": "1"
+        },
+        {
+          "count": 0,
+          "label": "2"
+        },
+        {
+          "count": 0,
+          "label": "3"
+        },
+        {
+          "count": 0,
+          "label": "4"
+        },
+        {
+          "count": 0,
+          "label": "5"
+        },
+        {
+          "count": 0,
+          "label": "6"
+        },
+        {
+          "count": 0,
+          "label": "7"
+        },
+        {
+          "count": 0,
+          "label": "8"
+        },
+        {
+          "count": 0,
+          "label": "9"
+        },
+        {
+          "count": 0,
+          "label": "10"
+        },
+        {
+          "count": 0,
+          "label": "11"
+        },
+        {
+          "count": 0,
+          "label": "12"
+        },
+        {
+          "count": 0,
+          "label": "13"
+        },
+        {
+          "count": 1,
+          "label": "14"
+        },
+        {
+          "count": 1,
+          "label": "15"
+        },
+        {
+          "count": 2,
+          "label": "16"
+        },
+        {
+          "count": 15,
+          "label": "17"
+        },
+        {
+          "count": 0,
+          "label": "18"
+        },
+        {
+          "count": 0,
+          "label": "19"
+        },
+        {
+          "count": 0,
+          "label": "20"
+        },
+        {
+          "count": 0,
+          "label": "21"
+        },
+        {
+          "count": 0,
+          "label": "22"
+        },
+        {
+          "count": 0,
+          "label": "23"
+        },
+        {
+          "count": 0,
+          "label": "24"
+        },
+        {
+          "count": 0,
+          "label": "25"
+        },
+        {
+          "count": 0,
+          "label": "26"
+        },
+        {
+          "count": 0,
+          "label": "27"
+        },
+        {
+          "count": 0,
+          "label": "28"
+        },
+        {
+          "count": 0,
+          "label": "29"
+        },
+        {
+          "count": 0,
+          "label": "30"
+        },
+        {
+          "count": 0,
+          "label": "31"
+        }
+      ],
+      "skills": {
+        "Business": 3,
+        "Coding": 15,
+        "Data analysis": 1,
+        "Design": 5,
+        "Research": 8,
+        "Sustainability": 3,
+        "Writing": 8
+      },
+      "start": "2026-10-01",
+      "top_category": "Class",
+      "top_skill": "Coding",
+      "week": [
+        {
+          "count": 0,
+          "date": "2026-10-11",
+          "points": 0
+        },
+        {
+          "count": 0,
+          "date": "2026-10-12",
+          "points": 0
+        },
+        {
+          "count": 0,
+          "date": "2026-10-13",
+          "points": 0
+        },
+        {
+          "count": 1,
+          "date": "2026-10-14",
+          "points": 15
+        },
+        {
+          "count": 1,
+          "date": "2026-10-15",
+          "points": 15
+        },
+        {
+          "count": 2,
+          "date": "2026-10-16",
+          "points": 30
+        },
+        {
+          "count": 15,
+          "date": "2026-10-17",
+          "points": 500
+        }
+      ]
+    },
+    "week": {
+      "active_days": 4,
+      "categories": {
+        "Build challenge": 1,
+        "Campus initiative": 1,
+        "Certification": 2,
+        "Class": 4,
+        "Club": 2,
+        "Creative project": 3,
+        "Internship": 4,
+        "Local event": 1,
+        "Online course": 1
+      },
+      "completed_count": 19,
+      "difficulties": {
+        "Easy": 4,
+        "Hard": 1,
+        "Lazy": 13,
+        "Medium": 1
+      },
+      "end": "2026-10-19",
+      "estimated_minutes": 131,
+      "method": "Recorded activity; time is estimated from quest durations.",
+      "period": "week",
+      "points": 560,
+      "progress": {
+        "active_today": true,
+        "activity": [
+          {
+            "completed_at": "2026-10-17T19:18:59.115129+00:00",
+            "id": "completion:demo:sample-class-web-small:2026-10-17",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "sample-class-web-small",
+            "title": "Notice one thing: semantic page structure"
+          },
+          {
+            "completed_at": "2026-10-17T19:18:49.900896+00:00",
+            "id": "completion:demo:sample-internship-frontend-small:2026-10-17",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "sample-internship-frontend-small",
+            "title": "Notice one thing: accessible React forms"
+          },
+          {
+            "completed_at": "2026-10-17T19:18:40.650831+00:00",
+            "id": "completion:demo:sample-club-rover-small:2026-10-17",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "sample-club-rover-small",
+            "title": "Notice one thing: student rover navigation"
+          },
+          {
+            "completed_at": "2026-10-17T19:18:29.169342+00:00",
+            "id": "completion:demo:sample-club-data-small:2026-10-17",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "sample-club-data-small",
+            "title": "Notice one thing: community data visualization"
+          },
+          {
+            "completed_at": "2026-10-17T19:18:19.770383+00:00",
+            "id": "completion:demo:sample-certification-sql-small:2026-10-17",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "sample-certification-sql-small",
+            "title": "Notice one thing: grouped SQL reports"
+          },
+          {
+            "completed_at": "2026-10-17T19:18:05.536127+00:00",
+            "id": "completion:demo:sample-local-event-robot-small:2026-10-17",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "sample-local-event-robot-small",
+            "title": "Notice one thing: troubleshooting student robot sensors"
+          },
+          {
+            "completed_at": "2026-10-17T19:17:20.549389+00:00",
+            "id": "completion:demo:sample-internship-backend-big:2026-10-17",
+            "kind": "completion",
+            "points": 100,
+            "profile_id": "demo",
+            "quest_id": "sample-internship-backend-big",
+            "title": "Build something: Flask APIs and route validation"
+          },
+          {
+            "completed_at": "2026-10-17T19:15:09.365241+00:00",
+            "id": "completion:demo:sample-class-python-small:2026-10-17",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "sample-class-python-small",
+            "title": "Notice one thing: Python lists and simple data summaries"
+          },
+          {
+            "completed_at": "2026-10-17T19:14:46.748332+00:00",
+            "id": "completion:demo:internship-small:2026-10-17",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "internship-small",
+            "title": "One tiny step: internship"
+          },
+          {
+            "completed_at": "2026-10-17T19:14:38.687812+00:00",
+            "id": "completion:demo:cert-small:2026-10-17",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "cert-small",
+            "title": "One tiny step: certification"
+          },
+          {
+            "completed_at": "2026-10-17T17:45:41.833701+00:00",
+            "id": "completion:demo:story-big:2026-10-17",
+            "kind": "completion",
+            "points": 50,
+            "profile_id": "demo",
+            "quest_id": "story-big",
+            "title": "Write a six-sentence story \u2014 daily practice"
+          },
+          {
+            "completed_at": "2026-10-17T17:09:42.203971+00:00",
+            "id": "completion:demo:story-1",
+            "kind": "completion",
+            "points": 50,
+            "profile_id": "demo",
+            "quest_id": "story-1",
+            "title": "Write a six-sentence story"
+          },
+          {
+            "completed_at": "2026-10-17T17:09:35.625143+00:00",
+            "id": "completion:demo:green-1",
+            "kind": "completion",
+            "points": 40,
+            "profile_id": "demo",
+            "quest_id": "green-1",
+            "title": "Spot a greener possibility"
+          },
+          {
+            "completed_at": "2026-10-17T16:10:40.723771+00:00",
+            "id": "completion:demo:design-1",
+            "kind": "completion",
+            "points": 50,
+            "profile_id": "demo",
+            "quest_id": "design-1",
+            "title": "Find one tiny friction"
+          },
+          {
+            "completed_at": "2026-10-17T16:07:03.827504+00:00",
+            "id": "completion:demo:code-1",
+            "kind": "completion",
+            "points": 75,
+            "profile_id": "demo",
+            "quest_id": "code-1",
+            "title": "Sketch your tiny tool"
+          },
+          {
+            "completed_at": "2026-10-16T13:28:53-07:00",
+            "id": "completion:demo:muse-000d316b62d39c591834::small:2026-10-16",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "muse-000d316b62d39c591834::small",
+            "title": "Review the source: scientist intern"
+          },
+          {
+            "completed_at": "2026-10-16T13:28:22-07:00",
+            "id": "completion:demo:anteater-013bf5af250a2c2c5b30::small:2026-10-16",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "anteater-013bf5af250a2c2c5b30::small",
+            "title": "Review the source: Software Environments"
+          },
+          {
+            "completed_at": "2026-10-15T13:29:23-07:00",
+            "id": "completion:demo:anteater-013bf5af250a2c2c5b30::small:2026-10-15",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "anteater-013bf5af250a2c2c5b30::small",
+            "title": "Review the source: Software Environments"
+          },
+          {
+            "completed_at": "2026-10-14T13:28:08-07:00",
+            "id": "completion:demo:coursera-0003761ad3a7976e56c2::small:2026-10-14",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "coursera-0003761ad3a7976e56c2::small",
+            "title": "Review the source: Advanced JavaScript 1: Objects, Loops, Hoisting"
+          }
+        ],
+        "completed_count": 19,
+        "completed_ids": [
+          "sample-class-web-small",
+          "sample-internship-frontend-small",
+          "sample-club-rover-small",
+          "sample-club-data-small",
+          "sample-certification-sql-small",
+          "sample-local-event-robot-small",
+          "sample-internship-backend-big",
+          "sample-class-python-small",
+          "internship-small",
+          "cert-small",
+          "story-big",
+          "story-1",
+          "green-1",
+          "design-1",
+          "code-1",
+          "muse-000d316b62d39c591834::small",
+          "anteater-013bf5af250a2c2c5b30::small",
+          "anteater-013bf5af250a2c2c5b30::small",
+          "coursera-0003761ad3a7976e56c2::small"
+        ],
+        "demo_clock": {
+          "enabled": true,
+          "real_today": "2026-10-17",
+          "simulated": false,
+          "timezone": "America/Los_Angeles",
+          "today": "2026-10-17"
+        },
+        "longest_streak": 4,
+        "points": 560,
+        "saved_count": 3,
+        "streak": 4,
+        "timezone": "America/Los_Angeles",
+        "today": "2026-10-17"
+      },
+      "series": [
+        {
+          "count": 0,
+          "label": "Mon"
+        },
+        {
+          "count": 0,
+          "label": "Tue"
+        },
+        {
+          "count": 1,
+          "label": "Wed"
+        },
+        {
+          "count": 1,
+          "label": "Thu"
+        },
+        {
+          "count": 2,
+          "label": "Fri"
+        },
+        {
+          "count": 15,
+          "label": "Sat"
+        },
+        {
+          "count": 0,
+          "label": "Sun"
+        }
+      ],
+      "skills": {
+        "Business": 3,
+        "Coding": 15,
+        "Data analysis": 1,
+        "Design": 5,
+        "Research": 8,
+        "Sustainability": 3,
+        "Writing": 8
+      },
+      "start": "2026-10-12",
+      "top_category": "Class",
+      "top_skill": "Coding",
+      "week": [
+        {
+          "count": 0,
+          "date": "2026-10-11",
+          "points": 0
+        },
+        {
+          "count": 0,
+          "date": "2026-10-12",
+          "points": 0
+        },
+        {
+          "count": 0,
+          "date": "2026-10-13",
+          "points": 0
+        },
+        {
+          "count": 1,
+          "date": "2026-10-14",
+          "points": 15
+        },
+        {
+          "count": 1,
+          "date": "2026-10-15",
+          "points": 15
+        },
+        {
+          "count": 2,
+          "date": "2026-10-16",
+          "points": 30
+        },
+        {
+          "count": 15,
+          "date": "2026-10-17",
+          "points": 500
+        }
+      ]
+    },
+    "year": {
+      "active_days": 4,
+      "categories": {
+        "Build challenge": 1,
+        "Campus initiative": 1,
+        "Certification": 2,
+        "Class": 4,
+        "Club": 2,
+        "Creative project": 3,
+        "Internship": 4,
+        "Local event": 1,
+        "Online course": 1
+      },
+      "completed_count": 19,
+      "difficulties": {
+        "Easy": 4,
+        "Hard": 1,
+        "Lazy": 13,
+        "Medium": 1
+      },
+      "end": "2027-01-01",
+      "estimated_minutes": 131,
+      "method": "Recorded activity; time is estimated from quest durations.",
+      "period": "year",
+      "points": 560,
+      "progress": {
+        "active_today": true,
+        "activity": [
+          {
+            "completed_at": "2026-10-17T19:18:59.115129+00:00",
+            "id": "completion:demo:sample-class-web-small:2026-10-17",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "sample-class-web-small",
+            "title": "Notice one thing: semantic page structure"
+          },
+          {
+            "completed_at": "2026-10-17T19:18:49.900896+00:00",
+            "id": "completion:demo:sample-internship-frontend-small:2026-10-17",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "sample-internship-frontend-small",
+            "title": "Notice one thing: accessible React forms"
+          },
+          {
+            "completed_at": "2026-10-17T19:18:40.650831+00:00",
+            "id": "completion:demo:sample-club-rover-small:2026-10-17",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "sample-club-rover-small",
+            "title": "Notice one thing: student rover navigation"
+          },
+          {
+            "completed_at": "2026-10-17T19:18:29.169342+00:00",
+            "id": "completion:demo:sample-club-data-small:2026-10-17",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "sample-club-data-small",
+            "title": "Notice one thing: community data visualization"
+          },
+          {
+            "completed_at": "2026-10-17T19:18:19.770383+00:00",
+            "id": "completion:demo:sample-certification-sql-small:2026-10-17",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "sample-certification-sql-small",
+            "title": "Notice one thing: grouped SQL reports"
+          },
+          {
+            "completed_at": "2026-10-17T19:18:05.536127+00:00",
+            "id": "completion:demo:sample-local-event-robot-small:2026-10-17",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "sample-local-event-robot-small",
+            "title": "Notice one thing: troubleshooting student robot sensors"
+          },
+          {
+            "completed_at": "2026-10-17T19:17:20.549389+00:00",
+            "id": "completion:demo:sample-internship-backend-big:2026-10-17",
+            "kind": "completion",
+            "points": 100,
+            "profile_id": "demo",
+            "quest_id": "sample-internship-backend-big",
+            "title": "Build something: Flask APIs and route validation"
+          },
+          {
+            "completed_at": "2026-10-17T19:15:09.365241+00:00",
+            "id": "completion:demo:sample-class-python-small:2026-10-17",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "sample-class-python-small",
+            "title": "Notice one thing: Python lists and simple data summaries"
+          },
+          {
+            "completed_at": "2026-10-17T19:14:46.748332+00:00",
+            "id": "completion:demo:internship-small:2026-10-17",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "internship-small",
+            "title": "One tiny step: internship"
+          },
+          {
+            "completed_at": "2026-10-17T19:14:38.687812+00:00",
+            "id": "completion:demo:cert-small:2026-10-17",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "cert-small",
+            "title": "One tiny step: certification"
+          },
+          {
+            "completed_at": "2026-10-17T17:45:41.833701+00:00",
+            "id": "completion:demo:story-big:2026-10-17",
+            "kind": "completion",
+            "points": 50,
+            "profile_id": "demo",
+            "quest_id": "story-big",
+            "title": "Write a six-sentence story \u2014 daily practice"
+          },
+          {
+            "completed_at": "2026-10-17T17:09:42.203971+00:00",
+            "id": "completion:demo:story-1",
+            "kind": "completion",
+            "points": 50,
+            "profile_id": "demo",
+            "quest_id": "story-1",
+            "title": "Write a six-sentence story"
+          },
+          {
+            "completed_at": "2026-10-17T17:09:35.625143+00:00",
+            "id": "completion:demo:green-1",
+            "kind": "completion",
+            "points": 40,
+            "profile_id": "demo",
+            "quest_id": "green-1",
+            "title": "Spot a greener possibility"
+          },
+          {
+            "completed_at": "2026-10-17T16:10:40.723771+00:00",
+            "id": "completion:demo:design-1",
+            "kind": "completion",
+            "points": 50,
+            "profile_id": "demo",
+            "quest_id": "design-1",
+            "title": "Find one tiny friction"
+          },
+          {
+            "completed_at": "2026-10-17T16:07:03.827504+00:00",
+            "id": "completion:demo:code-1",
+            "kind": "completion",
+            "points": 75,
+            "profile_id": "demo",
+            "quest_id": "code-1",
+            "title": "Sketch your tiny tool"
+          },
+          {
+            "completed_at": "2026-10-16T13:28:53-07:00",
+            "id": "completion:demo:muse-000d316b62d39c591834::small:2026-10-16",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "muse-000d316b62d39c591834::small",
+            "title": "Review the source: scientist intern"
+          },
+          {
+            "completed_at": "2026-10-16T13:28:22-07:00",
+            "id": "completion:demo:anteater-013bf5af250a2c2c5b30::small:2026-10-16",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "anteater-013bf5af250a2c2c5b30::small",
+            "title": "Review the source: Software Environments"
+          },
+          {
+            "completed_at": "2026-10-15T13:29:23-07:00",
+            "id": "completion:demo:anteater-013bf5af250a2c2c5b30::small:2026-10-15",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "anteater-013bf5af250a2c2c5b30::small",
+            "title": "Review the source: Software Environments"
+          },
+          {
+            "completed_at": "2026-10-14T13:28:08-07:00",
+            "id": "completion:demo:coursera-0003761ad3a7976e56c2::small:2026-10-14",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "coursera-0003761ad3a7976e56c2::small",
+            "title": "Review the source: Advanced JavaScript 1: Objects, Loops, Hoisting"
+          }
+        ],
+        "completed_count": 19,
+        "completed_ids": [
+          "sample-class-web-small",
+          "sample-internship-frontend-small",
+          "sample-club-rover-small",
+          "sample-club-data-small",
+          "sample-certification-sql-small",
+          "sample-local-event-robot-small",
+          "sample-internship-backend-big",
+          "sample-class-python-small",
+          "internship-small",
+          "cert-small",
+          "story-big",
+          "story-1",
+          "green-1",
+          "design-1",
+          "code-1",
+          "muse-000d316b62d39c591834::small",
+          "anteater-013bf5af250a2c2c5b30::small",
+          "anteater-013bf5af250a2c2c5b30::small",
+          "coursera-0003761ad3a7976e56c2::small"
+        ],
+        "demo_clock": {
+          "enabled": true,
+          "real_today": "2026-10-17",
+          "simulated": false,
+          "timezone": "America/Los_Angeles",
+          "today": "2026-10-17"
+        },
+        "longest_streak": 4,
+        "points": 560,
+        "saved_count": 3,
+        "streak": 4,
+        "timezone": "America/Los_Angeles",
+        "today": "2026-10-17"
+      },
+      "series": [
+        {
+          "count": 0,
+          "label": "Jan"
+        },
+        {
+          "count": 0,
+          "label": "Feb"
+        },
+        {
+          "count": 0,
+          "label": "Mar"
+        },
+        {
+          "count": 0,
+          "label": "Apr"
+        },
+        {
+          "count": 0,
+          "label": "May"
+        },
+        {
+          "count": 0,
+          "label": "Jun"
+        },
+        {
+          "count": 0,
+          "label": "Jul"
+        },
+        {
+          "count": 0,
+          "label": "Aug"
+        },
+        {
+          "count": 0,
+          "label": "Sep"
+        },
+        {
+          "count": 19,
+          "label": "Oct"
+        },
+        {
+          "count": 0,
+          "label": "Nov"
+        },
+        {
+          "count": 0,
+          "label": "Dec"
+        }
+      ],
+      "skills": {
+        "Business": 3,
+        "Coding": 15,
+        "Data analysis": 1,
+        "Design": 5,
+        "Research": 8,
+        "Sustainability": 3,
+        "Writing": 8
+      },
+      "start": "2026-01-01",
+      "top_category": "Class",
+      "top_skill": "Coding",
+      "week": [
+        {
+          "count": 0,
+          "date": "2026-10-11",
+          "points": 0
+        },
+        {
+          "count": 0,
+          "date": "2026-10-12",
+          "points": 0
+        },
+        {
+          "count": 0,
+          "date": "2026-10-13",
+          "points": 0
+        },
+        {
+          "count": 1,
+          "date": "2026-10-14",
+          "points": 15
+        },
+        {
+          "count": 1,
+          "date": "2026-10-15",
+          "points": 15
+        },
+        {
+          "count": 2,
+          "date": "2026-10-16",
+          "points": 30
+        },
+        {
+          "count": 15,
+          "date": "2026-10-17",
+          "points": 500
+        }
+      ]
+    }
+  },
+  "calendar": [
+    {
+      "count": 1,
+      "date": "2026-10-14"
+    },
+    {
+      "count": 1,
+      "date": "2026-10-15"
+    },
+    {
+      "count": 2,
+      "date": "2026-10-16"
+    },
+    {
+      "count": 15,
+      "date": "2026-10-17"
+    }
+  ],
+  "climb": {
+    "fraction": 0.12,
+    "level": 6,
+    "mountain": 2,
+    "next_milestone": 600,
+    "points_to_next_milestone": 40
+  },
+  "definitions": {
+    "month": "One bin per day",
+    "percentages": "Divide each counter by the sum of that chart; skill tags may overlap.",
+    "persistence": "Completions, saves and demo date persist in the configured backend store.",
+    "week": "Monday\u2013Sunday",
+    "year": "One bin per month"
+  },
+  "generated_at": "2026-10-17T20:37:23.716528+00:00",
+  "profile_id": "demo",
+  "progress": {
+    "active_today": true,
+    "activity": [
+      {
+        "completed_at": "2026-10-17T19:18:59.115129+00:00",
+        "id": "completion:demo:sample-class-web-small:2026-10-17",
+        "kind": "completion",
+        "points": 15,
+        "profile_id": "demo",
+        "quest_id": "sample-class-web-small",
+        "title": "Notice one thing: semantic page structure"
+      },
+      {
+        "completed_at": "2026-10-17T19:18:49.900896+00:00",
+        "id": "completion:demo:sample-internship-frontend-small:2026-10-17",
+        "kind": "completion",
+        "points": 15,
+        "profile_id": "demo",
+        "quest_id": "sample-internship-frontend-small",
+        "title": "Notice one thing: accessible React forms"
+      },
+      {
+        "completed_at": "2026-10-17T19:18:40.650831+00:00",
+        "id": "completion:demo:sample-club-rover-small:2026-10-17",
+        "kind": "completion",
+        "points": 15,
+        "profile_id": "demo",
+        "quest_id": "sample-club-rover-small",
+        "title": "Notice one thing: student rover navigation"
+      },
+      {
+        "completed_at": "2026-10-17T19:18:29.169342+00:00",
+        "id": "completion:demo:sample-club-data-small:2026-10-17",
+        "kind": "completion",
+        "points": 15,
+        "profile_id": "demo",
+        "quest_id": "sample-club-data-small",
+        "title": "Notice one thing: community data visualization"
+      },
+      {
+        "completed_at": "2026-10-17T19:18:19.770383+00:00",
+        "id": "completion:demo:sample-certification-sql-small:2026-10-17",
+        "kind": "completion",
+        "points": 15,
+        "profile_id": "demo",
+        "quest_id": "sample-certification-sql-small",
+        "title": "Notice one thing: grouped SQL reports"
+      },
+      {
+        "completed_at": "2026-10-17T19:18:05.536127+00:00",
+        "id": "completion:demo:sample-local-event-robot-small:2026-10-17",
+        "kind": "completion",
+        "points": 15,
+        "profile_id": "demo",
+        "quest_id": "sample-local-event-robot-small",
+        "title": "Notice one thing: troubleshooting student robot sensors"
+      },
+      {
+        "completed_at": "2026-10-17T19:17:20.549389+00:00",
+        "id": "completion:demo:sample-internship-backend-big:2026-10-17",
+        "kind": "completion",
+        "points": 100,
+        "profile_id": "demo",
+        "quest_id": "sample-internship-backend-big",
+        "title": "Build something: Flask APIs and route validation"
+      },
+      {
+        "completed_at": "2026-10-17T19:15:09.365241+00:00",
+        "id": "completion:demo:sample-class-python-small:2026-10-17",
+        "kind": "completion",
+        "points": 15,
+        "profile_id": "demo",
+        "quest_id": "sample-class-python-small",
+        "title": "Notice one thing: Python lists and simple data summaries"
+      },
+      {
+        "completed_at": "2026-10-17T19:14:46.748332+00:00",
+        "id": "completion:demo:internship-small:2026-10-17",
+        "kind": "completion",
+        "points": 15,
+        "profile_id": "demo",
+        "quest_id": "internship-small",
+        "title": "One tiny step: internship"
+      },
+      {
+        "completed_at": "2026-10-17T19:14:38.687812+00:00",
+        "id": "completion:demo:cert-small:2026-10-17",
+        "kind": "completion",
+        "points": 15,
+        "profile_id": "demo",
+        "quest_id": "cert-small",
+        "title": "One tiny step: certification"
+      },
+      {
+        "completed_at": "2026-10-17T17:45:41.833701+00:00",
+        "id": "completion:demo:story-big:2026-10-17",
+        "kind": "completion",
+        "points": 50,
+        "profile_id": "demo",
+        "quest_id": "story-big",
+        "title": "Write a six-sentence story \u2014 daily practice"
+      },
+      {
+        "completed_at": "2026-10-17T17:09:42.203971+00:00",
+        "id": "completion:demo:story-1",
+        "kind": "completion",
+        "points": 50,
+        "profile_id": "demo",
+        "quest_id": "story-1",
+        "title": "Write a six-sentence story"
+      },
+      {
+        "completed_at": "2026-10-17T17:09:35.625143+00:00",
+        "id": "completion:demo:green-1",
+        "kind": "completion",
+        "points": 40,
+        "profile_id": "demo",
+        "quest_id": "green-1",
+        "title": "Spot a greener possibility"
+      },
+      {
+        "completed_at": "2026-10-17T16:10:40.723771+00:00",
+        "id": "completion:demo:design-1",
+        "kind": "completion",
+        "points": 50,
+        "profile_id": "demo",
+        "quest_id": "design-1",
+        "title": "Find one tiny friction"
+      },
+      {
+        "completed_at": "2026-10-17T16:07:03.827504+00:00",
+        "id": "completion:demo:code-1",
+        "kind": "completion",
+        "points": 75,
+        "profile_id": "demo",
+        "quest_id": "code-1",
+        "title": "Sketch your tiny tool"
+      },
+      {
+        "completed_at": "2026-10-16T13:28:53-07:00",
+        "id": "completion:demo:muse-000d316b62d39c591834::small:2026-10-16",
+        "kind": "completion",
+        "points": 15,
+        "profile_id": "demo",
+        "quest_id": "muse-000d316b62d39c591834::small",
+        "title": "Review the source: scientist intern"
+      },
+      {
+        "completed_at": "2026-10-16T13:28:22-07:00",
+        "id": "completion:demo:anteater-013bf5af250a2c2c5b30::small:2026-10-16",
+        "kind": "completion",
+        "points": 15,
+        "profile_id": "demo",
+        "quest_id": "anteater-013bf5af250a2c2c5b30::small",
+        "title": "Review the source: Software Environments"
+      },
+      {
+        "completed_at": "2026-10-15T13:29:23-07:00",
+        "id": "completion:demo:anteater-013bf5af250a2c2c5b30::small:2026-10-15",
+        "kind": "completion",
+        "points": 15,
+        "profile_id": "demo",
+        "quest_id": "anteater-013bf5af250a2c2c5b30::small",
+        "title": "Review the source: Software Environments"
+      },
+      {
+        "completed_at": "2026-10-14T13:28:08-07:00",
+        "id": "completion:demo:coursera-0003761ad3a7976e56c2::small:2026-10-14",
+        "kind": "completion",
+        "points": 15,
+        "profile_id": "demo",
+        "quest_id": "coursera-0003761ad3a7976e56c2::small",
+        "title": "Review the source: Advanced JavaScript 1: Objects, Loops, Hoisting"
+      }
+    ],
+    "completed_count": 19,
+    "completed_ids": [
+      "sample-class-web-small",
+      "sample-internship-frontend-small",
+      "sample-club-rover-small",
+      "sample-club-data-small",
+      "sample-certification-sql-small",
+      "sample-local-event-robot-small",
+      "sample-internship-backend-big",
+      "sample-class-python-small",
+      "internship-small",
+      "cert-small",
+      "story-big",
+      "story-1",
+      "green-1",
+      "design-1",
+      "code-1",
+      "muse-000d316b62d39c591834::small",
+      "anteater-013bf5af250a2c2c5b30::small",
+      "anteater-013bf5af250a2c2c5b30::small",
+      "coursera-0003761ad3a7976e56c2::small"
+    ],
+    "demo_clock": {
+      "enabled": true,
+      "real_today": "2026-10-17",
+      "simulated": false,
+      "timezone": "America/Los_Angeles",
+      "today": "2026-10-17"
+    },
+    "longest_streak": 4,
+    "points": 560,
+    "saved_count": 3,
+    "streak": 4,
+    "timezone": "America/Los_Angeles",
+    "today": "2026-10-17"
+  },
+  "recap": {
+    "active_days": 4,
+    "categories": {
+      "Build challenge": 1,
+      "Campus initiative": 1,
+      "Certification": 2,
+      "Class": 4,
+      "Club": 2,
+      "Creative project": 3,
+      "Internship": 4,
+      "Local event": 1,
+      "Online course": 1
+    },
+    "completed_count": 19,
+    "difficulties": {
+      "Easy": 4,
+      "Hard": 1,
+      "Lazy": 13,
+      "Medium": 1
+    },
+    "end": null,
+    "estimated_minutes": 131,
+    "method": "Recorded activity; time is estimated from quest durations.",
+    "period": null,
+    "points": 560,
+    "progress": {
+      "active_today": true,
+      "activity": [
+        {
+          "completed_at": "2026-10-17T19:18:59.115129+00:00",
+          "id": "completion:demo:sample-class-web-small:2026-10-17",
+          "kind": "completion",
+          "points": 15,
+          "profile_id": "demo",
+          "quest_id": "sample-class-web-small",
+          "title": "Notice one thing: semantic page structure"
+        },
+        {
+          "completed_at": "2026-10-17T19:18:49.900896+00:00",
+          "id": "completion:demo:sample-internship-frontend-small:2026-10-17",
+          "kind": "completion",
+          "points": 15,
+          "profile_id": "demo",
+          "quest_id": "sample-internship-frontend-small",
+          "title": "Notice one thing: accessible React forms"
+        },
+        {
+          "completed_at": "2026-10-17T19:18:40.650831+00:00",
+          "id": "completion:demo:sample-club-rover-small:2026-10-17",
+          "kind": "completion",
+          "points": 15,
+          "profile_id": "demo",
+          "quest_id": "sample-club-rover-small",
+          "title": "Notice one thing: student rover navigation"
+        },
+        {
+          "completed_at": "2026-10-17T19:18:29.169342+00:00",
+          "id": "completion:demo:sample-club-data-small:2026-10-17",
+          "kind": "completion",
+          "points": 15,
+          "profile_id": "demo",
+          "quest_id": "sample-club-data-small",
+          "title": "Notice one thing: community data visualization"
+        },
+        {
+          "completed_at": "2026-10-17T19:18:19.770383+00:00",
+          "id": "completion:demo:sample-certification-sql-small:2026-10-17",
+          "kind": "completion",
+          "points": 15,
+          "profile_id": "demo",
+          "quest_id": "sample-certification-sql-small",
+          "title": "Notice one thing: grouped SQL reports"
+        },
+        {
+          "completed_at": "2026-10-17T19:18:05.536127+00:00",
+          "id": "completion:demo:sample-local-event-robot-small:2026-10-17",
+          "kind": "completion",
+          "points": 15,
+          "profile_id": "demo",
+          "quest_id": "sample-local-event-robot-small",
+          "title": "Notice one thing: troubleshooting student robot sensors"
+        },
+        {
+          "completed_at": "2026-10-17T19:17:20.549389+00:00",
+          "id": "completion:demo:sample-internship-backend-big:2026-10-17",
+          "kind": "completion",
+          "points": 100,
+          "profile_id": "demo",
+          "quest_id": "sample-internship-backend-big",
+          "title": "Build something: Flask APIs and route validation"
+        },
+        {
+          "completed_at": "2026-10-17T19:15:09.365241+00:00",
+          "id": "completion:demo:sample-class-python-small:2026-10-17",
+          "kind": "completion",
+          "points": 15,
+          "profile_id": "demo",
+          "quest_id": "sample-class-python-small",
+          "title": "Notice one thing: Python lists and simple data summaries"
+        },
+        {
+          "completed_at": "2026-10-17T19:14:46.748332+00:00",
+          "id": "completion:demo:internship-small:2026-10-17",
+          "kind": "completion",
+          "points": 15,
+          "profile_id": "demo",
+          "quest_id": "internship-small",
+          "title": "One tiny step: internship"
+        },
+        {
+          "completed_at": "2026-10-17T19:14:38.687812+00:00",
+          "id": "completion:demo:cert-small:2026-10-17",
+          "kind": "completion",
+          "points": 15,
+          "profile_id": "demo",
+          "quest_id": "cert-small",
+          "title": "One tiny step: certification"
+        },
+        {
+          "completed_at": "2026-10-17T17:45:41.833701+00:00",
+          "id": "completion:demo:story-big:2026-10-17",
+          "kind": "completion",
+          "points": 50,
+          "profile_id": "demo",
+          "quest_id": "story-big",
+          "title": "Write a six-sentence story \u2014 daily practice"
+        },
+        {
+          "completed_at": "2026-10-17T17:09:42.203971+00:00",
+          "id": "completion:demo:story-1",
+          "kind": "completion",
+          "points": 50,
+          "profile_id": "demo",
+          "quest_id": "story-1",
+          "title": "Write a six-sentence story"
+        },
+        {
+          "completed_at": "2026-10-17T17:09:35.625143+00:00",
+          "id": "completion:demo:green-1",
+          "kind": "completion",
+          "points": 40,
+          "profile_id": "demo",
+          "quest_id": "green-1",
+          "title": "Spot a greener possibility"
+        },
+        {
+          "completed_at": "2026-10-17T16:10:40.723771+00:00",
+          "id": "completion:demo:design-1",
+          "kind": "completion",
+          "points": 50,
+          "profile_id": "demo",
+          "quest_id": "design-1",
+          "title": "Find one tiny friction"
+        },
+        {
+          "completed_at": "2026-10-17T16:07:03.827504+00:00",
+          "id": "completion:demo:code-1",
+          "kind": "completion",
+          "points": 75,
+          "profile_id": "demo",
+          "quest_id": "code-1",
+          "title": "Sketch your tiny tool"
+        },
+        {
+          "completed_at": "2026-10-16T13:28:53-07:00",
+          "id": "completion:demo:muse-000d316b62d39c591834::small:2026-10-16",
+          "kind": "completion",
+          "points": 15,
+          "profile_id": "demo",
+          "quest_id": "muse-000d316b62d39c591834::small",
+          "title": "Review the source: scientist intern"
+        },
+        {
+          "completed_at": "2026-10-16T13:28:22-07:00",
+          "id": "completion:demo:anteater-013bf5af250a2c2c5b30::small:2026-10-16",
+          "kind": "completion",
+          "points": 15,
+          "profile_id": "demo",
+          "quest_id": "anteater-013bf5af250a2c2c5b30::small",
+          "title": "Review the source: Software Environments"
+        },
+        {
+          "completed_at": "2026-10-15T13:29:23-07:00",
+          "id": "completion:demo:anteater-013bf5af250a2c2c5b30::small:2026-10-15",
+          "kind": "completion",
+          "points": 15,
+          "profile_id": "demo",
+          "quest_id": "anteater-013bf5af250a2c2c5b30::small",
+          "title": "Review the source: Software Environments"
+        },
+        {
+          "completed_at": "2026-10-14T13:28:08-07:00",
+          "id": "completion:demo:coursera-0003761ad3a7976e56c2::small:2026-10-14",
+          "kind": "completion",
+          "points": 15,
+          "profile_id": "demo",
+          "quest_id": "coursera-0003761ad3a7976e56c2::small",
+          "title": "Review the source: Advanced JavaScript 1: Objects, Loops, Hoisting"
+        }
+      ],
+      "completed_count": 19,
+      "completed_ids": [
+        "sample-class-web-small",
+        "sample-internship-frontend-small",
+        "sample-club-rover-small",
+        "sample-club-data-small",
+        "sample-certification-sql-small",
+        "sample-local-event-robot-small",
+        "sample-internship-backend-big",
+        "sample-class-python-small",
+        "internship-small",
+        "cert-small",
+        "story-big",
+        "story-1",
+        "green-1",
+        "design-1",
+        "code-1",
+        "muse-000d316b62d39c591834::small",
+        "anteater-013bf5af250a2c2c5b30::small",
+        "anteater-013bf5af250a2c2c5b30::small",
+        "coursera-0003761ad3a7976e56c2::small"
+      ],
+      "demo_clock": {
+        "enabled": true,
+        "real_today": "2026-10-17",
+        "simulated": false,
+        "timezone": "America/Los_Angeles",
+        "today": "2026-10-17"
+      },
+      "longest_streak": 4,
+      "points": 560,
+      "saved_count": 3,
+      "streak": 4,
+      "timezone": "America/Los_Angeles",
+      "today": "2026-10-17"
+    },
+    "series": [
+      {
+        "count": 0,
+        "date": "2026-10-11",
+        "points": 0
+      },
+      {
+        "count": 0,
+        "date": "2026-10-12",
+        "points": 0
+      },
+      {
+        "count": 0,
+        "date": "2026-10-13",
+        "points": 0
+      },
+      {
+        "count": 1,
+        "date": "2026-10-14",
+        "points": 15
+      },
+      {
+        "count": 1,
+        "date": "2026-10-15",
+        "points": 15
+      },
+      {
+        "count": 2,
+        "date": "2026-10-16",
+        "points": 30
+      },
+      {
+        "count": 15,
+        "date": "2026-10-17",
+        "points": 500
+      }
+    ],
+    "skills": {
+      "Business": 3,
+      "Coding": 15,
+      "Data analysis": 1,
+      "Design": 5,
+      "Research": 8,
+      "Sustainability": 3,
+      "Writing": 8
+    },
+    "start": null,
+    "top_category": "Class",
+    "top_skill": "Coding",
+    "week": [
+      {
+        "count": 0,
+        "date": "2026-10-11",
+        "points": 0
+      },
+      {
+        "count": 0,
+        "date": "2026-10-12",
+        "points": 0
+      },
+      {
+        "count": 0,
+        "date": "2026-10-13",
+        "points": 0
+      },
+      {
+        "count": 1,
+        "date": "2026-10-14",
+        "points": 15
+      },
+      {
+        "count": 1,
+        "date": "2026-10-15",
+        "points": 15
+      },
+      {
+        "count": 2,
+        "date": "2026-10-16",
+        "points": 30
+      },
+      {
+        "count": 15,
+        "date": "2026-10-17",
+        "points": 500
+      }
+    ]
+  },
+  "schema_version": 1,
+  "timezone": "America/Los_Angeles",
+  "view_date": "2026-10-17"
+}

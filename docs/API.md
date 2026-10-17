@@ -47,3 +47,13 @@ Profiles and activity use MongoDB when configured or local SQLite otherwise. Ato
 - Returns `{role,found_skills,gaps,recommendations,method}`. Suggestions reference up to 100 matching, nonexpired collected opportunities in default mode. This is local keyword matching against fictional role templates; missing words are exploration prompts, not assessed skill deficits. Raw resume text/files are neither stored nor sent to external AI.
 
 The lower-level read-only `/catalog/options` and `/catalog/opportunities` API preserves the canonical data taxonomy and explicit full/first/micro-step scopes; see [CATALOG_API.md](CATALOG_API.md).
+
+### Demo clock and ranged analytics
+`POST /demo/clock` accepts `{ "date": "2026-10-18" }` or `{ "reset": true }`. Persisted Pacific date affects completion timestamps and daily quest eligibility; source availability uses real time. Disabled with `ONETHING_DEMO_TOOLS=0` (403). `/progress` includes `demo_clock` metadata.
+
+`GET /analytics?period=day|week|month|year&date=YYYY-MM-DD` returns scoped `completed_count`, `points`, category/skill/difficulty counters and `series` bins, plus inclusive `start` and exclusive `end`. Weeks begin Monday; all boundaries use Pacific time. With no period, lifetime recap counters remain available.
+
+Monthly analytics series has one bin per calendar day. The UI offers Weekly, Monthly, and Yearly views; the API still supports hourly day queries.
+
+### Complete Progress handoff
+`GET /progress/data?date=YYYY-MM-DD` is a read-only versioned payload containing lifetime `progress`, `climb`, calendar active-day counts, `analytics` for week/month/year, and lifetime `recap`. The optional date controls analytics only. See `data/README.md` for field mappings and `data/progress.json` for a persisted demo snapshot. Refresh the file using `python backend/export_progress.py` from an environment with the backend requirements installed. Live completions remain stored in the configured MongoDB/SQLite store; the JSON snapshot is not a replacement database.
