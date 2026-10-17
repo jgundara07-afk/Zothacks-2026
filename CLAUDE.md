@@ -8,7 +8,7 @@ Business mottos: **1% everyday**, **Take baby steps**, **Productive scrolling**,
 This brief describes the target product, not a claim that every feature already exists. Build on the existing demo and prioritize a complete working journey.
 
 ## Essential features
-- **Continuous opportunity feed:** Browse local and online career opportunities with incremental loading. Show a clear end-of-sample state; do not imply that finite dummy data is live or unlimited.
+- **Continuous opportunity feed:** Gather local and online career opportunities through external APIs and web scraping, normalize them into a shared catalog, and browse them with incremental loading. Distinguish live-source records, cached records, and fictional samples; show honest loading and end-of-feed states.
 - **Goal and skill filters:** Filter and recommend opportunities using career goals, interests, and skills. Explain recommendations through matching tags and skills an opportunity helps develop.
 - **Quest difficulty filters:** Offer game-like effort levels such as Lazy, Easy, Hard, and Challenging. Show estimated time, prerequisites, and actionable steps.
 - **Gamified quests and rewards:** Turn opportunities into quests with checklists, points, milestones, and rewards. Prevent duplicate completion and duplicate point awards.
@@ -17,12 +17,16 @@ This brief describes the target product, not a claim that every feature already 
 - **Opportunity and progress analytics:** Summarize opportunities by source, skills, and difficulty, alongside saves, completions, points, and skills practiced. Distinguish available feed data from actual user activity.
 - **Spotify Wrapped-style results:** Create a colorful, personalized recap of completed quests, skills practiced, milestones, and next steps. Target AI-powered narrative generation grounded in activity. Include a deterministic local fallback so the demo needs no AI API; label fallback summaries accurately rather than claiming they were AI-generated.
 
-## Sources and hackathon data
+## Sources and data gathering
 Opportunity categories: **classes, clubs, online certifications, local events, networking, job simulations, and internships**. Support local/online location or delivery-mode filters where the data provides those fields.
 
-For this hackathon, rely on a curated **dummy document**, not external opportunity APIs. Keep a versioned fictional source document and a canonical structured seed JSON fixture derived from it. Include representative categories and difficulty levels, stable IDs, titles, descriptions, source categories, goal/skill tags, location or delivery mode, estimated effort, and linked quests/rewards.
+Use **external opportunity APIs and web scraping** as the target data sources. Prefer documented APIs where available; add source-specific scrapers for public opportunity pages that permit automated collection. Select and document actual providers during implementation rather than assuming an integration already exists. Cover the categories above with stable IDs, titles, descriptions, source categories, goal/skill tags, location or delivery mode, estimated effort, and linked quests/rewards.
 
-Clearly label opportunities, providers, events, resumes, and other demo records as fictional samples. Do not imply live availability, real applications, real credentials, or verified career outcomes. No scraping, social imports, or external data integrations are required. The complete demo must work without runtime internet access or API keys. Live sources and optional AI services can be added later behind adapters.
+Build gathering behind backend source adapters, separate from parsing and normalization. Keep raw responses or page snapshots in ignored local storage with source URL, provider, collection time, content hash, and fetch status. Normalize validated records into the catalog, deduplicate by source ID or canonical URL, track deadlines and last successful refresh, and retain provenance. Refresh outside user requests; serve stored records so upstream delays do not block scrolling. Do not invent missing details, deadlines, or qualifications.
+
+Use timeouts, bounded retries with backoff, provider rate limits, and caching. Scrapers must respect site terms and robots directives; do not bypass login, paywalls, CAPTCHAs, or access controls. Keep API keys server-side in `.env`. Document source setup, refresh commands, and failure behavior. Tests should use recorded or synthetic fixtures rather than depend on live services.
+
+Retain the curated dummy document and canonical `backend/seed.json` fixture as an explicit offline demo mode. Clearly label fictional samples and cached/stale records; never silently present fallback samples as live results. Real records should link to their source and show collection freshness without implying guaranteed availability, credentials, or career outcomes. Live gathering requires internet and any provider credentials; offline sample mode must remain usable without them. Use fictional resume content in demonstrations and keep social imports out of scope.
 
 ## Design and interaction
 - Mountain-climbing progress tracker with a completion animation that advances the climb when a quest is finished.
@@ -34,18 +38,21 @@ Clearly label opportunities, providers, events, resumes, and other demo records 
 ## Stack and shared contract
 React + Vite frontend; Python + Flask REST API; MongoDB via PyMongo. Preserve the existing persistent SQLite demo adapter when `MONGO_URI` is empty so local setup requires no database service. Keep `MONGO_URI` and optional service secrets in the ignored root `.env`, never Git. Keep one frontend API client and canonical seed JSON.
 
-Core collections: `profiles`, `opportunities`, `quests`, `activity`. Extend the model as needed for daily quest assignments, resume-derived skill summaries, and recap metadata. Use one fictional demo profile; no login. Persist preferences, saves, completions, and progress across refreshes and restarts.
+Core collections: `profiles`, `opportunities`, `quests`, `activity`. Extend the model as needed for source configuration, gathering runs, provenance, daily quest assignments, resume-derived skill summaries, and recap metadata. Use one fictional demo profile; no login. Persist preferences, saves, completions, and progress across refreshes and restarts.
 
 Preserve existing routes: `GET /health`, `GET /opportunities`, `GET /quests`, `GET /saved`, `GET /progress`, `POST /profiles`, `POST /saved`, and `POST /completions`. The frontend uses Vite's `/api` proxy during local development.
 
 Extend the contract for pagination, category/location/difficulty/goal/skill filters, daily quests, resume gap recommendations, analytics, and recap generation as features are implemented. Document request/response JSON in `docs/API.md` before connecting new frontend behavior. Do not describe planned endpoints as implemented. Return clear validation and service errors, calculate rewards on the server, and keep completion retries idempotent.
 
 ## Delivery phases and proof
-1. **Foundation and data:** Preserve working local startup and the app shell; establish the dummy source document, representative seed, and shared contract. Proof: both servers run, the browser loads, and no runtime external service is required.
-2. **Productive scrolling:** Deliver onboarding, an incrementally loaded sample feed, filters, recommendation explanations, and saves. Proof: filters behave consistently and sample limits are clear.
+1. **Foundation and data gathering:** Preserve local startup and the app shell; establish API and permitted scraping adapters, raw capture, normalization, deduplication, provenance, and the shared contract. Retain representative offline fixtures. Proof: configured sources populate the catalog, failures preserve cached data, and offline sample mode works without external services.
+2. **Productive scrolling:** Deliver onboarding, an incrementally loaded catalog, filters, recommendation explanations, and saves. Proof: filters behave consistently, source/freshness labels are accurate, and sample limits are clear.
 3. **Daily quests and rewards:** Connect opportunities to difficulty-based quests, daily micro goals, checklists, points, and mountain-climb rewards. Proof: a fresh user completes the journey; two different quests count once each; saves and progress survive refresh and restart.
 4. **Resume recommendations:** Add resume input, transparent gap suggestions, and related sample opportunities. Proof: a fictional resume produces explainable suggestions and invalid input has a recovery path.
 5. **Analytics and recap:** Add opportunity breakdowns, personal activity analytics, and colorful Wrapped-style results. Proof: totals match recorded activity, empty states work, and a personalized local recap works without an AI service.
 6. **Finish:** Polish responsive layouts, accessibility, animation alternatives, errors, and README setup steps. Proof: frontend build, backend journey checks, and a full browser walkthrough pass.
 
 Integrate at every phase. Fix broken checks before expanding scope. Keep sample data explicit and recommendations grounded in available data.
+
+## Git workflow
+Before every commit, fetch the latest remote changes and ensure the current branch includes the latest changes from its upstream branch. If no upstream is configured, identify the intended remote branch before proceeding. Fast-forward when possible; otherwise integrate the remote changes and resolve conflicts before committing. Preserve uncommitted work while syncing, and never discard teammates' changes or force-push to bypass divergence. Verify the branch is up to date and run checks appropriate to the integrated changes before creating the commit.

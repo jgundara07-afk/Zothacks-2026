@@ -1,6 +1,13 @@
 # One Thing
 A ZotHacks demo that turns scrolling into one useful step: choose interests and skills, discover a fictional opportunity, save it, complete a small quest, and watch your mountain climb grow.
 
+## Project updates
+The current demo includes a vertical discovery feed; goal, skill, location, type, and difficulty filters; daily mood/effort check-ins; daily micro quests and streaks; save/unsave; persistent points; mountain-climb rewards; a keyword-based resume lab; activity analytics; and a four-slide, template-based recap. The sections below describe these implemented features and their limits.
+
+The updated [build brief](CLAUDE.md) now calls for **external opportunity APIs and permitted web scraping**, replacing the earlier dummy-document-only sourcing plan. Planned work includes backend source adapters, raw response/page capture, parsing and normalization, deduplication, scheduled refreshes, provenance and freshness labels, caching, and graceful source failures. API credentials will remain server-side, and an explicitly labeled offline sample mode will remain available.
+
+**This update changes the documentation, not the running data pipeline.** API collectors, scrapers, and live-source refreshes are not implemented yet; the current app still uses `backend/seed.json`. The existing recap is template-based, not AI-generated. Live-source setup instructions and provider credentials will be documented when integrations are added.
+
 ## Run locally
 Requires Node.js 20.19+ (or 22.12+) and Python 3.10+.
 
