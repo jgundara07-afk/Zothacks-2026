@@ -37,7 +37,6 @@
 .ob-title-card { position: relative; z-index: 2; flex: 1; display: flex; flex-direction: column; justify-content: flex-end; padding: 22px 22px 18px; color: #f4ead6; }
 .ob-episode { position: absolute; top: 22px; right: 22px; font-family: var(--font-serif); font-size: 12px; font-weight: 600; letter-spacing: .3em; text-transform: uppercase; color: rgba(244,234,214,.75); }
 .ob-logo.eva { font-size: 108px; line-height: .82; margin: 0; color: #f8efdd; --sx: .62; text-shadow: 0 2px 30px rgba(0,0,0,.5); }
-.ob-kanji { font-family: var(--font-title); font-weight: 900; font-size: 19px; letter-spacing: .1em; margin: 14px 0 0; color: var(--red-hi); }
 .ob-title .ob-title-headline.eva { font-size: 60px; line-height: .86; color: #f8efdd; margin: 16px 0 0; }
 .ob-title-panel { position: relative; z-index: 2; flex-shrink: 0; background: var(--paper-hi); padding: 22px 24px max(20px, env(safe-area-inset-bottom)); overflow: visible; box-shadow: 0 -1px 0 rgba(184,144,74,.6); }
 .ob-title-panel::before { content: ''; position: absolute; inset: 0; background: var(--grain); opacity: .14; mix-blend-mode: multiply; pointer-events: none; }

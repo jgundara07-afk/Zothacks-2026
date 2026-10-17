@@ -207,3 +207,9 @@ select { background: var(--paper-hi); border: 1px solid rgba(36,24,13,.3); color
 .feed-pagination > span { white-space: nowrap; }
 .empty h2, .empty p { color: var(--on-paper) !important; text-shadow: 0 0 8px var(--paper), 0 0 16px var(--paper); }
 .empty svg { color: var(--red); }
+
+/* climb panel: inked fantasy mountains (components/FantasyPeaks.jsx) */
+.mountain .peak-lit { fill: #e3d2ab; }
+.mountain .peak-shade { fill: #b39a6c; }
+.mountain .peak-hatch line { stroke: #3a2716; stroke-width: .7; opacity: .55; }
+.mountain .peak-ink { fill: none; stroke: #3a2716; stroke-width: 1.6; stroke-linejoin: round; }

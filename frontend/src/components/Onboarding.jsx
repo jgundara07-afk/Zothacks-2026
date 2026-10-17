@@ -42,7 +42,6 @@ export default function Onboarding({data,busy,error,hasProfile,interests,setInte
   <div className="ob-title-card">
    <span className="ob-episode">Episode 01</span>
    <p className="ob-logo eva" aria-label="OneThing">OneThing</p>
-   <p className="ob-kanji" lang="ja">一つのこと、はじめの一歩</p>
    <Title className="ob-title-headline">A place<br/>to start.</Title>
   </div>
   <div className="ob-title-panel">
