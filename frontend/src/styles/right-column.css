@@ -1,192 +1,65 @@
-/* Right-hand column: streak panel, mountain climb, "your kind of things", quote. */
+/* Right-hand column (on paper): streak instrument, topographic climb, "your kind of things", quote. */
 
-.right-column {
-  padding-top: 2px;
-}
-.climb {
-  border: 1px solid #e0e3d6;
-  border-radius: 9px;
-  padding: 20px;
-  background: #f1f2e9;
-}
-.right-column h2 {
-  font-size: 13px;
-}
-.right-column p {
-  font-size: 10px;
-  color: #979d88;
-  line-height: 1.6;
-}
-.mountain {
-  width: 100%;
-  display: block;
-  margin: 6px 0 0;
-}
-.climb-stats {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 6px 0 14px;
-}
-.climb-stats strong {
-  font-size: 25px;
-  font-weight: 500;
-}
-.climb-stats small {
-  font-size: 10px;
-  font-weight: 400;
-  color: #89927b;
-}
-.climb-stats>span {
-  font-size: 8px;
-  background: #e4e8d9;
-  padding: 5px 8px;
-  border-radius: 10px;
-  color: #8d977b;
-}
-.progress-track {
-  height: 5px;
-  background: #e0e5d5;
-  border-radius: 8px;
-  overflow: hidden;
-  margin-bottom: 9px;
-}
-.progress-track span {
-  height: 100%;
-  display: block;
-  background: #8a9c70;
-}
-.climb>small {
-  font-size: 8px;
-  color: #979d88;
-}
-.climb .text-link {
-  border-top: 1px solid #dfe3d4;
-  margin-top: 20px;
-}
-.your-mix {
-  border: 1px solid #e1e3d8;
-  padding: 20px;
-  margin-top: 20px;
-  border-radius: 8px;
-}
-.your-mix .tags {
-  margin: 15px 0 2px;
-}
-.your-mix .tags span {
-  background: #e9edde;
-}
-.quote {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: 16px;
-  line-height: 1.6;
-  color: #979b84;
-  padding: 28px 18px;
-}
-.quote span {
-  font-family: var(--font-sans);
-  font-style: normal;
-  display: block;
-  font-size: 7px;
-  letter-spacing: 1.2px;
-  margin-top: 14px;
-  color: #a5aa97;
-}
-
-@media (max-width:900px) {
-  .right-column {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 18px;
-  }
-  .your-mix {
-    margin: 0;
-    height: max-content;
-  }
-  .quote {
-    display: none;
-  }
-  .climb .mountain {
-    height: 140px;
-  }
-}
-
-@media (max-width:650px) {
-  .right-column {
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-  .climb, .your-mix {
-    padding: 15px;
-  }
-  .right-column h2 {
-    font-size: 11px;
-  }
-  .right-column p {
-    font-size: 9px;
-  }
-  .your-mix .section-heading button {
-    padding: 0;
-  }
-  .climb-stats strong {
-    font-size: 22px;
-  }
-  .climb>small {
-    font-size: 7px;
-  }
-  .climb .mountain {
-    height: 125px;
-  }
-}
+.right-column { display: flex; flex-direction: column; gap: 16px; }
+.right-column h2 { font-size: 15px; }
+.right-column p { font-size: 12.5px; line-height: 1.6; margin: 6px 0 0; }
 
 .streak-panel {
-  padding: 21px;
-  background: #f1e8cd;
-  border: 1px solid #e1d6b8;
-  border-radius: 9px;
-  margin-bottom: 18px;
+  padding: 20px;
+  background: var(--ink-1);
+  color: var(--on-ink);
+  border-radius: var(--radius);
+  box-shadow: 0 22px 40px -24px rgba(30,20,8,.8);
 }
-.streak-panel h2 {
-  font: 27px var(--font-serif)!important;
-  color: #796335;
-  margin: 14px 0;
+.streak-panel h2 { font-size: 18px; margin: 12px 0 2px; display: flex; align-items: baseline; gap: 10px; }
+.streak-number { font-family: var(--font-mono); font-size: 46px; font-weight: 500; letter-spacing: -.04em; color: var(--brass); line-height: 1; }
+.streak-panel p { color: var(--on-ink-mute); }
+.streak-panel small { display: block; font-family: var(--font-mono); font-size: 10px; color: #77726a; margin-top: 10px; }
+.streak-kindness { border-top: 1px dashed var(--ink-line); padding-top: 12px; margin-top: 12px !important; }
+
+.climb, .your-mix {
+  background: rgba(246,243,236,.72);
+  border: 1px solid var(--paper-line);
+  border-radius: var(--radius);
+  padding: 18px;
+  backdrop-filter: blur(2px);
 }
-.streak-panel small {
-  font-size: 10px;
-  color: #7d735a;
-}
-.streak-panel p {
-  color: #7e765f;
-}
-.streak-kindness {
-  border-top: 1px solid #d8cda9;
-  padding-top: 12px;
-}
-.discover-page .right-column {
-  display: block;
-}
-.discover-page .quote {
-  display: none;
+.right-column .climb > p, .your-mix > p { color: var(--on-paper-mute); }
+.mountain { width: 100%; display: block; margin: 12px 0 4px; background: var(--paper-hi); border-radius: 10px; border: 1px solid var(--paper-line); }
+.mountain .contour { fill: none; stroke: #6c5a44; stroke-width: .7; opacity: .45; }
+.mountain .contour.major { stroke-width: 1.2; opacity: .6; }
+.mountain .route-ahead { fill: none; stroke: var(--on-paper-mute); stroke-width: 1.4; stroke-dasharray: 3 4; opacity: .7; }
+.mountain .route-done { fill: none; stroke: var(--red); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.mountain .summit-flag { fill: var(--red); stroke: var(--on-paper); stroke-width: 1.2; }
+.mountain .map-label { font-family: var(--font-mono); font-size: 7px; letter-spacing: .1em; fill: var(--on-paper-mute); }
+.mountain .climber { fill: var(--red); stroke: var(--paper-hi); stroke-width: 2.5; }
+.mountain .climber-halo { fill: rgba(162,53,50,.18); }
+.climb-stats { display: flex; justify-content: space-between; align-items: center; margin: 10px 0 12px; }
+.climb-stats strong { font-family: var(--font-mono); font-size: 28px; font-weight: 500; letter-spacing: -.03em; }
+.climb-stats small { font-size: 10px; color: var(--on-paper-mute); letter-spacing: .06em; text-transform: uppercase; }
+.climb-stats > span { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase; background: var(--on-paper); color: var(--paper); padding: 5px 9px; border-radius: 99px; }
+.progress-track { height: 5px; background: rgba(58,47,34,.14); border-radius: 9px; overflow: hidden; margin-bottom: 9px; }
+.progress-track span { height: 100%; display: block; background: var(--red); border-radius: 9px; }
+.climb > small { font-family: var(--font-mono); font-size: 10px; color: var(--on-paper-mute); }
+.climb .text-link { border-top: 1px solid var(--paper-line); margin-top: 16px; color: var(--red); }
+.your-mix .section-heading button { color: var(--on-paper-mute); padding: 4px; }
+.your-mix .tags { margin: 14px 0 2px; }
+.your-mix .tags span { color: var(--on-paper); border-color: rgba(58,47,34,.3); background: rgba(255,255,255,.4); opacity: 1; }
+.your-mix .text-link { color: var(--red); }
+.quote { font-family: var(--font-serif); font-style: italic; font-size: 22px; line-height: 1.2; color: var(--on-paper); padding: 8px 6px; }
+.quote em { color: var(--red); }
+.quote span { font-family: var(--font-mono); font-style: normal; display: block; font-size: 9px; letter-spacing: .14em; text-transform: uppercase; margin-top: 14px; color: var(--on-paper-mute); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .mountain .climber, .mountain .climber-halo { transition: cx 1s ease, cy 1s ease; }
+  .mountain .route-done { transition: stroke-dasharray 1s ease; }
 }
 
-@media (max-width:650px) {
-  .discover-page .right-column {
-    display: grid;
-    grid-template-columns: 1fr;
-  }
-  .discover-page .right-column .your-mix {
-    display: none;
-  }
+@media (max-width: 900px) {
+  .right-column { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .quote { display: none; }
 }
-
-.climber {
-  transition: cx 1s ease,cy 1s ease;
-}
-@keyframes climb-draw{from{stroke-dashoffset:400}to{stroke-dashoffset:0}}
-
-@media (prefers-reduced-motion:reduce) {
-  .climber {
-    transition: none;
-  }
+@media (max-width: 650px) {
+  .right-column { grid-template-columns: 1fr; }
+  .discover-page .right-column .your-mix { display: none; }
 }

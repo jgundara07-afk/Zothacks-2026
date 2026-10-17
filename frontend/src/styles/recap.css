@@ -1,9 +1,9 @@
-/* My recap: the colorful Wrapped-style slides. */
+/* My recap: Wrapped-style slides. Each slide is a different "print": charcoal, red, brass, paper map. */
 
 .wrapped {
   background: var(--recap-purple);
-  color: #f6f1ff;
-  border-radius: 14px;
+  color: var(--on-ink);
+  border-radius: 18px;
   min-height: 620px;
   padding: 30px;
   position: relative;
@@ -11,113 +11,58 @@
   isolation: isolate;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 30px 60px -30px rgba(30,20,8,.9);
 }
-.wrapped:before {
-  content: '✳';
+.wrapped::before { /* big halftone sun */
+  content: '';
   position: absolute;
-  right: -100px;
-  top: 120px;
-  font-size: 420px;
-  color: #f2ffab22;
   z-index: -1;
-  transform: rotate(17deg);
+  right: -140px;
+  top: 60px;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  background-image: radial-gradient(circle, currentColor 1.6px, transparent 2.2px);
+  background-size: 11px 11px;
+  -webkit-mask-image: radial-gradient(circle, #000 20%, transparent 70%);
+  mask-image: radial-gradient(circle, #000 20%, transparent 70%);
+  opacity: .22;
 }
-.wrapped.orange {
-  background: var(--recap-orange);
-  color: #3e254b;
+.wrapped::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: var(--scanlines), var(--grain);
+  background-size: auto, 180px;
+  mix-blend-mode: overlay;
+  opacity: .5;
+  pointer-events: none;
 }
-.wrapped.lime {
-  background: var(--recap-lime);
-  color: #354634;
-}
-.wrapped.pink {
-  background: var(--recap-pink);
-  color: #56355b;
-}
-.wrapped .eyebrow {
-  color: inherit;
-  letter-spacing: 2px;
-  font-size: 10px;
-}
-.wrapped h2 {
-  font: bold 42px/1.1 var(--font-serif);
-  margin: 26px 0;
-  max-width: 440px;
-  letter-spacing: -1.5px;
-}
-.recap-big {
-  font-size: 90px;
-  font-weight: 800;
-  letter-spacing: -5px;
-  line-height: 1.1;
-  overflow-wrap: anywhere;
-  margin: 35px 0;
-}
-.recap-big small {
-  display: block;
-  font-size: 15px;
-  font-weight: 400;
-  letter-spacing: 0;
-  margin-top: 14px;
-}
-.wrapped>p {
-  font-size: 13px;
-  line-height: 1.8;
-  max-width: 370px;
-}
-.recap-dots {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 30px;
-}
-.recap-dots button {
-  height: 6px;
-  flex: 1;
-  background: currentColor;
-  opacity: .3;
-  border-radius: 4px;
-  padding: 0;
-}
-.recap-dots button[aria-current] {
-  opacity: 1;
-}
-.recap-navigation {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: auto;
-  padding-top: 30px;
-  gap: 10px;
-}
-.recap-navigation button {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: #ffffff30;
-  padding: 12px;
-  border-radius: 6px;
-  font-size: 12px;
-}
-.recap-method {
-  font-size: 8px;
-  line-height: 1.6;
-  opacity: .8;
-  margin-top: 20px;
-}
+.wrapped.orange { background: var(--recap-orange); color: #fff4ef; }
+.wrapped.lime { background: var(--recap-lime); color: #1d1a16; }
+.wrapped.pink { background: var(--recap-pink) url(../assets/world-topo.svg) center / 900px; color: var(--on-paper); }
+.wrapped.pink .recap-big { color: var(--red); }
+.wrapped .eyebrow { color: inherit; opacity: .8; font-size: 10.5px; }
+.wrapped h2 { font-size: 46px; line-height: .98; letter-spacing: -.05em; margin: 26px 0; max-width: 460px; }
+.recap-big { font-family: var(--font-mono); font-size: 104px; font-weight: 500; letter-spacing: -.06em; line-height: 1; overflow-wrap: anywhere; margin: 30px 0; }
+.recap-big small { display: block; font-size: 12px; font-weight: 400; letter-spacing: .14em; text-transform: uppercase; margin-top: 16px; opacity: .85; }
+.wrapped > p { font-size: 15px; line-height: 1.6; max-width: 380px; }
+.recap-dots { display: flex; gap: 6px; margin-bottom: 30px; }
+.recap-dots button { height: 4px; flex: 1; background: currentColor; opacity: .25; border-radius: 4px; }
+.recap-dots button[aria-current] { opacity: 1; }
+.recap-navigation { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 30px; gap: 10px; }
+.recap-navigation button { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.2); padding: 12px 16px; border-radius: 11px; font-size: 13px; font-weight: 500; }
+.wrapped.lime .recap-navigation button, .wrapped.pink .recap-navigation button { background: rgba(29,26,22,.08); border-color: rgba(29,26,22,.2); }
+.recap-method { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: .06em; line-height: 1.6; opacity: .75; margin-top: 18px; }
 
-@media (max-width:650px) {
-  .wrapped {
-    padding: 24px;
-    min-height: 590px;
-  }
-  .wrapped h2 {
-    font-size: 36px;
-  }
-  .recap-big {
-    font-size: 65px;
-    letter-spacing: -3px;
-  }
-  .recap-big small {
-    font-size: 13px;
-  }
+@media (prefers-reduced-motion: no-preference) {
+  .recap-big { animation: develop .6s ease-out; }
+}
+@keyframes develop { from { opacity: 0; filter: blur(8px); transform: translateY(8px); } to { opacity: 1; filter: none; transform: none; } }
+
+@media (max-width: 650px) {
+  .wrapped { padding: 22px; min-height: 580px; }
+  .wrapped h2 { font-size: 36px; }
+  .recap-big { font-size: 68px; }
 }

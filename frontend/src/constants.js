@@ -20,6 +20,15 @@ export const GOAL_FILTERS=['Any goal',...GOALS];
 export const SKILL_FILTERS=['Any skill','Coding','Design','Research','Writing'];
 export const DEFAULT_FILTERS={topic:'All opportunities',difficulty:'Any',source:'All sources',mode:'Anywhere',goal:'Any goal',skill:'Any skill',gapSkills:[]};
 
+// Hero photos by opportunity id, served from frontend/public/photos/. Use original or properly licensed images only.
+// Example: code:{src:'/photos/code.jpg',bw:true,credit:'Name / StockSnap (CC0)'}. bw:true renders it black and white.
+// Quests without a photo show tinted halftone terrain instead.
+export const OPPORTUNITY_PHOTOS={};
+
+// The ghosted photo behind onboarding: StockSnap VQRELAZLLZ "Fog Mountains" (CC0), plus a halftone made from it.
+export const OPENING_PHOTO='/photos/opening-mist.jpg';
+export const OPENING_HALFTONE='/photos/opening-halftone.png';
+
 // Card icons by opportunity id; anything not listed gets a sparkle.
 export const OPPORTUNITY_ICONS={design:Pencil,code:Code2,green:Leaf,story:Feather};
 export const DEFAULT_ICON=Sparkles;

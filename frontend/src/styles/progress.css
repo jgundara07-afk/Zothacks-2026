@@ -1,155 +1,52 @@
-/* My progress: trail stats, completed-quest list, analytics chart and breakdowns. */
+/* My progress (on paper): trail stats, the logbook of completed quests, analytics chart and breakdowns. */
 
-.progress-panel {
-  border: 1px solid #e1e4d7;
-  background: #f3f3e9;
-  border-radius: 8px;
-  padding: 25px;
+.progress-panel, .analytics-panel {
+  background: rgba(246,243,236,.78);
+  border: 1px solid var(--paper-line);
+  border-radius: 16px;
+  padding: 24px;
 }
-.stats {
-  display: flex;
-  justify-content: space-around;
-  padding: 35px 0;
-  border-bottom: 1px solid #dde2d1;
-  margin-bottom: 25px;
-}
-.stats strong {
-  display: block;
-  font: 36px var(--font-serif);
-  color: #658151;
-}
-.stats span {
-  display: block;
-  font-size: 10px;
-  color: #89977c;
-  margin-top: 8px;
-}
-.progress-panel>h3 {
-  font-size: 13px;
-  font-weight: 500;
-}
-.activity {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 17px 0;
-  border-bottom: 1px solid #e1e5d9;
-}
-.tick {
-  background: #e0e8d5;
-  border-radius: 50%;
-  padding: 7px;
-}
-.activity strong {
-  font-size: 12px;
-}
-.activity small {
-  display: block;
-  font-size: 9px;
-  color: #8c9981;
-  margin-top: 6px;
-}
-.activity b {
-  margin-left: auto;
-  color: #759260;
-  font-size: 13px;
-}
+.progress-panel .section-heading h2, .analytics-panel .section-heading h2 { font-size: 22px; letter-spacing: -.04em; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); padding: 26px 0; border-bottom: 1px dashed var(--paper-line); margin-bottom: 20px; }
+.stats > div { padding-left: 16px; border-left: 1px solid var(--paper-line); }
+.stats > div:first-child { border-left: 0; padding-left: 0; }
+.stats strong { display: block; font-family: var(--font-mono); font-size: 40px; font-weight: 500; letter-spacing: -.05em; color: var(--red); }
+.stats span { display: block; font-family: var(--font-mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--on-paper-mute); margin-top: 6px; }
+.progress-panel > h3, .analytics-panel h3 { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; font-weight: 500; color: var(--on-paper-mute); }
+.activity { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--paper-line); }
+.tick { background: var(--red); color: #fff; border-radius: 50%; width: 32px; height: 32px; display: grid; place-items: center; flex-shrink: 0; }
+.activity strong { font-size: 15px; font-weight: 500; letter-spacing: -.02em; }
+.activity small { display: block; font-family: var(--font-mono); font-size: 10px; color: var(--on-paper-mute); margin-top: 5px; }
+.activity b { margin-left: auto; font-family: var(--font-mono); font-weight: 500; color: var(--red); font-size: 14px; }
 
-@media (max-width:650px) {
-  .stats {
-    gap: 10px;
-  }
-  .stats span {
-    font-size: 8px;
-  }
-}
-
-.analytics-panel {
-  margin-top: 23px;
-}
-.analytics-stats {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  margin: 28px 0;
-}
-.analytics-stats strong {
-  display: block;
-  font: 36px var(--font-serif);
-  color: #66894d;
-}
-.analytics-stats span {
-  display: block;
-  font-size: 10px;
-  margin-top: 8px;
-  color: #78896b;
-}
-.analytics-panel h3 {
-  font-size: 13px;
-}
-.week-chart {
-  height: 180px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-around;
-  gap: 10px;
-  padding: 15px 10px 0;
-  border-bottom: 1px solid #d6dfca;
-  margin-bottom: 25px;
-}
-.week-chart>div {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-}
+.analytics-panel { margin-top: 20px; }
+.analytics-panel > p { font-size: 13px; color: var(--on-paper-mute); }
+.analytics-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 22px 0 24px; }
+.analytics-stats > div { background: var(--ink-1); color: var(--on-ink); border-radius: 12px; padding: 16px; }
+.analytics-stats strong { display: block; font-family: var(--font-mono); font-size: 32px; font-weight: 500; letter-spacing: -.04em; color: var(--brass); }
+.analytics-stats span { display: block; font-family: var(--font-mono); font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase; margin-top: 6px; color: var(--on-ink-mute); }
+.week-chart { height: 180px; display: flex; align-items: flex-end; justify-content: space-around; gap: 10px; padding: 14px 6px 0; border-bottom: 1px solid rgba(58,47,34,.3); margin-bottom: 24px; }
+.week-chart > div { display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%; }
 .week-chart .bar-track {
   height: 110px;
-  width: 65%;
-  background: #e5eadb;
+  width: 62%;
+  background: repeating-linear-gradient(to top, rgba(58,47,34,.12) 0 1px, transparent 1px 10px);
   display: flex;
   align-items: flex-end;
-  border-radius: 5px 5px 0 0;
+  border-radius: 6px 6px 0 0;
   overflow: hidden;
 }
-.bar-track>span {
-  display: block;
-  min-height: 0;
-  width: 100%;
-  background: #8d9c75;
-}
-.bar-value {
-  font-size: 10px;
-  margin-bottom: 7px;
-  color: #6f805f;
-}
-.week-chart small {
-  font-size: 9px;
-  margin: 10px 0;
-}
-.breakdown {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 10px 0;
-  border-bottom: 1px solid #d9e1ce;
-  font-size: 11px;
-}
-.breakdown b {
-  color: #819865;
-}
-.breakdown-grid p {
-  font-size: 11px;
-  line-height: 1.7;
-  color: #87967a;
-}
+.bar-track > span { display: block; min-height: 0; width: 100%; background: var(--red); border-radius: 6px 6px 0 0; }
+.bar-value { font-family: var(--font-mono); font-size: 10px; margin-bottom: 7px; color: var(--on-paper-mute); }
+.week-chart small { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: .08em; text-transform: uppercase; margin: 10px 0; color: var(--on-paper-mute); }
+.breakdown { display: flex; justify-content: space-between; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--paper-line); font-size: 13px; }
+.breakdown b { font-family: var(--font-mono); font-weight: 500; color: var(--red); }
+.breakdown-grid p { font-size: 12px; line-height: 1.7; color: var(--on-paper-mute); }
 
-@media (max-width:650px) {
-  .analytics-stats strong {
-    font-size: 29px;
-  }
-  .analytics-stats span {
-    font-size: 8px;
-  }
+@media (max-width: 650px) {
+  .progress-panel, .analytics-panel { padding: 18px; }
+  .stats strong { font-size: 30px; }
+  .stats span, .analytics-stats span { font-size: 8.5px; }
+  .analytics-stats strong { font-size: 24px; }
+  .analytics-stats > div { padding: 12px; }
 }

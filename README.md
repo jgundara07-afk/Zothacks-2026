@@ -50,6 +50,10 @@ frontend/src/
   hooks/ utils/       Popup focus handling; feed filtering helpers
   styles/             index.css imports the rest in order. tokens.css holds shared fonts and colors;
                       the other files match the areas of the app (layout, feed, modals, recap, ...)
+frontend/public/photos/
+                      Hero and opening photos (original or properly licensed only). opening-mist.jpg is
+                      StockSnap VQRELAZLLZ "Fog Mountains" (CC0); opening-halftone.png is made from it.
+frontend/src/assets/  world-topo.svg: original generated topographic texture
 design/
   references/         Visual references for the frontend, with notes in design/notes.md
 docs/API.md           Request/response contract

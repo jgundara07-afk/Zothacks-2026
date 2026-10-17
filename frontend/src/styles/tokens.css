@@ -1,18 +1,48 @@
-/* Design tokens: the shared fonts and key colors. Change a value here and it updates everywhere it's used.
-   Most other colors in the stylesheets are one-off tints; promote one to a token here once it's reused. */
+/* Design tokens: shared fonts, colors and textures. Change a value here and it updates everywhere.
+   Direction: a charcoal frame (the instrument) around warm paper surfaces (your world), one burnt-red accent,
+   analog grain on photographs. See design/ONBOARDING_FLOW.md and CLAUDE.md "Design and interaction". */
 
 :root {
-  --font-serif: Georgia,'Times New Roman',serif;  /* headlines, sticky notes, big numbers */
-  --font-sans: Arial,Helvetica,sans-serif;        /* body text and controls */
+  --font-sans: 'Space Grotesk', Arial, Helvetica, sans-serif;      /* headlines, body, controls */
+  --font-serif: 'Instrument Serif', Georgia, 'Times New Roman', serif; /* one italic accent word per headline */
+  --font-mono: 'JetBrains Mono', ui-monospace, Consolas, monospace;  /* labels, metadata, numbers */
 
-  --color-ink: #303c30;      /* default text */
-  --color-page: #f8f7f1;     /* page background */
-  --color-primary: #465c3d;  /* main buttons, selected pills */
-  --color-focus: #b46c43;    /* keyboard focus outline */
+  /* the frame */
+  --ink-0: #0f0f0e;   /* page */
+  --ink-1: #171614;   /* raised panels on the frame */
+  --ink-2: #211f1c;   /* keys, inputs on the frame */
+  --ink-line: #2c2925;
+  --on-ink: #ece7dc;      /* text on the frame */
+  --on-ink-mute: #a9a49b; /* secondary text on the frame */
 
-  /* My recap slide backgrounds */
-  --recap-purple: #6548e9;
-  --recap-orange: #f67943;
-  --recap-lime: #d1ef62;
-  --recap-pink: #f0a8ce;
+  /* your world */
+  --paper: #eae5da;
+  --paper-2: #e1dacb;     /* sunken areas on paper */
+  --paper-hi: #f6f3ec;    /* raised cards on paper */
+  --paper-line: rgba(58, 47, 34, .18);
+  --on-paper: #1d1a16;
+  --on-paper-mute: #6c6458;
+
+  --red: #a23532;         /* the one accent: actions, progress, the route */
+  --red-hi: #c0443f;
+  --red-soft: rgba(162, 53, 50, .1);
+  --brass: #c79b4a;       /* rewards only */
+
+  --radius: 14px;
+  --color-focus: #d8574f;
+
+  /* Kept for older selectors */
+  --color-ink: var(--on-paper);
+  --color-page: var(--ink-0);
+  --color-primary: var(--red);
+
+  /* film grain, used by .grain overlays */
+  --grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  --scanlines: repeating-linear-gradient(to bottom, rgba(0,0,0,0) 0 2px, rgba(0,0,0,.16) 2px 3px);
+
+  /* My recap slides */
+  --recap-purple: var(--ink-1);
+  --recap-orange: var(--red);
+  --recap-lime: var(--brass);
+  --recap-pink: var(--paper);
 }
