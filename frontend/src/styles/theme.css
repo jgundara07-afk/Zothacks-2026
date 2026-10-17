@@ -196,6 +196,8 @@ select { background: var(--paper-hi); border: 1px solid rgba(36,24,13,.3); color
 .recap-big { font-family: var(--font-title); font-weight: 900; letter-spacing: 0; transform: scaleX(.72); transform-origin: left; }
 .recap-big small { font-family: var(--font-serif); text-transform: uppercase; letter-spacing: .2em; font-size: 12px; font-weight: 600; transform: scaleX(1.39); transform-origin: left; }
 .wrapped > p, .wrapped .eyebrow { font-family: var(--font-serif); }
+.wrapped .recap-story { max-width: 38ch; margin: -10px 0 12px; font-size: 19px; line-height: 1.45; font-style: italic; }
+.recap-ai-label { margin-top: 3px; font-family: var(--font-serif); font-size: 11px; letter-spacing: .13em; text-transform: uppercase; opacity: .75; }
 .wrapped .eyebrow { color: inherit !important; opacity: .85; }
 .recap-dots button { height: 3px; }
 .recap-navigation button { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.22); border-radius: 3px; font-family: var(--font-serif); font-size: 14px; letter-spacing: .1em; text-transform: uppercase; }

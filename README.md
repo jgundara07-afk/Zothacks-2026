@@ -29,7 +29,7 @@ npm install
 npm run dev
 ```
 
-Open http://127.0.0.1:5173. Vite proxies `/api` to Flask on port 5001. Sign in to the demo, choose preferences or skip, and browse the cached catalog. Initial catalog decoding takes a few seconds. Browsing requires no API credentials or upstream network access; following source links and browser location may require network access. Optionally set `GEMINI_API_KEY` in the ignored root `.env` to show a short Gemini-generated self-guided suggestion when no current catalog opportunity matches the selected interests/goals. The suggestion is requested only on the first feed page for a no-match state; if Gemini is unavailable, the normal neutral fallback still works.
+Open http://127.0.0.1:5173. Vite proxies `/api` to Flask on port 5001. Sign in to the demo, choose preferences or skip, and browse the cached catalog. Initial catalog decoding takes a few seconds. Browsing requires no API credentials or upstream network access; following source links and browser location may require network access. Optionally set `GEMINI_API_KEY` in the ignored root `.env` to show a short Gemini-generated self-guided suggestion when no current catalog opportunity matches the selected interests/goals, and to generate the activity-based Wrapped recap. Recap prompts contain recorded completion summaries and recent completed quest details; profile fields and location are not sent. A local recap appears when Gemini is unavailable or the user has no completed quests.
 
 On macOS/Linux use `.venv/bin/python`, `cp`, and normal shell syntax. Keep existing `.env` credentials when updating the project.
 

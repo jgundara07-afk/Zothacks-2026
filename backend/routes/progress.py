@@ -7,9 +7,11 @@ import re
 from pypdf import PdfReader
 try:
     from . import body
+    from ..gemini_recommendation import generate_recap_narrative
     from ..preferences import PREFERENCES
 except ImportError:
     from routes import body
+    from gemini_recommendation import generate_recap_narrative
     from preferences import PREFERENCES
 
 def register(app, svc):
@@ -104,6 +106,65 @@ def register(app, svc):
     @app.get('/analytics')
     def analytics():
         return jsonify(analytics_payload(request.args.get('period'), request.args.get('date')))
+
+    @app.post('/recap/narrative')
+    def recap_narrative():
+        summary = analytics_payload()
+        completed = sorted(activity('completion'), key=lambda item: item.get('completed_at', ''), reverse=True)
+        recent = [{
+            'title': str(item.get('title') or 'Completed quest')[:180],
+            'category': str(item.get('category') or 'Other')[:80],
+            'skills': [str(skill)[:80] for skill in item.get('skills', [])[:8]],
+            'difficulty': str(item.get('difficulty') or 'Unknown')[:40],
+        } for item in completed[:30]]
+        context = {
+            'completed_count': summary['completed_count'],
+            'estimated_minutes': summary['estimated_minutes'],
+            'points': summary['points'],
+            'active_days': summary['active_days'],
+            'best_streak': summary['progress']['longest_streak'],
+            'category_counts': summary['categories'],
+            'skill_counts': summary['skills'],
+            'difficulty_counts': summary['difficulties'],
+            'recent_completed_quests': recent,
+        }
+        narrative = generate_recap_narrative(context) if completed else None
+        source = 'gemini' if narrative else 'local'
+        if not narrative:
+            categories = summary['categories']
+            skills = summary['skills']
+            category, count = Counter(categories).most_common(1)[0] if categories else (None, 0)
+            skill, skill_count = Counter(skills).most_common(1)[0] if skills else (None, 0)
+            archetypes = {
+                'General task': 'The Small-Step Strategist',
+                'Online course': 'The Skill Collector',
+                'Certification': 'The Skill Collector',
+                'Class': 'The Curious Scholar',
+                'Internship': 'The Career Pathfinder',
+                'Job simulation': 'The Career Pathfinder',
+                'Networking': 'The Connector',
+                'Club': 'The Community Builder',
+                'Park': 'The Trailblazer',
+            }
+            if not completed:
+                narrative = {
+                    'archetype': 'The First-Step Scout',
+                    'evidence': 'Your recap is ready for your first completed quest.',
+                    'description': 'Your OneThing story is just getting started. One small step will give the next recap its first chapter.',
+                    'quest_line': 'The opening track is still yours to choose.',
+                    'onething_line': 'No points yet, and all the possibility in front of you.',
+                    'next_step': 'Pick one short quest and take its first step.',
+                }
+            else:
+                narrative = {
+                    'archetype': archetypes.get(category, 'The OneThing Climber'),
+                    'evidence': f'{count} completed {category} quests' + (f' · {skill} appeared {skill_count} times' if skill else ''),
+                    'description': f'Your completed work leaned toward {category}. You kept turning a little time into visible progress, one quest at a time.',
+                    'quest_line': f'“{recent[0]["title"]}” made the highlight reel. Your quest list has range.',
+                    'onething_line': f'{summary["completed_count"]} completed steps and {summary["points"]} points: proof that small things add up.',
+                    'next_step': 'Choose one manageable quest that builds on your most-practiced skill.' if skill else 'Choose one manageable quest to start your next chapter.',
+                }
+        return jsonify(narrative=narrative, source=source, activity_count=len(completed))
 
     @app.get('/progress/data')
     def progress_data():
