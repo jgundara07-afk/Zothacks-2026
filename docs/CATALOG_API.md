@@ -21,7 +21,7 @@ These read-only routes expose `backend/catalog/opportunities.json.gz`, also used
 | `include_past` | `false` by default; `true` includes historical events. |
 | `offset`, `limit` | Offset defaults to 0; page size defaults to 20 and is limited to 1–100. |
 
-Every selected interest, goal and skill must match (**AND**); broad fallback topics are not supported matches. Difficulty/time/metadata selections remain alternatives within their groups. Groups are combined with AND, and Near me always requires the radius constraint even alongside another venue choice. Goal relevance is inferred; choosing a goal does not promise that an opportunity achieves it. Some records have no defensible match to any of the ten goals and keep `goals: []` rather than inventing relevance.
+Any selected interest, goal or skill can match within its group (**OR**); broad fallback topics are not supported matches. Difficulty/time/metadata selections remain alternatives within their groups. Groups are combined with AND, and Near me always requires the radius constraint even alongside another venue choice. Goal relevance is inferred; choosing a goal does not promise that an opportunity achieves it. Some records have no defensible match to any of the ten goals and keep `goals: []` rather than inventing relevance.
 
 Response: `opportunities`, `total`, `offset`, `limit`, `scope`, and `facets`. Each card includes `match` identifying the time/challenge/commitment scope actually used and, when calculable, distance in kilometers. Facets count matching records, rather than the entire unfiltered catalog. Labels are exact; read them from the options route rather than retyping punctuation.
 

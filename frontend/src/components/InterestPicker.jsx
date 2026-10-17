@@ -5,7 +5,7 @@ import options from '../../../shared/preferences.json';
 import {scenePhoto,INTEREST_SCENES} from '../utils/photos';
 import {Check} from 'lucide-react';
 
-export default function InterestPicker({value,onChange,images=false,label='Interests',help='Choose up to ten. Every selected interest must match.'}){
+export default function InterestPicker({value,onChange,images=false,label='Interests',help='Choose up to ten. Match any selected interest.'}){
  const [query,setQuery]=useState(''),[category,setCategory]=useState('All categories'),[limit,setLimit]=useState(60);
  const id=useId(),choices=searchInterests(interestCatalog.groups,query,category);
  const max=options.max_selected_interests;

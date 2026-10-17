@@ -9,8 +9,10 @@ from pathlib import Path
 from datetime import datetime, timezone
 try:
     from .filter_rules import supported_interests, validate_extra, matches_extra
+    from .ranking import rank_records
 except ImportError:
     from filter_rules import supported_interests, validate_extra, matches_extra
+    from ranking import rank_records
 
 CATALOG_DIRECTORY = Path(__file__).resolve().parent / "catalog"
 
@@ -90,11 +92,11 @@ class CatalogReader:
             if terms and not all(term in self.search_text[row["id"]] for term in terms):
                 continue
             p = row["personalization"]
-            if interests and not set(interests).issubset(supported_interests(p)):
+            if interests and not set(interests).intersection(supported_interests(p)):
                 continue
-            if goals and not set(goals).issubset(p["goals"]):
+            if goals and not set(goals).intersection(p["goals"]):
                 continue
-            if skills and not set(skills).issubset(row.get("skills", [])):
+            if skills and not set(skills).intersection(row.get("skills", [])):
                 continue
             if not matches_extra(row, extra, scope):
                 continue
@@ -126,9 +128,15 @@ class CatalogReader:
             facets["time_buckets"].update(times)
             facets["location_preferences"].update(resolved_locations)
             matches.append((row, km, challenges, times, selected_commitment))
+        by_id = {entry[0]['id']:entry for entry in matches}
+        ranked = rank_records([entry[0] for entry in matches], lambda row:
+                    len(set(interests).intersection(supported_interests(row['personalization'])))
+                    + len(set(goals).intersection(row['personalization']['goals']))
+                    + len(set(skills).intersection(row.get('skills', []))))
         page = []
-        for row, km, challenges, times, selected_commitment in matches[offset:offset + limit]:
-            page.append({**row, "match": {"scope": scope, "challenge_levels": challenges,
+        for row,base,bonus in ranked[offset:offset + limit]:
+            row, km, challenges, times, selected_commitment = by_id[row['id']]
+            page.append({**row, "ranking": {"relevance_score":base,"uniqueness_bonus":round(bonus,4)}, "match": {"scope": scope, "challenge_levels": challenges,
                         "time_buckets": times, "commitment": selected_commitment,
                         "distance_km": round(km, 2) if km is not None else None}})
         return {"opportunities": page, "total": len(matches), "offset": offset, "limit": limit,

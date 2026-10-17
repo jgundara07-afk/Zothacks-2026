@@ -144,11 +144,11 @@ export default function Onboarding({data,busy,error,hasProfile,interests,setInte
    <span className="ob-chapter">Your first quest</span>
    <Title><span ref={heading} tabIndex={-1}>Start <em>here.</em></span></Title>
    {topPick?<article className="ob-reveal-card">
-    <span className="ob-card-kicker">{data?.data_mode==='catalog'?'From the catalog':'Sample'} · {topPick.kind}{topPick.mode?` · ${topPick.mode}`:''}</span>
+    <span className="ob-card-kicker">{topPick.recommendation_type==='neutral'?'Neutral suggestion':data?.data_mode==='catalog'?'From the catalog':'Sample'} · {topPick.kind}{topPick.mode?` · ${topPick.mode}`:''}</span>
     <h2 className="eva">{topPick.title}</h2>
-    <p className="ob-why">{topPick.matching_tags?.length?`Because you chose ${topPick.matching_tags.slice(0,2).join(' and ')}.`:'A new direction worth a look.'}</p>
+    <p className="ob-why">{topPick.recommendation_type==='neutral'?'No current match for your interests and goals. This wellbeing alternative fits your other preferences.':topPick.matching_tags?.length?`Because you chose ${topPick.matching_tags.slice(0,2).join(' and ')}.`:'A new direction worth a look.'}</p>
     {topQuest&&<div className="ob-first-step"><span>First step · {topQuest.minutes||topPick.minutes} min</span><strong>{topQuest.title}</strong></div>}
-   </article>:<div className="ob-empty"><p className="ob-why">Your exact mix is rare. Nothing in the catalog matches every choice at once.</p><p className="ob-note">Widen the search to start from your first interest, or change your answers.</p></div>}
+   </article>:<div className="ob-empty"><p className="ob-why">No current matches or neutral alternatives fit your remaining preferences.</p><p className="ob-note">Widen the search to start from your first interest, or change your answers.</p></div>}
   </main>
   <footer className="ob-foot">{topPick?<button className="primary wide" onClick={onEnter}>Explore the feed<ArrowRight size={18}/></button>:<><button className="primary wide" disabled={busy} onClick={onWiden}>Widen my search<ArrowRight size={18}/></button><button className="ob-text" onClick={()=>setStep(3)}>Change my answers</button></>}</footer>
  </div>;

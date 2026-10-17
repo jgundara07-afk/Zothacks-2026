@@ -5,10 +5,14 @@ try:
     from .program_catalog import program_catalog, preparation_quests, available, distance_km
     from .preferences import PREFERENCES
     from .filter_rules import supported_interests, validate_extra, matches_extra
+    from .ranking import rank_records
+    from .neutral import is_neutral, fallback_info
 except ImportError:
     from program_catalog import program_catalog, preparation_quests, available, distance_km
     from preferences import PREFERENCES
     from filter_rules import supported_interests, validate_extra, matches_extra
+    from ranking import rank_records
+    from neutral import is_neutral, fallback_info
 
 DAY_ZONE = ZoneInfo("America/Los_Angeles")
 
@@ -66,7 +70,7 @@ class OneThing:
         done = self.activity('completion')
         return [{**q, 'completed': any(a['quest_id'] == q['id'] and (not q.get('daily') or self.completion_day(a) == self.today()) for a in done)} for q in quests]
     def feed_page(self, filters, offset, limit):
-        """Filter before pagination; require every interest, goal and skill."""
+        """Match any choice within each group; rank relevance before a small diversity boost."""
         for field in ('interests', 'goals'):
             maximum = PREFERENCES['max_selected_interests'] if field == 'interests' else PREFERENCES['max_selected_goals']
             if len(set(filters.get(field, []))) > maximum:
@@ -97,17 +101,19 @@ class OneThing:
             raise ValueError('Provide valid latitude, longitude and radius (0–500 km)')
         if 'Near me' in filters.get('locations', []) and lat is None:
             raise ValueError('Near me requires your location. Allow location access or choose another location filter.')
-        matches = defaultdict(lambda: defaultdict(deque))
+        matches = {}
+        neutral = {}
         profile = self.profile() or {}
-        tags = set(profile.get('interests', []) + profile.get('skills', []))
+        interest_tags = set(filters.get('interests') or profile.get('interests', []))
+        skill_tags = set(filters.get('skills') or profile.get('skills', []))
+        goal_tags = set(filters.get('goals') or profile.get('goals', []))
         default_effort = (self.checkin() or {}).get('effort', 'small')
         for o in self.catalog.values():
             if not available(o, self.real_clock()): continue
             p = o['personalization']
             if filters.get('challenges') and not set(filters['challenges']).intersection(p['challenge_levels']): continue
             if filters.get('time') and not set(filters['time']).intersection(p['time_buckets']): continue
-            if filters.get('interests') and not set(filters['interests']).issubset(supported_interests(p)): continue
-            if any(filters.get(key) and not set(filters[key]).issubset(o[field]) for key,field in [('goals','career_goals'),('skills','skills')]): continue
+            if filters.get('skills') and not set(filters['skills']).intersection(o['skills']): continue
             if not matches_extra(o, filters): continue
             if filters.get('kind') and o['kind'] not in filters['kind']: continue
             if filters.get('source') and o['source'] not in filters['source']: continue
@@ -123,17 +129,25 @@ class OneThing:
                 if filters.get('step_size','Any') == 'Any' or q['size'] == filters['step_size']]
             if not candidates: continue
             chosen = min(candidates, key=lambda q:(q['effort'] != default_effort,q['minutes']))
-            score = len(tags.intersection(o['topics'] + o['skills']))
-            matches[score][o['kind']].append((o,chosen,venues))
-        mixed = []
-        for score in sorted(matches, reverse=True):
-            groups = matches[score]
-            while any(groups.values()):
-                for group in groups.values():
-                    if group: mixed.append(group.popleft())
+            if is_neutral(o): neutral[o['id']] = (o,chosen,venues)
+            if filters.get('interests') and not set(filters['interests']).intersection(supported_interests(p)): continue
+            if filters.get('goals') and not set(filters['goals']).intersection(o['career_goals']): continue
+            matches[o['id']] = (o,chosen,venues)
+        using_fallback = bool(not matches and neutral and (filters.get('interests') or filters.get('goals')))
+        if using_fallback: matches = neutral
+        def relevance(o):
+            if using_fallback: return 0
+            return (len(interest_tags.intersection(supported_interests(o['personalization'])))
+                    + len(skill_tags.intersection(o['skills']))
+                    + len(goal_tags.intersection(o['career_goals'])))
+        ranked = rank_records([entry[0] for entry in matches.values()], relevance)
+        mixed = [matches[o['id']] for o,_,_ in ranked]
+        ranking = {o['id']:dict(relevance_score=base, uniqueness_bonus=round(bonus,4)) for o,base,bonus in ranked}
         page = mixed[offset:offset+limit]
-        cards = self.decorate([{**o, 'venues':venues, 'minutes':q['minutes'], 'suggested_quest_id':q['id'], 'preparation_difficulty':q['difficulty'], 'size':q['size'], 'effort':q['effort']} for o,q,venues in page])
-        return dict(opportunities=cards, quests=self.mark_quests(self.quests_for(cards)), total=len(mixed), offset=offset, limit=limit, has_more=offset+limit<len(mixed), data_mode='catalog', kinds=sorted({o['kind'] for o in self.catalog.values()}))
+        cards = self.decorate([{**o, 'recommendation_type':'neutral' if using_fallback else 'matched', 'ranking':ranking[o['id']], 'venues':venues, 'minutes':q['minutes'], 'suggested_quest_id':q['id'], 'preparation_difficulty':q['difficulty'], 'size':q['size'], 'effort':q['effort']} for o,q,venues in page])
+        if using_fallback:
+            cards = [{**o,'matching_tags':[]} for o in cards]
+        return dict(opportunities=cards, quests=self.mark_quests(self.quests_for(cards)), total=len(mixed), offset=offset, limit=limit, has_more=offset+limit<len(mixed), data_mode='catalog', fallback=fallback_info(using_fallback,filters), kinds=sorted({o['kind'] for o in self.catalog.values()}))
     def today(self):
         return self.clock().astimezone(DAY_ZONE).date()
     def profile(self):

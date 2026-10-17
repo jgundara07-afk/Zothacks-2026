@@ -818,7 +818,7 @@
     "explicitly_reviewed_records": 11,
     "method": "Assistant-authored evidence rubric plus individually reviewed exceptions; counts are not forced into equal difficulty bins",
     "time_filter_policy": "Upper duration bound; unknown total cannot match max_minutes",
-    "strict_topic_policy": "All selected supported interests/goals/skills required; broad fallback topics excluded from interest matches"
+    "strict_topic_policy": "Any selected supported interest/goal/skill within its group; AND across groups; broad fallback topics excluded from interest matches"
   },
   "records_without_supported_checklist_goals": 1267,
   "coordinate_records": 294,

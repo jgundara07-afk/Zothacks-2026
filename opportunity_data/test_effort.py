@@ -45,13 +45,13 @@ class EffortTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             reader.query(max_minutes=float('nan'))
 
-    def test_strict_groups_unknown_filters_and_fallback_topics(self):
+    def test_relaxed_groups_unknown_filters_and_fallback_topics(self):
         fallback = example(source_id='other', title='General learning', description='Explore a subject.')
         course = example(workload='1 hour')
         reader = CatalogReader([fallback, course], TAXONOMY)
         self.assertEqual(reader.query(interests=['Productivity & Personal Growth'])['total'], 0)
         self.assertEqual(reader.query(skills=['Coding', 'Data analysis'])['total'], 1)
-        self.assertEqual(reader.query(goals=['Learn a new technical skill', 'Develop leadership experience'])['total'], 0)
+        self.assertEqual(reader.query(goals=['Learn a new technical skill', 'Develop leadership experience'])['total'], 1)
         for options in ({'experience':['Impossible']}, {'cost':['Cheap']}, {'skills':['Magic']}, {'source':'imaginary'}):
             with self.assertRaises(ValueError):
                 reader.query(**options)

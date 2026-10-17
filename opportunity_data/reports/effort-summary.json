@@ -89,6 +89,6 @@
     "Every published record has an explained difficulty and metadata assessment. Assignments use an assistant-authored per-record evidence rubric; this is not individual manual review of all records.",
     "Difficulty counts are not forced into equal bins at the expense of credible ratings.",
     "Source workloads are parsed where supported. Missing workload remains an explicitly estimated range or unknown total; actual personal completion time is not guaranteed.",
-    "All selected supported interests, goals and skills must match; difficulty/time alternatives remain OR; Near me always applies radius."
+    "Any selected supported interest, goal or skill can match within its group; difficulty/time alternatives remain OR; Near me always applies radius."
   ]
 }

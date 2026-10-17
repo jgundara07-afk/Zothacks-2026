@@ -157,7 +157,7 @@ def publish(database=ROOT / "data" / "opportunities.sqlite3", destination=DESTIN
                                       "explicitly_reviewed_records": reviewed_count,
                                       "method": "Assistant-authored evidence rubric plus individually reviewed exceptions; counts are not forced into equal difficulty bins",
                                       "time_filter_policy": "Upper duration bound; unknown total cannot match max_minutes",
-                                      "strict_topic_policy": "All selected supported interests/goals/skills required; broad fallback topics excluded from interest matches"},
+                                      "strict_topic_policy": "Any selected supported interest/goal/skill within its group; AND across groups; broad fallback topics excluded from interest matches"},
                     "records_without_supported_checklist_goals": no_goals,
                     "coordinate_records": coordinates_count, "step_coverage": step_coverage,
                     "sha256": hashlib.sha256(temporary.read_bytes()).hexdigest(),

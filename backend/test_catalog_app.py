@@ -93,7 +93,7 @@ class CollectedJourneyTest(unittest.TestCase):
                 self.assertEqual(client.post('/profiles',json=profile).status_code,200)
                 self.assertEqual(client.get('/opportunities').json['profile'][field],values[:maximum])
 
-    def test_strict_topics_metadata_and_time_cap_on_both_apis(self):
+    def test_relaxed_topics_keep_metadata_and_time_cap_on_both_apis(self):
         with tempfile.TemporaryDirectory() as directory:
             client = create_app(Store(path=directory+'/strict.sqlite3'),data_mode='catalog').test_client()
             for route in ('/opportunities', '/catalog/opportunities'):
@@ -104,7 +104,7 @@ class CollectedJourneyTest(unittest.TestCase):
                 self.assertGreater(result.json['total'],0)
                 for row in result.json['opportunities']:
                     p=row['personalization']
-                    self.assertTrue({'Software Engineering','AI & Machine Learning'}.issubset(p['filter_interests']))
+                    self.assertTrue({'Software Engineering','AI & Machine Learning'}.intersection(p['filter_interests']))
                     self.assertEqual(p['assessment']['duration_quality'],'Source reported')
                     self.assertLessEqual(p['duration']['max_minutes'],120)
                 free=client.get(route,query_string={'cost':'Free'}).json

@@ -70,13 +70,22 @@ class PersonalizationTests(unittest.TestCase):
         self.assertEqual(result["opportunities"][0]["match"]["scope"], "micro_step")
         self.assertEqual(reader.query(commitment="A mix of both")["total"], 1)
 
-    def test_all_interests_required_and_pagination(self):
+    def test_any_interest_within_group_and_pagination(self):
         reader = CatalogReader([example(), example(source_id="other", title="Basketball", description="Sports practice")], TAXONOMY)
-        self.assertEqual(reader.query(interests=["Software Engineering", "Sports"])["total"], 0)
+        self.assertEqual(reader.query(interests=["Software Engineering", "Sports"])["total"], 2)
         self.assertEqual(reader.query(interests=["Software Engineering", "Web & App Development"])["total"], 1)
         self.assertEqual(reader.query(interests=["Sports"], goals=["Build a strong project portfolio"])["total"], 0)
         self.assertEqual(len(reader.query(offset=1, limit=1)["opportunities"]), 1)
         self.assertEqual(reader.query(q="Python Flask")["total"], 1)
+
+    def test_any_goal_and_skill_match_but_separate_groups_still_combine(self):
+        coding = example()
+        leadership = example(source_id='leadership', source='zotspot', kind='Campus event',
+                             title='Leadership workshop', description='Practice design and team leadership.')
+        reader = CatalogReader([coding, leadership], TAXONOMY)
+        self.assertEqual(reader.query(skills=['Coding','Design'])['total'],2)
+        self.assertEqual(reader.query(goals=['Learn a new technical skill','Develop leadership experience'])['total'],2)
+        self.assertEqual(reader.query(interests=['Software Engineering'],skills=['Design'])['total'],0)
 
     def test_nearby_uses_coordinates_and_unknown_does_not_match(self):
         row = example(source="irvine", kind="Trail", title="A trail", description="Mapped trail", mode="Local",
