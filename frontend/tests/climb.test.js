@@ -1,16 +1,15 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {climbPosition,crossedMilestone} from '../src/utils/climbMath.js';
-test('climber advances, reaches a summit, and starts a new mountain beyond 500',()=>{
- assert.equal(climbPosition(0).fraction,0);
- assert.equal(climbPosition(100).fraction,.2);
- assert.equal(climbPosition(450).fraction,.9);
- assert.equal(climbPosition(500).fraction,1);
- assert.equal(climbPosition(500).mountain,1);
- assert.equal(climbPosition(550).mountain,2);
- assert.equal(climbPosition(550).fraction,.1);
- assert.equal(climbPosition(1000).fraction,1);
- assert.equal(climbPosition(1000).mountain,2);
+test('map and countdown use the same hundred-point milestone',()=>{
+ for(const points of [0,25,75,99,100,175,450,500,550,1000]){
+  const position=climbPosition(points);
+  assert.equal(position.fraction,(points%100)/100);
+  assert.equal(position.mountain,Math.floor(points/100)+1);
+  assert.equal(position.nextMilestone-points,100-position.fraction*100);
+ }
+ assert.equal(climbPosition(175).fraction,.75);
+ assert.equal(climbPosition(175).nextMilestone-175,25);
 });
 test('milestones celebrate only newly earned hundreds, including multi-level jumps',()=>{
  assert.equal(crossedMilestone(90,100),true);

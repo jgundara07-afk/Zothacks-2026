@@ -6,25 +6,25 @@
         "Build challenge": 1,
         "Campus initiative": 1,
         "Certification": 2,
-        "Class": 4,
+        "Class": 5,
         "Club": 2,
         "Creative project": 3,
         "Internship": 4,
         "Local event": 1,
         "Online course": 1
       },
-      "completed_count": 19,
+      "completed_count": 20,
       "difficulties": {
         "Easy": 4,
         "Hard": 1,
-        "Lazy": 13,
+        "Lazy": 14,
         "Medium": 1
       },
       "end": "2026-11-01",
-      "estimated_minutes": 131,
+      "estimated_minutes": 133,
       "method": "Recorded activity; time is estimated from quest durations.",
       "period": "month",
-      "points": 560,
+      "points": 575,
       "progress": {
         "active_today": true,
         "activity": [
@@ -164,6 +164,15 @@
             "title": "Sketch your tiny tool"
           },
           {
+            "completed_at": "2026-10-17T13:51:54.237406-07:00",
+            "id": "completion:demo:anteater-05941ae68617e5896bc1::small:2026-10-17",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "anteater-05941ae68617e5896bc1::small",
+            "title": "Review the source: Advanced C Programming"
+          },
+          {
             "completed_at": "2026-10-16T13:28:53-07:00",
             "id": "completion:demo:muse-000d316b62d39c591834::small:2026-10-16",
             "kind": "completion",
@@ -200,7 +209,7 @@
             "title": "Review the source: Advanced JavaScript 1: Objects, Loops, Hoisting"
           }
         ],
-        "completed_count": 19,
+        "completed_count": 20,
         "completed_ids": [
           "sample-class-web-small",
           "sample-internship-frontend-small",
@@ -217,6 +226,7 @@
           "green-1",
           "design-1",
           "code-1",
+          "anteater-05941ae68617e5896bc1::small",
           "muse-000d316b62d39c591834::small",
           "anteater-013bf5af250a2c2c5b30::small",
           "anteater-013bf5af250a2c2c5b30::small",
@@ -230,8 +240,8 @@
           "today": "2026-10-17"
         },
         "longest_streak": 4,
-        "points": 560,
-        "saved_count": 3,
+        "points": 575,
+        "saved_count": 1,
         "streak": 4,
         "timezone": "America/Los_Angeles",
         "today": "2026-10-17"
@@ -302,7 +312,7 @@
           "label": "16"
         },
         {
-          "count": 15,
+          "count": 16,
           "label": "17"
         },
         {
@@ -364,8 +374,8 @@
       ],
       "skills": {
         "Business": 3,
-        "Coding": 15,
-        "Data analysis": 1,
+        "Coding": 16,
+        "Data analysis": 2,
         "Design": 5,
         "Research": 8,
         "Sustainability": 3,
@@ -406,9 +416,9 @@
           "points": 30
         },
         {
-          "count": 15,
+          "count": 16,
           "date": "2026-10-17",
-          "points": 500
+          "points": 515
         }
       ]
     },
@@ -418,25 +428,25 @@
         "Build challenge": 1,
         "Campus initiative": 1,
         "Certification": 2,
-        "Class": 4,
+        "Class": 5,
         "Club": 2,
         "Creative project": 3,
         "Internship": 4,
         "Local event": 1,
         "Online course": 1
       },
-      "completed_count": 19,
+      "completed_count": 20,
       "difficulties": {
         "Easy": 4,
         "Hard": 1,
-        "Lazy": 13,
+        "Lazy": 14,
         "Medium": 1
       },
       "end": "2026-10-19",
-      "estimated_minutes": 131,
+      "estimated_minutes": 133,
       "method": "Recorded activity; time is estimated from quest durations.",
       "period": "week",
-      "points": 560,
+      "points": 575,
       "progress": {
         "active_today": true,
         "activity": [
@@ -576,6 +586,15 @@
             "title": "Sketch your tiny tool"
           },
           {
+            "completed_at": "2026-10-17T13:51:54.237406-07:00",
+            "id": "completion:demo:anteater-05941ae68617e5896bc1::small:2026-10-17",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "anteater-05941ae68617e5896bc1::small",
+            "title": "Review the source: Advanced C Programming"
+          },
+          {
             "completed_at": "2026-10-16T13:28:53-07:00",
             "id": "completion:demo:muse-000d316b62d39c591834::small:2026-10-16",
             "kind": "completion",
@@ -612,7 +631,7 @@
             "title": "Review the source: Advanced JavaScript 1: Objects, Loops, Hoisting"
           }
         ],
-        "completed_count": 19,
+        "completed_count": 20,
         "completed_ids": [
           "sample-class-web-small",
           "sample-internship-frontend-small",
@@ -629,6 +648,7 @@
           "green-1",
           "design-1",
           "code-1",
+          "anteater-05941ae68617e5896bc1::small",
           "muse-000d316b62d39c591834::small",
           "anteater-013bf5af250a2c2c5b30::small",
           "anteater-013bf5af250a2c2c5b30::small",
@@ -642,8 +662,8 @@
           "today": "2026-10-17"
         },
         "longest_streak": 4,
-        "points": 560,
-        "saved_count": 3,
+        "points": 575,
+        "saved_count": 1,
         "streak": 4,
         "timezone": "America/Los_Angeles",
         "today": "2026-10-17"
@@ -670,7 +690,7 @@
           "label": "Fri"
         },
         {
-          "count": 15,
+          "count": 16,
           "label": "Sat"
         },
         {
@@ -680,8 +700,8 @@
       ],
       "skills": {
         "Business": 3,
-        "Coding": 15,
-        "Data analysis": 1,
+        "Coding": 16,
+        "Data analysis": 2,
         "Design": 5,
         "Research": 8,
         "Sustainability": 3,
@@ -722,9 +742,9 @@
           "points": 30
         },
         {
-          "count": 15,
+          "count": 16,
           "date": "2026-10-17",
-          "points": 500
+          "points": 515
         }
       ]
     },
@@ -734,25 +754,25 @@
         "Build challenge": 1,
         "Campus initiative": 1,
         "Certification": 2,
-        "Class": 4,
+        "Class": 5,
         "Club": 2,
         "Creative project": 3,
         "Internship": 4,
         "Local event": 1,
         "Online course": 1
       },
-      "completed_count": 19,
+      "completed_count": 20,
       "difficulties": {
         "Easy": 4,
         "Hard": 1,
-        "Lazy": 13,
+        "Lazy": 14,
         "Medium": 1
       },
       "end": "2027-01-01",
-      "estimated_minutes": 131,
+      "estimated_minutes": 133,
       "method": "Recorded activity; time is estimated from quest durations.",
       "period": "year",
-      "points": 560,
+      "points": 575,
       "progress": {
         "active_today": true,
         "activity": [
@@ -892,6 +912,15 @@
             "title": "Sketch your tiny tool"
           },
           {
+            "completed_at": "2026-10-17T13:51:54.237406-07:00",
+            "id": "completion:demo:anteater-05941ae68617e5896bc1::small:2026-10-17",
+            "kind": "completion",
+            "points": 15,
+            "profile_id": "demo",
+            "quest_id": "anteater-05941ae68617e5896bc1::small",
+            "title": "Review the source: Advanced C Programming"
+          },
+          {
             "completed_at": "2026-10-16T13:28:53-07:00",
             "id": "completion:demo:muse-000d316b62d39c591834::small:2026-10-16",
             "kind": "completion",
@@ -928,7 +957,7 @@
             "title": "Review the source: Advanced JavaScript 1: Objects, Loops, Hoisting"
           }
         ],
-        "completed_count": 19,
+        "completed_count": 20,
         "completed_ids": [
           "sample-class-web-small",
           "sample-internship-frontend-small",
@@ -945,6 +974,7 @@
           "green-1",
           "design-1",
           "code-1",
+          "anteater-05941ae68617e5896bc1::small",
           "muse-000d316b62d39c591834::small",
           "anteater-013bf5af250a2c2c5b30::small",
           "anteater-013bf5af250a2c2c5b30::small",
@@ -958,8 +988,8 @@
           "today": "2026-10-17"
         },
         "longest_streak": 4,
-        "points": 560,
-        "saved_count": 3,
+        "points": 575,
+        "saved_count": 1,
         "streak": 4,
         "timezone": "America/Los_Angeles",
         "today": "2026-10-17"
@@ -1002,7 +1032,7 @@
           "label": "Sep"
         },
         {
-          "count": 19,
+          "count": 20,
           "label": "Oct"
         },
         {
@@ -1016,8 +1046,8 @@
       ],
       "skills": {
         "Business": 3,
-        "Coding": 15,
-        "Data analysis": 1,
+        "Coding": 16,
+        "Data analysis": 2,
         "Design": 5,
         "Research": 8,
         "Sustainability": 3,
@@ -1058,9 +1088,9 @@
           "points": 30
         },
         {
-          "count": 15,
+          "count": 16,
           "date": "2026-10-17",
-          "points": 500
+          "points": 515
         }
       ]
     }
@@ -1079,16 +1109,16 @@
       "date": "2026-10-16"
     },
     {
-      "count": 15,
+      "count": 16,
       "date": "2026-10-17"
     }
   ],
   "climb": {
-    "fraction": 0.12,
+    "fraction": 0.75,
     "level": 6,
-    "mountain": 2,
+    "mountain": 6,
     "next_milestone": 600,
-    "points_to_next_milestone": 40
+    "points_to_next_milestone": 25
   },
   "definitions": {
     "month": "One bin per day",
@@ -1097,7 +1127,7 @@
     "week": "Monday\u2013Sunday",
     "year": "One bin per month"
   },
-  "generated_at": "2026-10-17T20:37:23.716528+00:00",
+  "generated_at": "2026-10-17T20:53:11.999960+00:00",
   "profile_id": "demo",
   "progress": {
     "active_today": true,
@@ -1238,6 +1268,15 @@
         "title": "Sketch your tiny tool"
       },
       {
+        "completed_at": "2026-10-17T13:51:54.237406-07:00",
+        "id": "completion:demo:anteater-05941ae68617e5896bc1::small:2026-10-17",
+        "kind": "completion",
+        "points": 15,
+        "profile_id": "demo",
+        "quest_id": "anteater-05941ae68617e5896bc1::small",
+        "title": "Review the source: Advanced C Programming"
+      },
+      {
         "completed_at": "2026-10-16T13:28:53-07:00",
         "id": "completion:demo:muse-000d316b62d39c591834::small:2026-10-16",
         "kind": "completion",
@@ -1274,7 +1313,7 @@
         "title": "Review the source: Advanced JavaScript 1: Objects, Loops, Hoisting"
       }
     ],
-    "completed_count": 19,
+    "completed_count": 20,
     "completed_ids": [
       "sample-class-web-small",
       "sample-internship-frontend-small",
@@ -1291,6 +1330,7 @@
       "green-1",
       "design-1",
       "code-1",
+      "anteater-05941ae68617e5896bc1::small",
       "muse-000d316b62d39c591834::small",
       "anteater-013bf5af250a2c2c5b30::small",
       "anteater-013bf5af250a2c2c5b30::small",
@@ -1304,8 +1344,8 @@
       "today": "2026-10-17"
     },
     "longest_streak": 4,
-    "points": 560,
-    "saved_count": 3,
+    "points": 575,
+    "saved_count": 1,
     "streak": 4,
     "timezone": "America/Los_Angeles",
     "today": "2026-10-17"
@@ -1316,25 +1356,25 @@
       "Build challenge": 1,
       "Campus initiative": 1,
       "Certification": 2,
-      "Class": 4,
+      "Class": 5,
       "Club": 2,
       "Creative project": 3,
       "Internship": 4,
       "Local event": 1,
       "Online course": 1
     },
-    "completed_count": 19,
+    "completed_count": 20,
     "difficulties": {
       "Easy": 4,
       "Hard": 1,
-      "Lazy": 13,
+      "Lazy": 14,
       "Medium": 1
     },
     "end": null,
-    "estimated_minutes": 131,
+    "estimated_minutes": 133,
     "method": "Recorded activity; time is estimated from quest durations.",
     "period": null,
-    "points": 560,
+    "points": 575,
     "progress": {
       "active_today": true,
       "activity": [
@@ -1474,6 +1514,15 @@
           "title": "Sketch your tiny tool"
         },
         {
+          "completed_at": "2026-10-17T13:51:54.237406-07:00",
+          "id": "completion:demo:anteater-05941ae68617e5896bc1::small:2026-10-17",
+          "kind": "completion",
+          "points": 15,
+          "profile_id": "demo",
+          "quest_id": "anteater-05941ae68617e5896bc1::small",
+          "title": "Review the source: Advanced C Programming"
+        },
+        {
           "completed_at": "2026-10-16T13:28:53-07:00",
           "id": "completion:demo:muse-000d316b62d39c591834::small:2026-10-16",
           "kind": "completion",
@@ -1510,7 +1559,7 @@
           "title": "Review the source: Advanced JavaScript 1: Objects, Loops, Hoisting"
         }
       ],
-      "completed_count": 19,
+      "completed_count": 20,
       "completed_ids": [
         "sample-class-web-small",
         "sample-internship-frontend-small",
@@ -1527,6 +1576,7 @@
         "green-1",
         "design-1",
         "code-1",
+        "anteater-05941ae68617e5896bc1::small",
         "muse-000d316b62d39c591834::small",
         "anteater-013bf5af250a2c2c5b30::small",
         "anteater-013bf5af250a2c2c5b30::small",
@@ -1540,8 +1590,8 @@
         "today": "2026-10-17"
       },
       "longest_streak": 4,
-      "points": 560,
-      "saved_count": 3,
+      "points": 575,
+      "saved_count": 1,
       "streak": 4,
       "timezone": "America/Los_Angeles",
       "today": "2026-10-17"
@@ -1578,15 +1628,15 @@
         "points": 30
       },
       {
-        "count": 15,
+        "count": 16,
         "date": "2026-10-17",
-        "points": 500
+        "points": 515
       }
     ],
     "skills": {
       "Business": 3,
-      "Coding": 15,
-      "Data analysis": 1,
+      "Coding": 16,
+      "Data analysis": 2,
       "Design": 5,
       "Research": 8,
       "Sustainability": 3,
@@ -1627,9 +1677,9 @@
         "points": 30
       },
       {
-        "count": 15,
+        "count": 16,
         "date": "2026-10-17",
-        "points": 500
+        "points": 515
       }
     ]
   },

@@ -33,6 +33,8 @@ class DemoAnalyticsTest(unittest.TestCase):
             self.assertEqual(sum(d['count'] for d in snapshot['calendar']), 4)
             self.assertEqual(snapshot['analytics']['month']['completed_count'], 2)
             self.assertEqual(snapshot['recap']['completed_count'], 4)
+            self.assertEqual(snapshot['climb']['fraction'], (snapshot['progress']['points']%100)/100)
+            self.assertEqual(snapshot['climb']['mountain'], snapshot['progress']['points']//100+1)
             self.assertEqual(snapshot['climb']['level'], snapshot['progress']['points']//100+1)
             self.assertEqual(client.get('/progress/data?date=invalid').status_code, 400)
             reopened = create_app(store=Store(path=path), now=now, data_mode='sample').test_client()
