@@ -3,6 +3,7 @@ from datetime import timedelta, datetime
 from zoneinfo import ZoneInfo
 try:
     from .program_catalog import program_catalog, preparation_quests, available, distance_km
+    from .relevance import evidence, assess, mix
     from .preferences import PREFERENCES, INTEREST_GROUPS
     from .filter_rules import supported_interests, validate_extra, matches_extra
     from .ranking import rank_records
@@ -10,6 +11,7 @@ try:
     from .gemini_recommendation import generate_recommendation
 except ImportError:
     from program_catalog import program_catalog, preparation_quests, available, distance_km
+    from relevance import evidence, assess, mix
     from preferences import PREFERENCES, INTEREST_GROUPS
     from filter_rules import supported_interests, validate_extra, matches_extra
     from ranking import rank_records
@@ -138,18 +140,29 @@ class OneThing:
             if o.get('general_task'):
                 general[o['id']] = (o,chosen,venues)
                 continue
-            if filters.get('interests') and not set(filters['interests']).intersection(supported_interests(p)): continue
+            # Tags are broad, so an opportunity that names the interest in its own text also qualifies (relevance.py).
+            named = evidence(o, filters.get('interests')) if filters.get('interests') else []
+            if filters.get('interests') and not set(filters['interests']).intersection(supported_interests(p)) and not named: continue
             if filters.get('goals') and not set(filters['goals']).intersection(o['career_goals']): continue
             matches[o['id']] = (o,chosen,venues)
         no_personalized_matches = bool(not matches and (filters.get('interests') or filters.get('goals')))
         using_fallback = bool(not matches and neutral and (filters.get('interests') or filters.get('goals') or general))
         if using_fallback: matches = neutral
+        # Evidence-based tier, score and reason per card (relevance.py); tag overlap only breaks ties.
+        info = {} if using_fallback else {o['id']: assess(o, sorted(interest_tags), sorted(goal_tags), interest_tags.intersection(supported_interests(o['personalization']))) for o,_,_ in matches.values()}
+        for o,_,_ in matches.values():
+            if o['id'] in info:
+                k = (o.get('kind') or '').lower()
+                info[o['id']]['kind_group'] = 'role' if ('intern' in k or 'job' in k) else 'event' if 'event' in k else 'other'
         def relevance(o):
             if using_fallback: return 0
-            return (len(interest_tags.intersection(supported_interests(o['personalization'])))
+            return info[o['id']]['score'] + 0.1 * (len(interest_tags.intersection(supported_interests(o['personalization'])))
                     + len(skill_tags.intersection(o['skills']))
                     + len(goal_tags.intersection(o['career_goals'])))
         ranked = rank_records([entry[0] for entry in matches.values()], relevance)
+        if not using_fallback:
+            by_id = {entry[0]['id']: entry for entry in ranked}
+            ranked = [by_id[i] for i in mix({tier: [e[0]['id'] for e in ranked if info[e[0]['id']]['tier'] == tier] for tier in ('specific', 'adjacent')}, info)]
         if using_fallback:
             ranked.sort(key=lambda entry:(not bool(entry[0].get('general_task')), bool((entry[0].get('general_task') or {}).get('requirements')), (entry[0].get('general_task') or {}).get('minutes',999), (entry[0].get('general_task') or {}).get('number',999)))
         elif general:
@@ -160,7 +173,7 @@ class OneThing:
         mixed = [matches[o['id']] for o,_,_ in ranked]
         ranking = {o['id']:dict(relevance_score=base, uniqueness_bonus=round(bonus,4)) for o,base,bonus in ranked}
         page = mixed[offset:offset+limit]
-        cards = self.decorate([{**o, 'recommendation_type':'neutral' if using_fallback or o.get('general_task') else 'matched', 'placement':'fallback' if using_fallback else 'sprinkled' if o.get('general_task') else 'matched', 'ranking':ranking[o['id']], 'venues':venues, 'minutes':q['minutes'], 'suggested_quest_id':q['id'], 'preparation_difficulty':q['difficulty'], 'size':q['size'], 'effort':q['effort']} for o,q,venues in page])
+        cards = self.decorate([{**o, 'recommendation_type':'neutral' if using_fallback or o.get('general_task') else 'matched', 'placement':'fallback' if using_fallback else 'sprinkled' if o.get('general_task') else 'matched', 'ranking':ranking[o['id']], 'venues':venues, 'minutes':q['minutes'], 'suggested_quest_id':q['id'], 'preparation_difficulty':q['difficulty'], 'size':q['size'], 'effort':q['effort'], **({'match_tier':'general','match_reason':'A useful general step you can take today, not a match to your interests.'} if using_fallback or o.get('general_task') else {'match_tier':info[o['id']]['tier'],'match_reason':info[o['id']]['reason']})} for o,q,venues in page])
         if related:
             for card in cards:
                 exact = interest_tags.intersection(supported_interests(card['personalization']))

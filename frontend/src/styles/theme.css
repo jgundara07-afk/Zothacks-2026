@@ -347,3 +347,15 @@ select, .resume-lab textarea, .signin-account, .checklist label, .preference-cho
 .detail-image, .detail-image .print, .mountain, .calendar-day { border-radius: 14px !important; }
 .modal { border-radius: 26px 26px 0 0 !important; }
 @media (min-width: 700px) { .phone-shell { border-radius: 30px; } }
+
+/* ===================== 2.0: every card answers why / what / how long / what happens ===================== */
+.quest-card-why { font-family: var(--font-serif); font-size: 15px; line-height: 21px; color: #e6d6b8; margin: 12px 0 0; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.quest-card-why b { font-weight: 600; letter-spacing: .14em; text-transform: uppercase; font-size: 11px; color: var(--card-edge, #a8443b); filter: brightness(1.5); margin-right: 6px; }
+.chip-reward { border-color: rgba(184,144,74,.45) !important; color: #e8cf9c !important; }
+.quest-tier { position: absolute; z-index: 3; top: 10px; left: auto; right: 64px; padding: 5px 10px; border-radius: 999px; font-family: var(--font-serif); font-size: 12px; font-weight: 600; letter-spacing: .08em; color: #f4ead6; background: rgba(11,8,6,.55); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); border: 1px solid rgba(244,234,214,.25); }
+.quest-tier.tier-specific { border-color: rgba(232,207,156,.7); color: #f3dfb4; }
+.opportunity-feed .quest-tier { top: 20px; right: 74px; }
+.opportunity-feed .quest-category { top: 20px; left: 20px; }
+.detail-why { margin: 10px 0 4px; padding: 12px 14px; border-radius: 14px; background: rgba(21,16,12,.88); color: var(--on-ink); }
+.detail-why .eyebrow { color: var(--brass) !important; }
+.detail-why p { margin: 6px 0 0; font-family: var(--font-serif); font-size: 16px; line-height: 1.45; color: #e6d6b8; }
