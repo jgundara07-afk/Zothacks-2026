@@ -99,3 +99,31 @@ Responses include `fallback: {active, reason, relaxed_filters, message}`; active
 The bundled catalog includes 60 self-guided OneThing activities from `opportunity_data/general_tasks.json`. They are authored app content, not live external opportunities. Each has explicit action steps and a real completion quest.
 
 New goals are connected to both `/opportunities` and `/catalog/opportunities` through conservative title-based classifications in `backend/goal_matching.py`. Returned `personalization.goals` includes these tags; `personalization.inferred_goal_matches` records the matched title text. These are app inferences, not provider claims. Catalog options include the new goals without modifying the immutable source export. Other filters continue to apply.
+
+### Filter relevance improvements
+- Choices within each group use OR; groups combine with AND. Location choices now follow the same rule: Near me **or** Online works as a union. Near me alone still requires coordinates and respects radius. Unknown distances are never treated as nearby.
+- `q` matches every normalized query term across title, description, provider, and location. Accent and common hyphen variants are normalized; terms match word prefixes, while one- or two-character searches require whole tokens. Title evidence ranks above incidental description matches.
+- Both catalog APIs return `match_details` with matched interests, goals, skills, title terms, and relevance score. Score weights are 4 per interest, 3 per goal, 1 per skill, 6 per title term, plus 4 for the complete query appearing in the title. The existing diversity bonus remains at most 0.25, so it cannot override a stronger match.
+- Discovery still labels neutral/sprinkled general tasks honestly and keeps stable pagination. Core feed returns `matched_count` excluding general-task suggestions. The broader `/recommendations` route relaxes only interest/goal constraints; it now accepts and preserves the other feed filters, including time, location, difficulty, cost, and search.
+- Normalized text is cached in memory with bounded caches; completion and save state are never cached by this optimization.
+
+### Matching mode, sorting, and personal visibility
+Core `/opportunities` and `/recommendations` accept:
+- `match_mode=any|all` (default `any`): match any or every selected **interest**, and any or every selected **goal**. Different groups still combine with AND; time, location, challenge, and other hard constraints retain their semantics. `/catalog/opportunities` also supports this option.
+- `sort=relevance|shortest|points` (default `relevance`): shortest sorts by the suggested preparation quest's minutes, points sorts descending by that quest's server-calculated reward. These refer to first steps, not full opportunity duration. Sorting happens over the full result set before pagination with deterministic tie breaks.
+- `hide_saved=true|false` and `hide_completed=true|false` (both default false): exclude saved opportunities or opportunities with a completion **today in Pacific time**, for the shared demo profile. Nothing is deleted. A daily quest can reappear on a later demo day. Older completion records resolve their opportunity through the quest ID.
+
+Invalid modes, sort options, and boolean strings return 400. The UI exposes these controls in Filters and offers individually removable active-filter chips. Reset restores relevance/any mode and clears visibility filters. Neutral fallback and general-task labels remain explicit; they are never described as exact matches in all mode.
+
+### Profile situation and availability
+`POST /profiles` accepts optional `context`, validated against `shared/user_context.json`. It contains `situation`, `country`, `state`, `city`, optional `school`, `travel`, `relocate`, `experience`, `availability`, `days`, `formats` (array), `budget`, and optional `transportation`. Text fields are limited to 120 characters. Empty selections mean no preference. Omitting `context` during later filter/profile saves preserves existing details; passing an empty object clears them. Details persist with the demo profile and are editable in Profile.
+
+Core discovery and broader recommendations apply saved context locally, before pagination:
+- Available time limits the **suggested preparation quest**, not the full course/job duration (15/30/60-minute caps; 2+ hours has no upper cap). The UI cannot replace this suggestion with a step above that limit.
+- Complete beginners/some experience exclude known intermediate/advanced requirements; intermediate excludes advanced. Unknown classifications remain possible and are not presented as verified eligibility. Explicit experience filters can narrow/override this preference.
+- Formats use known online/in-person venues and explicit hybrid evidence. They combine with manual location constraints. Local-only plus a city excludes nonremote/hybrid items without matching city evidence.
+- Free-only excludes paid/unknown cost. Until reliable paid amounts are available, Under $25/Under $100 conservatively show confirmed free records only, with a visible explanation.
+- Preferred days constrain scheduled events with a known date (Pacific time); self-paced and undated records are not assigned invented weekdays.
+- City/state/country/school and situation add small evidence-based ranking tie breaks (at most 0.49 points). They do not establish residency, student eligibility or work authorization. Travel time, transit access and relocation eligibility are not inferred; these fields are stored for later supported matching.
+
+Feed responses expose `context_applied`, `context_notes`, per-card `context_reasons`, and `first_step_limit`. The UI offers an Edit link to the profile. These typed profile details are not added to Gemini prompts. The no-login demo is shared: use fictional details.

@@ -114,7 +114,9 @@ class CollectedJourneyTest(unittest.TestCase):
                 for query in ('max_minutes=nan','experience=Impossible','cost=Cheap','skills=Magic','source=imaginary','kind=imaginary'):
                     self.assertEqual(client.get(route+'?'+query).status_code,400,route+'?'+query)
                 nearby=client.get(route,query_string=[('locations','Near me'),('locations','Online / Remote'),('lat','0'),('lon','0')])
-                self.assertEqual(nearby.json['total'],0)
+                self.assertGreater(nearby.json['total'],0)
+                for row in nearby.json['opportunities']:
+                    self.assertIn('Online / Remote', row['personalization']['location_preferences'])
 
     def test_expanded_interest_profiles_and_related_onboarding(self):
         from preferences import PREFERENCES

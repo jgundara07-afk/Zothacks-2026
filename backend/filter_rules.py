@@ -1,6 +1,9 @@
 """Shared strict predicates for both collected-catalog search APIs."""
 import json
 import math
+import re
+import unicodedata
+from functools import lru_cache
 from pathlib import Path
 
 OPTIONS = json.loads((Path(__file__).resolve().parents[1] / "shared" / "catalog_filters.json").read_text(encoding="utf-8"))
@@ -39,3 +42,38 @@ def matches_extra(row, filters, scope="opportunity"):
         if maximum is None or maximum > filters["max_minutes"]:
             return False
     return True
+
+
+@lru_cache(maxsize=65536)
+def searchable(value):
+    text = ''.join(c for c in unicodedata.normalize('NFKD', str(value or '').casefold()) if not unicodedata.combining(c))
+    for pattern, replacement in [(r'front[ -]?end', 'frontend'), (r'back[ -]?end', 'backend'), (r'full[ -]?stack', 'fullstack'), (r'open[ -]?source', 'opensource')]:
+        text = re.sub(pattern, replacement, text)
+    return re.sub(r'[^\w+#]+', ' ', text).strip()
+
+
+@lru_cache(maxsize=1024)
+def search_terms(query):
+    return list(dict.fromkeys(searchable(query).split()))
+
+
+def matches_search(row, query):
+    terms = search_terms(query)
+    if not terms: return True
+    text = searchable(' '.join(str(row.get(key) or '') for key in ['title','description','organization','location']))
+    return all(term_matches(term, text) for term in terms)
+
+
+def matches_locations(selected, resolved):
+    return not selected or bool(set(selected).intersection(resolved))
+
+
+def term_matches(term, text):
+    # Short searches like AI must not match incidental letters inside 'trail'.
+    return any(word == term if len(term) <= 2 else word.startswith(term) for word in text.split())
+
+
+def matches_choices(selected, values, mode='any'):
+    if mode not in {'any', 'all'}:
+        raise ValueError('match_mode must be any or all')
+    return not selected or (set(selected).issubset(values) if mode == 'all' else bool(set(selected).intersection(values)))

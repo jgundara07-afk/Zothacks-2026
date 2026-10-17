@@ -14,6 +14,7 @@ class GoalFilterTest(unittest.TestCase):
                     self.assertEqual(response.status_code,200,(goal,response.json))
                     self.assertGreater(response.json['total'],0,goal)
                     for row in response.json['opportunities']:
+                        if row.get('placement') == 'sprinkled': continue
                         self.assertIn(goal,row['personalization']['goals'])
                         self.assertIn(goal,row['personalization']['inferred_goal_matches'])
                 # Selecting goals does not exempt other constraints.

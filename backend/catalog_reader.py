@@ -8,12 +8,12 @@ from functools import lru_cache
 from pathlib import Path
 from datetime import datetime, timezone
 try:
-    from .filter_rules import supported_interests, validate_extra, matches_extra
-    from .ranking import rank_records
+    from .filter_rules import supported_interests, validate_extra, matches_extra, matches_search, matches_locations, matches_choices
+    from .ranking import rank_records, match_details
     from .goal_matching import with_goal_matches, RULES
 except ImportError:
-    from filter_rules import supported_interests, validate_extra, matches_extra
-    from ranking import rank_records
+    from filter_rules import supported_interests, validate_extra, matches_extra, matches_search, matches_locations, matches_choices
+    from ranking import rank_records, match_details
     from goal_matching import with_goal_matches, RULES
 
 CATALOG_DIRECTORY = Path(__file__).resolve().parent / "catalog"
@@ -40,10 +40,11 @@ class CatalogReader:
     def query(self, *, interests=(), goals=(), challenge_levels=(), time_buckets=(), locations=(),
               commitment=None, q="", scope="opportunity", lat=None, lon=None, radius_km=25,
               include_past=False, source=None, kind=None, offset=0, limit=20,
-              skills=(), experience=(), cost=(), prerequisites=(), duration_quality=(), schedule=(), max_minutes=None):
+              skills=(), experience=(), cost=(), prerequisites=(), duration_quality=(), schedule=(), max_minutes=None, match_mode='any'):
         extra = dict(experience=experience, cost=cost, prerequisites=prerequisites,
                      duration_quality=duration_quality, schedule=schedule, max_minutes=max_minutes)
         validate_extra(extra)
+        matches_choices([], [], match_mode)
         for label, value, field in (("source", source, "source"), ("kind", kind, "kind")):
             if value and value not in {row[field] for row in self.rows}:
                 raise ValueError("Unknown " + label + " filter")
@@ -92,12 +93,12 @@ class CatalogReader:
                 continue
             if source and row["source"] != source or kind and row["kind"] != kind:
                 continue
-            if terms and not all(term in self.search_text[row["id"]] for term in terms):
+            if not matches_search(row, q):
                 continue
             p = row["personalization"]
-            if interests and not set(interests).intersection(supported_interests(p)):
+            if not matches_choices(interests, supported_interests(p), match_mode):
                 continue
-            if goals and not set(goals).intersection(p["goals"]):
+            if not matches_choices(goals, p["goals"], match_mode):
                 continue
             if skills and not set(skills).intersection(row.get("skills", [])):
                 continue
@@ -119,11 +120,8 @@ class CatalogReader:
             if lat is not None and coordinates is not None:
                 km = distance_km(lat, lon, coordinates)
                 nearby = km <= radius_km
-            if "Near me" in locations and not nearby:
-                continue
             resolved_locations = p["location_preferences"] + (["Near me"] if nearby else [])
-            other_locations = set(locations) - {"Near me"}
-            if other_locations and not other_locations.intersection(resolved_locations):
+            if not matches_locations(locations, resolved_locations):
                 continue
             facets["interests"].update(p["interests"])
             facets["goals"].update(p["goals"])
@@ -132,14 +130,11 @@ class CatalogReader:
             facets["location_preferences"].update(resolved_locations)
             matches.append((row, km, challenges, times, selected_commitment))
         by_id = {entry[0]['id']:entry for entry in matches}
-        ranked = rank_records([entry[0] for entry in matches], lambda row:
-                    len(set(interests).intersection(supported_interests(row['personalization'])))
-                    + len(set(goals).intersection(row['personalization']['goals']))
-                    + len(set(skills).intersection(row.get('skills', []))))
+        ranked = rank_records([entry[0] for entry in matches], lambda row: match_details(row, interests, goals, skills, q)['score'])
         page = []
         for row,base,bonus in ranked[offset:offset + limit]:
             row, km, challenges, times, selected_commitment = by_id[row['id']]
-            page.append({**row, "ranking": {"relevance_score":base,"uniqueness_bonus":round(bonus,4)}, "match": {"scope": scope, "challenge_levels": challenges,
+            page.append({**row, "match_details": match_details(row, interests, goals, skills, q), "ranking": {"relevance_score":base,"uniqueness_bonus":round(bonus,4)}, "match": {"scope": scope, "challenge_levels": challenges,
                         "time_buckets": times, "commitment": selected_commitment,
                         "distance_km": round(km, 2) if km is not None else None}})
         return {"opportunities": page, "total": len(matches), "offset": offset, "limit": limit,

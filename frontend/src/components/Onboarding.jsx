@@ -4,10 +4,11 @@ import {options} from './PreferenceFields';
 import InterestPicker from './InterestPicker';
 import {OPENING_HALFTONE} from '../constants';
 import SignIn from './SignIn';
+import UserContextFields from './UserContextFields';
 import {photoFor,scenePhoto,INTEREST_SCENES} from '../utils/photos';
 
 // First-run story, screen by screen (see frontend/ONBOARDING_FLOW.md).
-// 0 title card · 1 problem · 2 promise · 3 goals · 4 interests + skills · 5 today · 6 reveal → feed
+// 0 title card · 1 problem · 2 promise · 3 goals · 4 interests + skills · 5 today · 6 situation · 7 reveal → feed
 const SKILLS=['Writing','Coding','Research','Design'];
 // "What can today hold?" sets the step size, which picks each quest's first step (Small / Big) without hiding
 // opportunities. The catalog's time windows describe whole opportunities, so they are not used here.
@@ -23,7 +24,7 @@ const ASH=Array.from({length:46},(_,i)=>{const r=n=>((Math.sin(i*12.9898+n*78.23
 
 function Title({children,className=''}){return <h1 className={'eva '+className}>{children}</h1>}
 
-export default function Onboarding({data,busy,error,hasProfile,interests,setInterests,goals,setGoals,skills,setSkills,preferences,setPreferences,stepSize,setStepSize,sample,topPick,topQuest,onSave,onEnter,onWiden,onSkip,onLogin}){
+export default function Onboarding({data,busy,error,hasProfile,interests,setInterests,goals,setGoals,skills,setSkills,preferences,setPreferences,stepSize,setStepSize,sample,topPick,topQuest,onSave,onEnter,onWiden,onSkip,onLogin,context,setContext}){
  const [step,setStep]=useState(0);
  const [loginOpen,setLoginOpen]=useState(false);
  // Intro plays once per visit; reduced motion goes straight to the finished first screen.
@@ -38,16 +39,16 @@ export default function Onboarding({data,busy,error,hasProfile,interests,setInte
  const skipIntro=()=>setPhase('ui');
  const heading=useRef(null);
  useEffect(()=>{if(step>0||phase==='ui')heading.current?.focus({preventScroll:true})},[step,phase]);
- const next=()=>setStep(s=>Math.min(6,s+1)),back=()=>setStep(s=>Math.max(0,s-1));
+ const next=()=>setStep(s=>Math.min(7,s+1)),back=()=>setStep(s=>Math.max(0,s-1));
  const toggle=(list,set,value,max)=>set(list.includes(value)?list.filter(v=>v!==value):max&&list.length>=max?list:[...list,value]);
  const pace=stepSize;
  const setPace=p=>setStepSize(pace===p.key?'Any':p.key);
  const togglePlace=place=>setPreferences({...preferences,locations:preferences.locations.includes(place)?preferences.locations.filter(v=>v!==place):[...preferences.locations,place]});
- async function finish(){if(await onSave())setStep(6)}
+ async function finish(){if(await onSave())setStep(7)}
 
- const chrome=step>0&&step<6&&<header className="ob-bar">
+ const chrome=step>0&&step<7&&<header className="ob-bar">
   <button className="ob-back" onClick={back} aria-label="Back"><ArrowLeft size={18}/></button>
-  <div className="ob-thread" aria-label={`Step ${step} of 5`}><span style={{width:`${step/5*100}%`}}/></div>
+  <div className="ob-thread" aria-label={`Step ${step} of 6`}><span style={{width:`${step/6*100}%`}}/></div>
   <button className="ob-skip" disabled={busy||!data} onClick={onSkip}>Skip</button>
  </header>;
 
@@ -138,10 +139,12 @@ export default function Onboarding({data,busy,error,hasProfile,interests,setInte
    <p className="ob-note">Leave it open to see everything. A small step counts just as much.</p>
    {error&&<p className="error" role="alert">{error}</p>}
   </main>
-  <footer className="ob-foot"><button className="primary wide" disabled={busy} onClick={finish}>{busy?'Charting your map…':'Show my one thing'}<ArrowRight size={18}/></button></footer>
+  <footer className="ob-foot"><button className="primary wide" disabled={busy} onClick={next}>Continue<ArrowRight size={18}/></button></footer>
  </div>;
 
- // ---------- 6: reveal ----------
+ if(step===6)return <div className="phone-shell ob ob-map">{chrome}<main className="ob-body"><span className="ob-chapter">Chapter IV · Your situation</span><Title><span ref={heading} tabIndex={-1}>Make it fit <em>your life.</em></span></Title><UserContextFields value={context} onChange={setContext}/>{error&&<p role="alert" className="error">{error}</p>}</main><footer className="ob-foot"><button className="primary wide" disabled={busy} onClick={finish}>{busy?'Finding your next step…':'Show my one thing'}<ArrowRight size={18}/></button></footer></div>;
+
+ // ---------- 7: reveal ----------
  return <div className="phone-shell ob ob-reveal">
   {topPick&&<div className="ob-reveal-photo" style={{'--photo':`url(${photoFor(topPick)})`}} aria-hidden="true"/>}
   <main className="ob-body ob-reveal-body">

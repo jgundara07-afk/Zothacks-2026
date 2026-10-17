@@ -1,0 +1,12 @@
+{
+  "situation": ["Student", "Employed full-time", "Employed part-time", "Unemployed / seeking work", "Freelancer / self-employed", "Recent graduate", "Career changer"],
+  "experience": ["Complete beginner", "Some experience", "Intermediate", "Advanced"],
+  "availability": ["10–15 min", "30 min", "1 hour", "2+ hours"],
+  "days": ["Weekdays", "Weekends", "Either"],
+  "formats": ["Online", "In-person", "Hybrid"],
+  "budget": ["Free only", "Under $25", "Under $100", "Flexible"],
+  "transportation": ["Public transit", "Car", "Bike", "Walking"],
+  "travel": ["Local only", "Can commute", "Can travel"],
+  "relocate": ["Yes", "No", "Open to it"],
+  "first_step_minutes": {"10–15 min": 15, "30 min": 30, "1 hour": 60}
+}

@@ -5,16 +5,18 @@ try:
     from .achievements import achievements
     from .program_catalog import program_catalog, preparation_quests, available, distance_km
     from .preferences import PREFERENCES, INTEREST_GROUPS
-    from .filter_rules import supported_interests, validate_extra, matches_extra
-    from .ranking import rank_records
+    from .filter_rules import supported_interests, validate_extra, matches_extra, matches_search, matches_locations, matches_choices
+    from .user_context import context_match, context_relevance, first_step_limit
+    from .ranking import rank_records, match_details
     from .neutral import is_neutral, fallback_info, sprinkle
     from .gemini_recommendation import generate_recommendation
 except ImportError:
     from achievements import achievements
     from program_catalog import program_catalog, preparation_quests, available, distance_km
     from preferences import PREFERENCES, INTEREST_GROUPS
-    from filter_rules import supported_interests, validate_extra, matches_extra
-    from ranking import rank_records
+    from filter_rules import supported_interests, validate_extra, matches_extra, matches_search, matches_locations, matches_choices
+    from user_context import context_match, context_relevance, first_step_limit
+    from ranking import rank_records, match_details
     from neutral import is_neutral, fallback_info, sprinkle
     from gemini_recommendation import generate_recommendation
 
@@ -72,13 +74,24 @@ class OneThing:
         return self.decorate([o for o in rows if o])
     def mark_quests(self, quests):
         done = self.activity('completion')
-        return [{**q, 'completed': any(a['quest_id'] == q['id'] and (not q.get('daily') or self.completion_day(a) == self.today()) for a in done)} for q in quests]
+        current_day = self.today()
+        all_done = {a['quest_id'] for a in done}
+        daily_done = {a['quest_id'] for a in done if self.completion_day(a) == current_day}
+        return [{**q, 'completed': q['id'] in (daily_done if q.get('daily') else all_done)} for q in quests]
     def feed_page(self, filters, offset, limit, related=False):
         """Match any choice within each group; rank relevance before a small diversity boost."""
         for field in ('interests', 'goals'):
             maximum = PREFERENCES['max_selected_interests'] if field == 'interests' else PREFERENCES['max_selected_goals']
             if len(set(filters.get(field, []))) > maximum:
                 raise ValueError('Choose up to '+str(maximum)+' '+field)
+        match_mode = filters.get('match_mode', 'any')
+        matches_choices([], [], match_mode)
+        sort = filters.get('sort', 'relevance')
+        if sort not in {'relevance','shortest','points'}:
+            raise ValueError('sort must be relevance, shortest, or points')
+        for flag in ('hide_saved', 'hide_completed'):
+            if filters.get(flag, 'false') not in {'true','false'}:
+                raise ValueError(flag+' must be true or false')
         if self.catalog is None:
             rows = self.opportunities()
             return dict(opportunities=rows, quests=self.mark_quests(self.db.all('quests')), total=len(rows), offset=0, limit=len(rows), has_more=False, data_mode='sample')
@@ -109,29 +122,39 @@ class OneThing:
         neutral = {}
         general = {}
         profile = self.profile() or {}
+        context = profile.get('context', {})
+        step_limit = first_step_limit(context)
         interest_tags = set(filters.get('interests') or profile.get('interests', []))
         skill_tags = set(filters.get('skills') or profile.get('skills', []))
         goal_tags = set(filters.get('goals') or profile.get('goals', []))
         default_effort = (self.checkin() or {}).get('effort')
+        saved_ids = {a['opportunity_id'] for a in self.activity('save')} if filters.get('hide_saved') == 'true' else set()
+        completed_ids = set()
+        if filters.get('hide_completed') == 'true':
+            current_day = self.today()
+            for a in self.activity('completion'):
+                if self.completion_day(a) == current_day:
+                    q = self.quest(a['quest_id']) or {}
+                    completed_ids.add(a.get('opportunity_id') or q.get('opportunity_id'))
         for o in self.catalog.values():
+            if o['id'] in saved_ids or o['id'] in completed_ids: continue
             if not available(o, self.real_clock()): continue
             p = o['personalization']
+            if not context_match(o, context, filters): continue
             if filters.get('challenges') and not set(filters['challenges']).intersection(p['challenge_levels']): continue
             if filters.get('time') and not set(filters['time']).intersection(p['time_buckets']): continue
             if filters.get('skills') and not set(filters['skills']).intersection(o['skills']): continue
             if not matches_extra(o, filters): continue
             if filters.get('kind') and o['kind'] not in filters['kind']: continue
             if filters.get('source') and o['source'] not in filters['source']: continue
-            if filters.get('q') and not all(t in ' '.join(str(o.get(k) or '') for k in ['title','description','organization','location']).casefold() for t in filters['q'].casefold().split()): continue
+            if not matches_search(o, filters.get('q', '')): continue
             venues = list(o['venues'])
             if lat is not None and o.get('coordinates') and distance_km(lat,lon,o['coordinates']) <= radius: venues.append('Near me')
-            if 'Near me' in filters.get('locations', []) and 'Near me' not in venues: continue
-            other_locations = set(filters.get('locations', [])) - {'Near me'}
-            if other_locations and not other_locations.intersection(venues): continue
+            if not matches_locations(filters.get('locations', []), venues): continue
             commitment = filters.get('commitment', 'A mix of both')
             if commitment != 'A mix of both' and commitment != o['commitment']: continue
             candidates = [q for q in preparation_quests(o)
-                if filters.get('step_size','Any') == 'Any' or q['size'] == filters['step_size']]
+                if (filters.get('step_size','Any') == 'Any' or q['size'] == filters['step_size']) and (step_limit is None or q['minutes'] <= step_limit)]
             if not candidates: continue
             # With no effort set, use the opportunity's suggested first step (a mix of sizes, see program_catalog).
             chosen = next((q for q in candidates if q.get('suggested')), None) if not default_effort and filters.get('step_size','Any') == 'Any' else None
@@ -140,17 +163,15 @@ class OneThing:
             if o.get('general_task'):
                 general[o['id']] = (o,chosen,venues)
                 continue
-            if filters.get('interests') and not set(filters['interests']).intersection(supported_interests(p)): continue
-            if filters.get('goals') and not set(filters['goals']).intersection(o['career_goals']): continue
+            if not matches_choices(filters.get('interests', []), supported_interests(p), match_mode): continue
+            if not matches_choices(filters.get('goals', []), o['career_goals'], match_mode): continue
             matches[o['id']] = (o,chosen,venues)
         no_personalized_matches = bool(not matches and (filters.get('interests') or filters.get('goals')))
         using_fallback = bool(not matches and neutral and (filters.get('interests') or filters.get('goals') or general))
         if using_fallback: matches = neutral
         def relevance(o):
             if using_fallback: return 0
-            return (len(interest_tags.intersection(supported_interests(o['personalization'])))
-                    + len(skill_tags.intersection(o['skills']))
-                    + len(goal_tags.intersection(o['career_goals'])))
+            return match_details(o, interest_tags, goal_tags, skill_tags, filters.get('q', ''))['score'] + context_relevance(o, context)[0]
         ranked = rank_records([entry[0] for entry in matches.values()], relevance)
         if using_fallback:
             ranked.sort(key=lambda entry:(not bool(entry[0].get('general_task')), bool((entry[0].get('general_task') or {}).get('requirements')), (entry[0].get('general_task') or {}).get('minutes',999), (entry[0].get('general_task') or {}).get('number',999)))
@@ -159,10 +180,17 @@ class OneThing:
             task_ranked.sort(key=lambda entry:(bool(entry[0]['general_task'].get('requirements')),entry[0]['general_task']['minutes'],entry[0]['general_task']['number']))
             ranked=sprinkle(ranked,task_ranked)
             matches={**matches,**general}
+        if sort != 'relevance':
+            ranked.sort(key=lambda entry: ((matches[entry[0]['id']][1]['minutes'] if sort == 'shortest' else -matches[entry[0]['id']][1]['points']), -entry[1], entry[0]['id']))
         mixed = [matches[o['id']] for o,_,_ in ranked]
         ranking = {o['id']:dict(relevance_score=base, uniqueness_bonus=round(bonus,4)) for o,base,bonus in ranked}
         page = mixed[offset:offset+limit]
         cards = self.decorate([{**o, 'recommendation_type':'neutral' if using_fallback or o.get('general_task') else 'matched', 'placement':'fallback' if using_fallback else 'sprinkled' if o.get('general_task') else 'matched', 'ranking':ranking[o['id']], 'venues':venues, 'minutes':q['minutes'], 'suggested_quest_id':q['id'], 'preparation_difficulty':q['difficulty'], 'size':q['size'], 'effort':q['effort']} for o,q,venues in page])
+        for card in cards:
+            card['context_reasons'] = context_relevance(card, context)[1]
+            card['first_step_limit'] = step_limit
+            card['match_details'] = match_details(card, interest_tags, goal_tags, skill_tags, filters.get('q', '')) if card['recommendation_type'] != 'neutral' else dict(interests=[], goals=[], skills=[], title_terms=[], score=0)
+            card['matching_tags'] = list(dict.fromkeys(card['match_details']['interests'] + card['match_details']['goals'] + card['match_details']['skills']))
         if related:
             for card in cards:
                 exact = interest_tags.intersection(supported_interests(card['personalization']))
@@ -175,7 +203,7 @@ class OneThing:
             recommendation = generate_recommendation(choices)
             if recommendation:
                 fallback.update(active=True, reason='gemini_personalized_suggestion', message=('No current opportunities match your interests and goals with these filters. Here is a self-guided idea based on your choices.'), recommendation=recommendation)
-        return dict(opportunities=cards, quests=self.mark_quests(self.quests_for(cards)), total=len(mixed), offset=offset, limit=limit, has_more=offset+limit<len(mixed), data_mode='catalog', fallback=fallback, kinds=sorted({o['kind'] for o in self.catalog.values()}))
+        return dict(opportunities=cards, quests=self.mark_quests(self.quests_for(cards)), total=len(mixed), offset=offset, limit=limit, has_more=offset+limit<len(mixed), data_mode='catalog', context_applied=bool(any(context.values())), context_notes=(['Budget amount data is incomplete; showing confirmed free options only.'] if context.get('budget') in {'Under $25','Under $100'} else []) + (['Preferred event days use Pacific time when a scheduled date is known.'] if context.get('days') in {'Weekdays','Weekends'} else []), matched_count=sum(not o.get('general_task') for o,_,_ in mixed) if not using_fallback else 0, fallback=fallback, kinds=sorted({o['kind'] for o in self.catalog.values()}))
     def today(self):
         return self.clock().astimezone(DAY_ZONE).date()
     def profile(self):

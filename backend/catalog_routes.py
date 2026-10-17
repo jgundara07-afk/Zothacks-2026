@@ -21,7 +21,7 @@ def register_catalog(app):
     def opportunities():
         args = request.args
         try:
-            allowed = {"interests", "goals", "challenge_levels", "time_buckets", "locations", "commitment", "q", "scope", "lat", "lon", "radius_km", "include_past", "source", "kind", "offset", "limit", "skills", "experience", "cost", "prerequisites", "duration_quality", "schedule", "max_minutes"}
+            allowed = {"interests", "goals", "challenge_levels", "time_buckets", "locations", "commitment", "q", "scope", "lat", "lon", "radius_km", "include_past", "source", "kind", "offset", "limit", "skills", "experience", "cost", "prerequisites", "duration_quality", "schedule", "max_minutes", "match_mode"}
             if set(args) - allowed:
                 raise ValueError("Unknown filter parameters: " + ", ".join(sorted(set(args) - allowed)))
             flag = args.get("include_past", "false")
@@ -30,7 +30,7 @@ def register_catalog(app):
             result = load_catalog().query(
                 **{key: args.getlist(key) for key in ("interests", "goals", "challenge_levels", "time_buckets", "locations", "skills", "experience", "cost", "prerequisites", "duration_quality", "schedule")},
                 max_minutes=float(args["max_minutes"]) if "max_minutes" in args else None,
-                commitment=args.get("commitment"), q=args.get("q", ""), scope=args.get("scope", "opportunity"),
+                match_mode=args.get("match_mode", "any"), commitment=args.get("commitment"), q=args.get("q", ""), scope=args.get("scope", "opportunity"),
                 lat=float(args["lat"]) if "lat" in args else None,
                 lon=float(args["lon"]) if "lon" in args else None,
                 radius_km=float(args.get("radius_km", "25")), include_past=flag == "true",

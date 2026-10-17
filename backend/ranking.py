@@ -26,3 +26,22 @@ def rank_records(rows, relevance):
                  + 0.07 / math.sqrt(kinds[row['kind']]))
         scored.append((row, base, bonus))
     return sorted(scored, key=lambda entry: -(entry[1] + entry[2]))
+
+
+def match_details(row, interests=(), goals=(), skills=(), query=''):
+    """Explain relevance using explicit catalog tags and title evidence only."""
+    try:
+        from .filter_rules import supported_interests, search_terms, searchable, term_matches
+    except ImportError:
+        from filter_rules import supported_interests, search_terms, searchable, term_matches
+    p = row['personalization']
+    matched = dict(interests=sorted(set(interests).intersection(supported_interests(p))),
+                   goals=sorted(set(goals).intersection(row.get('career_goals', p.get('goals', [])))),
+                   skills=sorted(set(skills).intersection(row.get('skills', []))))
+    title = searchable(row.get('title', ''))
+    terms = search_terms(query)
+    title_hits = sum(term_matches(term, title) for term in terms)
+    # Interest and goal evidence outranks generic transferable skill tags.
+    score = len(matched['interests'])*4 + len(matched['goals'])*3 + len(matched['skills'])
+    score += title_hits*6 + (4 if terms and searchable(query) in title else 0)
+    return dict(**matched, title_terms=[term for term in terms if term_matches(term, title)], score=score)

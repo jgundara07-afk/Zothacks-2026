@@ -23,21 +23,26 @@ def register(app, svc):
     opportunities = svc.opportunities
     today = svc.today
 
-    @app.get('/opportunities')
-    def feed():
-        allowed = {'interests','goals','challenges','time','locations','skills','kind','commitment','step_size','q','offset','limit','lat','lon','radius_km','source','experience','cost','prerequisites','duration_quality','schedule','max_minutes'}
+    def parse_filters():
+        allowed = {'interests','goals','challenges','time','locations','skills','kind','commitment','step_size','q','offset','limit','lat','lon','radius_km','source','experience','cost','prerequisites','duration_quality','schedule','max_minutes','match_mode','sort','hide_saved','hide_completed'}
         if set(request.args) - allowed:
             raise ValueError('Unknown feed filter parameter')
         filters = {key:request.args.getlist(key) for key in ['interests','goals','challenges','time','locations','skills','kind','source','experience','cost','prerequisites','duration_quality','schedule']}
-        filters.update({key:request.args[key] for key in ['commitment','step_size','q'] if key in request.args})
+        filters.update({key:request.args[key] for key in ['commitment','step_size','q','match_mode','sort','hide_saved','hide_completed'] if key in request.args})
         filters.update({key:float(request.args[key]) for key in ['lat','lon','radius_km','max_minutes'] if key in request.args})
-        result = svc.feed_page(filters, int(request.args.get('offset',0)), int(request.args.get('limit',40)))
+        return filters
+
+    @app.get('/opportunities')
+    def feed():
+        result = svc.feed_page(parse_filters(), int(request.args.get('offset',0)), int(request.args.get('limit',40)))
         return jsonify(profile=profile(), checkin=checkin(), **result)
 
     @app.get('/recommendations')
     def recommendations():
         # Intentional broad search for onboarding, separate from strict feed filters.
-        filters = {'step_size': request.args.get('step_size', 'Any')}
+        filters = parse_filters()
+        filters.pop('interests', None)
+        filters.pop('goals', None)
         result = svc.feed_page(filters, int(request.args.get('offset', 0)), int(request.args.get('limit', 40)), related=True)
         return jsonify(profile=profile(), checkin=checkin(), recommendation_mode=True, **result)
 

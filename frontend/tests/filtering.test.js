@@ -35,6 +35,8 @@ test('catalog default preserves suggested effort instead of forcing the smallest
  const o={id:'course',personalization:{challenge_levels:['Hard']},suggested_quest_id:'hard'};
  const quests=[{id:'tiny',opportunity_id:'course',daily:true,size:'Small',effort:'small',difficulty:'Lazy',minutes:2,points:15},{id:'hard',opportunity_id:'course',daily:true,size:'Big',effort:'big',difficulty:'Hard',minutes:45,points:75}];
  assert.equal(chooseVariant(o,quests,{stepSize:'Any',preferences:base}).points,75);
+ assert.equal(chooseVariant(o,quests,{stepSize:'Big',preferences:base}).points,75);
  assert.equal(chooseVariant(o,quests,{stepSize:'Small',preferences:base}).points,15);
- assert.equal(chooseVariant(o,quests,{stepSize:'Any',preferences:base,defaultEffort:'small'}).points,15);
+ assert.equal(chooseVariant(o,quests,{stepSize:'Any',preferences:base,defaultEffort:'small'}).points,75); // Server already accounts for check-in effort.
+ assert.equal(chooseVariant(o,quests,{stepSize:'Any',preferences:base,availableMinutes:15}).points,15);
 });

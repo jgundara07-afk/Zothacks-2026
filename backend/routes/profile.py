@@ -8,9 +8,11 @@ from pypdf import PdfReader
 try:
     from . import body
     from ..preferences import PREFERENCES
+    from ..user_context import validate_context
 except ImportError:
     from routes import body
     from preferences import PREFERENCES
+    from user_context import validate_context
 
 def register(app, svc):
     db = svc.db
@@ -58,7 +60,8 @@ def register(app, svc):
         if commitment not in PREFERENCES['commitments']:
             raise ValueError('Choose a valid commitment.')
         normalized['commitment'] = commitment
-        p = dict(id='demo', name='Alex', goal=goal, goals=list(dict.fromkeys(goals)), interests=list(dict.fromkeys(data['interests'])), skills=list(dict.fromkeys(data['skills'])), preferences=normalized)
+        context = validate_context(data.get('context', (profile() or {}).get('context', {})))
+        p = dict(context=context, id='demo', name='Alex', goal=goal, goals=list(dict.fromkeys(goals)), interests=list(dict.fromkeys(data['interests'])), skills=list(dict.fromkeys(data['skills'])), preferences=normalized)
         previous = profile()
         if previous and (previous.get('goals',[]) != p['goals'] or previous.get('goal') != p['goal']):
             db.put('activity',dict(id='profile-update:'+str(uuid4()),profile_id='demo',kind='profile_update',recorded_at=clock().isoformat()))
