@@ -34,6 +34,7 @@ Retain the curated dummy document and canonical `backend/seed.json` fixture as a
 - Colorful Spotify Wrapped-inspired rewards, analytics, and recap screens within a cohesive design.
 - A responsive scrolling feed with loading, empty, error, and end-of-feed states.
 - Keyboard navigation, visible focus, accessible contrast, and reduced-motion alternatives to climbing and reward animations.
+- Visual references live in `design/references/`, with notes on what to take from each in `design/notes.md`. Check them before frontend design work.
 
 ## Stack and shared contract
 React + Vite frontend; Python + Flask REST API; MongoDB via PyMongo. Preserve the existing persistent SQLite demo adapter when `MONGO_URI` is empty so local setup requires no database service. Keep `MONGO_URI` and optional service secrets in the ignored root `.env`, never Git. Keep one frontend API client and canonical seed JSON.
