@@ -29,12 +29,13 @@ Use timeouts, bounded retries with backoff, provider rate limits, and caching. S
 Retain the curated dummy document and canonical `backend/seed.json` fixture as an explicit offline demo mode. Clearly label fictional samples and cached/stale records; never silently present fallback samples as live results. Real records should link to their source and show collection freshness without implying guaranteed availability, credentials, or career outcomes. Live gathering requires internet and any provider credentials; offline sample mode must remain usable without them. Use fictional resume content in demonstrations and keep social imports out of scope.
 
 ## Design and interaction
-- Mountain-climbing progress tracker with a completion animation that advances the climb when a quest is finished.
-- A unique analog/digital visual system: sticky notes, paper textures, and handwritten accents paired with clear controls and readable typography.
-- Colorful Spotify Wrapped-inspired rewards, analytics, and recap screens within a cohesive design.
+- **Current art direction:** cinematic, analog black-and-white photography with visible grain, misty depth, halftone accents, warm off-white content surfaces, deep charcoal, and a restrained burnt-red accent. Avoid brutalist UI, generic stock imagery, literal fantasy motifs, and sticky-note styling.
+- **First-screen composition:** use `design/references/iris-halftone-signin-reference.png` and `design/ONBOARDING_FLOW.md` as the primary references. Lead with a distinctive ghosted photograph at the top/background; keep the sign-up/log-in controls crisp and readable in a calm foreground panel. Adapt the composition for mobile.
+- Every quest/task card needs a relevant aesthetic editorial photograph with a consistent crop and readable text. Use original or properly licensed images; reference screenshots are not app assets.
+- Progress and reward visuals should support the photography-first system; avoid a literal mountain-climbing UI unless it clearly improves the working user journey.
 - A responsive scrolling feed with loading, empty, error, and end-of-feed states.
 - Keyboard navigation, visible focus, accessible contrast, and reduced-motion alternatives to climbing and reward animations.
-- Visual references live in `design/references/`, with notes on what to take from each in `design/notes.md`. Check them before frontend design work.
+- Visual references live in `design/references/`, with notes in `design/references/README.md` and `design/notes.md`. Check them before frontend design work. For visual changes, use `/one-thing-visual-pass` to compare screenshots against the chosen composition.
 
 ## Stack and shared contract
 React + Vite frontend; Python + Flask REST API; MongoDB via PyMongo. Follow the folder layout in the README's "Project layout" section: new pages go in `frontend/src/pages/`, reusable UI in `frontend/src/components/`, styles in the matching `frontend/src/styles/` area file with shared fonts/colors in `tokens.css`, and new API routes in a `backend/routes/` module registered in `app.py`. Preserve the existing persistent SQLite demo adapter when `MONGO_URI` is empty so local setup requires no database service. Keep `MONGO_URI` and optional service secrets in the ignored root `.env`, never Git. Keep one frontend API client and canonical seed JSON.

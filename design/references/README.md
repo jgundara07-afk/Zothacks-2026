@@ -22,6 +22,7 @@ When prompting Claude Code from this project folder, use `@design/ONBOARDING_FLO
 
 ## User-provided photography references (October 17)
 
+- `iris-halftone-signin-reference.png`: **Primary first-screen layout reference.** Borrow its ghosted atmospheric photograph, quiet high-contrast sign-in panel, and halftone image treatment. Adapt the composition for mobile with the photo high on the screen fading into the controls. The exact people, landscape, branding, and form details are not requirements.
 - `analog-bw-storefront-grain.png`: Reference the deep blacks, visible film grain, luminous highlights, and atmospheric urban photography. Do not copy the website navigation, signage, or product branding.
 - `analog-bw-editorial-portrait.png`: Reference the soft monochrome tones, subtle grain, restrained editorial composition, and generous negative space. The subject is not a required motif.
 
