@@ -3,7 +3,6 @@ import {ArrowRight,ArrowLeft,Check,Clock3} from 'lucide-react';
 import {options} from './PreferenceFields';
 import InterestPicker from './InterestPicker';
 import {OPENING_HALFTONE} from '../constants';
-import PixelFlame from './PixelFlame';
 import SignIn from './SignIn';
 import {photoFor,scenePhoto,INTEREST_SCENES} from '../utils/photos';
 
@@ -62,7 +61,6 @@ export default function Onboarding({data,busy,error,hasProfile,interests,setInte
   <div className="ob-words" aria-hidden="true">
    <p className="ob-words-line"><span style={{'--i':0}}>Move</span> <span style={{'--i':1}}>forward,</span></p>
    <p className="ob-words-line"><span style={{'--i':2}}>every</span> <span style={{'--i':3}}>day.</span></p>
-   <div className="ob-burn-flames">{[0,1,2,3,4].map(i=><PixelFlame key={i} className="ob-burn-flame" style={{'--i':i}}/>)}</div>
    <div className="ob-ash">{ASH.map((a,i)=><i key={i} style={a}/>)}</div>
   </div>
   <div className="ob-letterbox ob-letterbox-top" aria-hidden="true"/>

@@ -59,12 +59,6 @@
 .phase-burn .ob-words-line:nth-child(1) { animation-delay: .3s; }
 @keyframes burn-up { from { --burn: -20%; } to { --burn: 118%; } }
 
-/* small pixel flames riding the burning edge */
-.ob-burn-flames { position: absolute; left: 50%; top: calc(50% + 34px); width: 250px; margin-left: -125px; display: flex; justify-content: space-between; align-items: flex-end; opacity: 0; pointer-events: none; }
-.ob-burn-flame { width: 30px; height: auto; image-rendering: pixelated; transform: scale(calc(.75 + var(--i) * .07)); filter: drop-shadow(0 0 8px rgba(236,106,32,.8)); }
-.ob-burn-flame:nth-child(even) { margin-bottom: 8px; }
-.phase-burn .ob-burn-flames { animation: flames-rise 1.65s cubic-bezier(.45,0,.7,1) forwards; }
-@keyframes flames-rise { 0% { opacity: 0; transform: translateY(10px); } 12% { opacity: 1; } 78% { opacity: 1; } 100% { opacity: 0; transform: translateY(-150px); } }
 
 /* embers break off, rise, and cool from gold to red to grey ash */
 .ob-ash { position: absolute; left: 50%; top: 50%; width: 300px; height: 150px; margin: -75px 0 0 -150px; pointer-events: none; }
