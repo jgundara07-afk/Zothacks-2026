@@ -7,4 +7,12 @@ async function request(path, data, method = 'POST') {
   if (!response.ok) throw new Error(result.error || 'Something went wrong. Please try again.');
   return result;
 }
-export const api = {analytics:()=>request('/analytics'),resume:data=>request('/resume-analysis',data),feed:()=>request('/opportunities'),quests:()=>request('/quests'),progress:()=>request('/progress'),checkin:data=>request('/checkins',data),profile:data=>request('/profiles',data),save:id=>request('/saved',{opportunity_id:id}),unsave:id=>request('/saved',{opportunity_id:id},'DELETE'),complete:id=>request('/completions',{quest_id:id})};
+function catalogQuery(filters = {}) {
+  const query = new URLSearchParams();
+  for (const [key, value] of Object.entries(filters)) {
+    if (value === undefined || value === null) continue;
+    for (const item of Array.isArray(value) ? value : [value]) query.append(key, String(item));
+  }
+  return request(`/catalog/opportunities?${query}`);
+}
+export const api = {catalogOptions:()=>request('/catalog/options'),catalogSearch:catalogQuery,analytics:()=>request('/analytics'),resume:data=>request('/resume-analysis',data),feed:()=>request('/opportunities'),quests:()=>request('/quests'),progress:()=>request('/progress'),checkin:data=>request('/checkins',data),profile:data=>request('/profiles',data),save:id=>request('/saved',{opportunity_id:id}),unsave:id=>request('/saved',{opportunity_id:id},'DELETE'),complete:id=>request('/completions',{quest_id:id})};

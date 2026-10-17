@@ -1,0 +1,108 @@
+{
+  "audited_at": "2026-10-17T19:15:36.015225+00:00",
+  "database": "opportunity_data/data/opportunities.sqlite3",
+  "json_export": "opportunity_data/data/opportunities.json",
+  "total_opportunities": 42908,
+  "by_source": {
+    "anteater": 9299,
+    "coursera": 24990,
+    "eventbrite": 11,
+    "irvine": 294,
+    "muse": 7261,
+    "zotspot": 1053
+  },
+  "export_count": 42908,
+  "sqlite_integrity": "ok",
+  "validation_issues": [],
+  "individually_reviewed_estimates": 6,
+  "event_timing_at_collection": {
+    "past": 541,
+    "upcoming_or_in_progress": 523
+  },
+  "automatic_refresh": false,
+  "latest_source_runs": {
+    "anteater": {
+      "status": "partial",
+      "records_processed": 9299,
+      "errors": [
+        {
+          "source_id": "ENGR69",
+          "error": "Missing title, source ID or HTTPS source URL"
+        },
+        {
+          "source_id": "MGMTEP201",
+          "error": "Missing title, source ID or HTTPS source URL"
+        },
+        {
+          "source_id": "PATH234A",
+          "error": "Missing title, source ID or HTTPS source URL"
+        },
+        {
+          "source_id": "PATH235A",
+          "error": "Missing title, source ID or HTTPS source URL"
+        },
+        {
+          "source_id": "PSYCH112LC",
+          "error": "Missing title, source ID or HTTPS source URL"
+        },
+        {
+          "source_id": "UNISTU2",
+          "error": "Missing title, source ID or HTTPS source URL"
+        },
+        {
+          "source_id": "UNISTU41",
+          "error": "Missing title, source ID or HTTPS source URL"
+        }
+      ],
+      "run_id": "30297a54f23e48198f55efde450cd538",
+      "collected_at": "2026-10-17T19:06:52.675453+00:00"
+    },
+    "coursera": {
+      "status": "complete",
+      "records_processed": 24990,
+      "errors": [],
+      "run_id": "30297a54f23e48198f55efde450cd538",
+      "collected_at": "2026-10-17T19:06:52.675453+00:00"
+    },
+    "zotspot": {
+      "status": "complete",
+      "records_processed": 1053,
+      "errors": [],
+      "run_id": "30297a54f23e48198f55efde450cd538",
+      "collected_at": "2026-10-17T19:06:52.675453+00:00"
+    },
+    "eventbrite": {
+      "status": "complete",
+      "records_processed": 11,
+      "errors": [],
+      "run_id": "30297a54f23e48198f55efde450cd538",
+      "collected_at": "2026-10-17T19:06:52.675453+00:00"
+    },
+    "muse": {
+      "status": "partial",
+      "records_processed": 5823,
+      "errors": [
+        {
+          "error": "Muse category pagination cap reached; results are partial"
+        }
+      ],
+      "run_id": "30297a54f23e48198f55efde450cd538",
+      "collected_at": "2026-10-17T19:06:52.675453+00:00"
+    },
+    "irvine": {
+      "status": "complete",
+      "records_processed": 294,
+      "errors": [],
+      "run_id": "dbd7dc79b1954f04be381b59525f0036",
+      "collected_at": "2026-10-17T19:07:58.627777+00:00"
+    }
+  },
+  "limitations": [
+    "Catalog records are snapshots, not guaranteed available opportunities",
+    "Muse is a bounded category snapshot; global pagination is capped",
+    "Anteater records without titles are excluded",
+    "Eventbrite covers manually discovered public IDs, not global search",
+    "Most difficulty/skill/first-step fields use an authored estimation rubric",
+    "Existing demo feed is not connected to this separate catalog"
+  ]
+}

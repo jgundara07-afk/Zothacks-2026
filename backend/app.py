@@ -5,14 +5,24 @@ from datetime import datetime, timezone
 from flask import Flask, jsonify
 from dotenv import load_dotenv
 from pymongo.errors import PyMongoError
-from store import Store, ROOT
-from services import OneThing
-from routes import profile, feed, progress, resume
+try:
+    from .store import Store, ROOT
+    from .services import OneThing
+    from .routes import profile, feed, progress, resume
+except ImportError:
+    from store import Store, ROOT
+    from services import OneThing
+    from routes import profile, feed, progress, resume
 
 load_dotenv(ROOT.parent / '.env')
 
 def create_app(store=None, now=None):
     app = Flask(__name__)
+    try:
+        from .catalog_routes import register_catalog
+    except ImportError:
+        from catalog_routes import register_catalog
+    register_catalog(app)
     db = store or Store(os.getenv('MONGO_URI'))
     seed = json.loads((ROOT / 'seed.json').read_text())
     for collection, documents in seed.items():

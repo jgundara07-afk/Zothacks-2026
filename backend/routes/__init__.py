@@ -1,6 +1,7 @@
 """API routes, grouped by feature. Each module has a register(app, svc) function that app.py calls."""
 from flask import request
 
+
 def body(key):
     """The request's JSON object, after checking that `key` is a string in it."""
     data = request.get_json(silent=True)

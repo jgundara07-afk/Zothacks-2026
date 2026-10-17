@@ -1,6 +1,9 @@
 import re
 from flask import jsonify
-from routes import body
+try:
+    from . import body
+except ImportError:
+    from routes import body
 
 ROLES = {'Product designer':['Design','Research','Writing'], 'Software developer':['Coding','Research','Writing'], 'Community organizer':['Writing','Research','Design']}
 ALIASES = {'Coding':['coding','python','javascript','react','programming','software','html','css','sql'], 'Design':['design','figma','wireframe','prototype','ux','ui'], 'Writing':['writing','wrote','written','copywriting','communication','documentation','editor'], 'Research':['research','analysis','analytics','survey','interview','data']}

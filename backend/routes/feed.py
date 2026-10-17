@@ -1,5 +1,8 @@
 from flask import jsonify
-from routes import body
+try:
+    from . import body
+except ImportError:
+    from routes import body
 
 def register(app, svc):
     db = svc.db

@@ -1,0 +1,44 @@
+{
+  "anteater-f22f18faa979f19caee0": {
+    "difficulty": "Easy",
+    "first_step_minutes": 15,
+    "suggested_first_step": "Read the Python course prerequisites and write a tiny example using a function and a return value.",
+    "inferred_skills": ["Coding"],
+    "reason": "Reviewed the source description: introductory Python syntax, control flow and functions; 15 minutes estimates only the preparation exercise."
+  },
+  "anteater-afd0e77a5900531644d3": {
+    "difficulty": "Hard",
+    "first_step_minutes": 15,
+    "suggested_first_step": "Review the MATLAB requirements and list one psychology research question you could explore with data.",
+    "inferred_skills": ["Coding", "Data analysis", "Research"],
+    "reason": "Reviewed the graduate course description: introductory programming applied to experimental psychology, probability and simulation; more demanding than a general beginner course."
+  },
+  "coursera-034308fcb39257cbf479": {
+    "difficulty": "Hard",
+    "first_step_minutes": 10,
+    "suggested_first_step": "Review the lab prerequisites and identify what the NCAA model is trying to predict before starting the lab.",
+    "inferred_skills": ["Data analysis"],
+    "reason": "Reviewed the self-paced machine-learning lab description and reported one-hour workload; the 10-minute estimate is preparation only, not the full lab."
+  },
+  "zotspot-8ed83eca38c581f5ee66": {
+    "difficulty": "Easy",
+    "first_step_minutes": 5,
+    "suggested_first_step": "Draft a two-sentence introduction and one informational interview question; check the source date before attending.",
+    "inferred_skills": ["Community", "Writing"],
+    "reason": "Reviewed Networking 101's introductory practice scenarios. Historical calendar record: this is a preparation suggestion, not a claim the event is upcoming."
+  },
+  "zotspot-a5c68a72cbcef60ece7f": {
+    "difficulty": "Easy",
+    "first_step_minutes": 5,
+    "suggested_first_step": "Check the UCI Law student eligibility restriction and source date, then draft a short elevator pitch.",
+    "inferred_skills": ["Community", "Writing"],
+    "reason": "Reviewed the workshop description, including its UCI Law students-only restriction. Do not treat this historical event as open to every student."
+  },
+  "zotspot-778b72c1d8db032eeeaf": {
+    "difficulty": "Easy",
+    "first_step_minutes": 10,
+    "suggested_first_step": "Check registration and eligibility, then prepare two questions about the employer's recruitment process.",
+    "inferred_skills": ["Community"],
+    "reason": "Reviewed the ESC x SHPE employer networking session description; ten minutes estimates preparation, while the source event lasts ninety minutes."
+  }
+}
