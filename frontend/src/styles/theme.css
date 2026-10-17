@@ -284,3 +284,64 @@ html, body, #root { overflow-x: clip; }
 .wrapped .recap-big small { margin-top: 18px; font-size: 14px; }
 .recap-method { margin-top: 16px; font-size: 13px; opacity: .8; }
 .recap-method summary { cursor: pointer; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; font-style: normal; font-size: 11px; }
+
+/* ===================== Feed as a full-screen scroll (Oct 17) ===================== */
+
+/* The page itself never scrolls (each screen scrolls inside), so the browser shows no scrollbar. */
+html, body { height: 100%; overflow: hidden; }
+#root { height: 100%; }
+
+/* Discover is only the cards: one card fills the screen and snaps to the next, like Reels / TikTok. */
+.feed-page { padding: 0 10px; }
+.opportunity-feed { flex: 1; min-height: 0; gap: 0; padding: 0; scroll-snap-type: y mandatory; }
+.opportunity-feed .quest-card { flex: 0 0 100%; height: 100%; margin: 0; border-radius: 0; background: none; border: 0; box-shadow: none; overflow: visible; scroll-snap-align: start; scroll-snap-stop: always; padding: 10px 0; }
+.opportunity-feed .quest-card-open {
+  height: 100%; display: flex; flex-direction: column; padding: 10px 10px 16px;
+  background: linear-gradient(180deg, var(--card-top), var(--card-bottom)); border: 1px solid var(--card-edge); border-radius: 18px;
+  box-shadow: 0 0 18px var(--card-glow), inset 0 0 10px var(--card-glow), 0 24px 40px -26px rgba(0,0,0,.9);
+}
+.opportunity-feed .quest-card-photo { flex: 1; min-height: 180px; height: auto; }
+.opportunity-feed .quest-card-body { flex-shrink: 0; }
+.opportunity-feed .quest-card .save-float { top: 30px; right: 20px; }
+.feed-load-sentinel { flex: 0 0 auto; scroll-snap-align: end; padding: 16px 0 24px; text-align: center; }
+
+/* five categories, five card colors */
+.quest-card { --card-top: #571b1b; --card-bottom: #321010; --card-edge: #a8443b; --card-glow: rgba(138,38,32,.24); }
+.quest-card.cat-career    { --card-top: #571b1b; --card-bottom: #321010; --card-edge: #a8443b; --card-glow: rgba(138,38,32,.26); }
+.quest-card.cat-learn     { --card-top: #1d2b4f; --card-bottom: #0f1630; --card-edge: #5672b0; --card-glow: rgba(70,100,170,.26); }
+.quest-card.cat-build     { --card-top: #1d3b2b; --card-bottom: #0e1f16; --card-edge: #4f8d61; --card-glow: rgba(70,140,95,.24); }
+.quest-card.cat-community { --card-top: #4f3517; --card-bottom: #2a1b0a; --card-edge: #b5843f; --card-glow: rgba(180,130,60,.24); }
+.quest-card.cat-wellbeing { --card-top: #3f2047; --card-bottom: #21102a; --card-edge: #9b5cab; --card-glow: rgba(150,90,170,.24); }
+.opportunity-list .quest-card { background: linear-gradient(180deg, var(--card-top), var(--card-bottom)); border-color: var(--card-edge); box-shadow: 0 0 14px var(--card-glow); }
+.quest-category {
+  position: absolute; z-index: 3; top: 10px; left: 10px; padding: 5px 10px; border-radius: 999px;
+  font-family: var(--font-serif); font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+  color: #f4ead6; background: rgba(11,8,6,.55); border: 1px solid var(--card-edge); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+}
+
+/* header icons for List and Filters (they used to sit in a bottom toolbar) */
+.header-icon { position: relative; width: 38px; height: 38px; display: grid; place-items: center; border-radius: 50%; border: 1px solid rgba(239,227,203,.22); color: var(--on-ink); }
+.header-icon[aria-pressed=true] { background: var(--on-ink); color: var(--ink-0); }
+.header-icon .filter-count { position: absolute; top: -4px; right: -4px; min-width: 17px; height: 17px; padding: 0 4px; border-radius: 9px; display: grid; place-items: center; font-size: 10px; }
+.header-actions { gap: 8px; }
+
+/* points over time: a slim, quiet bar strip (components/PointsTimeline.jsx) */
+.points-timeline { margin: 0 0 18px; padding: 14px 16px 12px; background: var(--ink-1); border: 1px solid rgba(168,68,59,.4); border-radius: 12px; color: var(--on-ink); }
+.pt-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 10px; }
+.pt-head .eyebrow { color: var(--on-ink-mute) !important; }
+.pt-head strong { font-family: var(--font-title); font-weight: 900; font-size: 26px; line-height: 1; color: var(--on-ink); transform: scaleX(.8); transform-origin: right center; }
+.pt-head strong small { font-family: var(--font-serif); font-weight: 400; font-style: italic; font-size: 13px; color: var(--on-ink-mute); }
+.pt-bars { display: flex; align-items: flex-end; gap: 3px; height: 48px; }
+.pt-bars span { flex: 1; height: var(--h); min-height: 3px; border-radius: 2px 2px 0 0; background: rgba(168,68,59,.35); transition: height .8s cubic-bezier(.2,.8,.2,1); }
+.pt-bars span.earned { background: linear-gradient(180deg, #d0574b, #8a2620); box-shadow: 0 0 8px rgba(208,87,75,.35); }
+.pt-bars span:last-child { outline: 1px solid rgba(184,144,74,.55); outline-offset: 1px; }
+.pt-axis { display: flex; justify-content: space-between; margin-top: 6px; font-family: var(--font-serif); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--on-ink-mute); }
+.wrapped + .points-timeline { margin-top: 14px; }
+
+/* rounded corners everywhere: pills for chips and tags, soft panels and inputs */
+.tags > span, .quest-meta > span, .choice-tags button, .climb-stats > span { border-radius: 999px !important; }
+select, .resume-lab textarea, .signin-account, .checklist label, .preference-choices label, .opportunity-facts, .pdf-upload, .local-label, .gap-filter, .error { border-radius: 12px !important; }
+.climb, .progress-panel, .resume-lab, .analytics-panel, .progress-summary, .quest-preview, .wrapped, .milestone-banner, .points-timeline { border-radius: 18px !important; }
+.detail-image, .detail-image .print, .mountain, .calendar-day { border-radius: 14px !important; }
+.modal { border-radius: 26px 26px 0 0 !important; }
+@media (min-width: 700px) { .phone-shell { border-radius: 30px; } }

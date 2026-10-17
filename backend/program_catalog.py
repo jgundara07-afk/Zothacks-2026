@@ -39,9 +39,14 @@ def preparation_quests(o):
          ['Verify eligibility and choose a relevant preparation deliverable.', 'Spend a focused session producing a draft, practice artifact or detailed plan.', 'Review your work, record evidence and choose a next step.']),
         ('project', 'Big', 'Challenging', 240, '3+ hours', 150, 'Develop a preparation project',
          ['Verify the source and define a relevant project with achievable milestones.', 'Spend a longer focused work session developing your project, allowing breaks.', 'Review the deliverable, record your work and decide what you will do next.'])]
+    # Points scale with how demanding the opportunity itself is, so a first step toward a hard internship is worth
+    # more than the same step toward an easy course. Rounded to the nearest 5.
+    level = (o['personalization'].get('challenge_levels') or ['Easy'])[-1]
+    weight = {'Lazy': .8, 'Easy': 1, 'Medium': 1.3, 'Hard': 1.6, 'Challenging': 2}.get(level, 1)
+    scaled = lambda base: max(5, int(round(base * weight / 5)) * 5)
     return [dict(id=o['id']+'::'+key, opportunity_id=o['id'], title=title+': '+o['title'],
                  description='A self-reported preparation quest. This does not complete the course, job, event or outdoor activity. Verify source details first; use a fresh action for each daily practice.',
-                 steps=steps, points=points, minutes=minutes, difficulty=difficulty,
+                 steps=steps, points=scaled(points), minutes=minutes, difficulty=difficulty,
                  time_bucket=bucket, effort=key if key in {'small','medium'} else 'big', size=size, daily=True,
                  estimated=True, quest_type='preparation')
             for key,size,difficulty,minutes,bucket,points,title,steps in plans]
