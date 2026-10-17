@@ -6,13 +6,15 @@ try:
     from .preferences import PREFERENCES, INTEREST_GROUPS
     from .filter_rules import supported_interests, validate_extra, matches_extra
     from .ranking import rank_records
-    from .neutral import is_neutral, fallback_info
+    from .neutral import is_neutral, fallback_info, sprinkle
+    from .gemini_recommendation import generate_recommendation
 except ImportError:
     from program_catalog import program_catalog, preparation_quests, available, distance_km
     from preferences import PREFERENCES, INTEREST_GROUPS
     from filter_rules import supported_interests, validate_extra, matches_extra
     from ranking import rank_records
-    from neutral import is_neutral, fallback_info
+    from neutral import is_neutral, fallback_info, sprinkle
+    from gemini_recommendation import generate_recommendation
 
 DAY_ZONE = ZoneInfo("America/Los_Angeles")
 
@@ -87,7 +89,7 @@ class OneThing:
         if len(filters.get('q', '')) > 300:
             raise ValueError('Search text must be at most 300 characters')
         if offset < 0 or not 1 <= limit <= 100:
-            raise ValueError('offset must be nonnegative and limit must be 1–100')
+            raise ValueError('offset must be nonnegative and limit must be 1â€“100')
         for field, option in [('interests','interests'),('goals','goals'),('challenges','challenges'),('time','time'),('locations','locations')]:
             if any(v not in PREFERENCES[option] for v in filters.get(field, [])):
                 raise ValueError('Unknown '+field+' filter')
@@ -98,11 +100,12 @@ class OneThing:
         lat,lon = filters.get('lat'),filters.get('lon')
         radius = filters.get('radius_km', 25)
         if (lat is None) != (lon is None) or (lat is not None and (not math.isfinite(lat) or not math.isfinite(lon) or not -90 <= lat <= 90 or not -180 <= lon <= 180)) or not math.isfinite(radius) or not 0 < radius <= 500:
-            raise ValueError('Provide valid latitude, longitude and radius (0–500 km)')
+            raise ValueError('Provide valid latitude, longitude and radius (0â€“500 km)')
         if 'Near me' in filters.get('locations', []) and lat is None:
             raise ValueError('Near me requires your location. Allow location access or choose another location filter.')
         matches = {}
         neutral = {}
+        general = {}
         profile = self.profile() or {}
         interest_tags = set(filters.get('interests') or profile.get('interests', []))
         skill_tags = set(filters.get('skills') or profile.get('skills', []))
@@ -130,10 +133,14 @@ class OneThing:
             if not candidates: continue
             chosen = min(candidates, key=lambda q:(q['effort'] != default_effort,q['minutes']))
             if is_neutral(o): neutral[o['id']] = (o,chosen,venues)
+            if o.get('general_task'):
+                general[o['id']] = (o,chosen,venues)
+                continue
             if filters.get('interests') and not set(filters['interests']).intersection(supported_interests(p)): continue
             if filters.get('goals') and not set(filters['goals']).intersection(o['career_goals']): continue
             matches[o['id']] = (o,chosen,venues)
-        using_fallback = bool(not matches and neutral and (filters.get('interests') or filters.get('goals')))
+        no_personalized_matches = bool(not matches and (filters.get('interests') or filters.get('goals')))
+        using_fallback = bool(not matches and neutral and (filters.get('interests') or filters.get('goals') or general))
         if using_fallback: matches = neutral
         def relevance(o):
             if using_fallback: return 0
@@ -141,18 +148,30 @@ class OneThing:
                     + len(skill_tags.intersection(o['skills']))
                     + len(goal_tags.intersection(o['career_goals'])))
         ranked = rank_records([entry[0] for entry in matches.values()], relevance)
+        if using_fallback:
+            ranked.sort(key=lambda entry:(not bool(entry[0].get('general_task')), bool((entry[0].get('general_task') or {}).get('requirements')), (entry[0].get('general_task') or {}).get('minutes',999), (entry[0].get('general_task') or {}).get('number',999)))
+        elif general:
+            task_ranked=rank_records([entry[0] for entry in general.values()],lambda o:0)
+            task_ranked.sort(key=lambda entry:(bool(entry[0]['general_task'].get('requirements')),entry[0]['general_task']['minutes'],entry[0]['general_task']['number']))
+            ranked=sprinkle(ranked,task_ranked)
+            matches={**matches,**general}
         mixed = [matches[o['id']] for o,_,_ in ranked]
         ranking = {o['id']:dict(relevance_score=base, uniqueness_bonus=round(bonus,4)) for o,base,bonus in ranked}
         page = mixed[offset:offset+limit]
-        cards = self.decorate([{**o, 'recommendation_type':'neutral' if using_fallback else 'matched', 'ranking':ranking[o['id']], 'venues':venues, 'minutes':q['minutes'], 'suggested_quest_id':q['id'], 'preparation_difficulty':q['difficulty'], 'size':q['size'], 'effort':q['effort']} for o,q,venues in page])
+        cards = self.decorate([{**o, 'recommendation_type':'neutral' if using_fallback or o.get('general_task') else 'matched', 'placement':'fallback' if using_fallback else 'sprinkled' if o.get('general_task') else 'matched', 'ranking':ranking[o['id']], 'venues':venues, 'minutes':q['minutes'], 'suggested_quest_id':q['id'], 'preparation_difficulty':q['difficulty'], 'size':q['size'], 'effort':q['effort']} for o,q,venues in page])
         if related:
             for card in cards:
                 exact = interest_tags.intersection(supported_interests(card['personalization']))
                 nearby = [g['name'] for g in INTEREST_GROUPS if g['name'] != 'Original interests' and set(g['interests']).intersection(interest_tags) and set(g['interests']).intersection(supported_interests(card['personalization']))]
                 card['recommendation_reason'] = ('Matches '+', '.join(sorted(exact))) if exact else ('Related to your '+', '.join(nearby)+' interests') if nearby else 'An exploratory option; no direct interest match.'
-        if using_fallback:
-            cards = [{**o,'matching_tags':[]} for o in cards]
-        return dict(opportunities=cards, quests=self.mark_quests(self.quests_for(cards)), total=len(mixed), offset=offset, limit=limit, has_more=offset+limit<len(mixed), data_mode='catalog', fallback=fallback_info(using_fallback,filters), kinds=sorted({o['kind'] for o in self.catalog.values()}))
+        cards = [{**o,'matching_tags':[]} if o['recommendation_type']=='neutral' else o for o in cards]
+        fallback = fallback_info(using_fallback, filters)
+        if no_personalized_matches and not related and offset == 0:
+            choices = {key: value for key, value in filters.items() if key not in {'lat', 'lon', 'radius_km'} and value not in (None, '', [], {})}
+            recommendation = generate_recommendation(choices)
+            if recommendation:
+                fallback.update(active=True, reason='gemini_personalized_suggestion', message=('No current opportunities match your interests and goals with these filters. Here is a self-guided idea based on your choices.'), recommendation=recommendation)
+        return dict(opportunities=cards, quests=self.mark_quests(self.quests_for(cards)), total=len(mixed), offset=offset, limit=limit, has_more=offset+limit<len(mixed), data_mode='catalog', fallback=fallback, kinds=sorted({o['kind'] for o in self.catalog.values()}))
     def today(self):
         return self.clock().astimezone(DAY_ZONE).date()
     def profile(self):

@@ -19,6 +19,13 @@ def hit(pattern, text):
 
 def assess(row, duration):
     """Assign each record a level and explicit evidence; honor reviewed overrides."""
+    if row.get('kind')=='General task' and row.get('general_task'):
+        task=row['general_task'];requirements=task.get('requirements',[])
+        return dict(version=VERSION,difficulty=task['difficulty'],difficulty_basis='User-supplied task difficulty; independent of duration',difficulty_is_estimate=True,
+                    review_method='User-supplied general task with authored time and accessible alternatives',experience_level='No experience',experience_is_estimate=True,
+                    experience_basis='Self-guided general activity; see requirements',prerequisite_status='Required' if requirements else 'None stated',prerequisite_basis='; '.join(requirements) or 'No specific prerequisite stated',
+                    cost='Free',cost_basis='Self-guided activity using existing/free tools; paid subscriptions not required',duration_quality='Estimated',languages=['en'],
+                    eligibility_text='; '.join(requirements) or None,eligibility_verified=False,registration_required=False,schedule_type='Self-paced')
     title = row.get("title", "")
     text = title + " " + (row.get("description") or "")
     kind = row["kind"]

@@ -13,6 +13,7 @@ from .personalize import TAXONOMY, status
 from .relevance import inclusion
 from .enrich import enrich
 from .effort import FILTER_OPTIONS
+from .authored import is_general_task, validate_task
 
 ROOT = Path(__file__).resolve().parent
 DESTINATION = ROOT.parent / "backend" / "catalog"
@@ -55,7 +56,8 @@ def validate(row):
         lat, lon = coords["latitude"], coords["longitude"]
         if not math.isfinite(lat) or not math.isfinite(lon) or not -90 <= lat <= 90 or not -180 <= lon <= 180:
             raise ValueError(f"{row['id']}: invalid geographic coordinates")
-    if not row.get("title") or not row["source_url"].startswith("https://"):
+    if is_general_task(row):validate_task(row)
+    if not row.get("title") or (not is_general_task(row) and not row["source_url"].startswith("https://")):
         raise ValueError("Missing title or source URL")
 
 
@@ -75,6 +77,8 @@ def project(row, now):
             "personalization": p, "suggested_first_step": row["editorial"]["suggested_first_step"],
             "availability": row.get("availability"), "status": status(row, now),
             "source_facts": {key: row[key] for key in ("start", "end", "workload", "units", "prerequisites", "restrictions", "terms", "course_level", "levels", "categories", "languages", "amenities", "miles", "resource_type", "attribution", "official_website", "ticket_availability", "is_free") if key in row},
+            "general_task": row.get('general_task'),
+            "source_type": 'authored' if is_general_task(row) else 'cached',
             "collected_at": row["provenance"]["collected_at"]}
 
 

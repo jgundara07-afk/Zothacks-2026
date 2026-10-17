@@ -43,6 +43,9 @@ def estimate(row, bucket):
                 "bucket": bucket(high, multi_day) if high is not None else "Multi-day",
                 "estimated": quality in {"Estimated", "Unknown"}, "quality": quality,
                 "basis": basis, "scope": scope}
+    if row.get('kind')=='General task' and row.get('general_task'):
+        task=row['general_task']
+        return result(task['minutes'],task['minutes'],'Estimated',task['duration_note'],task.get('multi_day',False),'Active task effort; waiting excluded')
     actual = row.get("duration", {}).get("total_minutes")
     if isinstance(actual, (int, float)) and actual > 0:
         return result(actual, actual, "Source reported", "Elapsed time between provider start/end; may include breaks or overnight time", actual >= 1440, "Event elapsed time")

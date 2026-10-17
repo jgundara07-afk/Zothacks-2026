@@ -1,13 +1,14 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-10-17T20:54:28.039437+00:00",
+  "generated_at": "2026-10-17T21:20:44.899255+00:00",
   "file": "opportunities.json.gz",
-  "record_count": 11254,
+  "record_count": 11314,
   "by_source": {
     "coursera": 9275,
     "eventbrite": 6,
     "irvine": 294,
     "muse": 1063,
+    "onething": 60,
     "zotspot": 616
   },
   "taxonomy": {
@@ -557,6 +558,7 @@
       "eventbrite": 6,
       "irvine": 294,
       "muse": 1063,
+      "onething": 60,
       "zotspot": 616
     },
     "excluded_from_source_counts": {},
@@ -565,10 +567,10 @@
   },
   "coverage": {
     "interests": {
-      "Software Engineering": 3766,
+      "Software Engineering": 3767,
       "Web & App Development": 1007,
       "Web development": 320,
-      "Career Development": 2085,
+      "Career Development": 2109,
       "AI & Machine Learning": 4177,
       "Artificial intelligence": 2281,
       "Data Science": 2990,
@@ -578,13 +580,13 @@
       "Personal Finance & Investing": 418,
       "Running": 6,
       "Data analytics": 463,
-      "Productivity & Personal Growth": 1448,
+      "Productivity & Personal Growth": 1508,
       "Leadership": 680,
       "Sports": 286,
-      "Design & UI/UX": 539,
+      "Design & UI/UX": 540,
       "Cybersecurity": 588,
       "Statistics": 76,
-      "Networking & Mentorship": 769,
+      "Networking & Mentorship": 778,
       "Sales": 55,
       "Machine learning": 355,
       "Ethical hacking": 55,
@@ -652,7 +654,7 @@
       "Blockchain": 8,
       "Product design": 14,
       "Brand strategy": 1,
-      "Time management": 21,
+      "Time management": 29,
       "E-commerce": 50,
       "Frontend development": 28,
       "Mathematics": 10,
@@ -668,7 +670,7 @@
       "Animation": 7,
       "Science communication": 2,
       "Sports analytics": 3,
-      "Resume building": 33,
+      "Resume building": 40,
       "Signal processing": 1,
       "Quantum computing": 4,
       "Budgeting": 32,
@@ -687,7 +689,7 @@
       "Lifelong learning": 1,
       "3D modeling": 1,
       "Nanotechnology": 2,
-      "Communication skills": 2,
+      "Communication skills": 9,
       "Networking": 5,
       "Politics": 2,
       "Remote work": 2,
@@ -717,7 +719,7 @@
       "Renewable energy": 1,
       "Green building": 1,
       "Control systems": 2,
-      "Coffee": 7,
+      "Coffee": 8,
       "Management consulting": 5,
       "Autonomous vehicles": 1,
       "Hiking": 188,
@@ -740,10 +742,10 @@
       "Electronics": 2,
       "Trading systems": 1,
       "Cycling": 1,
+      "Reading": 7,
       "Anime": 31,
       "Gardening": 63,
       "Esports": 1,
-      "Reading": 5,
       "Volunteering": 1,
       "Cognitive science": 1,
       "Career exploration": 1
@@ -751,32 +753,33 @@
     "goals": {
       "Land a software engineering internship": 3753,
       "Build a strong project portfolio": 8561,
-      "Learn a new technical skill": 8898,
+      "Learn a new technical skill": 8900,
       "Launch a startup or personal product": 1387,
       "Develop leadership experience": 680,
-      "Find mentors and build a network": 773,
-      "Improve my resume and interview skills": 1312,
+      "Find mentors and build a network": 782,
+      "Improve my resume and interview skills": 1318,
       "Progress toward an outdoor adventure goal": 245,
       "Win or place in a hackathon": 4,
       "Join a technical club or organization": 1
     },
     "challenge_levels": {
-      "Challenging": 558,
+      "Challenging": 567,
       "Medium": 5409,
-      "Hard": 2458,
-      "Easy": 2014,
-      "Lazy": 815
+      "Hard": 2474,
+      "Easy": 2032,
+      "Lazy": 832
     },
     "time_buckets": {
-      "Multi-day": 8547,
+      "Multi-day": 8548,
       "1–3 hours": 1763,
-      "30–60 min": 178,
+      "30–60 min": 181,
       "3+ hours": 758,
-      "5–15 min": 1,
-      "15–30 min": 7
+      "5–15 min": 27,
+      "15–30 min": 23,
+      "Under 5 min": 14
     },
     "location_preferences": {
-      "Online / Remote": 9308,
+      "Online / Remote": 9357,
       "In-person events": 201,
       "On campus": 90
     }
@@ -787,63 +790,68 @@
       "Advanced": 511,
       "Unknown": 6271,
       "Beginner": 1377,
-      "No experience": 387,
+      "No experience": 447,
       "Intermediate": 2708
     },
     "cost": {
       "Unknown": 11248,
-      "Free": 2,
+      "Free": 62,
       "Paid": 4
     },
     "prerequisite_status": {
       "Unknown": 10296,
-      "None stated": 387,
-      "Required": 571
+      "None stated": 409,
+      "Required": 609
     },
     "duration_quality": {
-      "Estimated": 5523,
+      "Estimated": 5583,
       "Source range": 1727,
       "Source reported": 2941,
       "Unknown": 1063
     },
     "schedule_type": {
-      "Self-paced": 9569,
+      "Self-paced": 9629,
       "Scheduled": 622,
       "Ongoing": 1063
     }
   },
   "effort_review": {
     "version": "onething-effort-v2",
-    "assigned_records": 11254,
+    "assigned_records": 11314,
     "explicitly_reviewed_records": 11,
     "method": "Assistant-authored evidence rubric plus individually reviewed exceptions; counts are not forced into equal difficulty bins",
     "time_filter_policy": "Upper duration bound; unknown total cannot match max_minutes",
     "strict_topic_policy": "Any selected supported interest/goal/skill within its group; AND across groups; broad fallback topics excluded from interest matches"
   },
-  "records_without_supported_checklist_goals": 1267,
+  "records_without_supported_checklist_goals": 1310,
   "coordinate_records": 294,
   "step_coverage": {
     "first_step": {
       "challenge_levels": {
-        "Easy": 10191,
-        "Medium": 1063
+        "Easy": 10209,
+        "Medium": 1063,
+        "Hard": 16,
+        "Lazy": 17,
+        "Challenging": 9
       },
       "time_buckets": {
-        "5–15 min": 10191,
-        "15–30 min": 1063
+        "5–15 min": 10217,
+        "15–30 min": 1080,
+        "Under 5 min": 14,
+        "30–60 min": 3
       }
     },
     "micro_step": {
       "challenge_levels": {
-        "Lazy": 11254
+        "Lazy": 11314
       },
       "time_buckets": {
-        "Under 5 min": 11254
+        "Under 5 min": 11314
       }
     }
   },
-  "sha256": "da512efb1672508c4e6446efb7de98867f94bf323824d0e63df0e7dbde4f00f4",
-  "bytes": 7007091,
+  "sha256": "3ee1366c8d6a26b543e033b7f058348ad08e5d59c2007c2074496946c4e5844a",
+  "bytes": 7034353,
   "notes": [
     "Editorial classifications are estimates, not provider-verified facts",
     "No applicable goal is represented by an empty goals array",

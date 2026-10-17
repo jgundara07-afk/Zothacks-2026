@@ -5,6 +5,7 @@ the app's stated interests/goals or have an explicit personal-benefit exception
 are published to the app-readable catalog.
 """
 import re
+from .authored import is_general_task
 
 # Online courses need a topic in the title itself, not incidental promotional
 # language or the former broad personal-growth fallback. Keep useful technical,
@@ -72,6 +73,8 @@ def inclusion(row):
     """Return (keep, reason); conservative around jobs and broad academic catalogs."""
     kind = row.get("kind", "")
     text = evidence_text(row)
+    if is_general_task(row):
+        return True, "authored_general_personal_development_task"
 
     if row.get("source") == "anteater":
         return False, "uci_classes_removed_by_request"

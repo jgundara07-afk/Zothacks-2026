@@ -15,6 +15,8 @@ from opportunity_data.export_app import project
 
 class NeutralFeedTests(unittest.TestCase):
     def setUp(self):
+        self.gemini = patch('services.generate_recommendation', return_value=None)
+        self.gemini.start()
         self.directory = tempfile.TemporaryDirectory()
         self.now = datetime(2026,10,17,19,tzinfo=timezone.utc)
         def opportunity(identifier,title,kind,**extra):
@@ -33,6 +35,7 @@ class NeutralFeedTests(unittest.TestCase):
 
     def tearDown(self):
         self.directory.cleanup()
+        self.gemini.stop()
 
     def test_no_interest_goal_matches_returns_labeled_neutral_alternatives(self):
         result=self.client.get('/opportunities',query_string={'interests':'Astrophysics','goals':'Internship'}).json

@@ -1,16 +1,16 @@
 {
   "generated_at": "2026-10-17T20:43:29.714454+00:00",
   "version": "onething-effort-v2",
-  "published_records": 11254,
+  "published_records": 11314,
   "difficulty_counts": {
-    "Challenging": 558,
+    "Challenging": 567,
     "Medium": 5409,
-    "Hard": 2458,
-    "Easy": 2014,
-    "Lazy": 815
+    "Hard": 2474,
+    "Easy": 2032,
+    "Lazy": 832
   },
   "duration_quality_counts": {
-    "Estimated": 5523,
+    "Estimated": 5583,
     "Source range": 1727,
     "Source reported": 2941,
     "Unknown": 1063
@@ -90,5 +90,6 @@
     "Difficulty counts are not forced into equal bins at the expense of credible ratings.",
     "Source workloads are parsed where supported. Missing workload remains an explicitly estimated range or unknown total; actual personal completion time is not guaranteed.",
     "Any selected supported interest, goal or skill can match within its group; difficulty/time alternatives remain OR; Near me always applies radius."
-  ]
+  ],
+  "authored_general_tasks": 60
 }

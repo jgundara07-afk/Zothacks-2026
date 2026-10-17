@@ -133,6 +133,8 @@
           "en"
         ]
       },
+      "general_task": null,
+      "source_type": "cached",
       "collected_at": "2026-10-17T19:03:06.954536+00:00"
     },
     {
@@ -248,6 +250,8 @@
           "en"
         ]
       },
+      "general_task": null,
+      "source_type": "cached",
       "collected_at": "2026-10-17T19:02:38.838793+00:00"
     },
     {
@@ -373,6 +377,8 @@
         "ticket_availability": null,
         "is_free": true
       },
+      "general_task": null,
+      "source_type": "cached",
       "collected_at": "2026-10-17T19:03:33.988332+00:00"
     },
     {
@@ -498,6 +504,8 @@
         "ticket_availability": null,
         "is_free": false
       },
+      "general_task": null,
+      "source_type": "cached",
       "collected_at": "2026-10-17T19:03:38.804298+00:00"
     },
     {
@@ -624,6 +632,8 @@
         "attribution": "City of Irvine GIS / Parks MapServer",
         "official_website": "https://www.cityofirvine.org/parks-facilities/neighborhood-parks"
       },
+      "general_task": null,
+      "source_type": "cached",
       "collected_at": "2026-10-17T19:07:58.457951+00:00"
     },
     {
@@ -766,6 +776,8 @@
         "attribution": "City of Irvine GIS / Parks MapServer",
         "official_website": "https://www.cityofirvine.org/parks-facilities/harvard-community-park"
       },
+      "general_task": null,
+      "source_type": "cached",
       "collected_at": "2026-10-17T19:07:58.457951+00:00"
     },
     {
@@ -886,6 +898,8 @@
           "Science and Engineering"
         ]
       },
+      "general_task": null,
+      "source_type": "cached",
       "collected_at": "2026-10-17T19:03:50.483206+00:00"
     },
     {
@@ -1047,7 +1061,282 @@
           "Advertising and Marketing"
         ]
       },
+      "general_task": null,
+      "source_type": "cached",
       "collected_at": "2026-10-17T19:03:49.850295+00:00"
+    },
+    {
+      "id": "onething-0230a7f0e3ccb489d22c",
+      "title": "App Deletion",
+      "description": "Delete 2 apps on your phone that you know are purely draining your time and energy.",
+      "description_truncated": false,
+      "organization": "OneThing",
+      "source": "onething",
+      "source_id": "057",
+      "source_url": "urn:onething:general-task:057",
+      "kind": "General task",
+      "sample": false,
+      "tags": [
+        "Productivity & Personal Growth"
+      ],
+      "goals": [],
+      "skills": [],
+      "minutes": 5,
+      "difficulty": "Hard",
+      "mode": "Online",
+      "color": "green",
+      "location": null,
+      "city": null,
+      "coordinates": null,
+      "personalization": {
+        "taxonomy_version": "onething-personalization-v2",
+        "interests": [
+          "Productivity & Personal Growth"
+        ],
+        "goals": [],
+        "challenge_levels": [
+          "Hard"
+        ],
+        "time_buckets": [
+          "5–15 min"
+        ],
+        "location_preferences": [
+          "Online / Remote"
+        ],
+        "commitment": "Quick tasks I can finish immediately",
+        "first_step": {
+          "minutes": 5,
+          "time_bucket": "5–15 min",
+          "challenge_level": "Hard",
+          "commitment": "Quick tasks I can finish immediately"
+        },
+        "micro_step": {
+          "minutes": 2,
+          "time_bucket": "Under 5 min",
+          "challenge_level": "Lazy",
+          "commitment": "Quick tasks I can finish immediately",
+          "action": "Choose an approach or begin this task for two minutes; longer tasks still need their full effort."
+        },
+        "duration": {
+          "minutes": 5,
+          "min_minutes": 5,
+          "max_minutes": 5,
+          "bucket": "5–15 min",
+          "estimated": true,
+          "quality": "Estimated",
+          "basis": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+          "scope": "Active task effort; waiting excluded"
+        },
+        "assessment": {
+          "version": "onething-effort-v2",
+          "difficulty": "Hard",
+          "difficulty_basis": "User-supplied task difficulty; independent of duration",
+          "difficulty_is_estimate": true,
+          "review_method": "User-supplied general task with authored time and accessible alternatives",
+          "experience_level": "No experience",
+          "experience_is_estimate": true,
+          "experience_basis": "Self-guided general activity; see requirements",
+          "prerequisite_status": "None stated",
+          "prerequisite_basis": "No specific prerequisite stated",
+          "cost": "Free",
+          "cost_basis": "Self-guided activity using existing/free tools; paid subscriptions not required",
+          "duration_quality": "Estimated",
+          "languages": [
+            "en"
+          ],
+          "eligibility_text": null,
+          "eligibility_verified": false,
+          "registration_required": false,
+          "schedule_type": "Self-paced"
+        },
+        "filter_interests": [
+          "Productivity & Personal Growth"
+        ],
+        "classification": {
+          "method": "Assistant-authored evidence rules; estimates require source verification",
+          "interest_evidence": {
+            "Productivity & Personal Growth": "User-supplied general personal-development task category"
+          },
+          "fallback": false,
+          "goal_basis": "Inferred relevance to the listed topics and opportunity type; not promised outcomes",
+          "challenge_is_estimate": true,
+          "challenge_basis": "User-supplied task difficulty; independent of duration",
+          "location_basis": [
+            "Source delivery-mode or explicit remote location"
+          ],
+          "location_is_inferred": false
+        }
+      },
+      "suggested_first_step": "Delete 2 apps on your phone that you know are purely draining your time and energy.",
+      "availability": "Self-guided task; adapt to your circumstances. No external listing or enrollment.",
+      "status": "self_guided",
+      "source_facts": {
+        "is_free": true
+      },
+      "general_task": {
+        "number": 57,
+        "title": "App Deletion",
+        "difficulty": "Hard",
+        "minutes": 5,
+        "category": "Personal Growth & Reflection",
+        "description": "Delete 2 apps on your phone that you know are purely draining your time and energy.",
+        "original_description": "Delete 2 apps on your phone that you know are purely draining your time and energy.",
+        "requirements": [],
+        "interests": [
+          "Productivity & Personal Growth"
+        ],
+        "multi_day": false,
+        "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+        "steps": [
+          "Delete 2 apps on your phone that you know are purely draining your time and energy.",
+          "Record a brief note about what you did, learned, or will do next."
+        ],
+        "skills": []
+      },
+      "source_type": "authored",
+      "collected_at": "2026-10-17T21:20:44.352740+00:00"
+    },
+    {
+      "id": "onething-13715f6c8b48ed1b00f5",
+      "title": "The Unsubscribe",
+      "description": "Unsubscribe from 5 junk email newsletters to clear your professional inbox.",
+      "description_truncated": false,
+      "organization": "OneThing",
+      "source": "onething",
+      "source_id": "010",
+      "source_url": "urn:onething:general-task:010",
+      "kind": "General task",
+      "sample": false,
+      "tags": [
+        "Networking & Mentorship",
+        "Productivity & Personal Growth"
+      ],
+      "goals": [
+        "Find mentors and build a network"
+      ],
+      "skills": [],
+      "minutes": 5,
+      "difficulty": "Lazy",
+      "mode": "Online",
+      "color": "green",
+      "location": null,
+      "city": null,
+      "coordinates": null,
+      "personalization": {
+        "taxonomy_version": "onething-personalization-v2",
+        "interests": [
+          "Networking & Mentorship",
+          "Productivity & Personal Growth"
+        ],
+        "goals": [
+          "Find mentors and build a network"
+        ],
+        "challenge_levels": [
+          "Lazy"
+        ],
+        "time_buckets": [
+          "5–15 min"
+        ],
+        "location_preferences": [
+          "Online / Remote"
+        ],
+        "commitment": "Quick tasks I can finish immediately",
+        "first_step": {
+          "minutes": 5,
+          "time_bucket": "5–15 min",
+          "challenge_level": "Lazy",
+          "commitment": "Quick tasks I can finish immediately"
+        },
+        "micro_step": {
+          "minutes": 2,
+          "time_bucket": "Under 5 min",
+          "challenge_level": "Lazy",
+          "commitment": "Quick tasks I can finish immediately",
+          "action": "Choose an approach or begin this task for two minutes; longer tasks still need their full effort."
+        },
+        "duration": {
+          "minutes": 5,
+          "min_minutes": 5,
+          "max_minutes": 5,
+          "bucket": "5–15 min",
+          "estimated": true,
+          "quality": "Estimated",
+          "basis": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+          "scope": "Active task effort; waiting excluded"
+        },
+        "assessment": {
+          "version": "onething-effort-v2",
+          "difficulty": "Lazy",
+          "difficulty_basis": "User-supplied task difficulty; independent of duration",
+          "difficulty_is_estimate": true,
+          "review_method": "User-supplied general task with authored time and accessible alternatives",
+          "experience_level": "No experience",
+          "experience_is_estimate": true,
+          "experience_basis": "Self-guided general activity; see requirements",
+          "prerequisite_status": "Required",
+          "prerequisite_basis": "Email inbox; subscription messages",
+          "cost": "Free",
+          "cost_basis": "Self-guided activity using existing/free tools; paid subscriptions not required",
+          "duration_quality": "Estimated",
+          "languages": [
+            "en"
+          ],
+          "eligibility_text": "Email inbox; subscription messages",
+          "eligibility_verified": false,
+          "registration_required": false,
+          "schedule_type": "Self-paced"
+        },
+        "filter_interests": [
+          "Networking & Mentorship",
+          "Productivity & Personal Growth"
+        ],
+        "classification": {
+          "method": "Assistant-authored evidence rules; estimates require source verification",
+          "interest_evidence": {
+            "Productivity & Personal Growth": "User-supplied general personal-development task category",
+            "Networking & Mentorship": "User-supplied general personal-development task category"
+          },
+          "fallback": false,
+          "goal_basis": "Inferred relevance to the listed topics and opportunity type; not promised outcomes",
+          "challenge_is_estimate": true,
+          "challenge_basis": "User-supplied task difficulty; independent of duration",
+          "location_basis": [
+            "Source delivery-mode or explicit remote location"
+          ],
+          "location_is_inferred": false
+        }
+      },
+      "suggested_first_step": "Unsubscribe from 5 junk email newsletters to clear your professional inbox.",
+      "availability": "Self-guided task; adapt to your circumstances. No external listing or enrollment.",
+      "status": "self_guided",
+      "source_facts": {
+        "is_free": true
+      },
+      "general_task": {
+        "number": 10,
+        "title": "The Unsubscribe",
+        "difficulty": "Lazy",
+        "minutes": 5,
+        "category": "Networking & Outreach",
+        "description": "Unsubscribe from 5 junk email newsletters to clear your professional inbox.",
+        "original_description": "Unsubscribe from 5 junk email newsletters to clear your professional inbox.",
+        "requirements": [
+          "Email inbox; subscription messages"
+        ],
+        "interests": [
+          "Productivity & Personal Growth",
+          "Networking & Mentorship"
+        ],
+        "multi_day": false,
+        "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+        "steps": [
+          "Unsubscribe from 5 junk email newsletters to clear your professional inbox.",
+          "Record a brief note about what you did, learned, or will do next."
+        ],
+        "skills": []
+      },
+      "source_type": "authored",
+      "collected_at": "2026-10-17T21:20:44.352740+00:00"
     },
     {
       "id": "zotspot-005ca1b5c268a99427dc",
@@ -1152,6 +1441,8 @@
         "start": "2026-10-20T19:00:00+00:00",
         "end": "2026-10-20T20:00:00+00:00"
       },
+      "general_task": null,
+      "source_type": "cached",
       "collected_at": "2026-10-17T19:03:29.202819+00:00"
     },
     {
@@ -1255,6 +1546,8 @@
         "start": "2026-11-20T21:00:00+00:00",
         "end": "2026-11-20T20:00:00+00:00"
       },
+      "general_task": null,
+      "source_type": "cached",
       "collected_at": "2026-10-17T19:03:29.202819+00:00"
     }
   ]

@@ -1,0 +1,1388 @@
+{
+  "version": "onething-general-tasks-v1",
+  "authorship": "User-supplied task list, with assistant-authored timing, alternatives and categorization",
+  "tasks": [
+    {
+      "number": 1,
+      "title": "Update your headline",
+      "difficulty": "Lazy",
+      "minutes": 3,
+      "category": "Resume & Interview Preparation",
+      "description": "Rewrite a professional headline or personal bio to describe where you want to go, using LinkedIn or a local draft.",
+      "original_description": "Rewrite your LinkedIn headline to include where you want to go, not just where you are (e.g., \"CS Student | Aspiring Data Analyst\").",
+      "requirements": [
+        "Professional bio or profile to edit (a local draft is fine)"
+      ],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Career Development",
+        "Resume building"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Rewrite a professional headline or personal bio to describe where you want to go, using LinkedIn or a local draft.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": [
+        "Writing"
+      ]
+    },
+    {
+      "number": 2,
+      "title": "The Numbers Game",
+      "difficulty": "Lazy",
+      "minutes": 4,
+      "category": "Resume & Interview Preparation",
+      "description": "Choose one resume or project bullet and add a truthful, supportable metric if you have one. Otherwise record what you could measure next.",
+      "original_description": "Find one bullet point on your resume and add a metric to it (%, $, or time saved).",
+      "requirements": [
+        "Resume, project note, or experience to describe"
+      ],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Career Development",
+        "Resume building"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Choose one resume or project bullet and add a truthful, supportable metric if you have one. Otherwise record what you could measure next.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": [
+        "Writing"
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Link Check",
+      "difficulty": "Easy",
+      "minutes": 10,
+      "category": "Resume & Interview Preparation",
+      "description": "Click every link on your resume and portfolio to ensure they aren't broken.",
+      "original_description": "Click every link on your resume and portfolio to ensure they aren't broken.",
+      "requirements": [
+        "Resume or portfolio with links"
+      ],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Career Development",
+        "Resume building"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Click every link on your resume and portfolio to ensure they aren't broken.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": [
+        "Writing"
+      ]
+    },
+    {
+      "number": 4,
+      "title": "The Gap Hunt",
+      "difficulty": "Easy",
+      "minutes": 15,
+      "category": "Resume & Interview Preparation",
+      "description": "Compare your resume to a dream job description. Write down three skills they want that you are missing.",
+      "original_description": "Compare your resume to a dream job description. Write down three skills they want that you are missing.",
+      "requirements": [
+        "A role description and resume or skill inventory"
+      ],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Career Development",
+        "Resume building"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Compare your resume to a dream job description. Write down three skills they want that you are missing.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": [
+        "Writing"
+      ]
+    },
+    {
+      "number": 5,
+      "title": "Peer Review",
+      "difficulty": "Hard",
+      "minutes": 10,
+      "category": "Resume & Interview Preparation",
+      "description": "Share a copy of a resume section with a trusted peer, or review it yourself, focusing on readability. Remove private contact details first.",
+      "original_description": "Send the top half of your resume to a peer and ask for ruthless feedback on readability.",
+      "requirements": [
+        "Resume draft; a peer is optional"
+      ],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Career Development",
+        "Resume building"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Share a copy of a resume section with a trusted peer, or review it yourself, focusing on readability. Remove private contact details first.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": [
+        "Writing"
+      ]
+    },
+    {
+      "number": 6,
+      "title": "STAR Story",
+      "difficulty": "Hard",
+      "minutes": 20,
+      "category": "Resume & Interview Preparation",
+      "description": "Write down one past success using the STAR method (Situation, Task, Action, Result) so it's ready for an interview.",
+      "original_description": "Write down one past success using the STAR method (Situation, Task, Action, Result) so it's ready for an interview.",
+      "requirements": [
+        "An experience you can reflect on"
+      ],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Career Development",
+        "Resume building"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Write down one past success using the STAR method (Situation, Task, Action, Result) so it's ready for an interview.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": [
+        "Writing"
+      ]
+    },
+    {
+      "number": 7,
+      "title": "The Blank Slate",
+      "difficulty": "Challenging",
+      "minutes": 20,
+      "category": "Resume & Interview Preparation",
+      "description": "On a copy of your resume, draft a 50-word elevator pitch to replace or improve its summary; keep the original for comparison.",
+      "original_description": "Delete your resume's \"Summary\" section and rewrite it as a 50-word elevator pitch.",
+      "requirements": [
+        "Resume draft or personal introduction"
+      ],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Career Development",
+        "Resume building"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "On a copy of your resume, draft a 50-word elevator pitch to replace or improve its summary; keep the original for comparison.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": [
+        "Writing"
+      ]
+    },
+    {
+      "number": 8,
+      "title": "Alumni Tap",
+      "difficulty": "Lazy",
+      "minutes": 5,
+      "category": "Networking & Outreach",
+      "description": "Find one alumnus or professional in a field you want to explore. Draft a thoughtful connection request; send it only if you choose.",
+      "original_description": "Find one alumni from your school working at your target company and send a connection request.",
+      "requirements": [
+        "A professional network or public directory"
+      ],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Networking & Mentorship"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Find one alumnus or professional in a field you want to explore. Draft a thoughtful connection request; send it only if you choose.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": []
+    },
+    {
+      "number": 9,
+      "title": "Kudos Drop",
+      "difficulty": "Lazy",
+      "minutes": 3,
+      "category": "Networking & Outreach",
+      "description": "Recognize three genuine skills in colleagues or classmates with endorsements or specific written compliments.",
+      "original_description": "Endorse three colleagues or classmates for a specific skill on LinkedIn.",
+      "requirements": [
+        "Peers or colleagues whose skills you know"
+      ],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Networking & Mentorship"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Recognize three genuine skills in colleagues or classmates with endorsements or specific written compliments.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": []
+    },
+    {
+      "number": 10,
+      "title": "The Unsubscribe",
+      "difficulty": "Lazy",
+      "minutes": 5,
+      "category": "Networking & Outreach",
+      "description": "Unsubscribe from 5 junk email newsletters to clear your professional inbox.",
+      "original_description": "Unsubscribe from 5 junk email newsletters to clear your professional inbox.",
+      "requirements": [
+        "Email inbox; subscription messages"
+      ],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Networking & Mentorship"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Unsubscribe from 5 junk email newsletters to clear your professional inbox.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": []
+    },
+    {
+      "number": 11,
+      "title": "Silent Support",
+      "difficulty": "Easy",
+      "minutes": 5,
+      "category": "Networking & Outreach",
+      "description": "Comment thoughtfully on a post from an industry leader you follow.",
+      "original_description": "Comment thoughtfully on a post from an industry leader you follow.",
+      "requirements": [
+        "An industry post you want to discuss"
+      ],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Networking & Mentorship"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Comment thoughtfully on a post from an industry leader you follow.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": []
+    },
+    {
+      "number": 12,
+      "title": "The Intro",
+      "difficulty": "Easy",
+      "minutes": 5,
+      "category": "Networking & Outreach",
+      "description": "Draft a short introduction for a professional community. Post it only in a community you have chosen to join.",
+      "original_description": "Introduce yourself in the #introductions channel of a professional Slack or Discord community.",
+      "requirements": [
+        "A professional community or a local introduction draft"
+      ],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Networking & Mentorship"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Draft a short introduction for a professional community. Post it only in a community you have chosen to join.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": [
+        "Writing"
+      ]
+    },
+    {
+      "number": 13,
+      "title": "The Warm Check-In",
+      "difficulty": "Hard",
+      "minutes": 10,
+      "category": "Networking & Outreach",
+      "description": "Draft a warm check-in for a former manager, teacher, or mentor with no favor attached; send it only if appropriate.",
+      "original_description": "Email a former manager or professor just to say hello and ask how their year is going—no favors attached.",
+      "requirements": [
+        "An existing professional relationship or a draft only"
+      ],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Networking & Mentorship"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Draft a warm check-in for a former manager, teacher, or mentor with no favor attached; send it only if appropriate.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": [
+        "Writing"
+      ]
+    },
+    {
+      "number": 14,
+      "title": "Cold Draft",
+      "difficulty": "Hard",
+      "minutes": 15,
+      "category": "Networking & Outreach",
+      "description": "Write a draft of a cold-outreach email to a hiring manager (you don't have to send it today).",
+      "original_description": "Write a draft of a cold-outreach email to a hiring manager (you don't have to send it today).",
+      "requirements": [
+        "A role or organization to research"
+      ],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Networking & Mentorship"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Write a draft of a cold-outreach email to a hiring manager (you don't have to send it today).",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": [
+        "Writing"
+      ]
+    },
+    {
+      "number": 15,
+      "title": "Virtual Coffee",
+      "difficulty": "Challenging",
+      "minutes": 5,
+      "category": "Networking & Outreach",
+      "description": "Draft an invitation to someone in a related major, department, or interest area for a 15-minute conversation. This task covers the invitation, not waiting or holding the chat.",
+      "original_description": "Message someone in a lateral department or related major and ask for a 15-minute virtual chat to learn about their work.",
+      "requirements": [
+        "A person you would like to learn from"
+      ],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Networking & Mentorship"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Draft an invitation to someone in a related major, department, or interest area for a 15-minute conversation. This task covers the invitation, not waiting or holding the chat.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": []
+    },
+    {
+      "number": 16,
+      "title": "Set the Trap",
+      "difficulty": "Lazy",
+      "minutes": 5,
+      "category": "Market Research & Preparation",
+      "description": "Set up a Google Alert for your target industry or dream company.",
+      "original_description": "Set up a Google Alert for your target industry or dream company.",
+      "requirements": [
+        "Internet access and an optional alerts account"
+      ],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Career Development"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Set up a Google Alert for your target industry or dream company.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": []
+    },
+    {
+      "number": 17,
+      "title": "Niche Down",
+      "difficulty": "Lazy",
+      "minutes": 10,
+      "category": "Market Research & Preparation",
+      "description": "Explore an industry-specific job board, such as Wellfound or Handshake. Create a free account only if useful and eligible.",
+      "original_description": "Create an account on an industry-specific job board (e.g., Wellfound for startups, Handshake for students).",
+      "requirements": [
+        "Internet access; account creation optional"
+      ],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Career Development"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Explore an industry-specific job board, such as Wellfound or Handshake. Create a free account only if useful and eligible.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": []
+    },
+    {
+      "number": 18,
+      "title": "The Vision Board",
+      "difficulty": "Easy",
+      "minutes": 10,
+      "category": "Market Research & Preparation",
+      "description": "Save 3 job descriptions for roles you want to have two years from now.",
+      "original_description": "Save 3 job descriptions for roles you want to have two years from now.",
+      "requirements": [
+        "Internet access or saved job descriptions"
+      ],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Career Development"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Save 3 job descriptions for roles you want to have two years from now.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": []
+    },
+    {
+      "number": 19,
+      "title": "Scope the Certs",
+      "difficulty": "Easy",
+      "minutes": 15,
+      "category": "Market Research & Preparation",
+      "description": "Research one industry certification (like AWS or CAPM), noting the cost and study timeline.",
+      "original_description": "Research one industry certification (like AWS or CAPM), noting the cost and study timeline.",
+      "requirements": [
+        "Internet access"
+      ],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Career Development"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Research one industry certification (like AWS or CAPM), noting the cost and study timeline.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": [
+        "Research"
+      ]
+    },
+    {
+      "number": 20,
+      "title": "Feed Curating",
+      "difficulty": "Easy",
+      "minutes": 5,
+      "category": "Market Research & Preparation",
+      "description": "Follow 5 companies you admire on LinkedIn to train your algorithm.",
+      "original_description": "Follow 5 companies you admire on LinkedIn to train your algorithm.",
+      "requirements": [
+        "A professional social feed or saved company list"
+      ],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Career Development"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Follow 5 companies you admire on LinkedIn to train your algorithm.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": []
+    },
+    {
+      "number": 21,
+      "title": "The Salary Dig",
+      "difficulty": "Hard",
+      "minutes": 20,
+      "category": "Market Research & Preparation",
+      "description": "Research the actual salary range for your target role in your specific city using levels.fyi or Glassdoor.",
+      "original_description": "Research the actual salary range for your target role in your specific city using levels.fyi or Glassdoor.",
+      "requirements": [
+        "Internet access"
+      ],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Career Development"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Research the actual salary range for your target role in your specific city using levels.fyi or Glassdoor.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": [
+        "Research"
+      ]
+    },
+    {
+      "number": 22,
+      "title": "Event Scouting",
+      "difficulty": "Hard",
+      "minutes": 15,
+      "category": "Market Research & Preparation",
+      "description": "Find one local networking event or meetup happening this month and bookmark it.",
+      "original_description": "Find one local networking event or meetup happening this month and bookmark it.",
+      "requirements": [
+        "Internet access"
+      ],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Career Development"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Find one local networking event or meetup happening this month and bookmark it.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": [
+        "Research"
+      ]
+    },
+    {
+      "number": 23,
+      "title": "The Mock Pitch",
+      "difficulty": "Challenging",
+      "minutes": 15,
+      "category": "Market Research & Preparation",
+      "description": "Record a video on your phone of you answering \"Tell me about yourself\" and watch it back.",
+      "original_description": "Record a video on your phone of you answering \"Tell me about yourself\" and watch it back.",
+      "requirements": [
+        "A recording device or written practice alternative"
+      ],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Career Development"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Record a video on your phone of you answering \"Tell me about yourself\" and watch it back.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": [
+        "Writing"
+      ]
+    },
+    {
+      "number": 24,
+      "title": "Folder Sweep",
+      "difficulty": "Lazy",
+      "minutes": 5,
+      "category": "Skill & Asset Building",
+      "description": "Clean up your desktop and organize your loose work files into properly named folders.",
+      "original_description": "Clean up your desktop and organize your loose work files into properly named folders.",
+      "requirements": [],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Career Development"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Clean up your desktop and organize your loose work files into properly named folders.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": []
+    },
+    {
+      "number": 25,
+      "title": "Shortcut Hunter",
+      "difficulty": "Lazy",
+      "minutes": 5,
+      "category": "Skill & Asset Building",
+      "description": "Learn one new keyboard shortcut for your primary software (VS Code, Excel, Figma) and use it 5 times today.",
+      "original_description": "Learn one new keyboard shortcut for your primary software (VS Code, Excel, Figma) and use it 5 times today.",
+      "requirements": [
+        "Software you already use"
+      ],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Career Development"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Learn one new keyboard shortcut for your primary software (VS Code, Excel, Figma) and use it 5 times today.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": []
+    },
+    {
+      "number": 26,
+      "title": "Reading Time",
+      "difficulty": "Easy",
+      "minutes": 10,
+      "category": "Skill & Asset Building",
+      "description": "Read one trade article or industry newsletter from start to finish.",
+      "original_description": "Read one trade article or industry newsletter from start to finish.",
+      "requirements": [
+        "An article or newsletter"
+      ],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Career Development"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Read one trade article or industry newsletter from start to finish.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": [
+        "Research"
+      ]
+    },
+    {
+      "number": 27,
+      "title": "Version Control",
+      "difficulty": "Easy",
+      "minutes": 15,
+      "category": "Skill & Asset Building",
+      "description": "Review a small project or sample document for secrets and private information, then publish it to GitHub if appropriate. Choose public or private visibility deliberately; a local draft is an alternative.",
+      "original_description": "Push a small, lingering local project to a public GitHub repository.",
+      "requirements": [
+        "A small project or sample document; publishing is optional"
+      ],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Career Development"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Review a small project or sample document for secrets and private information, then publish it to GitHub if appropriate. Choose public or private visibility deliberately; a local draft is an alternative.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": [
+        "Coding"
+      ]
+    },
+    {
+      "number": 28,
+      "title": "The Mini-Update",
+      "difficulty": "Hard",
+      "minutes": 30,
+      "category": "Skill & Asset Building",
+      "description": "Update your portfolio with one new project, even if it's currently incomplete.",
+      "original_description": "Update your portfolio with one new project, even if it's currently incomplete.",
+      "requirements": [
+        "A portfolio or local project summary"
+      ],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Career Development"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Update your portfolio with one new project, even if it's currently incomplete.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": [
+        "Writing"
+      ]
+    },
+    {
+      "number": 29,
+      "title": "Tutorial Sprint",
+      "difficulty": "Hard",
+      "minutes": 15,
+      "category": "Skill & Asset Building",
+      "description": "Complete the first 15 minutes of a technical tutorial you've been putting off.",
+      "original_description": "Complete the first 15 minutes of a technical tutorial you've been putting off.",
+      "requirements": [
+        "A tutorial you can access"
+      ],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Career Development"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Complete the first 15 minutes of a technical tutorial you've been putting off.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": [
+        "Coding"
+      ]
+    },
+    {
+      "number": 30,
+      "title": "Teach Back",
+      "difficulty": "Challenging",
+      "minutes": 20,
+      "category": "Skill & Asset Building",
+      "description": "Explain a complex concept you recently learned to a peer or write a short blog post about it.",
+      "original_description": "Explain a complex concept you recently learned to a peer or write a short blog post about it.",
+      "requirements": [
+        "A concept you want to explain"
+      ],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Career Development"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Explain a complex concept you recently learned to a peer or write a short blog post about it.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": [
+        "Writing"
+      ]
+    },
+    {
+      "number": 31,
+      "title": "The 2-Minute Rule",
+      "difficulty": "Lazy",
+      "minutes": 2,
+      "category": "Focus & Time Management",
+      "description": "Find a task that takes less than two minutes and do it immediately right now.",
+      "original_description": "Find a task that takes less than two minutes and do it immediately right now.",
+      "requirements": [],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Time management"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Find a task that takes less than two minutes and do it immediately right now.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": []
+    },
+    {
+      "number": 32,
+      "title": "Notification Purge",
+      "difficulty": "Lazy",
+      "minutes": 3,
+      "category": "Focus & Time Management",
+      "description": "Turn off non-essential phone notifications (social media, news) during your working hours.",
+      "original_description": "Turn off non-essential phone notifications (social media, news) during your working hours.",
+      "requirements": [],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Time management"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Turn off non-essential phone notifications (social media, news) during your working hours.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": []
+    },
+    {
+      "number": 33,
+      "title": "Eat the Frog",
+      "difficulty": "Easy",
+      "minutes": 5,
+      "category": "Focus & Time Management",
+      "description": "Identify your hardest task for the day and commit to doing it before checking email.",
+      "original_description": "Identify your hardest task for the day and commit to doing it before checking email.",
+      "requirements": [],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Time management"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Identify your hardest task for the day and commit to doing it before checking email.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": []
+    },
+    {
+      "number": 34,
+      "title": "The Brain Dump",
+      "difficulty": "Easy",
+      "minutes": 5,
+      "category": "Focus & Time Management",
+      "description": "Write down every open loop, worry, or to-do list item on a physical piece of paper to clear your RAM.",
+      "original_description": "Write down every open loop, worry, or to-do list item on a physical piece of paper to clear your RAM.",
+      "requirements": [],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Time management"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Write down every open loop, worry, or to-do list item on a physical piece of paper to clear your RAM.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": [
+        "Writing"
+      ]
+    },
+    {
+      "number": 35,
+      "title": "Tomorrow's Map",
+      "difficulty": "Easy",
+      "minutes": 5,
+      "category": "Focus & Time Management",
+      "description": "Write down your top 3 priorities for tomorrow before logging off today.",
+      "original_description": "Write down your top 3 priorities for tomorrow before logging off today.",
+      "requirements": [],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Time management"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Write down your top 3 priorities for tomorrow before logging off today.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": [
+        "Writing"
+      ]
+    },
+    {
+      "number": 36,
+      "title": "Time Audit",
+      "difficulty": "Hard",
+      "minutes": 15,
+      "category": "Focus & Time Management",
+      "description": "Track exactly how you spend your time for one typical workday, down to the 15-minute increment.",
+      "original_description": "Track exactly how you spend your time for one typical workday, down to the 15-minute increment.",
+      "requirements": [
+        "A typical day for observation"
+      ],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Time management"
+      ],
+      "multi_day": true,
+      "duration_note": "About 15 minutes of logging effort spread across a typical day; not 15 minutes of elapsed time.",
+      "steps": [
+        "Track exactly how you spend your time for one typical workday, down to the 15-minute increment.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": []
+    },
+    {
+      "number": 37,
+      "title": "The Pomodoro",
+      "difficulty": "Hard",
+      "minutes": 30,
+      "category": "Focus & Time Management",
+      "description": "Work for 25 minutes with zero distractions, followed by a 5-minute break.",
+      "original_description": "Work for 25 minutes with zero distractions, followed by a 5-minute break.",
+      "requirements": [],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Time management"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Work for 25 minutes with zero distractions, followed by a 5-minute break.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": []
+    },
+    {
+      "number": 38,
+      "title": "Deep Work Block",
+      "difficulty": "Challenging",
+      "minutes": 10,
+      "category": "Focus & Time Management",
+      "description": "Identify a suitable focused-work period and add a calendar block. This estimate covers scheduling, not completing every future block.",
+      "original_description": "Identify your peak energy hour and block it out on your calendar as \"Do Not Disturb\" for the rest of the week.",
+      "requirements": [],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Time management"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Identify a suitable focused-work period and add a calendar block. This estimate covers scheduling, not completing every future block.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": []
+    },
+    {
+      "number": 39,
+      "title": "The Mute Button",
+      "difficulty": "Lazy",
+      "minutes": 3,
+      "category": "Mindset & Soft Skills",
+      "description": "Unfollow or mute 3 social media accounts that trigger imposter syndrome.",
+      "original_description": "Unfollow or mute 3 social media accounts that trigger imposter syndrome.",
+      "requirements": [],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Communication skills"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Unfollow or mute 3 social media accounts that trigger imposter syndrome.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": []
+    },
+    {
+      "number": 40,
+      "title": "Active Listening",
+      "difficulty": "Lazy",
+      "minutes": 2,
+      "category": "Mindset & Soft Skills",
+      "description": "In your next suitable conversation, pause briefly after the other person finishes before replying. The estimate excludes waiting for that conversation.",
+      "original_description": "In your next conversation, wait a full two seconds after the person stops speaking before you reply.",
+      "requirements": [
+        "A suitable conversation; waiting time is not included"
+      ],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Communication skills"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "In your next suitable conversation, pause briefly after the other person finishes before replying. The estimate excludes waiting for that conversation.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": []
+    },
+    {
+      "number": 41,
+      "title": "The Reframe",
+      "difficulty": "Easy",
+      "minutes": 5,
+      "category": "Mindset & Soft Skills",
+      "description": "Take a recent mistake and write down the specific, actionable lesson you learned from it.",
+      "original_description": "Take a recent mistake and write down the specific, actionable lesson you learned from it.",
+      "requirements": [],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Communication skills"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Take a recent mistake and write down the specific, actionable lesson you learned from it.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": [
+        "Writing"
+      ]
+    },
+    {
+      "number": 42,
+      "title": "Praise the Work",
+      "difficulty": "Easy",
+      "minutes": 2,
+      "category": "Mindset & Soft Skills",
+      "description": "Give a genuine compliment to a coworker or peer about their work ethic or output, not their appearance.",
+      "original_description": "Give a genuine compliment to a coworker or peer about their work ethic or output, not their appearance.",
+      "requirements": [
+        "A peer or coworker to appreciate"
+      ],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Communication skills"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Give a genuine compliment to a coworker or peer about their work ethic or output, not their appearance.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": []
+    },
+    {
+      "number": 43,
+      "title": "Feedback Digestion",
+      "difficulty": "Hard",
+      "minutes": 10,
+      "category": "Mindset & Soft Skills",
+      "description": "Write down one piece of constructive criticism you received recently and brainstorm one way to apply it.",
+      "original_description": "Write down one piece of constructive criticism you received recently and brainstorm one way to apply it.",
+      "requirements": [
+        "Constructive feedback or a recent reflection"
+      ],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Communication skills"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Write down one piece of constructive criticism you received recently and brainstorm one way to apply it.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": [
+        "Writing"
+      ]
+    },
+    {
+      "number": 44,
+      "title": "The TED Break",
+      "difficulty": "Hard",
+      "minutes": 20,
+      "category": "Mindset & Soft Skills",
+      "description": "Watch a TED Talk on a soft skill you struggle with (e.g., vulnerability, negotiation, body language).",
+      "original_description": "Watch a TED Talk on a soft skill you struggle with (e.g., vulnerability, negotiation, body language).",
+      "requirements": [
+        "A freely accessible talk or transcript"
+      ],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Communication skills"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Watch a TED Talk on a soft skill you struggle with (e.g., vulnerability, negotiation, body language).",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": []
+    },
+    {
+      "number": 45,
+      "title": "Practice the Pause",
+      "difficulty": "Challenging",
+      "minutes": 2,
+      "category": "Mindset & Soft Skills",
+      "description": "Practice a response such as ?Let me check my bandwidth and get back to you? before agreeing to a new task. Use it when appropriate.",
+      "original_description": "Next time you are asked to take on a new task, practice saying, \"Let me check my bandwidth and get back to you,\" instead of an automatic \"Yes.\"",
+      "requirements": [
+        "A suitable request or a practice scenario"
+      ],
+      "interests": [
+        "Productivity & Personal Growth",
+        "Communication skills"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Practice a response such as ?Let me check my bandwidth and get back to you? before agreeing to a new task. Use it when appropriate.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": []
+    },
+    {
+      "number": 46,
+      "title": "Eye Armor",
+      "difficulty": "Lazy",
+      "minutes": 5,
+      "category": "Wellness & Desk Ergonomics",
+      "description": "Explore your device?s night or color-temperature settings and choose what feels comfortable for your workspace.",
+      "original_description": "Turn on blue light filters (Night Shift/f.lux) on all your work devices.",
+      "requirements": [
+        "A device with display settings"
+      ],
+      "interests": [
+        "Productivity & Personal Growth"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Explore your device?s night or color-temperature settings and choose what feels comfortable for your workspace.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": []
+    },
+    {
+      "number": 47,
+      "title": "Hydration Start",
+      "difficulty": "Lazy",
+      "minutes": 2,
+      "category": "Wellness & Desk Ergonomics",
+      "description": "Take a brief hydration break that fits your usual routine before starting screen work.",
+      "original_description": "Drink a full glass of water in the morning before looking at any screen.",
+      "requirements": [],
+      "interests": [
+        "Productivity & Personal Growth"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Take a brief hydration break that fits your usual routine before starting screen work.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": []
+    },
+    {
+      "number": 48,
+      "title": "Posture Check",
+      "difficulty": "Lazy",
+      "minutes": 2,
+      "category": "Wellness & Desk Ergonomics",
+      "description": "Notice your posture and adjust your chair or screen to a position that feels comfortable to you.",
+      "original_description": "Notice your posture right now. Sit back, drop your shoulders, and adjust your screen height so you aren't looking down.",
+      "requirements": [],
+      "interests": [
+        "Productivity & Personal Growth"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Notice your posture and adjust your chair or screen to a position that feels comfortable to you.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": []
+    },
+    {
+      "number": 49,
+      "title": "The 20-20-20",
+      "difficulty": "Easy",
+      "minutes": 1,
+      "category": "Wellness & Desk Ergonomics",
+      "description": "Take a short screen break and look at something farther away for about 20 seconds, if comfortable.",
+      "original_description": "Look at something 20 feet away for 20 seconds to reset your eye strain.",
+      "requirements": [],
+      "interests": [
+        "Productivity & Personal Growth"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Take a short screen break and look at something farther away for about 20 seconds, if comfortable.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": []
+    },
+    {
+      "number": 50,
+      "title": "Workspace Reset",
+      "difficulty": "Easy",
+      "minutes": 5,
+      "category": "Wellness & Desk Ergonomics",
+      "description": "Spend 5 minutes decluttering your physical desk so it's clean for tomorrow.",
+      "original_description": "Spend 5 minutes decluttering your physical desk so it's clean for tomorrow.",
+      "requirements": [],
+      "interests": [
+        "Productivity & Personal Growth"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Spend 5 minutes decluttering your physical desk so it's clean for tomorrow.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": []
+    },
+    {
+      "number": 51,
+      "title": "Desk Detox",
+      "difficulty": "Hard",
+      "minutes": 30,
+      "category": "Wellness & Desk Ergonomics",
+      "description": "Take an ordinary lunch or rest break away from your desk and screens, if your schedule allows.",
+      "original_description": "Take your full lunch break away from your desk and screens.",
+      "requirements": [
+        "A suitable break in your schedule"
+      ],
+      "interests": [
+        "Productivity & Personal Growth"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Take an ordinary lunch or rest break away from your desk and screens, if your schedule allows.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": []
+    },
+    {
+      "number": 52,
+      "title": "Caffeine Curfew",
+      "difficulty": "Hard",
+      "minutes": 2,
+      "category": "Wellness & Desk Ergonomics",
+      "description": "If it suits your routine, choose a decaf drink, herbal tea, or another preferred alternative to an afternoon coffee.",
+      "original_description": "Substitute your afternoon coffee for a decaf or herbal tea to protect tonight's deep sleep.",
+      "requirements": [],
+      "interests": [
+        "Productivity & Personal Growth"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "If it suits your routine, choose a decaf drink, herbal tea, or another preferred alternative to an afternoon coffee.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": []
+    },
+    {
+      "number": 53,
+      "title": "The Silent Walk",
+      "difficulty": "Challenging",
+      "minutes": 15,
+      "category": "Wellness & Desk Ergonomics",
+      "description": "Take a 15-minute quiet walk at a comfortable pace, or a screen-free rest outdoors or by a window. Put audio and phone distractions aside if practical.",
+      "original_description": "Take a 15-minute walk outside without listening to music, a podcast, or checking your phone.",
+      "requirements": [],
+      "interests": [
+        "Productivity & Personal Growth"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Take a 15-minute quiet walk at a comfortable pace, or a screen-free rest outdoors or by a window. Put audio and phone distractions aside if practical.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": []
+    },
+    {
+      "number": 54,
+      "title": "The Win Column",
+      "difficulty": "Lazy",
+      "minutes": 5,
+      "category": "Personal Growth & Reflection",
+      "description": "Write down 3 things you accomplished this week, no matter how small.",
+      "original_description": "Write down 3 things you accomplished this week, no matter how small.",
+      "requirements": [],
+      "interests": [
+        "Productivity & Personal Growth"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Write down 3 things you accomplished this week, no matter how small.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": [
+        "Writing"
+      ]
+    },
+    {
+      "number": 55,
+      "title": "Reading Habit",
+      "difficulty": "Easy",
+      "minutes": 20,
+      "category": "Personal Growth & Reflection",
+      "description": "Read 10 pages of a non-fiction or professional development book.",
+      "original_description": "Read 10 pages of a non-fiction or professional development book.",
+      "requirements": [
+        "A book, article, or accessible reading alternative"
+      ],
+      "interests": [
+        "Productivity & Personal Growth"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Read 10 pages of a non-fiction or professional development book.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": [
+        "Writing"
+      ]
+    },
+    {
+      "number": 56,
+      "title": "Breath Reset",
+      "difficulty": "Easy",
+      "minutes": 3,
+      "category": "Personal Growth & Reflection",
+      "description": "Take three minutes of comfortable, unforced breathing or quiet rest before a stressful meeting or class.",
+      "original_description": "Do a 3-minute box-breathing exercise (4 seconds in, 4 hold, 4 out, 4 hold) before a stressful meeting or class.",
+      "requirements": [],
+      "interests": [
+        "Productivity & Personal Growth"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Take three minutes of comfortable, unforced breathing or quiet rest before a stressful meeting or class.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": []
+    },
+    {
+      "number": 57,
+      "title": "App Deletion",
+      "difficulty": "Hard",
+      "minutes": 5,
+      "category": "Personal Growth & Reflection",
+      "description": "Delete 2 apps on your phone that you know are purely draining your time and energy.",
+      "original_description": "Delete 2 apps on your phone that you know are purely draining your time and energy.",
+      "requirements": [],
+      "interests": [
+        "Productivity & Personal Growth"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Delete 2 apps on your phone that you know are purely draining your time and energy.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": []
+    },
+    {
+      "number": 58,
+      "title": "Wind Down",
+      "difficulty": "Hard",
+      "minutes": 5,
+      "category": "Personal Growth & Reflection",
+      "description": "Set a reminder for a screen-free wind-down period before your preferred bedtime. This estimate covers setting the reminder, not the whole routine.",
+      "original_description": "Set an alarm for 30 minutes before you want to be asleep to enforce a screen-free wind-down routine.",
+      "requirements": [],
+      "interests": [
+        "Productivity & Personal Growth"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Set a reminder for a screen-free wind-down period before your preferred bedtime. This estimate covers setting the reminder, not the whole routine.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": []
+    },
+    {
+      "number": 59,
+      "title": "Define Success",
+      "difficulty": "Challenging",
+      "minutes": 15,
+      "category": "Personal Growth & Reflection",
+      "description": "Write down what a \"successful day\" looks like to you, entirely independently of what your boss or professor thinks.",
+      "original_description": "Write down what a \"successful day\" looks like to you, entirely independently of what your boss or professor thinks.",
+      "requirements": [],
+      "interests": [
+        "Productivity & Personal Growth"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "Write down what a \"successful day\" looks like to you, entirely independently of what your boss or professor thinks.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": [
+        "Writing"
+      ]
+    },
+    {
+      "number": 60,
+      "title": "Skill Inventory",
+      "difficulty": "Challenging",
+      "minutes": 15,
+      "category": "Personal Growth & Reflection",
+      "description": "List 5 things you are naturally good at, and brainstorm how one of them could be applied to your current career path.",
+      "original_description": "List 5 things you are naturally good at, and brainstorm how one of them could be applied to your current career path.",
+      "requirements": [],
+      "interests": [
+        "Productivity & Personal Growth"
+      ],
+      "multi_day": false,
+      "duration_note": "Active effort estimate; waiting, replies, and future scheduled activities are not included.",
+      "steps": [
+        "List 5 things you are naturally good at, and brainstorm how one of them could be applied to your current career path.",
+        "Record a brief note about what you did, learned, or will do next."
+      ],
+      "skills": [
+        "Writing"
+      ]
+    }
+  ]
+}

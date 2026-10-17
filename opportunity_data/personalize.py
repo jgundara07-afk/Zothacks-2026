@@ -58,6 +58,10 @@ def classify(row):
             interests.append(label)
             evidence[label] = basis
     kind = row["kind"]
+    if kind=='General task':
+        for label in row['general_task']['interests']:
+            if label not in interests:
+                interests.append(label);evidence[label]='User-supplied general personal-development task category'
     if kind in {"Job", "Internship", "Networking event"} and "Career Development" not in interests:
         interests.append("Career Development")
         evidence["Career Development"] = "Employment/networking source category"
@@ -116,11 +120,11 @@ def classify(row):
             "challenge_levels": [challenge], "time_buckets": [duration["bucket"]],
             "location_preferences": locations, "commitment": commitment,
             "first_step": {"minutes": first, "time_bucket": bucket(first),
-                           "challenge_level": "Lazy" if first < 5 else "Easy" if first <= 15 else "Medium",
+                           "challenge_level": challenge if kind=="General task" else "Lazy" if first < 5 else "Easy" if first <= 15 else "Medium",
                            "commitment": TAXONOMY["commitment_preferences"][0]},
             "micro_step": {"minutes": 2, "time_bucket": "Under 5 min", "challenge_level": "Lazy",
                            "commitment": TAXONOMY["commitment_preferences"][0],
-                           "action": "Open the source, check whether this opportunity suits you, and write one question or next step."},
+                           "action": "Choose an approach or begin this task for two minutes; longer tasks still need their full effort." if kind=="General task" else "Open the source, check whether this opportunity suits you, and write one question or next step."},
             "duration": duration, "assessment": assessment,
             "filter_interests": [] if "fallback" in next(iter(evidence.values()), "").lower() else interests,
             "classification": {"method": "Assistant-authored evidence rules; estimates require source verification",
@@ -132,6 +136,7 @@ def classify(row):
 
 def status(row, now=None):
     now = now or datetime.now(timezone.utc)
+    if row.get('kind')=='General task':return 'self_guided'
     if re.search(r"\b(cancelled|canceled)\b", row.get("title", ""), re.I):
         return "cancelled"
     end = row.get("end")

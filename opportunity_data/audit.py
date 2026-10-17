@@ -4,6 +4,7 @@ import sqlite3
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
+from .authored import is_general_task
 
 ROOT = Path(__file__).resolve().parent
 
@@ -21,7 +22,7 @@ def main():
     for record_id, document in connection.execute("SELECT id,document FROM opportunities"):
         row = json.loads(document)
         editorial = row.get("editorial", {})
-        if not row.get("title") or not row.get("source_url", "").startswith("https://"):
+        if not row.get("title") or (not is_general_task(row) and not row.get("source_url", "").startswith("https://")):
             problems.append({"id": record_id, "issue": "Missing title or source URL"})
         if editorial.get("difficulty") not in {"Lazy", "Easy", "Medium", "Hard", "Challenging"}:
             problems.append({"id": record_id, "issue": "Invalid difficulty"})

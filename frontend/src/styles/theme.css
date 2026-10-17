@@ -45,6 +45,10 @@ body::after { content: ''; position: fixed; inset: -100px; z-index: 50; pointer-
 .page-heading h1 { font-size: 42px; line-height: .95; }
 .modal h2 { font-size: 34px; line-height: .98; }
 .feed-total, .fictional-note, .welcome-submit small, .modal-heading, .field-help, .provider, .method-note, .size-help { font-family: var(--font-serif); font-style: italic; letter-spacing: .01em; color: var(--on-paper-mute) !important; font-size: 13px !important; }
+.feed-fallback { padding: 0 8px; }
+.feed-fallback p { margin: 4px 0 10px; }
+.gemini-recommendation { border-left: 2px solid var(--brass); padding: 5px 0 5px 12px; color: var(--on-paper) !important; font-style: normal; }
+.gemini-recommendation strong { color: var(--red) !important; font-style: italic; }
 .modal > p, .filter-sheet > p { font-size: 16px; line-height: 1.55; color: var(--on-paper-mute) !important; }
 
 /* ---------- controls ---------- */

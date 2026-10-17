@@ -3,6 +3,7 @@ import hashlib
 import re
 from datetime import datetime
 from .personalize import classify
+from .authored import is_general_task, validate_task
 
 RUBRIC_VERSION = "one-thing-editorial-v1"
 SKILLS = {
@@ -19,14 +20,20 @@ SKILLS = {
 
 def enrich(facts, overrides=None):
     row = dict(facts)
-    if not row.get("title") or not row.get("source_id") or not row.get("source_url", "").startswith("https://"):
+    authored=is_general_task(row)
+    if authored:validate_task(row)
+    if not row.get("title") or not row.get("source_id") or (not authored and not row.get("source_url", "").startswith("https://")):
         raise ValueError("Missing title, source ID or HTTPS source URL")
     row["id"] = row["source"] + "-" + hashlib.sha256(row["source_id"].encode()).hexdigest()[:20]
     row["sample"] = False
     text = (row["title"] + " " + (row.get("description") or "")).lower()
-    skills = [skill for skill, pattern in SKILLS.items() if re.search(pattern, text)]
+    skills = row["general_task"].get("skills",[]) if authored else [skill for skill, pattern in SKILLS.items() if re.search(pattern, text)]
     level = (row.get("course_level") or "").lower()
-    if row["kind"] == "Class":
+    if authored:
+        difficulty, minutes = row['general_task']['difficulty'], row['general_task']['minutes']
+        action=row['general_task']['steps'][0]
+        basis='Difficulty supplied in the user task list; active time estimated by OneThing'
+    elif row["kind"] == "Class":
         difficulty = "Challenging" if "graduate" in level else "Hard" if "upper" in level else "Easy"
         minutes, action = 15, "Read the prerequisites and outline one topic you want to learn."
         basis = "UCI catalog course level; relative academic effort, not an eligibility assessment"

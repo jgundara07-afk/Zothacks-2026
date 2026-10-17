@@ -14,12 +14,18 @@ def card(row):
             'career_goals': ['Internship' if g == INTERNSHIP else g for g in p['goals']],
             'venues': p['location_preferences'], 'multi_day': 'Multi-day' in p['time_buckets'],
             'commitment_type': 'long-term' if p['commitment'].startswith('Long-term') else 'quick',
-            'commitment': p['commitment'], 'mode': row.get('mode') or 'Check source',
-            'requirements': ['Check current eligibility, prerequisites, availability and access at the source.'],
-            'source_type': 'cached', 'color': row.get('color') or 'yellow'}
+            'commitment': p['commitment'], 'mode': row.get('mode') or ('Self-guided' if row.get('general_task') else 'Check source'),
+            'requirements': row['general_task'].get('requirements',[]) if row.get('general_task') else ['Check current eligibility, prerequisites, availability and access at the source.'],
+            'source_type': row.get('source_type','cached'), 'color': row.get('color') or 'yellow'}
 
 def preparation_quests(o):
-    """Rewards describe our preparation actions, never enrollment or employer/source completion."""
+    """External opportunities get preparation quests; authored tasks get actual action quests."""
+    if o.get('general_task'):
+        task=o['general_task'];minutes=task['minutes'];difficulty=task['difficulty']
+        size='Small' if minutes<=5 else 'Medium' if minutes<=15 else 'Big'
+        return [dict(id=o['id']+'::general',opportunity_id=o['id'],title=o['title'],description=o['description'],steps=task['steps'],
+                     points={'Lazy':15,'Easy':25,'Medium':40,'Hard':60,'Challenging':90}[difficulty],minutes=minutes,difficulty=difficulty,
+                     time_bucket=o['personalization']['time_buckets'][0],effort=size.lower(),size=size,daily=True,estimated=True,quest_type='general_task')]
     plans = [
         ('small', 'Small', 'Lazy', 2, 'Under 5 min', 15, 'Review the source',
          ['Open the linked source and check current availability and access.', 'Write one question or a fresh next step.']),

@@ -1,13 +1,14 @@
 {
-  "audited_at": "2026-10-17T20:43:31.426335+00:00",
+  "audited_at": "2026-10-17T21:23:20.608535+00:00",
   "database": "opportunity_data/data/opportunities.sqlite3",
   "json_export": null,
-  "total_opportunities": 11254,
+  "total_opportunities": 11314,
   "by_source": {
     "coursera": 9275,
     "eventbrite": 6,
     "irvine": 294,
     "muse": 1063,
+    "onething": 60,
     "zotspot": 616
   },
   "export_count": null,

@@ -2,7 +2,7 @@
 OneThing turns scrolling into a useful next step: choose interests and goals, explore opportunities, save one, complete a preparation quest, and track progress.
 
 ## Current integration
-The app now uses the **11,254-record curated catalog by default**, including 294 City of Irvine public trail segments, parks and sports facilities. Sources include Anteater, Coursera, The Muse, ZotSpot and Eventbrite. Cards are cached source records with original links and collection dates; availability and assistant-estimated categories/effort need verification at the source. Expired dated events are excluded from discovery. No collection runs at startup or during browsing.
+The app now uses the **11,314-record curated catalog by default**, including 294 City of Irvine public trail segments, parks and sports facilities. Sources include Anteater, Coursera, The Muse, ZotSpot and Eventbrite. Cards are cached source records with original links and collection dates; availability and assistant-estimated categories/effort need verification at the source. Expired dated events are excluded from discovery. No collection runs at startup or during browsing.
 
 The main feed filters on the server before pagination, loads 40 cards at a time, and supports Load more. Preferences cover up to ten interests, up to three goals, opportunity challenge and duration, location, commitment and opportunity type. Any selected interest, goal or skill may match within its group; difficulty, time and metadata choices remain alternatives within each group, with AND across groups. The UI label Internship maps to the catalog's software-internship goal. Near me requests browser location only when selected and checks known source coordinates within 25 km; unknown locations do not count as nearby. Denied location access returns a recoverable error. City coordinates represent approximate points, not validated trailheads or entrances.
 
@@ -29,7 +29,7 @@ npm install
 npm run dev
 ```
 
-Open http://127.0.0.1:5173. Vite proxies `/api` to Flask on port 5001. Sign in to the demo, choose preferences or skip, and browse the cached catalog. Initial catalog decoding takes a few seconds. Browsing requires no API credentials or upstream network access; following source links and browser location may require network access.
+Open http://127.0.0.1:5173. Vite proxies `/api` to Flask on port 5001. Sign in to the demo, choose preferences or skip, and browse the cached catalog. Initial catalog decoding takes a few seconds. Browsing requires no API credentials or upstream network access; following source links and browser location may require network access. Optionally set `GEMINI_API_KEY` in the ignored root `.env` to show a short Gemini-generated self-guided suggestion when no current catalog opportunity matches the selected interests/goals. The suggestion is requested only on the first feed page for a no-match state; if Gemini is unavailable, the normal neutral fallback still works.
 
 On macOS/Linux use `.venv/bin/python`, `cp`, and normal shell syntax. Keep existing `.env` credentials when updating the project.
 
@@ -86,7 +86,7 @@ Tests use temporary profile storage and the bundled catalog, without calling ups
 - `opportunity_data/`: manually invoked collectors, taxonomy, enrichment/export and audits.
 - `design/references/`: art direction references, not app assets.
 
-The existing phone-width UI, sign-in placeholder, preference checklist, list/image toggle, streak calendar, climb rewards and template recap are retained. Resume PDFs/text are processed locally and not stored; keyword gaps are prompts to explore, not assessments of ability. This remains a shared local hackathon demo rather than a public multi-user service.
+The existing phone-width UI, sign-in placeholder, preference checklist, list/image toggle, streak calendar, climb rewards and template recap are retained. Resume Lab has been removed from the app navigation and screens. This remains a shared local hackathon demo rather than a public multi-user service.
 
 ## Automatic feed pagination
 Discover loads the next API page automatically when the bottom of the image feed or text-only list approaches the viewport. Requests are serialized, appended cards are deduplicated by stable opportunity ID, and a filter change invalidates older responses. Scrolling stays in place while cards are appended. A load-more button remains as an accessible/manual fallback, failures show a retry action, and an explicit end message appears when `has_more` is false. Saved items keep their existing list behavior.
@@ -105,3 +105,5 @@ The current catalog excludes all UCI/Anteater classes and retains 9,275 focused 
 Expanded interest choices: 462 unique options from the supplied 12 subject categories, plus the original grouped choices, searchable by name/category. Startup keeps photographic selection tiles; filter editing supports searchable checkboxes. Interests allow ten selections, goals three. Granular catalog tags use title/amenity evidence, so subjects without current opportunities can return no results under strict matching. Existing interests retain their original stored labels.
 
 When discovery has no available interest/goal matches, it can show clearly labeled neutral alternatives: parks or self-development courses. These still respect the remaining filters, and no expired records or invented opportunities are introduced. Preferences are preserved; the app does not silently reset them.
+
+The catalog now also includes 60 user-supplied self-guided general tasks (`opportunity_data/general_tasks.json`), for 11,314 total items. They lead neutral fallback results and are mixed in at up to one after seven personalized results, subject to the same non-topic filters. Tasks use their real action steps and daily completion rewards; they are labeled authored content rather than cached external listings.
