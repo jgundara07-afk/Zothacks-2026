@@ -131,7 +131,9 @@ class OneThing:
             candidates = [q for q in preparation_quests(o)
                 if filters.get('step_size','Any') == 'Any' or q['size'] == filters['step_size']]
             if not candidates: continue
-            chosen = min(candidates, key=lambda q: ((q['effort'] != default_effort) if default_effort else (q['difficulty'] not in p['challenge_levels']), q['minutes']))
+            # With no effort set, use the opportunity's suggested first step (a mix of sizes, see program_catalog).
+            chosen = next((q for q in candidates if q.get('suggested')), None) if not default_effort and filters.get('step_size','Any') == 'Any' else None
+            chosen = chosen or min(candidates, key=lambda q: ((q['effort'] != default_effort) if default_effort else (q['difficulty'] not in p['challenge_levels']), q['minutes']))
             if is_neutral(o): neutral[o['id']] = (o,chosen,venues)
             if o.get('general_task'):
                 general[o['id']] = (o,chosen,venues)

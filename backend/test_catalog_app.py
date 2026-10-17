@@ -33,8 +33,10 @@ class CollectedJourneyTest(unittest.TestCase):
                 q = next(q for q in filtered.json['quests'] if q['id']==o['suggested_quest_id'])
                 self.assertIn('Challenging',o['personalization']['challenge_levels'])
                 self.assertIn('Multi-day',o['personalization']['time_buckets'])
-                self.assertEqual(q['difficulty'],'Lazy')
-                self.assertEqual(q['minutes'],2)
+                # With no effort chosen, each card shows its opportunity's suggested first step (a mix of sizes).
+                self.assertTrue(q['suggested'])
+                self.assertEqual(q['opportunity_id'],o['id'])
+                self.assertGreater(q['minutes'],0)
             o = second['opportunities'][0]
             q = next(q for q in second['quests'] if q['id']==o['suggested_quest_id'])
             self.assertEqual(client.post('/saved',json={'opportunity_id':o['id']}).status_code,400)
