@@ -35,10 +35,18 @@ class AuthUnavailable(Exception):
     pass
 
 
+def supabase_settings():
+    """Project URL and public key. Both are public, so the frontend's VITE_ copies are accepted as a fallback;
+    a deployment that set only the browser values (e.g. on Render) still verifies sessions."""
+    base = (os.getenv('SUPABASE_URL') or os.getenv('VITE_SUPABASE_URL') or '').strip().rstrip('/')
+    key = (os.getenv('SUPABASE_PUBLISHABLE_KEY') or os.getenv('SUPABASE_ANON_KEY')
+           or os.getenv('VITE_SUPABASE_PUBLISHABLE_KEY') or os.getenv('VITE_SUPABASE_ANON_KEY') or '').strip()
+    return base, key
+
+
 def verify_supabase_token(token):
     """Ask Supabase Auth to validate the current access token."""
-    base = os.getenv('SUPABASE_URL', '').rstrip('/')
-    key = os.getenv('SUPABASE_PUBLISHABLE_KEY') or os.getenv('SUPABASE_ANON_KEY', '')
+    base, key = supabase_settings()
     if not base or not key:
         raise AuthUnavailable('Authentication is not configured on the server.')
     parsed = urlparse(base)
