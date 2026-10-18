@@ -1,9 +1,13 @@
 export function chooseVariant(o,quests,{stepSize,preferences,defaultEffort,availableMinutes}){
  const collected=!!o.personalization&&!o.sample;
- const candidates=quests.filter(q=>q.opportunity_id===o.id&&q.daily&&(!availableMinutes||q.minutes<=availableMinutes)&&(collected||!preferences.challenges.length||preferences.challenges.includes(q.difficulty))&&(stepSize==='Any'||q.size===stepSize)&&(collected||!preferences.time.length||preferences.time.some(t=>t==='Multi-day'?o.multi_day:q.time_bucket===t)));
+ // Helper quests (project steps) are one-time rather than daily, but still valid first steps.
+ const candidates=quests.filter(q=>q.opportunity_id===o.id&&(q.daily||q.project)&&(!availableMinutes||q.minutes<=availableMinutes)&&(collected||!preferences.challenges.length||preferences.challenges.includes(q.difficulty))&&(stepSize==='Any'||q.size===stepSize)&&(collected||!preferences.time.length||preferences.time.some(t=>t==='Multi-day'?o.multi_day:q.time_bucket===t)));
+ const steps=candidates.filter(q=>q.project).sort((a,b)=>a.project.step-b.project.step);
  if(collected){
   const suggested=candidates.find(q=>q.id===o.suggested_quest_id);
-  if(suggested)return suggested;
+  if(suggested&&!(suggested.project&&suggested.completed))return suggested;
+  // A project without a server pick (e.g. in Saved) opens on its next unfinished step.
+  if(steps.length)return steps.find(q=>!q.completed)||steps[steps.length-1];
   const matching=candidates.filter(q=>o.personalization.challenge_levels.includes(q.difficulty)).sort((a,b)=>a.minutes-b.minutes);
   if(matching.length)return matching[0];
  }

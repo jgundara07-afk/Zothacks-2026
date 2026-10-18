@@ -19,7 +19,10 @@ class GeneralTaskJourneyTests(unittest.TestCase):
         self.assertEqual(len({o['id'] for o in tasks}),60)
         for o in tasks:
             self.assertEqual(o['source_type'],'authored')
-            q,=preparation_quests(o)
+            q,*follow_up=preparation_quests(o)
+            # "Draft it" tasks keep the authored step first and add one helper step that sends it.
+            self.assertLessEqual(len(follow_up),1)
+            if follow_up: self.assertEqual((follow_up[0]['quest_type'],follow_up[0]['project']['step']),('helper',2))
             self.assertEqual(q['quest_type'],'general_task')
             self.assertEqual(q['steps'],o['general_task']['steps'])
             self.assertEqual(q['difficulty'],o['general_task']['difficulty'])

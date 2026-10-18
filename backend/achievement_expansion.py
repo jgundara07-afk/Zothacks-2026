@@ -151,7 +151,8 @@ def expanded_progress(svc, rows, definitions, facts_for):
                 if outcome == 'certification_completed' and source_kind not in {'Online course','Certification'}: continue
                 if outcome == 'simulation_completed' and source_kind != 'Job simulation': continue
                 if outcome == 'event_attended' and source_kind not in {'Local event','Networking','Networking event','Campus event','Club','Campus initiative'}: continue
-                if outcome == 'focused_pomodoro' and (row.get('actual_minutes') or 0) < 25: continue
+                # The Pomodoro task's own goal is the 25-minute session; otherwise logged minutes must show it.
+                if outcome == 'focused_pomodoro' and task_number != 37 and (row.get('actual_minutes') or 0) < 25: continue
                 outcomes[outcome].add(oid if outcome in {'certification_completed','event_attended'} else row['id'])
                 metrics[outcome] = len(outcomes[outcome])
             earlier = row.get('saved_at') or saved_at.get(oid)

@@ -21,7 +21,6 @@ export default function MountainMap({badges=[],points=0,activeBadgeId=null,onSel
  useEffect(()=>{if(selected&&!dialog.current?.open)dialog.current?.showModal();},[selectedId]);
  function close(){dialog.current?.close();setSelectedId(null)}
  return <section className="mountain-atlas" aria-label="Achievement mountain map" ref={atlas}>
-  <header className="atlas-heading"><span className="eyebrow">An atlas of small victories</span><h2>Your world, uncovered.</h2><p>Every achievement reveals a piece of the map. Choose a mountain to plan your next expedition.</p></header>
   <div className="atlas-totals"><span><Flag size={15}/><strong>{explored} / {badges.length}</strong> climbed</span><span>{points.toLocaleString()} points earned</span></div>
   <label className="atlas-region-label">Explore a region<select aria-label="Map region" value={region} onChange={e=>setRegion(e.target.value)}>{REGIONS.map(([id,label])=>{const group=badges.filter(b=>(b.region||'foundations')===id);return <option key={id} value={id}>{label} · {group.filter(b=>b.unlocked).length}/{group.length} climbed</option>})}</select></label>
   <div className="atlas-legend"><span><i className="explored-key"/>Explored & climbed</span><span><i/>Uncharted</span></div>

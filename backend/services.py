@@ -129,15 +129,11 @@ class OneThing:
         goal_tags = set(filters.get('goals') or profile.get('goals', []))
         default_effort = (self.checkin() or {}).get('effort')
         saved_ids = {a['opportunity_id'] for a in self.activity('save')} if filters.get('hide_saved') == 'true' else set()
-        completed_ids = set()
-        if filters.get('hide_completed') == 'true':
-            current_day = self.today()
-            for a in self.activity('completion'):
-                if self.completion_day(a) == current_day:
-                    q = self.quest(a['quest_id']) or {}
-                    completed_ids.add(a.get('opportunity_id') or q.get('opportunity_id'))
+        # Completed work never returns to the feed: a single quest hides its opportunity, and a project
+        # (ordered helper quests) stays only until every step is done, showing its next unfinished step.
+        done_quests = {a['quest_id'] for a in self.activity('completion')}
         for o in self.catalog.values():
-            if o['id'] in saved_ids or o['id'] in completed_ids: continue
+            if o['id'] in saved_ids: continue
             if not available(o, self.real_clock()): continue
             p = o['personalization']
             if not context_match(o, context, filters): continue
@@ -153,7 +149,12 @@ class OneThing:
             if not matches_locations(filters.get('locations', []), venues): continue
             commitment = filters.get('commitment', 'A mix of both')
             if commitment != 'A mix of both' and commitment != o['commitment']: continue
-            candidates = [q for q in preparation_quests(o)
+            quests = preparation_quests(o)
+            if any(q['id'] in done_quests for q in quests) and not any(q.get('project') for q in quests): continue
+            if quests[0].get('project'):
+                quests = [next((q for q in quests if q['id'] not in done_quests), None)] if quests else []
+                if quests == [None]: continue
+            candidates = [q for q in quests
                 if (filters.get('step_size','Any') == 'Any' or q['size'] == filters['step_size']) and (step_limit is None or q['minutes'] <= step_limit)]
             if not candidates: continue
             # With no effort set, use the opportunity's suggested first step (a mix of sizes, see program_catalog).

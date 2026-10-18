@@ -1,8 +1,4 @@
 .mountain-atlas { margin: 20px 0; border: 1px solid #76603e; border-radius: 8px; overflow: hidden; background: var(--paper); color: var(--on-paper); box-shadow: 0 8px 26px #231b1220; }
-.atlas-heading { padding: 22px 20px 12px; background: linear-gradient(#e7d8bba8,#d8c39b70),var(--map) center/cover; }
-.atlas-heading .eyebrow { color: #57432b !important; font-size: 9px; }
-.atlas-heading h2 { font-size: 30px; line-height: 1.1; margin: 10px 0; }
-.atlas-heading p { margin: 0; font-size: 15px; line-height: 1.5; max-width: 38ch; }
 .atlas-totals { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 14px 18px; font-size: 12px; border-block: 1px solid #76603e50; background: #d0b98f; }
 .atlas-totals > span:first-child { display: flex; align-items: center; gap: 6px; }
 .atlas-totals strong { font-size: 16px; }
@@ -50,11 +46,6 @@
 .mountain-detail small { font-size: 12px; }
 .mountain-earned { display: flex; justify-content: center; align-items: center; gap: 5px; color: var(--brass); }
 @media(prefers-reduced-motion:no-preference){.map-piece.is-explored { animation: reveal-mountain .7s ease-out both; }@keyframes reveal-mountain { from { filter: grayscale(1); opacity: .55; } to { filter: grayscale(0); opacity: 1; } }}
-.work-log { padding: 12px; border: 1px solid #977c5350; margin: 14px 0; border-radius: 6px; }
-.work-log summary { cursor: pointer; }
-.work-log label { display: block; margin-top: 14px; font-size: 14px; }
-.work-log input,.work-log select { display: block; width: 100%; padding: 10px; margin-top: 6px; background: var(--ink-1); color: var(--on-ink); border: 1px solid var(--brass); border-radius: 4px; }
-.work-log small { display: block; font-size: 12px; line-height: 1.4; margin-top: 10px; }
 .highlight-card { padding: 22px; margin: 16px 0; background: var(--ink-1); color: var(--on-ink); border: 1px solid var(--brass); border-radius: 6px; }
 .highlight-card li { margin: 15px 0; line-height: 1.4; }
 .highlight-card small { display: block; color: var(--brass); margin-top: 4px; }

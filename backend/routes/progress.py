@@ -290,6 +290,8 @@ def register(app, svc):
         outcome_kinds={'applied':{'Job','Internship'},'certification_completed':{'Online course','Certification'},'simulation_completed':{'Job simulation'},'event_attended':{'Local event','Networking','Networking event','Campus event','Club','Campus initiative'}}
         if any(value in outcome_kinds and opportunity.get('kind') not in outcome_kinds[value] for value in outcomes):
             raise ValueError('Choose an outcome that belongs to this opportunity type.')
+        # A quest whose single goal is the outcome (e.g. "Submit the application") self-reports it when completed.
+        outcomes=outcomes+q.get('outcomes',[])
         saved_record=db.get('activity','save:demo:'+q['opportunity_id']) or {}
         goals=set((profile() or {}).get('goals',[])+[(profile() or {}).get('goal','')])
         work_log=dict(actual_minutes=actual_minutes,outcomes=list(dict.fromkeys(outcomes)),saved_at=saved_record.get('saved_at'),lazy_filter=saved_record.get('lazy_filter',False),goal_match=bool(goals.intersection(opportunity.get('career_goals',[]))))

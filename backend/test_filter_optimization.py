@@ -80,13 +80,18 @@ class AdvancedFilterTest(unittest.TestCase):
             visible=client.get('/opportunities?limit=100&hide_saved=true').json
             self.assertNotIn(row['id'],[o['id'] for o in visible['opportunities']])
             self.assertEqual(client.get('/saved').json['opportunities'][0]['id'],row['id'])
-            result=client.post('/completions',json={'quest_id':row['suggested_quest_id']})
+            first_quest=row['suggested_quest_id']
+            result=client.post('/completions',json={'quest_id':first_quest})
             self.assertEqual(result.status_code,200)
-            completed=client.get('/opportunities?limit=100&hide_completed=true').json
-            self.assertNotIn(row['id'],[o['id'] for o in completed['opportunities']])
             self.assertEqual(client.get('/progress').json['completed_count'],1)
+            def card():
+                rows=client.get('/opportunities?limit=100').json['opportunities']
+                return next((o for o in rows if o['id']==row['id']),None)
+            # Completed work never returns: a project card moves on to its next step, on later days too.
+            after=card()
+            if after: self.assertNotEqual(after['suggested_quest_id'],first_quest)
             from datetime import date,timedelta
             today=date.fromisoformat(client.get('/progress').json['today'])
             client.post('/demo/clock',json={'date':str(today+timedelta(days=1))})
-            again=client.get('/opportunities?limit=100&hide_completed=true').json
-            self.assertIn(row['id'],[o['id'] for o in again['opportunities']])
+            again=card()
+            self.assertEqual(again and again['suggested_quest_id'],after and after['suggested_quest_id'])

@@ -40,3 +40,11 @@ test('catalog default preserves suggested effort instead of forcing the smallest
  assert.equal(chooseVariant(o,quests,{stepSize:'Any',preferences:base,defaultEffort:'small'}).points,75); // Server already accounts for check-in effort.
  assert.equal(chooseVariant(o,quests,{stepSize:'Any',preferences:base,availableMinutes:15}).points,15);
 });
+
+test('project steps are one-time quests and a card opens on its next unfinished step',()=>{
+ const o={id:'job',personalization:{challenge_levels:['Hard']}};
+ const step=(n,completed=false)=>({id:'job::'+n,opportunity_id:'job',daily:false,project:{step:n,total:3},minutes:5*n,size:'Small',difficulty:'Easy',completed});
+ const options={stepSize:'Any',preferences:{challenges:[],time:[]}};
+ assert.equal(chooseVariant({...o,suggested_quest_id:'job::2'},[step(1,true),step(2),step(3)],options).id,'job::2');
+ assert.equal(chooseVariant(o,[step(1,true),step(2,true),step(3)],options).id,'job::3');
+});

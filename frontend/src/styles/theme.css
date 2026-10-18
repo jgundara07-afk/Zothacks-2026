@@ -394,3 +394,16 @@ select, .resume-lab textarea, .signin-account, .checklist label, .preference-cho
 .detail-image, .detail-image .print, .mountain, .calendar-day { border-radius: 14px !important; }
 .modal { border-radius: 26px 26px 0 0 !important; }
 @media (min-width: 700px) { .phone-shell { border-radius: 30px; } }
+
+/* project plan in the details sheet: ordered helper quests, each its own goal (sits on the dark quest-preview panel) */
+.project-roadmap ol { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; }
+.project-roadmap li { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border: 1px solid rgba(184,144,74,.22); border-radius: 6px; background: rgba(239,227,203,.04); }
+.project-roadmap li > svg, .project-roadmap .step-number { flex: 0 0 22px; height: 22px; display: grid; place-items: center; border-radius: 50%; margin-top: 1px; }
+.project-roadmap .step-number { border: 1px solid var(--on-ink-mute); font: 600 12px var(--font-serif); color: var(--on-ink-mute); }
+.project-roadmap li > svg { padding: 3px; background: var(--red-hi); color: var(--on-ink); }
+.project-roadmap strong { display: block; font-size: 16px; color: var(--on-ink); }
+.project-roadmap small { display: block; margin-top: 2px; font-size: 13px; line-height: 1.35; color: var(--on-ink-mute); }
+.project-roadmap li.is-done { opacity: .6; }
+.project-roadmap li.is-done strong { text-decoration: line-through; text-decoration-color: rgba(168,51,42,.8); }
+.project-roadmap li.is-next { border-color: var(--red-hi); box-shadow: inset 3px 0 0 var(--red-hi); background: rgba(138,38,32,.2); }
+.project-roadmap li.is-next .step-number { border-color: var(--red-hi); color: var(--on-ink); background: var(--red); }

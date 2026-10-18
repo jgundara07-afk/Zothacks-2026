@@ -33,8 +33,8 @@ class CollectedJourneyTest(unittest.TestCase):
                 q = next(q for q in filtered.json['quests'] if q['id']==o['suggested_quest_id'])
                 self.assertIn('Challenging',o['personalization']['challenge_levels'])
                 self.assertIn('Multi-day',o['personalization']['time_buckets'])
-                # With no effort chosen, each card shows its opportunity's suggested first step (a mix of sizes).
-                self.assertTrue(q['suggested'])
+                # Internships are projects: a fresh card shows the first helper step of the application.
+                self.assertEqual(q['project']['step'],1)
                 self.assertEqual(q['opportunity_id'],o['id'])
                 self.assertGreater(q['minutes'],0)
             o = second['opportunities'][0]
@@ -54,11 +54,12 @@ class CollectedJourneyTest(unittest.TestCase):
             self.assertEqual(analytics['categories'],{o['kind']:1})
             self.assertEqual(analytics['estimated_minutes'],q['minutes'])
             self.assertTrue(next(x for x in reopened.get('/quests').json['quests'] if x['id']==q['id'])['completed'])
+            # Helper steps are single goals: they count once, even on a later day.
             current[0] += timedelta(days=1)
-            self.assertEqual(reopened.post('/completions',json={'quest_id':q['id']}).json['points_earned'],q['points'])
+            self.assertEqual(reopened.post('/completions',json={'quest_id':q['id']}).json['points_earned'],0)
             self.assertEqual(reopened.delete('/saved',json={'opportunity_id':o['id']}).status_code,200)
             self.assertEqual(reopened.get('/progress').json['saved_count'],0)
-            self.assertEqual(reopened.get('/progress').json['completed_count'],2)
+            self.assertEqual(reopened.get('/progress').json['completed_count'],1)
 
     def test_nearby_invalid_filters_and_resume_use_real_records(self):
         with tempfile.TemporaryDirectory() as directory:

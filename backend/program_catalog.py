@@ -20,65 +20,96 @@ def card(row):
             'requirements': row['general_task'].get('requirements',[]) if row.get('general_task') else ['Check current eligibility, prerequisites, availability and access at the source.'],
             'source_type': row.get('source_type','cached'), 'color': row.get('color') or 'yellow'}
 
+# Authored tasks whose single goal is itself the self-reported outcome (completing the task reports it).
+TASK_OUTCOMES = {9: ['peer_endorsed'], 10: ['unsubscribed_five'], 20: ['followed_five'], 25: ['shortcut_five'], 28: ['portfolio_updated'],
+                 36: ['workday_audit'], 37: ['focused_pomodoro'], 53: ['phone_free_walk'], 54: ['three_wins']}
+# Authored "draft it" tasks get one helper step that actually sends it. The authored step stays unchanged as step 1.
+TASK_FOLLOW_UPS = {
+    8: ('Connect with them', 'Send the connection request you drafted, and mark this done once you are connected.', ['alumni_connected']),
+    12: ('Post your introduction', 'Post the introduction you drafted in the community you chose.', ['community_posted']),
+    14: ('Send the email', 'Send the cold-outreach email you drafted.', ['outreach_sent']),
+    15: ('Set up the chat', 'Send your invitation and schedule the 15-minute conversation.', ['coffee_chat']),
+}
+# Big opportunities are projects: ordered helper quests, each a single goal that counts as its own completed quest.
+# Each row: key, size, difficulty, minutes, base points, action, goal, outcomes the goal self-reports.
+PROJECTS = {
+    'career': [
+        ('research', 'Small', 'Lazy', 5, 15, 'Read the listing', 'Open the listing, check it is current, and note the deadline and what it asks for.', []),
+        ('resume', 'Medium', 'Easy', 20, 30, 'Refresh your resume', 'Update your resume with your latest classes, projects and experience.', []),
+        ('tailor', 'Big', 'Medium', 25, 45, 'Tailor your resume', "Rewrite two or three resume bullets so they match this role's requirements.", []),
+        ('materials', 'Big', 'Medium', 30, 50, 'Prepare your materials', 'Draft any cover letter or application answers, and gather links to your work.', []),
+        ('apply', 'Big', 'Hard', 20, 75, 'Submit the application', 'Submit the application at the source and note the date you applied.', ['applied']),
+        ('interview', 'Big', 'Challenging', 60, 90, 'Prep for the interview', 'Practice answers to three likely interview questions out loud.', [])],
+    'course': [
+        ('preview', 'Small', 'Lazy', 5, 15, 'Preview the course', 'Open the course, check it is current, and skim the syllabus.', []),
+        ('lesson', 'Medium', 'Easy', 15, 30, 'Do the first lesson', 'Complete the first lesson and write down one thing you learned.', []),
+        ('module', 'Big', 'Medium', 45, 50, 'Finish a module', 'Work through one full module and its practice questions.', []),
+        ('halfway', 'Big', 'Hard', 120, 75, 'Reach the halfway point', 'Complete half of the course, including its graded work.', []),
+        ('finish', 'Big', 'Challenging', 120, 100, 'Finish the course', 'Complete the final module and any certificate requirements.', ['certification_completed'])],
+    'event': [
+        ('rsvp', 'Small', 'Lazy', 5, 15, 'RSVP', 'Check the details at the source, RSVP, and add it to your calendar.', []),
+        ('prepare', 'Medium', 'Easy', 15, 30, 'Prepare a question', 'Read about the speaker or topic and write one question to ask.', []),
+        ('attend', 'Big', 'Hard', 90, 75, 'Go to the event', 'Attend the event and write down one takeaway.', ['event_attended']),
+        ('thanks', 'Small', 'Easy', 5, 25, 'Send a thank-you', 'Send a thank-you note to the host or someone you met.', ['thank_you_sent'])],
+}
+
+def opportunity_group(o):
+    kind = (o.get('kind') or '').lower()
+    return ('career' if any(k in kind for k in ('intern', 'job')) else
+            'event' if 'event' in kind or 'network' in kind else
+            'outdoor' if any(k in kind for k in ('trail', 'park', 'sports')) else 'course')
+
+def time_bucket(minutes):
+    times = PREFERENCES['time']
+    return times[0 if minutes < 5 else 1 if minutes <= 15 else 2 if minutes <= 30 else 3 if minutes <= 60 else 4 if minutes <= 180 else 5]
+
 def preparation_quests(o):
-    """External opportunities get preparation quests; authored tasks get actual action quests."""
+    """Authored tasks get their action quest; big opportunities get ordered helper quests; outings get one quest."""
     if o.get('general_task'):
         task=o['general_task'];minutes=task['minutes'];difficulty=task['difficulty']
         size='Small' if minutes<=5 else 'Medium' if minutes<=15 else 'Big'
-        return [dict(id=o['id']+'::general',opportunity_id=o['id'],title=o['title'],description=o['description'],steps=task['steps'],
-                     points={'Lazy':15,'Easy':25,'Medium':40,'Hard':60,'Challenging':90}[difficulty],minutes=minutes,difficulty=difficulty,
-                     time_bucket=o['personalization']['time_buckets'][0],effort=size.lower(),size=size,daily=True,estimated=True,quest_type='general_task')]
-    # Steps depend on what the opportunity is: for an internship the first step might be writing one question,
-    # or it might be applying outright. Each row: key, size, difficulty, minutes, time-bucket index, base points,
-    # action (the short label shown on the card), steps.
-    kind = (o.get('kind') or '').lower()
-    group = ('career' if any(k in kind for k in ('intern', 'job')) else
-             'event' if 'event' in kind or 'network' in kind else
-             'outdoor' if any(k in kind for k in ('trail', 'park', 'sports')) else 'course')
-    source = 'Open the linked source and check it is current.'
-    ladders = {
-        'career': [
-            ('small', 'Small', 'Lazy', 2, 0, 15, 'Save it', [source, 'Note the deadline and what the application asks for.']),
-            ('medium', 'Medium', 'Easy', 10, 1, 30, 'Write one question', [source, 'Write one specific question you would ask the team or a recruiter.']),
-            ('big', 'Big', 'Medium', 25, 2, 50, 'Tailor your resume', ['Read the role requirements at the source.', 'Rewrite two resume bullets so they match the role.', 'Save the tailored version.']),
-            ('hard', 'Big', 'Hard', 45, 3, 75, 'Apply', ['Check eligibility and the deadline at the source.', 'Attach your resume and answer the application questions.', 'Submit, and note the date you applied.']),
-            ('challenging', 'Big', 'Challenging', 90, 4, 100, 'Prep for the interview', ['Research the team and the role.', 'Practice answers to three likely questions out loud.', 'Write down two questions to ask them.']),
-            ('project', 'Big', 'Challenging', 240, 5, 150, 'Build a portfolio piece', ['Pick a small project that shows the skills the role needs.', 'Build a first version in a focused session.', 'Write a short summary you could share with the team.'])],
-        'course': [
-            ('small', 'Small', 'Lazy', 5, 1, 15, 'Preview it', [source, 'Skim the syllabus and pick the first lesson.']),
-            ('medium', 'Medium', 'Easy', 15, 1, 30, 'Do the first lesson', ['Open the course and start lesson one.', 'Write down one thing you learned.']),
-            ('big', 'Big', 'Medium', 30, 2, 50, 'Finish a module', ['Work through one full module.', 'Do its practice questions.', 'Note what to review next time.']),
-            ('hard', 'Big', 'Hard', 60, 3, 75, 'Complete an exercise', ['Pick the module\'s graded exercise or project task.', 'Complete and submit it.', 'Review any feedback.']),
-            ('challenging', 'Big', 'Challenging', 120, 4, 100, 'Finish a week of it', ['Work through a full week of the course.', 'Complete that week\'s assessments.', 'Write a short summary of what you can now do.']),
-            ('project', 'Big', 'Challenging', 240, 5, 150, 'Build something with it', ['Choose a small project that uses what the course teaches.', 'Build a first version.', 'Share it or save it to your portfolio.'])],
-        'event': [
-            ('small', 'Small', 'Lazy', 2, 0, 15, 'RSVP', [source, 'RSVP and add it to your calendar.']),
-            ('medium', 'Medium', 'Easy', 10, 1, 30, 'Prepare a question', ['Read the event description.', 'Write one question for the speaker or host.']),
-            ('big', 'Big', 'Medium', 25, 2, 50, 'Read up on it', ['Look up the speaker or topic.', 'Note two things you want to learn there.']),
-            ('hard', 'Big', 'Hard', 60, 3, 75, 'Go to it', ['Check the time and place at the source.', 'Attend the event.', 'Write down one takeaway.']),
-            ('challenging', 'Big', 'Challenging', 120, 4, 100, 'Go and meet people', ['Attend the event.', 'Introduce yourself to two people.', 'Follow up with one of them afterwards.']),
-            ('project', 'Big', 'Challenging', 240, 5, 150, 'Share what you learned', ['Attend and take notes.', 'Write a short post or summary.', 'Share it with a friend, club or class.'])],
-        'outdoor': [
-            ('small', 'Small', 'Lazy', 5, 1, 15, 'Plan the route', [source, 'Check the route, conditions and how to get there.']),
-            ('medium', 'Medium', 'Easy', 15, 1, 30, 'Pack and plan', ['Pick a day and time.', 'Pack water, layers and anything the place requires.']),
-            ('big', 'Big', 'Medium', 30, 2, 50, 'Take a short walk', ['Go for a short walk or warm-up there.', 'Note how it felt.']),
-            ('hard', 'Big', 'Hard', 60, 3, 75, 'Go', ['Check conditions at the source.', 'Go and do it at your own pace.', 'Note one thing you noticed.']),
-            ('challenging', 'Big', 'Challenging', 120, 4, 100, 'Do the full route', ['Plan for the full distance or session.', 'Complete it safely.', 'Record your time or distance.']),
-            ('project', 'Big', 'Challenging', 240, 5, 150, 'Plan a day trip', ['Plan a longer outing with stops and timing.', 'Go.', 'Write a short log of the day.'])],
-    }
-    # A deterministic mix of suggested first steps, so not every card shows the smallest one.
-    mix = {'career': ['medium', 'big', 'hard'], 'course': ['small', 'medium', 'big'], 'event': ['small', 'medium', 'hard'], 'outdoor': ['small', 'big', 'hard']}[group]
-    suggested = mix[sum(map(ord, o['id'])) % len(mix)]
-    times = PREFERENCES['time']
+        quest=dict(id=o['id']+'::general',opportunity_id=o['id'],title=o['title'],description=o['description'],steps=task['steps'],
+                   points={'Lazy':15,'Easy':25,'Medium':40,'Hard':60,'Challenging':90}[difficulty],minutes=minutes,difficulty=difficulty,
+                   time_bucket=o['personalization']['time_buckets'][0],effort=size.lower(),size=size,daily=True,estimated=True,quest_type='general_task',
+                   outcomes=TASK_OUTCOMES.get(task['number'],[]))
+        follow_up=TASK_FOLLOW_UPS.get(task['number'])
+        if not follow_up:
+            return [quest]
+        action,goal,outcomes=follow_up
+        return [{**quest,'project':dict(step=1,total=2)},
+                dict(id=o['id']+'::followup',opportunity_id=o['id'],title=action+': '+o['title'],action=action,description='Step 2 of 2. Do this only if and when you choose to.',
+                     steps=[goal],points=25,minutes=5,difficulty='Easy',time_bucket=time_bucket(5),effort='small',size='Small',daily=False,estimated=True,
+                     quest_type='helper',project=dict(step=2,total=2),outcomes=outcomes)]
+    group = opportunity_group(o)
     level = (o['personalization'].get('challenge_levels') or ['Easy'])[-1]
     weight = {'Lazy': .8, 'Easy': 1, 'Medium': 1.3, 'Hard': 1.6, 'Challenging': 2}.get(level, 1)
     scaled = lambda base: max(5, int(round(base * weight / 5)) * 5)
+    if group in PROJECTS:
+        steps = PROJECTS[group]
+        return [dict(id=o['id']+'::'+key, opportunity_id=o['id'], title=action+': '+o['title'], action=action,
+                     description=f'Step {i} of {len(steps)} toward this opportunity. A self-reported step; verify details at the source first.',
+                     steps=[goal], points=scaled(points), minutes=minutes, difficulty=difficulty, time_bucket=time_bucket(minutes),
+                     effort='small' if size == 'Small' else 'medium' if size == 'Medium' else 'big', size=size, daily=False, estimated=True,
+                     quest_type='helper', project=dict(step=i, total=len(steps)), outcomes=outcomes)
+                for i,(key,size,difficulty,minutes,points,action,goal,outcomes) in enumerate(steps, 1)]
+    # Outings (trails, parks, sports facilities) stay single quests in a choice of sizes.
+    source = 'Open the linked source and check it is current.'
+    ladder = [
+        ('small', 'Small', 'Lazy', 5, 15, 'Plan the route', [source, 'Check the route, conditions and how to get there.']),
+        ('medium', 'Medium', 'Easy', 15, 30, 'Pack and plan', ['Pick a day and time.', 'Pack water, layers and anything the place requires.']),
+        ('big', 'Big', 'Medium', 30, 50, 'Take a short walk', ['Go for a short walk or warm-up there.', 'Note how it felt.']),
+        ('hard', 'Big', 'Hard', 60, 75, 'Go', ['Check conditions at the source.', 'Go and do it at your own pace.', 'Note one thing you noticed.']),
+        ('challenging', 'Big', 'Challenging', 120, 100, 'Do the full route', ['Plan for the full distance or session.', 'Complete it safely.', 'Record your time or distance.']),
+        ('project', 'Big', 'Challenging', 240, 150, 'Plan a day trip', ['Plan a longer outing with stops and timing.', 'Go.', 'Write a short log of the day.'])]
+    # A deterministic mix of suggested first steps, so not every card shows the smallest one.
+    mix = ['small', 'big', 'hard']
+    suggested = mix[sum(map(ord, o['id'])) % len(mix)]
     return [dict(id=o['id']+'::'+key, opportunity_id=o['id'], title=action+': '+o['title'], action=action,
                  description='A self-reported step toward this opportunity. Verify details at the source first.',
                  steps=steps, points=scaled(points), minutes=minutes, difficulty=difficulty,
-                 time_bucket=times[bucket], effort=key if key in {'small','medium'} else 'big', size=size, daily=True,
-                 estimated=True, quest_type='preparation', suggested=key == suggested)
-            for key,size,difficulty,minutes,bucket,points,action,steps in ladders[group]]
+                 time_bucket=time_bucket(minutes), effort=key if key in {'small','medium'} else 'big', size=size, daily=True,
+                 estimated=True, quest_type='preparation', suggested=key == suggested, outcomes=[])
+            for key,size,difficulty,minutes,points,action,steps in ladder]
 
 def available(o, now):
     if o['status'] in {'past', 'cancelled'}:
