@@ -8,5 +8,6 @@ test('successful or ordinary visits show no verification error',()=>{
 });
 test('expired and invalid links show safe, actionable errors',()=>{
   assert.match(verificationRedirectError('http://127.0.0.1:5173/#error=access_denied&error_code=otp_expired'),/expired/);
+  assert.match(verificationRedirectError('http://127.0.0.1:5173/?error=invalid_request&error_code=bad_oauth_state'),/Google sign-in attempt expired/);
   assert.match(verificationRedirectError('http://127.0.0.1:5173/?error=access_denied&error_description=<script>'),/could not complete sign-in/);
 });
