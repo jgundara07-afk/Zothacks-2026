@@ -1,6 +1,4 @@
 .env
-# Public Supabase browser settings (publishable key only) are committed.
-!frontend/.env
 .venv/
 node_modules/
 dist/
@@ -9,3 +7,7 @@ __pycache__/
 .DS_Store
 opportunity_data/data/
 opportunity_data/*.probe
+
+# Local environment overrides
+.env.local
+.env.*.local

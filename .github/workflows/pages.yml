@@ -36,15 +36,7 @@ jobs:
         uses: actions/configure-pages@v5
       - name: Build frontend
         working-directory: frontend
-        env:
-          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
-        run: |
-          if [ -z "$VITE_SUPABASE_URL" ] || [ -z "$VITE_SUPABASE_PUBLISHABLE_KEY" ]; then
-            echo 'Missing VITE_SUPABASE_URL or VITE_SUPABASE_PUBLISHABLE_KEY Actions secret.' >&2
-            exit 1
-          fi
-          npm run build -- --base="/${{ github.event.repository.name }}/"
+        run: npm run build -- --base="/${{ github.event.repository.name }}/"
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v4
         with:
