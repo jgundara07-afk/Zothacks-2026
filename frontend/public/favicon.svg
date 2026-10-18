@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="56 56 368 368">
+  <!-- OneThing mark on a parchment disc so it reads on light and dark browser tabs. -->
+  <circle cx="240" cy="240" r="184" fill="#f3eadc"/>
+  <path d="M87 270.2 L237 202 M226 207 L305.4 381.5" fill="none" stroke="#15110e" stroke-width="24"/>
+  <path d="M237 202 L363.3 144.5" fill="none" stroke="#c41e2a" stroke-width="24"/>
+  <circle cx="240" cy="240" r="156" fill="none" stroke="#15110e" stroke-width="24"/>
+</svg>
