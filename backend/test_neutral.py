@@ -8,6 +8,7 @@ from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from app import create_app, Store
+from test_support import create_test_app as create_app
 from program_catalog import card
 from opportunity_data.enrich import enrich
 from opportunity_data.export_app import project

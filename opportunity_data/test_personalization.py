@@ -131,7 +131,9 @@ class PersonalizationTests(unittest.TestCase):
         from backend.app import create_app, Store
         reader = CatalogReader([example()], TAXONOMY)
         with tempfile.TemporaryDirectory() as directory, patch("backend.catalog_routes.load_catalog", return_value=reader):
-            client = create_app(Store(path=str(Path(directory) / "demo.sqlite3")), data_mode="sample").test_client()
+            verified = lambda token: {'id': 'catalog-test', 'email': 'catalog@uci.edu', 'email_confirmed_at': '2026-01-01T00:00:00Z'} if token == 'fixture' else None
+            client = create_app(Store(path=str(Path(directory) / "demo.sqlite3")), data_mode="sample", auth_verifier=verified).test_client()
+            client.environ_base['HTTP_AUTHORIZATION'] = 'Bearer fixture'
             self.assertEqual(client.get("/catalog/options").json["max_selected_goals"], 3)
             response = client.get("/catalog/opportunities", query_string={"scope": "micro_step", "challenge_levels": "Lazy"})
             self.assertEqual(response.status_code, 200)

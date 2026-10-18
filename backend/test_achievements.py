@@ -2,6 +2,7 @@ import tempfile
 import unittest
 from datetime import datetime, timedelta, timezone
 from app import Store, create_app
+from test_support import create_test_app as create_app
 from achievements import completion_facts
 
 

@@ -1,4 +1,5 @@
-"""Activity-backed, permanent achievement unlocks for the demo profile."""
+from flask import g
+"""Activity-backed, permanent achievement unlocks for each account."""
 import re
 import json
 from pathlib import Path
@@ -89,7 +90,7 @@ def achievements(svc):
     saved = {row['badge_id']: row for row in svc.activity('achievement')}
     for key, timestamp in earned.items():
         if key not in saved:
-            record = dict(id='achievement:demo:' + key, kind='achievement', profile_id='demo', badge_id=key, earned_at=timestamp)
+            record = dict(id='achievement:' + g.user_id + ':' + key, kind='achievement', profile_id=g.user_id, badge_id=key, earned_at=timestamp)
             svc.db.put('activity', record, once=True)
             saved[key] = record
     return [dict(id=key, name=name, number=number, target=target, criteria=criteria, flavor=flavor,

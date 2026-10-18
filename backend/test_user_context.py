@@ -2,6 +2,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 from app import create_app,Store
+from test_support import create_test_app as create_app
 from user_context import validate_context,context_match,context_relevance,first_step_limit
 
 class UserContextTest(unittest.TestCase):

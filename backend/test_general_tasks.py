@@ -2,6 +2,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 from app import create_app,Store
+from test_support import create_test_app as create_app
 from program_catalog import program_catalog,preparation_quests
 
 

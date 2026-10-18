@@ -2,7 +2,7 @@ from uuid import uuid4
 import hashlib
 import json
 import os
-from flask import jsonify, request
+from flask import jsonify, request, g
 from collections import Counter
 from datetime import timedelta, date, datetime
 from zoneinfo import ZoneInfo
@@ -142,7 +142,7 @@ def register(app, svc):
                 target = parsed.isoformat()
             except (ValueError, TypeError):
                 raise ValueError('Choose a valid demo date between 2000 and 2100 (YYYY-MM-DD).')
-        db.put('activity', dict(id='demo-clock', profile_id='demo', kind='demo_clock', date=target))
+        db.put('activity', dict(id='demo-clock:'+g.user_id, profile_id=g.user_id, kind='demo_clock', date=target))
         return jsonify(svc.demo_state())
 
     @app.get('/progress')
@@ -316,7 +316,7 @@ def register(app, svc):
             narrative.setdefault(field, fallback[field])
         recap_id = 'recap:'+str(uuid4())
         highlights = [dict(title=row.get('title','Completed quest'),date=completion_day(row).isoformat()) for row in sorted(completed,key=lambda row:(row.get('points',0),row['completed_at']),reverse=True)[:5]]
-        db.put('activity',dict(id=recap_id,profile_id='demo',kind='recap',period=period,month=anchor[:7],source=source,archetype=narrative['archetype'],has_highlights=bool(highlights),recorded_at=clock().isoformat()))
+        db.put('activity',dict(id=recap_id,profile_id=g.user_id,kind='recap',period=period,month=anchor[:7],source=source,archetype=narrative['archetype'],has_highlights=bool(highlights),recorded_at=clock().isoformat()))
         badges = svc.achievements()
         for badge in badges:
             earned_day=completion_day({'completed_at':badge['earned_at']}).isoformat() if badge['earned_at'] else None
@@ -333,7 +333,7 @@ def register(app, svc):
         anchor = request.args.get('date') or today().isoformat()
         views = {period: analytics_payload(period, anchor) for period in ('week', 'month', 'year')}
         return jsonify(
-            schema_version=1, profile_id='demo', timezone='America/Los_Angeles',
+            schema_version=1, profile_id=g.user_id, timezone='America/Los_Angeles',
             generated_at=svc.real_clock().isoformat(), view_date=anchor,
             progress=totals,
             climb=dict(mountain=points//100+1, level=points//100+1,
@@ -344,7 +344,7 @@ def register(app, svc):
             analytics=views, recap=analytics_payload(),
             definitions=dict(week='Monday–Sunday', month='One bin per day', year='One bin per month',
                              percentages='Divide each counter by the sum of that chart; skill tags may overlap.',
-                             persistence='Completions, saves and demo date persist in the configured backend store.'))
+                             persistence='Completions and saves persist in the configured backend store.'))
 
     @app.post('/completions')
     def complete():
@@ -356,7 +356,7 @@ def register(app, svc):
             return (jsonify(error='Quest not found.'), 404)
         if q['opportunity_id'] not in [a['opportunity_id'] for a in activity('save')]:
             raise ValueError('Save this opportunity before completing its quest.')
-        completion_id = 'completion:demo:' + q['id'] + (':' + today().isoformat() if q.get('daily') else '')
+        completion_id = 'completion:' + g.user_id + ':' + q['id'] + (':' + today().isoformat() if q.get('daily') else '')
         opportunity = svc.opportunity(q['opportunity_id']) or {}
         actual_minutes = data.get('actual_minutes')
         if actual_minutes is not None and (type(actual_minutes) is not int or not 1 <= actual_minutes <= 1440):
@@ -369,10 +369,10 @@ def register(app, svc):
             raise ValueError('Choose an outcome that belongs to this opportunity type.')
         # A quest whose single goal is the outcome (e.g. "Submit the application") self-reports it when completed.
         outcomes=outcomes+q.get('outcomes',[])
-        saved_record=db.get('activity','save:demo:'+q['opportunity_id']) or {}
+        saved_record=db.get('activity','save:'+g.user_id+':'+q['opportunity_id']) or {}
         goals=set((profile() or {}).get('goals',[])+[(profile() or {}).get('goal','')])
         work_log=dict(actual_minutes=actual_minutes,outcomes=list(dict.fromkeys(outcomes)),saved_at=saved_record.get('saved_at'),lazy_filter=saved_record.get('lazy_filter',False),goal_match=bool(goals.intersection(opportunity.get('career_goals',[]))))
-        created = db.put('activity', dict(**work_log, **completion_facts(q, opportunity), opportunity_id=q['opportunity_id'], category=opportunity.get('kind', 'Other'), skills=opportunity.get('skills', []), difficulty=q.get('difficulty', 'Easy'), minutes=q.get('minutes', 0), id=completion_id, profile_id='demo', kind='completion', quest_id=q['id'], title=q['title'], points=q['points'], completed_at=clock().isoformat()), once=True)
+        created = db.put('activity', dict(**work_log, **completion_facts(q, opportunity), opportunity_id=q['opportunity_id'], category=opportunity.get('kind', 'Other'), skills=opportunity.get('skills', []), difficulty=q.get('difficulty', 'Easy'), minutes=q.get('minutes', 0), id=completion_id, profile_id=g.user_id, kind='completion', quest_id=q['id'], title=q['title'], points=q['points'], completed_at=clock().isoformat()), once=True)
         return jsonify(already_completed=not created, points_earned=q['points'] if created else 0, progress=progress())
 
     @app.get('/achievement-options')
@@ -391,9 +391,9 @@ def register(app, svc):
         if event in {'fallback_read','highlight_view','share_click'}:
             if not isinstance(recap_id,str): raise ValueError('Choose a generated recap.')
             recap=db.get('activity',recap_id)
-            if not recap or recap.get('kind')!='recap' or recap.get('profile_id')!='demo': raise ValueError('Recap not found.')
+            if not recap or recap.get('kind')!='recap' or recap.get('profile_id')!=g.user_id: raise ValueError('Recap not found.')
             if event=='fallback_read' and recap['source']!='local': raise ValueError('This recap is not a local fallback.')
             if event in {'highlight_view','share_click'} and not recap.get('has_highlights'): raise ValueError('This recap has no completed quests to share.')
-        identifier='event:demo:'+event+':'+(recap_id if recap_id else today().isoformat())
-        db.put('activity',dict(id=identifier,profile_id='demo',kind='ui_event',event=event,recorded_at=clock().isoformat()),once=True)
+        identifier='event:'+g.user_id+':'+event+':'+(recap_id if recap_id else today().isoformat())
+        db.put('activity',dict(id=identifier,profile_id=g.user_id,kind='ui_event',event=event,recorded_at=clock().isoformat()),once=True)
         return jsonify(recorded=True,achievements=svc.achievements())

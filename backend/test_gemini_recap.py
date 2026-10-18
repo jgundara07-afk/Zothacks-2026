@@ -6,6 +6,7 @@ from unittest.mock import patch
 from urllib.error import HTTPError
 
 from app import Store, create_app
+from test_support import create_test_app as create_app
 from gemini_recommendation import RECAP_FIELDS, generate_recap_narrative
 
 

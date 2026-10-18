@@ -24,8 +24,8 @@ const ASH=Array.from({length:46},(_,i)=>{const r=n=>((Math.sin(i*12.9898+n*78.23
 
 function Title({children,className=''}){return <h1 className={'eva '+className}>{children}</h1>}
 
-export default function Onboarding({skipIntro:returning=false,data,busy,error,hasProfile,interests,setInterests,goals,setGoals,skills,setSkills,preferences,setPreferences,stepSize,setStepSize,sample,topPick,topQuest,onSave,onEnter,onWiden,onSkip,onLogin,context,setContext}){
- const [step,setStep]=useState(0);
+export default function Onboarding({skipIntro:returning=false,authenticated=false,initialStep=0,data,busy,error,hasProfile,interests,setInterests,goals,setGoals,skills,setSkills,preferences,setPreferences,stepSize,setStepSize,sample,topPick,topQuest,onSave,onEnter,onWiden,onSkip,onLogin,context,setContext}){
+ const [step,setStep]=useState(initialStep);
  const [loginOpen,setLoginOpen]=useState(false);
  // Intro plays once per visit; reduced motion goes straight to the finished first screen.
  // 'load' holds the sequence until the title font and photo are ready (max 1.5s), so nothing swaps mid-animation.
@@ -63,7 +63,7 @@ export default function Onboarding({skipIntro:returning=false,data,busy,error,ha
  // ---------- 0: intro sequence → title card → first screen ----------
  // words ("Move forward every day" arrives word by word) → burn (they burn away into pixel embers and ash)
  // → card (letterboxed title card) → ui (title rises, panel slides in)
- if(loginOpen)return <SignIn onBack={()=>setLoginOpen(false)} onSignIn={name=>{onLogin?.(name);setLoginOpen(false);setStep(1)}}/>;
+ if(loginOpen)return <SignIn initialError={error} onBack={()=>setLoginOpen(false)} onSignIn={session=>{onLogin?.(session);setLoginOpen(false);setStep(1)}}/>;
  if(step===0)return <div className={`phone-shell ob ob-title phase-${phase}`} onClick={phase==='ui'?undefined:skipIntro}>
   <div className="ob-title-photo" aria-hidden="true"/>
   <div className="ob-words" aria-hidden="true">
@@ -81,9 +81,9 @@ export default function Onboarding({skipIntro:returning=false,data,busy,error,ha
   <div className="ob-title-panel" inert={phase==='ui'?undefined:true}>
    <img className="ob-halftone" src={OPENING_HALFTONE} alt="" aria-hidden="true"/>
    <p className="ob-lede" ref={heading} tabIndex={-1}>Find one real opportunity and take the first step today.</p>
-   <button className="primary wide" disabled={!data} onClick={()=>setLoginOpen(true)}>{data?'Get started':'Loading…'}<ArrowRight size={18}/></button>
+   <button className="primary wide" disabled={authenticated&&!data} onClick={()=>authenticated?setStep(1):setLoginOpen(true)}>{authenticated&&!data?'Loading…':'Get started'}<ArrowRight size={18}/></button>
    {hasProfile&&<button className="ob-text" disabled={busy} onClick={onSkip}>Continue where I left off</button>}
-   <small className="ob-fine">Demo profile · no account needed</small>
+   <small className="ob-fine">Your progress belongs to your account.</small>{error&&<p className="error" role="alert">{error}</p>}
   </div>
   {phase!=='ui'&&<button className="ob-skip-intro" onClick={skipIntro}>Skip intro</button>}
  </div>;
