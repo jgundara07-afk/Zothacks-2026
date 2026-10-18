@@ -18,22 +18,7 @@ Collected IDs now work with save/unsave, daily preparation quests, persistent po
 
 The catalog is read from `backend/catalog/opportunities.json.gz` with checksum verification. `manifest.json` contains counts/options and `sample.json` is a small readable preview. Profiles, saves, and completions persist separately in SQLite or MongoDB. Existing sample saves/history remain readable; fictional records are labeled. Explicit sample mode uses the 87-entry `backend/seed.json` fixture.
 
-## Authentication setup
-
-OneThing now uses Supabase Auth for account creation, password sign-in, email confirmation and persisted sessions. Flask verifies every bearer token with Supabase Auth before reading or writing a profile, save, completion, achievement, analytics record or recap. These records are keyed by the verified Supabase user ID in MongoDB or SQLite. No Supabase service-role key belongs in this repository or browser code. The old `demo` profile remains only as isolated fixture data; normal users cannot access it.
-
-Before live signup works:
-
-1. Create a Supabase project. Under Authentication > Providers > Email, enable email/password signups and **Confirm Email**. Configure a working SMTP sender for production email delivery.
-2. In Authentication > URL Configuration, set the Site URL to the deployed OneThing origin and add that origin and `http://127.0.0.1:5173` to Redirect URLs. Verification redirects return to the app.
-3. Run [`docs/supabase-auth.sql`](docs/supabase-auth.sql) in the Supabase SQL Editor. Under Authentication > Hooks, enable **Before User Created** using the `public.onething_before_user_created` Postgres function. This enforces allowed domains even when someone calls Supabase directly.
-4. In the project Dashboard, open **Connect** for the Project URL and publishable key, or **Settings > API Keys** for the public key. Put the same URL/key in the ignored root `.env` as `SUPABASE_URL` and `SUPABASE_PUBLISHABLE_KEY`, and in ignored `frontend/.env.local` as `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY`. The local files already have empty slots. Older projects may use `SUPABASE_ANON_KEY` and `VITE_SUPABASE_ANON_KEY` instead. Restart Flask and Vite after editing. The frontend build rejects Supabase secret/service-role keys in `VITE_*` variables.
-5. Use a durable MongoDB connection (`MONGO_URI`) for deployment. Local SQLite is useful for development but an ephemeral deployment disk loses user data after restart.
-
-The email allowlist is Gmail, Outlook/Hotmail/Live, Yahoo, iCloud, Proton and `uci.edu`. The UI, signup hook and Flask enforce it. Profiles and activity remain in the existing MongoDB/SQLite store; no Supabase application tables or RLS migrations are needed because the browser never accesses that store directly. Flask verifies and scopes every private request. Verification and duplicate signup behavior depend on the Supabase project settings; with Confirm Email enabled, a new account gets a verification link before login.
-
-To verify the live flow after configuration: register two different allowed addresses, follow each verification link, and log in to each account. Confirm that a malformed or unsupported address is rejected, a duplicate signup directs you toward login without exposing account details, and an incorrect password shows an error. In account A, save and complete a quest; refresh to check session persistence, then log out through Profile. Log in to account B and confirm its profile, saves, progress, achievements and recap do not contain A's activity. The automated auth tests use provider mocks because they cannot send real verification emails or exercise a live Supabase project.
-
+## Run locally
 Requires Python 3.10+ and Node.js 20.19+ (or 22.12+). From the project root in PowerShell:
 
 ```powershell
@@ -52,12 +37,12 @@ npm install
 npm run dev
 ```
 
-Open http://127.0.0.1:5173. Vite proxies `/api` to Flask on port 5001. Create an account, confirm your email, then choose preferences or skip and browse the cached catalog. Initial catalog decoding takes a few seconds. Browsing uses the cached catalog, but sign-in and token verification require access to the configured Supabase project. Following source links and browser location may also require network access. Optionally set `GEMINI_API_KEY` in the ignored root `.env` to show a short Gemini-generated self-guided suggestion when no current catalog opportunity matches the selected interests/goals, and to generate the activity-based Wrapped recap. Recap prompts contain recorded completion summaries and the complete dated quest history for the selected period; profile fields and location are not sent. A local recap appears when Gemini is unavailable or the user has no completed quests.
+Open http://127.0.0.1:5173. Vite proxies `/api` to Flask on port 5001. Sign in to the demo, choose preferences or skip, and browse the cached catalog. Initial catalog decoding takes a few seconds. Browsing requires no API credentials or upstream network access; following source links and browser location may require network access. Optionally set `GEMINI_API_KEY` in the ignored root `.env` to show a short Gemini-generated self-guided suggestion when no current catalog opportunity matches the selected interests/goals, and to generate the activity-based Wrapped recap. Recap prompts contain recorded completion summaries and the complete dated quest history for the selected period; profile fields and location are not sent. A local recap appears when Gemini is unavailable or the user has no completed quests.
 
 On macOS/Linux use `.venv/bin/python`, `cp`, and normal shell syntax. Keep existing `.env` credentials when updating the project.
 
 ## Deploy (Render)
-`render.yaml` defines one web service that builds `frontend/dist` and runs `gunicorn --chdir backend wsgi:app`. `backend/wsgi.py` serves the built frontend at `/` and the Flask API under `/api`, matching the Vite dev proxy. Set `MONGO_URI`, `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`, `VITE_SUPABASE_URL`, and `VITE_SUPABASE_PUBLISHABLE_KEY` in the Render dashboard before build (and optionally `GEMINI_API_KEY`); without `MONGO_URI` the service falls back to SQLite on Render's ephemeral disk, so saves and progress reset on every redeploy or restart. Pushes to `main` redeploy automatically. Republishing the catalog means committing a new `backend/catalog/opportunities.json.gz`.
+`render.yaml` defines one web service that builds `frontend/dist` and runs `gunicorn --chdir backend wsgi:app`. `backend/wsgi.py` serves the built frontend at `/` and the Flask API under `/api`, matching the Vite dev proxy. Set `MONGO_URI` (and optionally `GEMINI_API_KEY`) in the Render dashboard; without `MONGO_URI` the service falls back to SQLite on Render's ephemeral disk, so saves and progress reset on every redeploy or restart. Pushes to `main` redeploy automatically. Republishing the catalog means committing a new `backend/catalog/opportunities.json.gz`.
 
 ## Data and sample modes
 `ONETHING_DATA_MODE=catalog` is the default. To use fictional sample mode for a run:
@@ -69,7 +54,7 @@ $env:ONETHING_DATA_MODE = 'sample'
 Remove-Item Env:ONETHING_DATA_MODE
 ```
 
-An empty `MONGO_URI` uses local `backend/demo.sqlite3`. A configured MongoDB must be reachable. Accounts are separate by verified Supabase user ID; the old fictional Alex fixture is not assigned to new users. Switching storage does not migrate state. Switching data modes preserves existing activity; it does not delete saved items or points. Startup never imports 11,254 records into the profile store or overwrites activity.
+An empty `MONGO_URI` uses persistent `backend/demo.sqlite3`. A configured MongoDB must be reachable. No account authentication is implemented: all sessions share the fictional Alex profile. Switching storage does not migrate state. Switching data modes preserves existing activity; it does not delete saved items or points. Startup never imports 11,254 records into the profile store or overwrites activity.
 
 The missing/corrupt catalog fails startup with a clear file/checksum error; there is no silent sample fallback. After a manual refresh, restart Flask to load the new catalog.
 
@@ -112,14 +97,15 @@ Tests use temporary profile storage and the bundled catalog, without calling ups
 - `opportunity_data/`: manually invoked collectors, taxonomy, enrichment/export and audits.
 - `design/references/`: art direction references, not app assets.
 
-The phone-width UI, preference checklist, list/image toggle, streak calendar, climb rewards and template recap are retained. Resume Lab has been removed from the app navigation and screens.
+The existing phone-width UI, sign-in placeholder, preference checklist, list/image toggle, streak calendar, climb rewards and template recap are retained. Resume Lab has been removed from the app navigation and screens. This remains a shared local hackathon demo rather than a public multi-user service.
 
 ## Automatic feed pagination
 Discover loads the next API page automatically when the bottom of the image feed or text-only list approaches the viewport. Requests are serialized, appended cards are deduplicated by stable opportunity ID, and a filter change invalidates older responses. Scrolling stays in place while cards are appended. A load-more button remains as an accessible/manual fallback, failures show a retry action, and an explicit end message appears when `has_more` is false. Saved items keep their existing list behavior.
 
-### Analytics
+### Demo dates and analytics
+In Progress, use the Demo time machine date picker or Next demo day, then complete a saved daily quest. Dates persist across refreshes and daily duplicates count once per quest per simulated day. Use real today resets the clock without deleting history. Catalog availability still uses real time. Set `ONETHING_DEMO_TOOLS=0` to disable date changes. This is a shared fictional demo profile, not an authenticated production feature.
 
-The Demo time machine is disabled for real accounts. Analytics supports Weekly (Monday–Sunday), Monthly (daily bars fitted to the screen), and Yearly views, with period navigation. Donut charts show opportunity categories, challenges, and skill-tag shares for the selected period. Skills can overlap; percentages are rounded. Recap and the mountain retain lifetime totals.
+Analytics supports Weekly (Monday–Sunday), Monthly (daily bars fitted to the screen), and Yearly views, with period navigation. Donut charts show opportunity categories, challenges, and skill-tag shares for the selected period. Skills can overlap; percentages are rounded. Recap and the mountain retain lifetime totals.
 
 ### Catalog effort and filter update
 

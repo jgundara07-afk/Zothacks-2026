@@ -3,7 +3,6 @@ import tempfile
 import unittest
 from datetime import datetime, timezone, timedelta
 from app import create_app, Store
-from test_support import create_test_app as create_app
 
 class CollectedJourneyTest(unittest.TestCase):
     def test_catalog_paging_filters_and_persistent_rewards(self):

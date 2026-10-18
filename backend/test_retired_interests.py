@@ -3,8 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from app import Store
-from test_support import create_test_app as create_app
+from app import Store, create_app
 
 ROOT = Path(__file__).resolve().parents[1]
 

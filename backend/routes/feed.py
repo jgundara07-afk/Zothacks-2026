@@ -1,5 +1,5 @@
 from uuid import uuid4
-from flask import jsonify, request, g
+from flask import jsonify, request
 from collections import Counter
 from datetime import timedelta
 from io import BytesIO
@@ -76,9 +76,9 @@ def register(app, svc):
             raise ValueError('Provide valid discovery difficulty choices.')
         stamp = clock().isoformat()
         details = dict(saved_at=stamp, filtered=filters.get('active',False) or bool(challenges), lazy_filter=challenges == ['Lazy'])
-        created = db.put('activity', dict(id='save:' + g.user_id + ':' + data['opportunity_id'], profile_id=g.user_id, kind='save', opportunity_id=data['opportunity_id'], **details), once=True)
+        created = db.put('activity', dict(id='save:demo:' + data['opportunity_id'], profile_id='demo', kind='save', opportunity_id=data['opportunity_id'], **details), once=True)
         if created:
-            db.put('activity', dict(id='bookmark:'+str(uuid4()),profile_id=g.user_id,kind='bookmark_history',action='save',opportunity_id=data['opportunity_id'],recorded_at=stamp,category=svc.opportunity(data['opportunity_id']).get('kind'),**details))
+            db.put('activity', dict(id='bookmark:'+str(uuid4()),profile_id='demo',kind='bookmark_history',action='save',opportunity_id=data['opportunity_id'],recorded_at=stamp,category=svc.opportunity(data['opportunity_id']).get('kind'),**details))
         svc.achievements()
         return jsonify(saved=True, opportunity_id=data['opportunity_id'])
 
@@ -89,8 +89,8 @@ def register(app, svc):
             raise ValueError('Set up your profile first.')
         if not svc.opportunity(data['opportunity_id']):
             return (jsonify(error='Opportunity not found.'), 404)
-        if db.get('activity', 'save:' + g.user_id + ':' + data['opportunity_id']):
-            db.put('activity',dict(id='bookmark:'+str(uuid4()),profile_id=g.user_id,kind='bookmark_history',action='unsave',opportunity_id=data['opportunity_id'],recorded_at=clock().isoformat()))
-        db.delete('activity', 'save:' + g.user_id + ':' + data['opportunity_id'])
+        if db.get('activity', 'save:demo:' + data['opportunity_id']):
+            db.put('activity',dict(id='bookmark:'+str(uuid4()),profile_id='demo',kind='bookmark_history',action='unsave',opportunity_id=data['opportunity_id'],recorded_at=clock().isoformat()))
+        db.delete('activity', 'save:demo:' + data['opportunity_id'])
         svc.achievements()
         return jsonify(saved=False, opportunity_id=data['opportunity_id'])

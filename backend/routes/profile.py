@@ -1,5 +1,5 @@
 from uuid import uuid4
-from flask import jsonify, request, g
+from flask import jsonify, request
 from collections import Counter
 from datetime import timedelta
 from io import BytesIO
@@ -64,10 +64,10 @@ def register(app, svc):
             raise ValueError('Choose a valid commitment.')
         normalized['commitment'] = commitment
         context = validate_context(data.get('context', (profile() or {}).get('context', {})))
-        p = dict(context=context, id=g.user_id, name=g.user_name, goal=goal, goals=list(dict.fromkeys(goals)), interests=list(dict.fromkeys(data['interests'])), skills=list(dict.fromkeys(data['skills'])), preferences=normalized)
+        p = dict(context=context, id='demo', name='Alex', goal=goal, goals=list(dict.fromkeys(goals)), interests=list(dict.fromkeys(data['interests'])), skills=list(dict.fromkeys(data['skills'])), preferences=normalized)
         previous = profile()
         if previous and (previous.get('goals',[]) != p['goals'] or previous.get('goal') != p['goal']):
-            db.put('activity',dict(id='profile-update:'+str(uuid4()),profile_id=g.user_id,kind='profile_update',recorded_at=clock().isoformat()))
+            db.put('activity',dict(id='profile-update:'+str(uuid4()),profile_id='demo',kind='profile_update',recorded_at=clock().isoformat()))
         db.put('profiles', p)
         return jsonify(profile=p)
 
@@ -82,6 +82,6 @@ def register(app, svc):
             raise ValueError('Set up your profile first.')
         if data['mood'] not in ['Low', 'Okay', 'Good'] or data.get('effort') not in ['small', 'medium', 'big']:
             raise ValueError('Choose a mood (Low, Okay, Good) and a step size (small, medium, big).')
-        entry = dict(id='checkin:' + g.user_id + ':' + today().isoformat(), profile_id=g.user_id, kind='checkin', date=today().isoformat(), mood=data['mood'], effort=data['effort'])
+        entry = dict(id='checkin:demo:' + today().isoformat(), profile_id='demo', kind='checkin', date=today().isoformat(), mood=data['mood'], effort=data['effort'])
         db.put('activity', entry)
         return jsonify(checkin=entry)

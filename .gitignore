@@ -9,7 +9,3 @@ __pycache__/
 .DS_Store
 opportunity_data/data/
 opportunity_data/*.probe
-
-# Local frontend auth configuration
-.env.local
-.env.*.local

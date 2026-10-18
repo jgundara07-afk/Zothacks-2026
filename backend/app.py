@@ -2,7 +2,7 @@ import json
 import os
 import sqlite3
 from datetime import datetime, timezone
-from flask import Flask, jsonify, request, g
+from flask import Flask, jsonify
 from werkzeug.exceptions import RequestEntityTooLarge
 from dotenv import load_dotenv
 from pymongo.errors import PyMongoError
@@ -10,16 +10,14 @@ try:
     from .store import Store, ROOT
     from .services import OneThing
     from .routes import profile, feed, progress, resume
-    from .auth import normalize_email, verify_supabase_token, AuthUnavailable
 except ImportError:
     from store import Store, ROOT
     from services import OneThing
     from routes import profile, feed, progress, resume
-    from auth import normalize_email, verify_supabase_token, AuthUnavailable
 
 load_dotenv(ROOT.parent / '.env')
 
-def create_app(store=None, now=None, data_mode=None, auth_verifier=None, demo_tools=False):
+def create_app(store=None, now=None, data_mode=None):
     app = Flask(__name__)
     app.config['MAX_CONTENT_LENGTH'] = 6 * 1024 * 1024
     try:
@@ -36,32 +34,7 @@ def create_app(store=None, now=None, data_mode=None, auth_verifier=None, demo_to
         for collection, documents in seed.items():
             db.put_many(collection, documents)
     svc = OneThing(db, now or (lambda: datetime.now(timezone.utc)), mode)
-    svc.demo_enabled = bool(demo_tools)
-    @app.before_request
-    def authenticate():
-        if request.endpoint == 'health':
-            return None
-        header = request.headers.get('Authorization', '')
-        if not header.startswith('Bearer ') or not header[7:].strip():
-            return jsonify(error='Please log in to continue.'), 401
-        token = header[7:].strip()
-        try:
-            user = (auth_verifier or verify_supabase_token)(token)
-        except AuthUnavailable as error:
-            return jsonify(error=str(error)), 503
-        if not isinstance(user, dict) or not user.get('id'):
-            return jsonify(error='Your session expired. Please log in again.'), 401
-        try:
-            email = normalize_email(user.get('email'))
-        except ValueError as error:
-            return jsonify(error=str(error)), 403
-        if not user.get('email_confirmed_at'):
-            return jsonify(error='Verify your email before continuing.'), 403
-        g.user_id = str(user['id'])
-        g.user_email = email
-        metadata = user.get('user_metadata') or {}
-        g.user_name = str(metadata.get('name') or email.split('@')[0])[:80]
-        return None
+    svc.demo_enabled = os.getenv('ONETHING_DEMO_TOOLS', '1') == '1'
     @app.errorhandler(ValueError)
     def invalid(error):
         return jsonify(error=str(error)), 400

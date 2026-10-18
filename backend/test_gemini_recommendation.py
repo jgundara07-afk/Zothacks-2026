@@ -10,7 +10,6 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 import gemini_recommendation
 from app import Store, create_app
-from test_support import create_test_app as create_app
 
 
 class GeminiRecommendationTests(unittest.TestCase):

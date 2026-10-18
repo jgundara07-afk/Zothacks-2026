@@ -1,7 +1,6 @@
 from collections import Counter, defaultdict, deque
 from datetime import timedelta, datetime
 from zoneinfo import ZoneInfo
-from flask import g
 try:
     from .achievements import achievements
     from .program_catalog import program_catalog, preparation_quests, available, distance_km
@@ -24,7 +23,7 @@ except ImportError:
 DAY_ZONE = ZoneInfo("America/Los_Angeles")
 
 class OneThing:
-    """Reads and personalization scoped to the authenticated user."""
+    """Reads and personalization for the persistent demo profile."""
     def __init__(self, db, clock, data_mode='sample'):
         self.db = db
         self.real_clock = clock
@@ -32,9 +31,9 @@ class OneThing:
         self.data_mode = data_mode
         self.catalog = program_catalog() if data_mode == 'catalog' else None
     def demo_state(self):
-        saved = (self.db.get('activity', 'demo-clock:' + g.user_id) or {}) if getattr(self, 'demo_enabled', False) else {}
+        saved = (self.db.get('activity', 'demo-clock') or {}) if getattr(self, 'demo_enabled', True) else {}
         real = self.real_clock().astimezone(DAY_ZONE)
-        return dict(enabled=getattr(self, 'demo_enabled', False), today=saved.get('date') or real.date().isoformat(), real_today=real.date().isoformat(), simulated=bool(saved.get('date')), timezone='America/Los_Angeles')
+        return dict(enabled=getattr(self, 'demo_enabled', True), today=saved.get('date') or real.date().isoformat(), real_today=real.date().isoformat(), simulated=bool(saved.get('date')), timezone='America/Los_Angeles')
     def demo_now(self):
         real = self.real_clock().astimezone(DAY_ZONE)
         state = self.demo_state()
@@ -209,7 +208,7 @@ class OneThing:
     def today(self):
         return self.clock().astimezone(DAY_ZONE).date()
     def profile(self):
-        p = self.db.get('profiles', g.user_id)
+        p = self.db.get('profiles', 'demo')
         if p:
             p['goals'] = ['Internship' if g == 'Land a software engineering internship' else g for g in p.get('goals', [])]
             p['interests'] = [i for i in p.get('interests', []) if i not in RETIRED_INTERESTS]
@@ -217,7 +216,7 @@ class OneThing:
                 p['goal'] = 'Internship'
         return p
     def activity(self, kind):
-        return [a for a in self.db.all('activity') if a['kind'] == kind and a.get('profile_id') == g.user_id]
+        return [a for a in self.db.all('activity') if a['kind'] == kind and a['profile_id'] == 'demo']
     def checkin(self):
         return next((a for a in self.activity('checkin') if a['date'] == self.today().isoformat()), None)
     def completion_day(self, a):

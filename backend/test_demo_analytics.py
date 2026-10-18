@@ -2,7 +2,6 @@ import tempfile
 import unittest
 from datetime import datetime, timezone
 from app import create_app, Store
-from test_support import create_test_app as create_app
 
 class DemoAnalyticsTest(unittest.TestCase):
     def test_date_persistence_daily_duplicates_and_ranges(self):

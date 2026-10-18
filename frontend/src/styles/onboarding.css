@@ -226,7 +226,7 @@ body:has(.ob-title:not(.phase-ui))::after { display: none; }
 @media(max-width:360px){.header-actions{gap:6px}.profile-button span{display:none}}
 
 .demo-auth{display:flex;flex-direction:column;background:var(--paper);color:var(--on-paper);overflow:hidden}
-.demo-auth-body{flex:1;min-height:0;padding:clamp(16px,4dvh,32px) 24px;display:flex;flex-direction:column;justify-content:center;gap:clamp(10px,2dvh,20px);overflow-y:auto}
+.demo-auth-body{flex:1;min-height:0;padding:clamp(16px,4dvh,32px) 24px;display:flex;flex-direction:column;justify-content:center;gap:clamp(10px,2dvh,20px);overflow:hidden}
 .demo-auth-body h1{font-family:var(--font-serif);font-size:clamp(28px,6dvh,44px);line-height:1.05;margin:0}
 .demo-auth-tabs{display:flex;gap:6px;border:1px solid #8d7c64;border-radius:10px;padding:4px}
 .demo-auth-tabs button{flex:1;padding:10px;border-radius:6px;font-size:14px}
@@ -234,8 +234,6 @@ body:has(.ob-title:not(.phase-ui))::after { display: none; }
 .demo-auth-body form{display:grid;gap:clamp(10px,2dvh,16px);min-width:0}
 .demo-auth-body label{display:grid;gap:6px;font-size:13px}
 .demo-auth-body input{width:100%;min-width:0;border:1px solid #99886b;border-radius:8px;background:#f4ead6;color:#30291f;padding:11px;font-size:14px}
-.auth-password-row{display:flex;position:relative;align-items:center}.auth-password-row input{padding-right:48px}.auth-password-row button{position:absolute;right:5px;display:grid;place-items:center;width:36px;height:36px;color:#443927;border-radius:6px}.auth-password-row button:hover{background:#e5d7bd}.demo-auth-body .auth-feedback{color:#4f402d}.demo-auth-body .auth-feedback.error{color:#a32419}.auth-logout{width:calc(100% - 32px);margin:16px 16px 0}
-.demo-auth-body .auth-resend{justify-self:center;color:#793125;text-decoration:underline;text-underline-offset:3px;font-size:12px;padding:6px}
 .demo-auth-body p,.demo-auth-body small{font-size:12px;line-height:1.4;margin:0}
 .demo-auth-body .primary{min-height:46px}
 @media(max-height:560px){.demo-auth .welcome-header{height:48px;padding-block:8px}.demo-auth-body{gap:8px;padding:12px 22px}.demo-auth-body h1{font-size:28px}.demo-auth-body input{padding:8px}.demo-auth-body form{gap:8px}.demo-auth-body>small{display:none}}
