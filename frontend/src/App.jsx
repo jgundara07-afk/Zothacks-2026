@@ -115,9 +115,11 @@ export default function App(){
   finally{if(version===feedVersion.current){feedRequest.current=null;setFeedLoading(false)}}
  }
  async function load(refreshFeed=true){
-  const [f,s,p,a]=await Promise.all([refreshFeed?fetchFeed():Promise.resolve(data),api.saved(),api.progress(),api.analytics()]);
-  if(!f)return;if(!refreshFeed){const ids=new Set(s.opportunities.map(o=>o.id));setData(old=>{const updated={...old,opportunities:old.opportunities.map(o=>({...o,saved:ids.has(o.id)}))};feedData.current=updated;return updated})}setSavedRows(s.opportunities);setQuests(old=>[...new Map([...old,...f.quests,...s.quests].map(q=>[q.id,q])).values()]);setProgress(p);setAnalytics(a);
+  const f=refreshFeed?await fetchFeed():feedData.current;
+  if(!f)return;
   if(!initialized.current){if(f.profile){setContext({...emptyContext,...f.profile.context});setGoal(f.profile.goal);setInterests(f.profile.interests.filter(t=>options.interests.includes(t)).slice(0,options.max_selected_interests));setGoals((f.profile.goals||[]).slice(0,3));setPreferences({...emptyPreferences,...f.profile.preferences});setSkills(f.profile.skills)}if(f.checkin){setMood(f.checkin.mood);setEffort(f.checkin.effort)}initialized.current=true}
+  const [s,p,a]=await Promise.all([api.saved(),api.progress(),api.analytics()]);
+  if(!refreshFeed){const ids=new Set(s.opportunities.map(o=>o.id));setData(old=>{if(!old)return old;const updated={...old,opportunities:old.opportunities.map(o=>({...o,saved:ids.has(o.id)}))};feedData.current=updated;return updated})}setSavedRows(s.opportunities);setQuests(old=>[...new Map([...old,...f.quests,...s.quests].map(q=>[q.id,q])).values()]);setProgress(p);setAnalytics(a);
  }
  useEffect(()=>{load().catch(e=>setError(e.message))},[]);
  useEffect(()=>{if(opening||filtersOpen)return;++feedVersion.current;feedRequest.current=null;setFeedLoading(true);setFeedError('');const timer=setTimeout(()=>{setError('');fetchFeed().catch(e=>setError(e.message))},150);return()=>clearTimeout(timer)},[opening,filtersOpen,profileRevision,JSON.stringify([interests,goals,preferences,difficulty,kinds,metadata,searchQuery,matchMode,feedSort,hideSaved])]);
@@ -184,16 +186,8 @@ export default function App(){
 
  const topPick=visible[0];
  const topQuest=topPick&&(quests.find(q=>q.id===topPick.suggested_quest_id)||quests.find(q=>q.opportunity_id===topPick.id));
- const [starter,setStarter]=useState(null);
- // The whole opportunity must be short and easy, not just its first step.
- useEffect(()=>{
-  if(!opening||starter)return;let live=true;
-  api.feed({challenges:['Lazy','Easy'],time:['Under 5 min','5–15 min'],sort:'shortest',limit:8})
-   .then(f=>{const pool=(f.opportunities||[]).filter(o=>o.minutes>0&&o.minutes<=15);if(live)setStarter(pool.length?pool[Math.floor(Math.random()*Math.min(pool.length,5))]:STARTER_FALLBACK)})
-   .catch(()=>{if(live)setStarter(STARTER_FALLBACK)});
-  return()=>{live=false};
- },[opening]);
- const sample=starter||STARTER_FALLBACK;
+ // The promise screen has a local task, so it never needs another catalog request.
+ const sample=STARTER_FALLBACK;
  async function saveOnboarding(){relatedFeed.current=false;setPage('Discover');let ok=false;await action(async()=>{await api.profile({context,goal:goals[0]||GOALS[0],goals,interests,skills,preferences});await load();ok=true});return ok}
  // If even neutral alternatives cannot fit the current constraints, explicitly keep the first
  // interest, drop goals and places, then open the feed.

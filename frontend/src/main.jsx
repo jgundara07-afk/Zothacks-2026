@@ -1,11 +1,11 @@
 import React from 'react';
 import {createRoot} from 'react-dom/client';
-import '@fontsource/noto-serif-jp/900.css';
-import '@fontsource/eb-garamond/400.css';
-import '@fontsource/eb-garamond/500.css';
-import '@fontsource/eb-garamond/600.css';
-import '@fontsource/eb-garamond/400-italic.css';
-import '@fontsource/jetbrains-mono/400.css';
+import '@fontsource/noto-serif-jp/latin-900.css';
+import '@fontsource/eb-garamond/latin-400.css';
+import '@fontsource/eb-garamond/latin-500.css';
+import '@fontsource/eb-garamond/latin-600.css';
+import '@fontsource/eb-garamond/latin-400-italic.css';
+import '@fontsource/jetbrains-mono/latin-400.css';
 import App from './App';
 import './styles/index.css';
 

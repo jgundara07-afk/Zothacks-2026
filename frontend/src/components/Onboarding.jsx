@@ -20,7 +20,7 @@ const PACE=[
 const PLACES=['Online / Remote','On campus'];
 
 // Pixel embers that break off the words as they burn: position across the text, rise height, drift, delay, size.
-const ASH=Array.from({length:46},(_,i)=>{const r=n=>((Math.sin(i*12.9898+n*78.233)*43758.5453)%1+1)%1;return {'--x':`${4+r(1)*92}%`,'--y':`${20+r(2)*70}%`,'--rise':`${70+r(3)*130}px`,'--drift':`${(r(4)-.5)*60}px`,'--d':`${r(5)*1.1}s`,'--s':`${3+Math.round(r(6)*3)}px`}});
+const ASH=Array.from({length:46},(_,i)=>{const r=n=>((Math.sin(i*12.9898+n*78.233)*43758.5453)%1+1)%1;return {'--x':`${4+r(1)*92}%`,'--y':`${20+r(2)*70}%`,'--rise':`${70+r(3)*130}px`,'--drift':`${(r(4)-.5)*60}px`,'--d':`${r(5)*.3}s`,'--s':`${3+Math.round(r(6)*3)}px`}});
 
 function Title({children,className=''}){return <h1 className={'eva '+className}>{children}</h1>}
 
@@ -28,18 +28,18 @@ export default function Onboarding({skipIntro:returning=false,data,busy,error,ha
  const [step,setStep]=useState(0);
  const [loginOpen,setLoginOpen]=useState(false);
  // Intro plays once per visit; reduced motion goes straight to the finished first screen.
- // 'load' holds the sequence until the title font and photo are ready (max 1.5s), so nothing swaps mid-animation.
+ // 'load' briefly holds the sequence for the title font and photo.
  const [phase,setPhase]=useState(()=>returning||window.matchMedia('(prefers-reduced-motion: reduce)').matches?'ui':'load');
  useEffect(()=>{
   if(phase!=='load')return;
   let done=false;const start=()=>{if(!done){done=true;setPhase(p=>p==='load'?'words':p)}};
   const photo=new Image();photo.src='/photos/scenes/hike-1.jpg';
   Promise.all([document.fonts?.load('900 64px "Noto Serif JP"','Move forward every day'),photo.decode?.()]).catch(()=>{}).then(start);
-  const id=setTimeout(start,1500);return()=>{done=true;clearTimeout(id)};
+  const id=setTimeout(start,600);return()=>{done=true;clearTimeout(id)};
  },[]);
  useEffect(()=>{
   if(phase==='ui'||phase==='load')return;
-  const next={words:['burn',2700],burn:['card',1700],card:['ui',2400]}[phase];
+  const next={words:['burn',1600],burn:['card',1100],card:['ui',1300]}[phase];
   const id=setTimeout(()=>setPhase(next[0]),next[1]);
   return()=>clearTimeout(id);
  },[phase]);
@@ -81,7 +81,7 @@ export default function Onboarding({skipIntro:returning=false,data,busy,error,ha
   <div className="ob-title-panel" inert={phase==='ui'?undefined:true}>
    <img className="ob-halftone" src={OPENING_HALFTONE} alt="" aria-hidden="true"/>
    <p className="ob-lede" ref={heading} tabIndex={-1}>Find one real opportunity and take the first step today.</p>
-   <button className="primary wide" disabled={!data} onClick={()=>setLoginOpen(true)}>{data?'Get started':'Loading…'}<ArrowRight size={18}/></button>
+   <button className="primary wide" onClick={()=>setLoginOpen(true)}>Get started<ArrowRight size={18}/></button>
    {hasProfile&&<button className="ob-text" disabled={busy} onClick={onSkip}>Continue where I left off</button>}
    <small className="ob-fine">Demo profile · no account needed</small>
   </div>
