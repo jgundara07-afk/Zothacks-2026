@@ -11,7 +11,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 /* desktop: the phone rests on the dark map */
 @media (min-width: 700px) {
   body { background: var(--ink-0) var(--map) center / cover fixed no-repeat; }
-  body::before { content: ''; position: fixed; inset: 0; background: radial-gradient(ellipse at center, rgba(11,8,6,.55), rgba(11,8,6,.92)); }
+  body::before { content: ''; position: fixed; inset: 0; background: rgba(11,8,6,.78); }
   .phone-shell { border: 0 !important; box-shadow: 0 0 0 1px rgba(184,144,74,.35), 0 0 0 9px rgba(11,8,6,.85), 0 40px 120px rgba(0,0,0,.8); }
   .overlay { background: rgba(8,6,4,.6); }
   .modal { border-left: 0 !important; border-right: 0 !important; }

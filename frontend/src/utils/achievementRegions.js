@@ -1,4 +1,4 @@
 export const REGIONS=[['foundations','The First Range'],['ascent','The Ascent'],['climb','The Crucible'],['explorer','The Far Horizons'],['strategist','The Strategist’s Spires'],['backlog','The Forgotten Trails'],['community','The Kindred Peaks'],['wellness','The Restful Highlands'],['hustle','The Readiness Ridge'],['milestones','The Storykeeper’s Range']];
-const firstNames={'first-step':'Firstlight Peak','one-percent':'Consistency Ridge','couch-bound':'Restful Rise','heavy-lifter':'Titan Summit','algorithm-whisperer':'Signal Spire','touch-grass':'Verdant Heights',renaissance:'Prism Range',visionary:'Dreamer’s Lookout','warm-intro':'Kindred Peak','base-camp':'Base Camp Alpha'};
-export function mountainName(badge){return firstNames[badge.id]||badge.name;}
+// Every achievement is named for its mountain (backend/achievements.py and achievement_catalog.json).
+export function mountainName(badge){return badge.name;}
 export function badgeSeed(id){return [...id].reduce((value,char)=>(value*31+char.charCodeAt(0))>>>0,7);}

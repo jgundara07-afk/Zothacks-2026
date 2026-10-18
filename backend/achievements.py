@@ -10,15 +10,15 @@ except ImportError:
     from achievement_expansion import expanded_progress
 
 BADGES = [
-    ('first-step', 'First Step on the Mountain', 1, 'Complete your very first quest.', "The journey to the peak begins with a single click. You're officially on the board."),
-    ('one-percent', 'The 1% Club', 7, 'Complete a daily micro-goal on 7 consecutive days.', "Compound interest in action. You've proven that consistency beats intensity every time."),
-    ('couch-bound', 'Productively Couch-Bound', 5, 'Complete 5 Lazy quests.', "Who says you can't build a career in sweatpants? Proof that low-effort is still effort."),
-    ('heavy-lifter', 'The Heavy Lifter', 1, 'Complete your first Challenging quest.', "You didn't just step out of your comfort zone—you leaped. Respect the grind."),
-    ('algorithm-whisperer', 'Algorithm Whisperer', 3, 'Complete 3 resume optimization or LinkedIn quests.', 'Your keywords are optimized, and your metrics are quantified. The ATS screening bots are shaking.'),
-    ('touch-grass', 'Touch Grass', 1, 'Complete a Wellness or Desk Ergonomics quest.', 'You remembered you inhabit a physical body. Your eyes, spine, and cortisol levels thank you.'),
-    ('renaissance', 'The Renaissance Climber', 5, 'Complete quests in 5 different opportunity categories.', 'A master of the pivot. You are building a well-rounded toolkit.'),
-    ('visionary', 'The Visionary (Or The Hoarder)', 10, 'Keep 10 saved opportunities with no completed quests in your backlog.', 'You have a grand plan. Now, you just have to actually do them.'),
-    ('warm-intro', 'The Warm Intro', 3, 'Complete quests for 3 different Networking or Community opportunities.', 'You braved the awkward silences and expanded your orbit. Your future self will thank you for this network.'),
+    ('first-step', 'Firstlight Peak', 1, 'Complete your very first quest.', "The journey to the peak begins with a single click. You're officially on the board."),
+    ('one-percent', 'Consistency Ridge', 7, 'Complete a daily micro-goal on 7 consecutive days.', "Compound interest in action. You've proven that consistency beats intensity every time."),
+    ('couch-bound', 'Restful Rise', 5, 'Complete 5 Lazy quests.', "Who says you can't build a career in sweatpants? Proof that low-effort is still effort."),
+    ('heavy-lifter', 'Boulder Summit', 1, 'Complete your first Challenging quest.', "You didn't just step out of your comfort zone—you leaped. Respect the grind."),
+    ('algorithm-whisperer', 'Signal Spire', 3, 'Complete 3 resume optimization or LinkedIn quests.', 'Your keywords are optimized, and your metrics are quantified. The ATS screening bots are shaking.'),
+    ('touch-grass', 'Verdant Heights', 1, 'Complete a Wellness or Desk Ergonomics quest.', 'You remembered you inhabit a physical body. Your eyes, spine, and cortisol levels thank you.'),
+    ('renaissance', 'Prism Range', 5, 'Complete quests in 5 different opportunity categories.', 'A master of the pivot. You are building a well-rounded toolkit.'),
+    ('visionary', 'Dreamer’s Lookout', 10, 'Keep 10 saved opportunities with no completed quests in your backlog.', 'You have a grand plan. Now, you just have to actually do them.'),
+    ('warm-intro', 'Kindred Peak', 3, 'Complete quests for 3 different Networking or Community opportunities.', 'You braved the awkward silences and expanded your orbit. Your future self will thank you for this network.'),
     ('base-camp', 'Base Camp Alpha', 1000, 'Accumulate 1,000 total points.', 'The air is getting thinner, but the view is getting better. Welcome to the big leagues.'),
 ]
 

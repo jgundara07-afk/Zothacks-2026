@@ -37,40 +37,49 @@
 
 /* the photograph behind the title card: AURA-style, full bleed, heavy grain */
 .ob-title-photo { position: absolute; inset: 0; background: url(/photos/scenes/hike-1.jpg) center 18% / cover; filter: saturate(1.15) contrast(1.22) brightness(.92); opacity: 0; transform: scale(1.08); transition: opacity 1.4s ease, transform 6s ease-out, filter 1s ease; }
-.ob-title-photo::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 45%, rgba(5,3,2,0) 40%, rgba(5,3,2,.6)), linear-gradient(180deg, rgba(5,3,2,0) 35%, rgba(5,3,2,.45) 60%, rgba(5,3,2,0) 85%), var(--scanlines), var(--grain); background-size: auto, auto, auto, 160px; }
+.ob-title-photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(5,3,2,0) 35%, rgba(5,3,2,.45) 60%, rgba(5,3,2,0) 85%), var(--scanlines), var(--grain); background-size: auto, auto, 160px; }
 .phase-card .ob-title-photo, .phase-ui .ob-title-photo { opacity: 1; transform: scale(1); }
 .phase-ui .ob-title-photo { filter: saturate(1) contrast(1.15) brightness(.6); }
 
 /* words: "Move forward, every day" arrive one by one, then burn away from the bottom up into pixel embers and ash */
-@property --burn { syntax: '<percentage>'; inherits: false; initial-value: -20%; }
 .ob-words { position: absolute; inset: 0; z-index: 3; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; transition: opacity .7s ease; }
 .phase-card .ob-words, .phase-ui .ob-words { opacity: 0; pointer-events: none; }
 .ob-words-line {
   position: relative; margin: 0; white-space: nowrap; text-align: center;
   font-family: var(--font-title); font-weight: 900; font-size: 64px; line-height: 1.02; color: #fbf3e2;
   transform: scaleX(.66);
-  -webkit-mask-image: linear-gradient(to top, transparent var(--burn), #000 calc(var(--burn) + 16%));
-  mask-image: linear-gradient(to top, transparent var(--burn), #000 calc(var(--burn) + 16%));
+  clip-path: inset(-30% -10% -30% -10%);
   transition: color .4s ease, text-shadow .4s ease;
 }
+.phase-load .ob-words-line span { animation: none; }
 .ob-words-line span { display: inline-block; opacity: 0; animation: word-in .8s cubic-bezier(.2,.8,.2,1) forwards; animation-delay: calc(.35s + var(--i) * .45s); }
 @keyframes word-in { from { opacity: 0; filter: blur(10px); transform: translateY(10px); } to { opacity: 1; filter: none; transform: none; } }
-.phase-burn .ob-words-line { color: #ffe3b8; text-shadow: 0 0 4px #ec6a20, 0 0 22px rgba(236,106,32,.75); animation: burn-up 1.35s cubic-bezier(.45,0,.7,1) forwards; }
+/* the burn is a clip-path wipe from the bottom (composited) with a glowing ember front riding up on transform */
+.phase-burn .ob-words-line { color: #ffe3b8; text-shadow: 0 0 4px #ec6a20, 0 0 22px rgba(236,106,32,.75); animation: burn-up 1.35s cubic-bezier(.45,0,.7,1) forwards; will-change: clip-path; }
+.ob-words-line::after { content: ''; position: absolute; left: 4%; right: 4%; bottom: 0; height: 6px; border-radius: 3px; background: linear-gradient(90deg, transparent, #ffb347 20% 80%, transparent); box-shadow: 0 0 14px 4px rgba(236,106,32,.7); opacity: 0; pointer-events: none; }
+.phase-burn .ob-words-line::after { animation: burn-front 1.35s cubic-bezier(.45,0,.7,1) forwards; will-change: transform, opacity; }
+.phase-burn .ob-words-line:nth-child(1)::after { animation-delay: .3s; }
+/* once burned, the words stay gone: leaving phase-burn would otherwise drop the clip and show them during the fade */
+.phase-card .ob-words-line, .phase-ui .ob-words-line { clip-path: inset(-30% -10% 100% -10%); }
 .phase-burn .ob-words-line:nth-child(1) { animation-delay: .3s; }
-@keyframes burn-up { from { --burn: -20%; } to { --burn: 118%; } }
+@keyframes burn-up { from { clip-path: inset(-30% -10% -30% -10%); } to { clip-path: inset(-30% -10% 100% -10%); } }
+@keyframes burn-front { 0% { opacity: 0; transform: translateY(20px); } 10% { opacity: 1; } 85% { opacity: 1; } 100% { opacity: 0; transform: translateY(-65px); } }
 
 
 /* embers break off, rise, and cool from gold to red to grey ash */
 .ob-ash { position: absolute; left: 50%; top: 50%; width: 300px; height: 150px; margin: -75px 0 0 -150px; pointer-events: none; }
-.ob-ash i { position: absolute; left: var(--x); top: var(--y); width: var(--s); height: var(--s); background: #fde08a; opacity: 0; }
-.phase-burn .ob-ash i { animation: ash-rise 1.9s steps(19) forwards; animation-delay: var(--d); }
+.ob-ash i { position: absolute; left: var(--x); top: var(--y); width: var(--s); height: var(--s); background: #fde08a; box-shadow: 0 0 5px rgba(236,106,32,.8); opacity: 0; }
+/* smooth transform/opacity travel (compositor-only); the colour cools on a separate, cheap animation */
+.phase-burn .ob-ash i { animation: ash-rise 1.9s cubic-bezier(.25,.6,.35,1) var(--d) forwards, ash-cool 1.9s linear var(--d) forwards; will-change: transform, opacity; }
 @keyframes ash-rise {
-  0% { opacity: 0; background: #fde08a; transform: translate(0, 0); box-shadow: 0 0 6px #ec6a20; }
+  0% { opacity: 0; transform: translate(0, 0); }
   8% { opacity: 1; }
-  40% { background: #c8381c; box-shadow: 0 0 4px #8a1e14; }
-  70% { background: #5b4a42; box-shadow: none; opacity: .8; }
-  100% { opacity: 0; background: #3a302b; transform: translate(var(--drift), calc(var(--rise) * -1)); }
+  70% { opacity: .8; }
+  100% { opacity: 0; transform: translate(var(--drift), calc(var(--rise) * -1)); }
 }
+@keyframes ash-cool { 0% { background: #fde08a; } 40% { background: #c8381c; } 70%, 100% { background: #5b4a42; box-shadow: none; } }
+/* the page-wide blended grain repaints over every intro frame; the photo carries its own grain */
+body:has(.ob-title:not(.phase-ui))::after { display: none; }
 
 /* the title card: a letterboxed film frame with an Evangelion-style title block */
 .ob-letterbox { position: absolute; left: 0; right: 0; z-index: 6; height: 14%; background: #000; display: flex; align-items: center; justify-content: center; transition: transform 1s cubic-bezier(.65,0,.2,1); }

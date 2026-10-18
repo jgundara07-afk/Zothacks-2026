@@ -24,13 +24,21 @@ const ASH=Array.from({length:46},(_,i)=>{const r=n=>((Math.sin(i*12.9898+n*78.23
 
 function Title({children,className=''}){return <h1 className={'eva '+className}>{children}</h1>}
 
-export default function Onboarding({data,busy,error,hasProfile,interests,setInterests,goals,setGoals,skills,setSkills,preferences,setPreferences,stepSize,setStepSize,sample,topPick,topQuest,onSave,onEnter,onWiden,onSkip,onLogin,context,setContext}){
+export default function Onboarding({skipIntro:returning=false,data,busy,error,hasProfile,interests,setInterests,goals,setGoals,skills,setSkills,preferences,setPreferences,stepSize,setStepSize,sample,topPick,topQuest,onSave,onEnter,onWiden,onSkip,onLogin,context,setContext}){
  const [step,setStep]=useState(0);
  const [loginOpen,setLoginOpen]=useState(false);
  // Intro plays once per visit; reduced motion goes straight to the finished first screen.
- const [phase,setPhase]=useState(()=>window.matchMedia('(prefers-reduced-motion: reduce)').matches?'ui':'words');
+ // 'load' holds the sequence until the title font and photo are ready (max 1.5s), so nothing swaps mid-animation.
+ const [phase,setPhase]=useState(()=>returning||window.matchMedia('(prefers-reduced-motion: reduce)').matches?'ui':'load');
  useEffect(()=>{
-  if(phase==='ui')return;
+  if(phase!=='load')return;
+  let done=false;const start=()=>{if(!done){done=true;setPhase(p=>p==='load'?'words':p)}};
+  const photo=new Image();photo.src='/photos/scenes/hike-1.jpg';
+  Promise.all([document.fonts?.load('900 64px "Noto Serif JP"','Move forward every day'),photo.decode?.()]).catch(()=>{}).then(start);
+  const id=setTimeout(start,1500);return()=>{done=true;clearTimeout(id)};
+ },[]);
+ useEffect(()=>{
+  if(phase==='ui'||phase==='load')return;
   const next={words:['burn',2700],burn:['card',1700],card:['ui',2400]}[phase];
   const id=setTimeout(()=>setPhase(next[0]),next[1]);
   return()=>clearTimeout(id);

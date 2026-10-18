@@ -18,7 +18,7 @@ function periodActivity(activity,today,period){
  return activity.filter(item=>{const day=dayInPacific(item.completed_at);return day>=first&&day<=today});
 }
 
-export default function Atlas({progress}){
+export default function Atlas({progress,focus=null}){
  const [period,setPeriod]=useState('week');
  const [selectedBadgeId,setSelectedBadgeId]=useState(null);
  const previousUnlocks=useRef(null);
@@ -32,6 +32,8 @@ export default function Atlas({progress}){
   }
   previousUnlocks.current=unlocked;
  },[badges]);
+ // A celebration's "See it on the map" focuses its mountain.
+ useEffect(()=>{if(focus)setSelectedBadgeId(focus)},[focus]);
  const selected=badges.find(badge=>badge.id===selectedBadgeId)||featuredAchievement(badges);
  const today=progress.today||dayInPacific(Date.now());
  const activity=periodActivity(progress.activity||[],today,period);
@@ -44,6 +46,6 @@ export default function Atlas({progress}){
    <p className="journey-atlas-period-stat" aria-live="polite"><strong>{points}</strong> points earned through <strong>{activity.length}</strong> completed {activity.length===1?'step':'steps'} {period==='all'?'overall':period==='week'?'this week':'this month'}.</p>
    <small className="journey-atlas-footnote">The period changes the activity count; mountain progress and earned achievements are lifetime totals.</small>
   </div>
-  <MountainMap badges={badges} points={progress.points||0} activeBadgeId={selected?.id} onSelectBadge={setSelectedBadgeId}/>
+  <MountainMap badges={badges} points={progress.points||0} activeBadgeId={selected?.id} onSelectBadge={setSelectedBadgeId} focus={focus}/>
  </section>;
 }
