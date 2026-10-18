@@ -43,11 +43,11 @@ class GeminiRecommendationTests(unittest.TestCase):
             self.assertFalse(matched['fallback']['active'])
             generate.assert_not_called()
 
-            later = client.get('/opportunities?interests=Astrophysics&offset=1').json
+            later = client.get('/opportunities?interests=Physics&offset=1').json
             self.assertNotIn('recommendation', later['fallback'])
             generate.assert_not_called()
 
-            empty = client.get('/opportunities?interests=Astrophysics&cost=Free').json
+            empty = client.get('/opportunities?interests=Physics&cost=Free').json
             self.assertTrue(empty['fallback']['active'])
             self.assertEqual(empty['fallback']['recommendation'], 'Try a 15-minute portfolio sketch.')
             self.assertEqual(generate.call_count, 1)

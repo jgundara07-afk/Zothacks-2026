@@ -7,11 +7,11 @@ import re
 from pypdf import PdfReader
 try:
     from . import body
-    from ..preferences import PREFERENCES
+    from ..preferences import PREFERENCES, RETIRED_INTERESTS
     from ..user_context import validate_context
 except ImportError:
     from routes import body
-    from preferences import PREFERENCES
+    from preferences import PREFERENCES, RETIRED_INTERESTS
     from user_context import validate_context
 
 def register(app, svc):
@@ -30,7 +30,10 @@ def register(app, svc):
         data = request.get_json(silent=True)
         if not isinstance(data, dict):
             raise ValueError('Provide profile preferences as a JSON object.')
-        legacy_goals = ['Explore my interests', 'Build my skills', 'Make an impact']
+        if isinstance(data.get('interests'), list):
+            # Interests retired from the picker are dropped, so profiles saved before still re-save.
+            data['interests'] = [i for i in data['interests'] if i not in RETIRED_INTERESTS]
+        legacy_goals =['Explore my interests', 'Build my skills', 'Make an impact']
         goals = data.get('goals', [])
         if isinstance(goals, list):
             goals = ['Internship' if g == 'Land a software engineering internship' else g for g in goals]

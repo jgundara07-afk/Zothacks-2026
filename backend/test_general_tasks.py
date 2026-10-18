@@ -33,7 +33,7 @@ class GeneralTaskJourneyTests(unittest.TestCase):
     def test_fallback_prioritizes_general_tasks_and_completion_counts_once(self):
         with tempfile.TemporaryDirectory() as directory:
             client=create_app(Store(path=directory+'/state.sqlite3'),data_mode='catalog').test_client()
-            result=client.get('/opportunities',query_string={'interests':'Vehicle restoration','goals':'Internship','limit':10}).json
+            result=client.get('/opportunities',query_string={'interests':'Automotive engineering','goals':'Internship','limit':10}).json
             self.assertTrue(result['fallback']['active'])
             self.assertTrue(all(o.get('general_task') for o in result['opportunities']))
             self.assertTrue(all(o['placement']=='fallback' for o in result['opportunities']))

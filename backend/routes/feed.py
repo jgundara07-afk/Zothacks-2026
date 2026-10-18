@@ -7,10 +7,10 @@ import re
 from pypdf import PdfReader
 try:
     from . import body
-    from ..preferences import PREFERENCES
+    from ..preferences import PREFERENCES, RETIRED_INTERESTS
 except ImportError:
     from routes import body
-    from preferences import PREFERENCES
+    from preferences import PREFERENCES, RETIRED_INTERESTS
 
 def register(app, svc):
     db = svc.db
@@ -28,6 +28,7 @@ def register(app, svc):
         if set(request.args) - allowed:
             raise ValueError('Unknown feed filter parameter')
         filters = {key:request.args.getlist(key) for key in ['interests','goals','challenges','time','locations','skills','kind','source','experience','cost','prerequisites','duration_quality','schedule']}
+        filters['interests'] = [i for i in filters['interests'] if i not in RETIRED_INTERESTS]
         filters.update({key:request.args[key] for key in ['commitment','step_size','q','match_mode','sort','hide_saved','hide_completed'] if key in request.args})
         filters.update({key:float(request.args[key]) for key in ['lat','lon','radius_km','max_minutes'] if key in request.args})
         return filters

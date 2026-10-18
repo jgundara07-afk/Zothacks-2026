@@ -5,7 +5,7 @@ from flask import g
 try:
     from .achievements import achievements
     from .program_catalog import program_catalog, preparation_quests, available, distance_km
-    from .preferences import PREFERENCES, INTEREST_GROUPS
+    from .preferences import PREFERENCES, INTEREST_GROUPS, RETIRED_INTERESTS
     from .filter_rules import supported_interests, validate_extra, matches_extra, matches_search, matches_locations, matches_choices
     from .user_context import context_match, context_relevance, first_step_limit
     from .ranking import rank_records, match_details
@@ -14,7 +14,7 @@ try:
 except ImportError:
     from achievements import achievements
     from program_catalog import program_catalog, preparation_quests, available, distance_km
-    from preferences import PREFERENCES, INTEREST_GROUPS
+    from preferences import PREFERENCES, INTEREST_GROUPS, RETIRED_INTERESTS
     from filter_rules import supported_interests, validate_extra, matches_extra, matches_search, matches_locations, matches_choices
     from user_context import context_match, context_relevance, first_step_limit
     from ranking import rank_records, match_details
@@ -212,6 +212,7 @@ class OneThing:
         p = self.db.get('profiles', g.user_id)
         if p:
             p['goals'] = ['Internship' if g == 'Land a software engineering internship' else g for g in p.get('goals', [])]
+            p['interests'] = [i for i in p.get('interests', []) if i not in RETIRED_INTERESTS]
             if p.get('goal') == 'Land a software engineering internship':
                 p['goal'] = 'Internship'
         return p

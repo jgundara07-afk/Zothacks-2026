@@ -39,7 +39,7 @@ class NeutralFeedTests(unittest.TestCase):
         self.gemini.stop()
 
     def test_no_interest_goal_matches_returns_labeled_neutral_alternatives(self):
-        result=self.client.get('/opportunities',query_string={'interests':'Astrophysics','goals':'Internship'}).json
+        result=self.client.get('/opportunities',query_string={'interests':'Physics','goals':'Internship'}).json
         self.assertTrue(result['fallback']['active'])
         self.assertEqual(result['total'],2)
         self.assertEqual({row['title'] for row in result['opportunities']},{'A peaceful park','Mindfulness and personal growth'})
@@ -56,16 +56,16 @@ class NeutralFeedTests(unittest.TestCase):
         self.assertEqual(later['opportunities'],[])
 
     def test_neutral_still_respects_location_time_skills_and_cost(self):
-        online=self.client.get('/opportunities',query_string={'interests':'Astrophysics','locations':'Online / Remote'}).json
+        online=self.client.get('/opportunities',query_string={'interests':'Physics','locations':'Online / Remote'}).json
         self.assertEqual([row['title'] for row in online['opportunities']],['Mindfulness and personal growth'])
         for extra in ({'max_minutes':5},{'cost':'Free'},{'skills':'Coding'},{'locations':'Near me','lat':0,'lon':0}):
-            result=self.client.get('/opportunities',query_string={'interests':'Astrophysics',**extra}).json
+            result=self.client.get('/opportunities',query_string={'interests':'Physics',**extra}).json
             self.assertEqual(result['total'],0,extra)
             self.assertFalse(result['fallback']['active'])
 
     def test_fallback_is_paginated_without_duplicates(self):
-        first=self.client.get('/opportunities',query_string={'interests':'Astrophysics','limit':1}).json
-        second=self.client.get('/opportunities',query_string={'interests':'Astrophysics','limit':1,'offset':1}).json
+        first=self.client.get('/opportunities',query_string={'interests':'Physics','limit':1}).json
+        second=self.client.get('/opportunities',query_string={'interests':'Physics','limit':1,'offset':1}).json
         self.assertTrue(first['fallback']['active'] and second['fallback']['active'])
         self.assertTrue(first['has_more'])
         self.assertFalse(second['has_more'])
