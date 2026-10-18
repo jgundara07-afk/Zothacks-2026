@@ -128,12 +128,14 @@ export default function App(){
  function saveContext(){return {active:!!(interests.length||goals.length||kinds.length||preferences.time.length||preferences.locations.length||Object.values(metadata).some(value=>Array.isArray(value)?value.length:!!value)),challenges:preferences.challenges}}
  function openFilters(){setContext({...emptyContext,...data?.profile?.context});setFiltersOpen(true)}
  async function toggleSave(o){if(o.saved)await api.unsave(o.id);else await api.save(o.id,saveContext());await load(hideSaved);if(detail===o.id&&(page==='Saved things'?o.saved:hideSaved&&!o.saved))setDetail(null)}
- const all=(page==='Saved things'?savedRows:(data?.opportunities||[])).map(o=>{
+ const savedView=!opening&&page==='Saved things';
+ // While onboarding is open the reveal always reads the fresh feed, even if you came from the Saved tab.
+ const all=(savedView?savedRows:(data?.opportunities||[])).map(o=>{
   const variant=chooseVariant(o,quests,{availableMinutes:contextOptions.first_step_minutes[data?.profile?.context?.availability],stepSize:difficulty,preferences,defaultEffort:data?.checkin?.effort});
   // Cards beyond your filters keep the step the server chose for them, so the feed never thins out.
   return variant?{...o,minutes:variant.minutes,suggested_quest_id:variant.id,difficulty:o.personalization&&!o.sample?o.difficulty:variant.difficulty,preparation_difficulty:variant.difficulty,effort:variant.effort,size:variant.size,hasVariant:true}:{...o,hasVariant:!!(o.beyond_filters||o.match_tier)&&quests.some(q=>q.id===o.suggested_quest_id)};
  });
- const visible=all.filter(o=>page==='Saved things'?o.saved:o.hasVariant&&(data?.data_mode==='catalog'||matchesOpportunity(o,{interests,goals,preferences})&&(!kinds.length||kinds.includes(o.kind))));
+ const visible=all.filter(o=>savedView?o.saved:o.hasVariant&&(data?.data_mode==='catalog'||matchesOpportunity(o,{interests,goals,preferences})&&(!kinds.length||kinds.includes(o.kind))));
  const feedPhotos=photosForList(visible);
  // The card you land on gets .in-view (photo settles, text rises; styles/smooth.css).
  useEffect(()=>{const root=feedRef.current;if(!root||listView)return;const io=new IntersectionObserver(es=>es.forEach(e=>e.target.classList.toggle('in-view',e.isIntersecting)),{root,threshold:.6});root.querySelectorAll('.quest-card').forEach(c=>io.observe(c));root.classList.add('watching');return()=>{io.disconnect();root.classList.remove('watching')}},[data,page,listView]);
@@ -178,7 +180,7 @@ export default function App(){
  const topPick=visible[0];
  const topQuest=topPick&&(quests.find(q=>q.id===topPick.suggested_quest_id)||quests.find(q=>q.opportunity_id===topPick.id));
  const sample=(data?.opportunities||[]).find(o=>o.id==='sample-networking-backend')||all[0];
- async function saveOnboarding(){relatedFeed.current=false;let ok=false;await action(async()=>{await api.profile({context,goal:goals[0]||GOALS[0],goals,interests,skills,preferences});await load();ok=true});return ok}
+ async function saveOnboarding(){relatedFeed.current=false;setPage('Discover');let ok=false;await action(async()=>{await api.profile({context,goal:goals[0]||GOALS[0],goals,interests,skills,preferences});await load();ok=true});return ok}
  // If even neutral alternatives cannot fit the current constraints, explicitly keep the first
  // interest, drop goals and places, then open the feed.
  async function widenOnboarding(){const prefs={...preferences,locations:[]},keep=interests.slice(0,1);await action(async()=>{await api.profile({goal:GOALS[0],goals:[],interests:keep,skills,preferences:prefs});setGoals([]);setInterests(keep);setPreferences(prefs);enterApp()})}

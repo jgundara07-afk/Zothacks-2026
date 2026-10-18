@@ -50,7 +50,8 @@ SYNONYMS = {
     'Web & App Development': ['web development', 'app development', 'frontend', 'front-end', 'full-stack', 'full stack'],
     'Hike': ['hike', 'hiking', 'trail'],
     'Hiking': ['hike', 'hiking', 'trail', 'trailhead', 'canyon', 'wilderness'],
-    'Running': ['running', 'run club', '5k', '10k', 'marathon', 'trail'],
+    # 'running' alone also means operating something ("Running AI as an Enterprise..."), so only sport phrases
+    'Running': ['run club', 'running club', '5k', '10k', 'half marathon', 'marathon', 'trail run', 'jogging', 'cross country', 'track and field'],
     # Broad interests whose own name rarely appears verbatim in a listing.
     'Learning to code': ['coding', 'programming', 'python', 'javascript', 'learn to code', 'beginner programming', 'intro to programming'],
     'Career exploration': ['career', 'careers in', 'career fair', 'career path'],
