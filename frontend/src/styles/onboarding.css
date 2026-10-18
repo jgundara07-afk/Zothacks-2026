@@ -259,3 +259,13 @@ body:has(.ob-title:not(.phase-ui))::after { display: none; }
 .interest-picker .feed-filters input[type=search]:focus-visible,.interest-picker .feed-filters select:focus-visible{outline:3px solid var(--red);outline-offset:2px}
 
 .interest-picker .feed-filters{grid-template-columns:minmax(0,1fr)}
+
+/* Keep all filter headings readable over the parchment texture. */
+.filter-sheet:not(.profile-sheet) .feed-filters label,.filter-sheet:not(.profile-sheet) .filter-search,.filter-sheet:not(.profile-sheet) .filter-visibility label,.filter-sheet:not(.profile-sheet) fieldset legend,.filter-sheet:not(.profile-sheet) .selection-counter{color:#38281c!important;font-size:14px!important;font-weight:600}
+.filter-sheet:not(.profile-sheet) .feed-filters select,.filter-sheet:not(.profile-sheet) .filter-search input{min-height:46px;border:1px solid #806a4a;background:#f4ead6;color:#30291f}
+.filter-sheet:not(.profile-sheet) .filter-search input::placeholder{color:#6e5941;opacity:1}
+
+/* The actions fill the sheet edge to edge and stay at its bottom while scrolling. */
+.filter-sheet:not(.profile-sheet) .sheet-actions{box-sizing:border-box;width:calc(100% + 46px);max-width:none;margin:22px -23px calc(-1 * max(24px,env(safe-area-inset-bottom)));padding:12px 23px max(20px,env(safe-area-inset-bottom));bottom:calc(-1 * max(24px,env(safe-area-inset-bottom)));gap:12px;background:#211913;color:#f3e5c9}
+.filter-sheet:not(.profile-sheet) .sheet-actions .text-link{flex:0 0 39%;min-height:48px;color:#f3e5c9!important;text-decoration:underline;text-underline-offset:3px;font-size:14px}
+.filter-sheet:not(.profile-sheet) .sheet-actions .primary{flex:1;min-height:48px}
