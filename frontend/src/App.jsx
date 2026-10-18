@@ -26,6 +26,7 @@ import {crossedMilestone,climbPosition} from './utils/climbMath';
 import {options,emptyPreferences,PreferenceFields} from './components/PreferenceFields';
 import {chooseVariant,matchesOpportunity} from './utils/filtering';
 import {mergeFeedPage,nextFeedOffset} from './utils/feedPaging';
+import Logo from './components/Logo';
 
 const GOALS=['Explore my interests','Build my skills','Make an impact'];
 const INTERESTS=['Design','Technology','Community','Sustainability','Arts'];
@@ -62,6 +63,10 @@ function Modal({title,onClose,children,className=''}){
  return <div className="overlay"><section ref={ref} className={`modal ${className}`} role="dialog" aria-modal="true" aria-label={title}><div className="sheet-handle"/><div className="modal-heading"><span>{title}</span><button className="icon-button" onClick={onClose} aria-label={`Close ${title}`}><X size={20}/></button></div>{children}</section></div>
 }
 function ChoiceList({label,choices,value,onChange}){return <fieldset><legend>{label}</legend><div className="choice-tags">{choices.map(v=><button type="button" key={v} aria-pressed={value.includes(v)} onClick={()=>onChange(value.includes(v)?value.filter(x=>x!==v):[...value,v])}>{value.includes(v)&&<Check size={13}/>} {v}</button>)}</div></fieldset>}
+// "The promise" screen always shows one short, easy opportunity. If the catalog cannot answer, it shows this
+// authored OneThing task (general_tasks.json #1) instead, so the card never disappears.
+const STARTER_FALLBACK={id:'onething-7a3e6b16cb75f48fb897',title:'Update your headline',kind:'General task',minutes:3,difficulty:'Lazy',general_task:{number:1},description:'Rewrite a professional headline or personal bio to describe where you want to go, using LinkedIn or a local draft.'};
+
 export default function App(){
  const [climbFrom,setClimbFrom]=useState(null);
  useEffect(()=>{const update=e=>setProgress(old=>({...old,achievements:e.detail}));window.addEventListener('onething-achievements',update);return()=>window.removeEventListener('onething-achievements',update)},[]);
@@ -179,7 +184,16 @@ export default function App(){
 
  const topPick=visible[0];
  const topQuest=topPick&&(quests.find(q=>q.id===topPick.suggested_quest_id)||quests.find(q=>q.opportunity_id===topPick.id));
- const sample=(data?.opportunities||[]).find(o=>o.id==='sample-networking-backend')||all[0];
+ const [starter,setStarter]=useState(null);
+ // The whole opportunity must be short and easy, not just its first step.
+ useEffect(()=>{
+  if(!opening||starter)return;let live=true;
+  api.feed({challenges:['Lazy','Easy'],time:['Under 5 min','5–15 min'],sort:'shortest',limit:8})
+   .then(f=>{const pool=(f.opportunities||[]).filter(o=>o.minutes>0&&o.minutes<=15);if(live)setStarter(pool.length?pool[Math.floor(Math.random()*Math.min(pool.length,5))]:STARTER_FALLBACK)})
+   .catch(()=>{if(live)setStarter(STARTER_FALLBACK)});
+  return()=>{live=false};
+ },[opening]);
+ const sample=starter||STARTER_FALLBACK;
  async function saveOnboarding(){relatedFeed.current=false;setPage('Discover');let ok=false;await action(async()=>{await api.profile({context,goal:goals[0]||GOALS[0],goals,interests,skills,preferences});await load();ok=true});return ok}
  // If even neutral alternatives cannot fit the current constraints, explicitly keep the first
  // interest, drop goals and places, then open the feed.
@@ -187,7 +201,7 @@ export default function App(){
  function enterApp(){setOpening(false);setKinds([]);setPage('Discover')}
  if(opening)return <Onboarding skipIntro={returningHome} context={context} setContext={setContext} onLogin={setDisplayName} data={data} busy={busy} error={error} hasProfile={!!data?.profile} interests={interests} setInterests={setInterests} goals={goals} setGoals={setGoals} skills={skills} setSkills={setSkills} preferences={preferences} setPreferences={setPreferences} stepSize={difficulty} setStepSize={setDifficulty} sample={sample} topPick={topPick} topQuest={topQuest} onSave={saveOnboarding} onEnter={enterApp} onWiden={widenOnboarding} onSkip={()=>action(async()=>{if(!data.profile){await api.profile({goal:GOALS[0],interests:['Design','Community'],skills:['Writing']});await load()}resetFilters();enterApp()})}/>;
 
- return <div className="phone-shell"><div className="app-surface" inert={modalOpen?true:undefined}><header className="app-header"><a className="brand" href="#" aria-label="OneThing home" onClick={e=>{e.preventDefault();setError('');setReturningHome(true);setOpening(true)}}>OneThing</a><div className="header-actions">{['Discover','Saved things'].includes(page)&&<button className="header-icon" aria-label={listView?'Switch to image feed':'Switch to text-only list'} aria-pressed={listView} onClick={()=>{const next=!listView;setListView(next);localStorage.setItem('one-thing-view',next?'list':'images')}}>{listView?<Image size={18}/>:<List size={18}/>}</button>}{progress.demo_clock?.simulated&&<button className="demo-date-badge" onClick={()=>navigate('My progress')}>Demo · {progress.today}</button>}<button className="streak-chip" aria-label={`View streak calendar, ${progress.streak||0} day streak`} onClick={()=>setCalendarOpen(true)}><Flame size={15}/>{progress.streak||0}</button><button className="profile-button" aria-label="Edit profile" onClick={()=>{setError('');setProfileOpen(true)}}><UserRound size={17}/><span>{displayName||data?.profile?.name||'Alex'}</span></button></div><div className="xp-strip" title={`${progress.points%100} of 100 XP to your next milestone`} aria-hidden="true" style={{'--xp':(progress.points%100)/100}}><i/></div></header>
+ return <div className="phone-shell"><div className="app-surface" inert={modalOpen?true:undefined}><header className="app-header"><span className="brand-lockup"><Logo/><a className="brand" href="#" aria-label="OneThing home" onClick={e=>{e.preventDefault();setError('');setReturningHome(true);setOpening(true)}}>OneThing</a></span><div className="header-actions">{['Discover','Saved things'].includes(page)&&<button className="header-icon" aria-label={listView?'Switch to image feed':'Switch to text-only list'} aria-pressed={listView} onClick={()=>{const next=!listView;setListView(next);localStorage.setItem('one-thing-view',next?'list':'images')}}>{listView?<Image size={18}/>:<List size={18}/>}</button>}{progress.demo_clock?.simulated&&<button className="demo-date-badge" onClick={()=>navigate('My progress')}>Demo · {progress.today}</button>}<button className="streak-chip" aria-label={`View streak calendar, ${progress.streak||0} day streak`} onClick={()=>setCalendarOpen(true)}><Flame size={15}/>{progress.streak||0}</button><button className="profile-button" aria-label="Edit profile" onClick={()=>{setError('');setProfileOpen(true)}}><UserRound size={17}/><span>{displayName||data?.profile?.name||'Alex'}</span></button></div><div className="xp-strip" title={`${progress.points%100} of 100 XP to your next milestone`} aria-hidden="true" style={{'--xp':(progress.points%100)/100}}><i/></div></header>
  {errorBox}
  <main className={(['Discover','Saved things'].includes(page)?'feed-page':'page-scroll')+' tab-enter'} data-dir={tabDir} key={page}>
  {['Discover','Saved things'].includes(page)?<>{page==='Discover'&&<FilterBar feedRef={feedRef} count={filterCount} chips={activeChips.map(c=>({...c,remove:()=>{relatedFeed.current=false;c.remove()}}))} notes={data?.context_applied?(data.context_notes||[]):[]} onOpen={openFilters}/>}
@@ -197,7 +211,7 @@ export default function App(){
  {page==='Discover'&&<div ref={endOfFeedRef} className="feed-load-sentinel" aria-busy={feedLoading}>
  {feedLoading&&<p role="status" className="feed-loading"><span className="feed-loading-dot"/>Loading…</p>}
  {feedError?<div className="feed-load-error" role="alert"><p>{feedError}</p><button className="secondary" disabled={feedLoading} onClick={()=>{fetchFeed(true).catch(()=>{})}}>Try loading more again</button></div>:data?.has_more&&!feedLoading?<button className="text-link" onClick={()=>{fetchFeed(true).catch(()=>{})}}>Load more opportunities<ArrowRight size={15}/></button>:!feedLoading&&visible.length>0?<p className="fictional-note">That's everything for now.</p>:null}
- </div>}</div></>:<><div className="page-heading"><h1 className="page-title">{page==='My progress'?'Progress':'Recap'}</h1></div>
+ </div>}</div></>:<><div className="page-heading"><h1 className="page-title">{page==='My progress'?'Progress':'Recap'}</h1><p className="page-tagline">{page==='My progress'?'Every quest, charted.':'Your OneThing story · The climb, remembered.'}</p></div>
  {page==='My recap'?<Recap data={analytics} onExplore={()=>{resetFilters();navigate('Discover')}}/>:<><div className="progress-summary"><button className="streak-chip" aria-label="View streak calendar" onClick={()=>setCalendarOpen(true)}><Flame size={16}/>{progress.streak||0} day streak</button><p>{progress.active_today?"Today's quest is done.":'Complete a quest today to keep your streak.'}</p><small>Best: {progress.longest_streak||0} days · Pacific time</small></div><PointsTimeline activity={progress.activity} today={progress.today}/><Atlas progress={progress} focus={mapFocus}/><details className="badge-journal"><summary>Open your badge journal</summary><AchievementGallery badges={progress.achievements||[]}/></details><section className="progress-panel"><div className="stats"><div><strong>{progress.completed_count}</strong><span>quests completed</span></div><div><strong>{progress.saved_count}</strong><span>things saved</span></div></div><details className="completed-quests"><summary>Completed quests ({progress.completed_count})</summary>{progress.activity.length?progress.activity.map(a=><div className="activity" key={a.id||a.quest_id}><span className="tick"><Check size={17}/></span><div><strong>{a.title}</strong><small>{new Date(a.completed_at).toLocaleDateString(undefined,{month:'short',day:'numeric'})} · Quest completed</small></div><b>+{a.points}</b></div>):<p className="field-help">Completed quests will show up here.</p>}</details></section><Analytics today={progress.today} clock={progress.demo_clock} onDateChange={async value=>{await api.demoDate(value);await load();}} data={analytics} onRecap={()=>navigate('My recap')}/></>}
  </>}
  </main>

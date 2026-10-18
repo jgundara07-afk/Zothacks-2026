@@ -105,7 +105,7 @@ export default function Onboarding({skipIntro:returning=false,data,busy,error,ha
    <Title><span ref={heading} tabIndex={-1}>One useful thing, small enough to start <em>today.</em></span></Title>
    {sample&&<article className="ob-card">
     <img src={photoFor(sample)} alt=""/>
-    <div className="ob-card-text"><span className="ob-card-kicker">{sample.sample!==false&&data?.data_mode!=='catalog'?'Sample':'From the catalog'} · {sample.kind}</span><h2 className="eva">{sample.title}</h2><span className="ob-card-time"><Clock3 size={13}/>{sample.minutes||5} min first step</span></div>
+    <div className="ob-card-text"><span className="ob-card-kicker">{sample.general_task?'OneThing task':sample.sample!==false&&data?.data_mode!=='catalog'?'Sample':'From the catalog'} · {sample.difficulty||sample.kind}</span><h2 className="eva">{sample.title}</h2><span className="ob-card-time"><Clock3 size={13}/>{sample.minutes||5} min{sample.general_task?', start to finish':' first step'}</span></div>
    </article>}
    <p className="ob-note">Every quest has a first step you can finish in one sitting. Small steps count.</p>
   </main>

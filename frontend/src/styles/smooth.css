@@ -71,3 +71,41 @@ button:active:not(:disabled) { transform: scale(.96); }
 .quest-card-why b { font-weight: 600; letter-spacing: .14em; text-transform: uppercase; font-size: 11px; color: #e8cf9c; margin-right: 6px; }
 .detail-why { margin: 10px 0 4px; padding: 12px 14px; border-radius: 16px; background: rgba(243,233,210,.86); border: 1px solid rgba(58,39,22,.14); }
 .detail-why p { margin: 6px 0 0; font-family: var(--font-serif); font-size: 16px; line-height: 1.45; color: var(--on-paper); }
+
+/* 5. Progress & Recap polish: a parchment title plate, self-contained stat tiles, and map-palette mix charts. */
+.page-heading {
+  position: relative; margin: 4px 0 18px; padding: 14px 18px 12px;
+  background: rgba(243,233,210,.86); border: 1px solid rgba(58,39,22,.14); border-radius: 20px;
+  box-shadow: 0 10px 24px -20px rgba(58,39,22,.8), inset 0 1px 0 rgba(255,255,255,.55);
+}
+.page-heading .page-title { margin: 0; font-size: 44px; color: var(--on-paper); }
+.page-tagline {
+  margin: 8px 0 0; padding-top: 8px; border-top: 2px solid var(--red);
+  font-family: var(--font-serif); font-size: 12px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--on-paper-mute);
+}
+.recap-scope { display: inline-block; padding: 4px 12px; border-radius: 999px; background: rgba(243,233,210,.86); border: 1px solid rgba(58,39,22,.14); color: var(--on-paper); opacity: 1; }
+
+.analytics-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 20px 0 24px; }
+.analytics-stats > div { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; min-width: 0; padding: 14px 8px 12px; text-align: center; }
+.analytics-stats strong { font-size: 34px; line-height: 1; }
+.analytics-stats span { margin: 0; font-size: 11px; letter-spacing: .14em; line-height: 1.3; }
+
+.mix-card { --mix-gap: #efe3c8; --mix-empty: rgba(58,39,22,.18); padding: 18px 16px; background: rgba(243,233,210,.6); border: 1px solid rgba(58,39,22,.14); border-radius: 20px; }
+.mix-donut { width: 176px; height: 176px; }
+.mix-donut > div { width: 118px; height: 118px; background: var(--ink-1); color: var(--on-ink); box-shadow: 0 0 0 3px var(--mix-gap); }
+.mix-donut strong { font-family: var(--font-title); font-weight: 900; font-size: 34px; line-height: 1; }
+.mix-donut small { font-family: var(--font-serif); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--on-ink-mute); margin-top: 4px; }
+.mix-legend li { font-family: var(--font-serif); font-size: 15px; color: var(--on-paper); padding: 6px 0; margin: 0; border-top: 1px solid rgba(58,39,22,.12); }
+.mix-legend li:first-child { border-top: 0; }
+.mix-legend i { width: 12px; height: 12px; border-radius: 3px; }
+.mix-legend b { font-variant-numeric: tabular-nums; color: var(--on-paper); }
+.mix-legend small { color: var(--on-paper-mute); opacity: 1; min-width: 3ch; text-align: right; }
+
+/* 6. Brand lockup: the OneThing mark sits left of the compressed wordmark (kept outside .brand's squeeze). */
+:root { --logo-ink: #15110e; --logo-red: #c41e2a; }
+.brand-lockup { display: inline-flex; align-items: center; gap: 8px; min-width: 0; }
+.brand-mark { flex-shrink: 0; display: block; }
+.brand-lockup .brand { margin-left: 0; }
+/* On the dark leather frame the ink strokes turn parchment; the red stays. */
+.welcome-header .brand-mark { --logo-ink: var(--on-ink); }
