@@ -1,6 +1,6 @@
 import tempfile
 import unittest
-from app import create_app, Store
+from app import Store
 from test_support import create_test_app as create_app
 from goal_matching import RULES, with_goal_matches
 
@@ -20,7 +20,8 @@ class GoalFilterTest(unittest.TestCase):
                         self.assertIn(goal,row['personalization']['inferred_goal_matches'])
                 # Selecting goals does not exempt other constraints.
                 response=client.get('/opportunities',query_string={'goals':goal,'locations':'Near me','lat':0,'lon':0})
-                self.assertEqual(response.json['total'],0)
+                self.assertEqual(response.json['matched_count'],0)
+                self.assertTrue(all(row['beyond_filters'] for row in response.json['opportunities'] if not row.get('general_task')))
 
     def test_incidental_description_does_not_create_goal_match(self):
         row=with_goal_matches({'title':'Walking practice','description':'Open source research certification internship competition LinkedIn', 'personalization':{'goals':[]}})

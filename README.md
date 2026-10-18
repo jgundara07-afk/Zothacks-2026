@@ -38,6 +38,8 @@ The email allowlist is Gmail, Outlook/Hotmail/Live, Yahoo, iCloud, Proton and `u
 
 To verify the live flow after configuration: sign in with two different allowed Google accounts. In account A, save and complete a quest; refresh to check session persistence, then log out through Profile. Log in to account B and confirm its profile, saves, progress, achievements and recap do not contain A's activity. Also test an account outside the allowed domains and confirm it is rejected. The automated auth tests use provider mocks because they cannot complete a real Google OAuth flow or exercise a live Supabase project.
 
+## Run locally
+
 Requires Python 3.10+ and Node.js 20.19+ (or 22.12+). From the project root in PowerShell:
 
 ```powershell
@@ -116,7 +118,7 @@ Tests use temporary profile storage and the bundled catalog, without calling ups
 - `opportunity_data/`: manually invoked collectors, taxonomy, enrichment/export and audits.
 - `design/references/`: art direction references, not app assets.
 
-The phone-width UI, preference checklist, list/image toggle, streak calendar, climb rewards and template recap are retained. Resume Lab has been removed from the app navigation and screens.
+The phone-width UI, Google sign-in, preference checklist, list/image toggle, streak calendar, climb rewards and recap are retained. Resume Lab has been removed from the app navigation and screens. Private profile and activity records are isolated by the verified Supabase user ID.
 
 ## Automatic feed pagination
 Discover loads the next API page automatically when the bottom of the image feed or text-only list approaches the viewport. Requests are serialized, appended cards are deduplicated by stable opportunity ID, and a filter change invalidates older responses. Scrolling stays in place while cards are appended. A load-more button remains as an accessible/manual fallback, failures show a retry action, and an explicit end message appears when `has_more` is false. Saved items keep their existing list behavior.

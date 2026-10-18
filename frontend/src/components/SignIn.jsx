@@ -1,4 +1,5 @@
 import React,{useRef,useState} from 'react';
+import Logo from './Logo';
 import {authConfigured,authConfigurationError} from '../auth';
 import {startGoogleSignIn} from '../authFlow';
 
@@ -20,7 +21,7 @@ export default function SignIn({onBack,initialError=''}){
  }
 
  return <div className="phone-shell demo-auth">
-  <header className="welcome-header"><span className="brand">OneThing</span><button type="button" onClick={onBack}>Back</button></header>
+  <header className="welcome-header"><span className="brand-lockup"><Logo/><span className="brand">OneThing</span></span><button type="button" onClick={onBack}>Back</button></header>
   <main className="demo-auth-body auth-google-only">
    <h1>Start your <em>journey.</em></h1>
    <p className="auth-intro">Sign in or create an account with Google.</p>
