@@ -140,8 +140,8 @@ class OneThing:
         if cached is None:
             stream, matched_count = self._build_stream(filters, interest_tags, goal_tags, skill_tags, near, context, step_limit, default_effort, saved_ids, done_quests, lat, lon, radius, match_mode, sort)
             self._stream_cache = {**getattr(self, '_stream_cache', {}), cache_key: (stream, matched_count)}
-            if len(self._stream_cache) > 24:
-                self._stream_cache = dict(list(self._stream_cache.items())[-24:])
+            if len(self._stream_cache) > 2:
+                self._stream_cache = dict(list(self._stream_cache.items())[-2:])
         else:
             stream, matched_count = cached
         page = stream[offset:offset+limit]

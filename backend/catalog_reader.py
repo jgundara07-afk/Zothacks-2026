@@ -3,6 +3,7 @@ import gzip
 import hashlib
 import json
 import math
+import ijson
 from collections import Counter
 from functools import lru_cache
 from pathlib import Path
@@ -35,7 +36,6 @@ class CatalogReader:
         self.by_id = {row["id"]: row for row in rows}
         if len(self.by_id) != len(rows):
             raise ValueError("Duplicate IDs in app catalog")
-        self.search_text = {row["id"]: " ".join(str(row.get(key) or "") for key in ("title", "description", "organization", "location", "kind")).casefold() for row in rows}
 
     def query(self, *, interests=(), goals=(), challenge_levels=(), time_buckets=(), locations=(),
               commitment=None, q="", scope="opportunity", lat=None, lon=None, radius_km=25,
@@ -148,11 +148,15 @@ def _load(path, manifest_modified, data_modified):
     data = directory / "opportunities.json.gz"
     if hashlib.sha256(data.read_bytes()).hexdigest() != manifest["sha256"]:
         raise ValueError("Catalog checksum mismatch; regenerate the app export")
-    with gzip.open(data, "rt", encoding="utf-8") as stream:
-        payload = json.load(stream)
-    if payload["schema_version"] != 1 or len(payload["opportunities"]) != manifest["record_count"]:
+    # Stream the compressed catalog: json.load briefly holds the entire decoded
+    # document alongside all parsed records, exceeding small service memory limits.
+    with gzip.open(data, "rb") as stream:
+        schema_version = next(ijson.items(stream, "schema_version"), None)
+    with gzip.open(data, "rb") as stream:
+        rows = list(ijson.items(stream, "opportunities.item", use_float=True))
+    if schema_version != 1 or len(rows) != manifest["record_count"]:
         raise ValueError("App catalog schema or count mismatch")
-    return CatalogReader(payload["opportunities"], manifest["taxonomy"])
+    return CatalogReader(rows, manifest["taxonomy"])
 
 
 def load_catalog(directory=CATALOG_DIRECTORY):
