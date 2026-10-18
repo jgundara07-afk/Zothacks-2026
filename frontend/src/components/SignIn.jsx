@@ -3,6 +3,8 @@ import {ArrowRight,Eye,EyeOff} from 'lucide-react';
 import {authConfigured,authConfigurationError} from '../auth';
 import {register,login,resendVerification} from '../authFlow';
 
+const verificationRedirectTo = () => new URL(import.meta.env.BASE_URL, window.location.origin).href;
+
 export default function SignIn({onSignIn,onBack,initialError=''}){
  const [mode,setMode]=useState('signup');
  const [name,setName]=useState(''),[email,setEmail]=useState(''),[password,setPassword]=useState(''),[confirmation,setConfirmation]=useState('');
@@ -12,7 +14,7 @@ export default function SignIn({onSignIn,onBack,initialError=''}){
   event.preventDefault();setError('');setNotice('');setBusy(true);
   try{
    if(mode==='signup'){
-    setNotice(await register({name,email,password,confirmation,redirectTo:window.location.origin}));
+    setNotice(await register({name,email,password,confirmation,redirectTo:verificationRedirectTo()}));
     setPassword('');setConfirmation('');
    }else{
     const session=await login({email,password});
@@ -23,7 +25,7 @@ export default function SignIn({onSignIn,onBack,initialError=''}){
  }
  async function resend(){
   setBusy(true);setError('');setNotice('');
-  try{setNotice(await resendVerification({email,redirectTo:window.location.origin}))}
+  try{setNotice(await resendVerification({email,redirectTo:verificationRedirectTo()}))}
   catch(problem){setError(problem.message)}
   finally{setBusy(false)}
  }
