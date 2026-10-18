@@ -1,7 +1,7 @@
 import tempfile
 import unittest
 from unittest.mock import patch
-from app import create_app, Store
+from app import Store
 from test_support import create_test_app as create_app
 from ranking import match_details
 from filter_rules import matches_search, matches_locations
@@ -55,6 +55,11 @@ class AdvancedFilterTest(unittest.TestCase):
                 params=[('interests',v) for v in tags]
                 any_result=client.get(route,query_string=params).json
                 all_result=client.get(route,query_string=params+[('match_mode','all')]).json
+                if route=='/opportunities':
+                    # The main feed never shrinks: 'all' only moves cards matching every choice to the front.
+                    self.assertEqual(any_result['total'],all_result['total'])
+                    self.assertTrue(any_result['opportunities'])
+                    continue
                 self.assertGreater(any_result['total'],all_result['total'])
                 for row in all_result['opportunities']:
                     if row.get('recommendation_type')=='neutral':continue

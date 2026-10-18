@@ -10,6 +10,7 @@ try:
     from .user_context import context_match, context_relevance, first_step_limit
     from .ranking import rank_records, match_details
     from .neutral import is_neutral, fallback_info, sprinkle
+    from .discovery import score, reason, group_neighbours, TIERS
     from .gemini_recommendation import generate_recommendation
 except ImportError:
     from achievements import achievements
@@ -19,6 +20,7 @@ except ImportError:
     from user_context import context_match, context_relevance, first_step_limit
     from ranking import rank_records, match_details
     from neutral import is_neutral, fallback_info, sprinkle
+    from discovery import score, reason, group_neighbours, TIERS
     from gemini_recommendation import generate_recommendation
 
 DAY_ZONE = ZoneInfo("America/Los_Angeles")
@@ -119,93 +121,161 @@ class OneThing:
             raise ValueError('Provide valid latitude, longitude and radius (0â€“500 km)')
         if 'Near me' in filters.get('locations', []) and lat is None:
             raise ValueError('Near me requires your location. Allow location access or choose another location filter.')
-        matches = {}
-        neutral = {}
-        general = {}
         profile = self.profile() or {}
         context = profile.get('context', {})
         step_limit = first_step_limit(context)
-        interest_tags = set(filters.get('interests') or profile.get('interests', []))
-        skill_tags = set(filters.get('skills') or profile.get('skills', []))
-        goal_tags = set(filters.get('goals') or profile.get('goals', []))
+        interest_tags = [i for i in (filters.get('interests') or profile.get('interests', [])) if i not in RETIRED_INTERESTS]
+        skill_tags = list(filters.get('skills') or profile.get('skills', []))
+        goal_tags = list(filters.get('goals') or profile.get('goals', []))
+        near = group_neighbours(interest_tags)
         default_effort = (self.checkin() or {}).get('effort')
         saved_ids = {a['opportunity_id'] for a in self.activity('save')} if filters.get('hide_saved') == 'true' else set()
         # Completed work never returns to the feed: a single quest hides its opportunity, and a project
         # (ordered helper quests) stays only until every step is done, showing its next unfinished step.
         done_quests = {a['quest_id'] for a in self.activity('completion')}
+
+        import json as _json
+        cache_key = _json.dumps([g.user_id, {k: v for k, v in filters.items() if k not in ('offset', 'limit')}, interest_tags, goal_tags, skill_tags,
+                                 context, sorted(done_quests), sorted(saved_ids), default_effort, str(self.today()), lat, lon, radius], sort_keys=True, default=str)
+        cached = getattr(self, '_stream_cache', {}).get(cache_key)
+        if cached is None:
+            stream, matched_count = self._build_stream(filters, interest_tags, goal_tags, skill_tags, near, context, step_limit, default_effort, saved_ids, done_quests, lat, lon, radius, match_mode, sort)
+            self._stream_cache = {**getattr(self, '_stream_cache', {}), cache_key: (stream, matched_count)}
+            if len(self._stream_cache) > 24:
+                self._stream_cache = dict(list(self._stream_cache.items())[-24:])
+        else:
+            stream, matched_count = cached
+        page = stream[offset:offset+limit]
+        cards = self.decorate([{**o, 'recommendation_type': 'neutral' if o.get('general_task') else 'matched',
+                                'placement': 'sprinkled' if o.get('general_task') else 'beyond_filters' if beyond else 'matched',
+                                'match_tier': 'general' if o.get('general_task') else tier, 'beyond_filters': beyond,
+                                'match_reason': reason(o, tier, interest_tags, goal_tags, near, beyond),
+                                'ranking': dict(relevance_score=round(value, 3)),
+                                'venues': venues, 'minutes': q['minutes'], 'suggested_quest_id': q['id'], 'preparation_difficulty': q['difficulty'],
+                                'size': q['size'], 'effort': q['effort']} for (o, q, venues), tier, value, beyond in page])
+        for card in cards:
+            card['context_reasons'] = context_relevance(card, context)[1]
+            card['first_step_limit'] = step_limit
+            card['match_details'] = match_details(card, interest_tags, goal_tags, skill_tags, filters.get('q', '')) if card['recommendation_type'] != 'neutral' else dict(interests=[], goals=[], skills=[], title_terms=[], score=0)
+            card['matching_tags'] = [] if card['recommendation_type'] == 'neutral' else list(dict.fromkeys(card['match_details']['interests'] + card['match_details']['goals'] + card['match_details']['skills']))
+        # Nothing truly close inside your filters: the feed still scrolls (nearest first), and on the first page a
+        # self-guided Gemini idea based on your choices may join it.
+        no_close = bool(interest_tags or goal_tags) and not any(item[1] in ('close', 'match') and not item[3] for item in stream)
+        fallback = fallback_info(no_close, filters)
+        if no_close:
+            fallback['message'] = 'Nothing matches every choice exactly yet, so here are the closest options, getting farther as you scroll.'
+            if offset == 0 and not related:
+                choices = {key: value for key, value in filters.items() if key not in {'lat', 'lon', 'radius_km'} and value not in (None, '', [], {})}
+                recommendation = generate_recommendation(choices)
+                if recommendation:
+                    fallback.update(reason='gemini_personalized_suggestion', recommendation=recommendation)
+        if related:
+            for card in cards:
+                exact = set(interest_tags).intersection(supported_interests(card['personalization']))
+                nearby = [g['name'] for g in INTEREST_GROUPS if g['name'] != 'Original interests' and set(g['interests']).intersection(interest_tags) and set(g['interests']).intersection(supported_interests(card['personalization']))]
+                card['recommendation_reason'] = ('Matches '+', '.join(sorted(exact))) if exact else ('Related to your '+', '.join(nearby)+' interests') if nearby else 'An exploratory option; no direct interest match.'
+        return dict(opportunities=cards, quests=self.mark_quests(self.quests_for(cards)), total=len(stream), offset=offset, limit=limit,
+                    has_more=offset+limit < len(stream), data_mode='catalog', context_applied=bool(any(context.values())),
+                    context_notes=(['Budget amount data is incomplete; showing confirmed free options only.'] if context.get('budget') in {'Under $25','Under $100'} else []) + (['Preferred event days use Pacific time when a scheduled date is known.'] if context.get('days') in {'Weekdays','Weekends'} else []),
+                    matched_count=matched_count, fallback=fallback, kinds=sorted({o['kind'] for o in self.catalog.values()}))
+    def _build_stream(self, filters, interest_tags, goal_tags, skill_tags, near, context, step_limit, default_effort, saved_ids, done_quests, lat, lon, radius, match_mode, sort):
+        """Every eligible card in feed order: in-filter tiers, general tasks sprinkled, then the closest cards beyond the filters."""
+        def within_filters(o, p, venues):
+            """The Filters sheet narrows the first stretch of the feed; interests, goals and situation never exclude."""
+            if filters.get('challenges') and not set(filters['challenges']).intersection(p['challenge_levels']): return False
+            if filters.get('time') and not set(filters['time']).intersection(p['time_buckets']): return False
+            if filters.get('skills') and not set(filters['skills']).intersection(o['skills']): return False
+            if not matches_extra(o, filters): return False
+            if filters.get('kind') and o['kind'] not in filters['kind']: return False
+            if filters.get('source') and o['source'] not in filters['source']: return False
+            if not matches_search(o, filters.get('q', '')): return False
+            if not matches_locations(filters.get('locations', []), venues): return False
+            commitment = filters.get('commitment', 'A mix of both')
+            return commitment == 'A mix of both' or commitment == o['commitment']
+
+        inside, outside, general = [], [], []
         for o in self.catalog.values():
             if o['id'] in saved_ids: continue
             if not available(o, self.real_clock()): continue
             p = o['personalization']
-            if not context_match(o, context, filters): continue
-            if filters.get('challenges') and not set(filters['challenges']).intersection(p['challenge_levels']): continue
-            if filters.get('time') and not set(filters['time']).intersection(p['time_buckets']): continue
-            if filters.get('skills') and not set(filters['skills']).intersection(o['skills']): continue
-            if not matches_extra(o, filters): continue
-            if filters.get('kind') and o['kind'] not in filters['kind']: continue
-            if filters.get('source') and o['source'] not in filters['source']: continue
-            if not matches_search(o, filters.get('q', '')): continue
             venues = list(o['venues'])
             if lat is not None and o.get('coordinates') and distance_km(lat,lon,o['coordinates']) <= radius: venues.append('Near me')
-            if not matches_locations(filters.get('locations', []), venues): continue
-            commitment = filters.get('commitment', 'A mix of both')
-            if commitment != 'A mix of both' and commitment != o['commitment']: continue
             quests = preparation_quests(o)
             if any(q['id'] in done_quests for q in quests) and not any(q.get('project') for q in quests): continue
             if quests[0].get('project'):
                 quests = [next((q for q in quests if q['id'] not in done_quests), None)] if quests else []
                 if quests == [None]: continue
-            candidates = [q for q in quests
-                if (filters.get('step_size','Any') == 'Any' or q['size'] == filters['step_size']) and (step_limit is None or q['minutes'] <= step_limit)]
-            if not candidates: continue
+            # an explicit step size narrows the first stretch; your availability only prefers steps that fit it
+            sized = [q for q in quests if filters.get('step_size','Any') == 'Any' or q['size'] == filters['step_size']]
+            fitting = [q for q in sized if step_limit is None or q['minutes'] <= step_limit]
+            candidates = fitting or sized or quests
             # With no effort set, use the opportunity's suggested first step (a mix of sizes, see program_catalog).
             chosen = next((q for q in candidates if q.get('suggested')), None) if not default_effort and filters.get('step_size','Any') == 'Any' else None
             chosen = chosen or min(candidates, key=lambda q: ((q['effort'] != default_effort) if default_effort else (q['difficulty'] not in p['challenge_levels']), q['minutes']))
-            if is_neutral(o): neutral[o['id']] = (o,chosen,venues)
+            entry = (o, chosen, venues)
             if o.get('general_task'):
-                general[o['id']] = (o,chosen,venues)
+                if within_filters(o, p, venues): general.append(entry)
                 continue
-            if not matches_choices(filters.get('interests', []), supported_interests(p), match_mode): continue
-            if not matches_choices(filters.get('goals', []), o['career_goals'], match_mode): continue
-            matches[o['id']] = (o,chosen,venues)
-        no_personalized_matches = bool(not matches and (filters.get('interests') or filters.get('goals')))
-        using_fallback = bool(not matches and neutral and (filters.get('interests') or filters.get('goals') or general))
-        if using_fallback: matches = neutral
-        def relevance(o):
-            if using_fallback: return 0
-            return match_details(o, interest_tags, goal_tags, skill_tags, filters.get('q', ''))['score'] + context_relevance(o, context)[0]
-        ranked = rank_records([entry[0] for entry in matches.values()], relevance)
-        if using_fallback:
-            ranked.sort(key=lambda entry:(not bool(entry[0].get('general_task')), bool((entry[0].get('general_task') or {}).get('requirements')), (entry[0].get('general_task') or {}).get('minutes',999), (entry[0].get('general_task') or {}).get('number',999)))
-        elif general:
-            task_ranked=rank_records([entry[0] for entry in general.values()],lambda o:0)
-            task_ranked.sort(key=lambda entry:(bool(entry[0]['general_task'].get('requirements')),entry[0]['general_task']['minutes'],entry[0]['general_task']['number']))
-            ranked=sprinkle(ranked,task_ranked)
-            matches={**matches,**general}
+            value, tier, lead = score(o, interest_tags, goal_tags, skill_tags, near, match_mode)
+            # Your situation (budget, format, travel, days, availability) is a preference, never a gate: cards that
+            # fit it move up, the rest still appear.
+            value += context_relevance(o, context)[0] + (1.0 if context_match(o, context, filters) else 0) + (0.4 if fitting else 0)
+            (inside if sized and within_filters(o, p, venues) else outside).append((entry, value, tier, lead))
+
+        interest_set = set(interest_tags)
+        def order(pool):
+            """Your choices take turns: each matched interest or goal contributes its nearest cards in rotation
+            (tier, then score, with roles/events/outings/courses alternating). Related picks follow, then the rest.
+            Repeated titles (the same trail mapped in several segments) collapse to one card."""
+            by_id = {e[0][0]['id']: e for e in pool}
+            ranked = rank_records([e[0][0] for e in pool], lambda o: by_id[o['id']][1])
+            rank = {t: i for i, t in enumerate(TIERS)}
+            items = sorted(((by_id[o['id']], base, bonus) for o, base, bonus in ranked), key=lambda it: rank[it[0][2]])
+            seen, unique = set(), []
+            for it in items:
+                title = ' '.join((it[0][0][0].get('title') or '').lower().split())
+                if title in seen: continue
+                seen.add(title); unique.append(it)
+            def kind_group(it):
+                k = (it[0][0][0].get('kind') or '').lower()
+                return 'role' if ('intern' in k or 'job' in k) else 'event' if 'event' in k else 'outing' if any(w in k for w in ('trail','park','sports')) else 'course'
+            def round_robin(groups):
+                queues, out = [q for q in groups if q], []
+                while queues:
+                    for q in list(queues):
+                        out.append(q.pop(0))
+                        if not q: queues.remove(q)
+                return out
+            def by(items, key):
+                groups = {}
+                for it in items: groups.setdefault(key(it), []).append(it)
+                return list(groups.values())
+            # every chosen interest or goal gets a queue; one with only description mentions still takes turns
+            matched = [it for it in unique if it[0][3] is not None and it[0][2] in ('close', 'match', 'related')]
+            queues = []
+            for group in by(matched, lambda it: it[0][3]):
+                # nearest tier first inside each choice; types alternate within a tier
+                q = [x for t in ('close', 'match', 'related') for x in round_robin(by([it for it in group if it[0][2] == t], kind_group))]
+                # interests get two turns for each goal-only turn
+                queues.append((q, 2 if group[0][0][3] in interest_set else 1))
+            out = []
+            while any(q for q, _ in queues):
+                for q, turns in queues:
+                    for _ in range(turns):
+                        if q: out.append(q.pop(0))
+            rest = [round_robin(by([it for it in unique if it[0][2] == t and it[0][3] is None], kind_group)) for t in ('related', 'explore')]
+            return out + rest[0] + rest[1]
+
+        ordered_inside, ordered_outside = order(inside), order(outside)
+        task_ranked = sorted(general, key=lambda e: (bool(e[0]['general_task'].get('requirements')), e[0]['general_task']['minutes'], e[0]['general_task']['number']))
+        stream = [(item[0][0], item[0][2], item[1], False) for item in ordered_inside]
+        tasks = [(t, 'explore', 0, False) for t in task_ranked]
+        stream = sprinkle(stream, tasks) if stream else tasks
         if sort != 'relevance':
-            ranked.sort(key=lambda entry: ((matches[entry[0]['id']][1]['minutes'] if sort == 'shortest' else -matches[entry[0]['id']][1]['points']), -entry[1], entry[0]['id']))
-        mixed = [matches[o['id']] for o,_,_ in ranked]
-        ranking = {o['id']:dict(relevance_score=base, uniqueness_bonus=round(bonus,4)) for o,base,bonus in ranked}
-        page = mixed[offset:offset+limit]
-        cards = self.decorate([{**o, 'recommendation_type':'neutral' if using_fallback or o.get('general_task') else 'matched', 'placement':'fallback' if using_fallback else 'sprinkled' if o.get('general_task') else 'matched', 'ranking':ranking[o['id']], 'venues':venues, 'minutes':q['minutes'], 'suggested_quest_id':q['id'], 'preparation_difficulty':q['difficulty'], 'size':q['size'], 'effort':q['effort']} for o,q,venues in page])
-        for card in cards:
-            card['context_reasons'] = context_relevance(card, context)[1]
-            card['first_step_limit'] = step_limit
-            card['match_details'] = match_details(card, interest_tags, goal_tags, skill_tags, filters.get('q', '')) if card['recommendation_type'] != 'neutral' else dict(interests=[], goals=[], skills=[], title_terms=[], score=0)
-            card['matching_tags'] = list(dict.fromkeys(card['match_details']['interests'] + card['match_details']['goals'] + card['match_details']['skills']))
-        if related:
-            for card in cards:
-                exact = interest_tags.intersection(supported_interests(card['personalization']))
-                nearby = [g['name'] for g in INTEREST_GROUPS if g['name'] != 'Original interests' and set(g['interests']).intersection(interest_tags) and set(g['interests']).intersection(supported_interests(card['personalization']))]
-                card['recommendation_reason'] = ('Matches '+', '.join(sorted(exact))) if exact else ('Related to your '+', '.join(nearby)+' interests') if nearby else 'An exploratory option; no direct interest match.'
-        cards = [{**o,'matching_tags':[]} if o['recommendation_type']=='neutral' else o for o in cards]
-        fallback = fallback_info(using_fallback, filters)
-        if no_personalized_matches and not related and offset == 0:
-            choices = {key: value for key, value in filters.items() if key not in {'lat', 'lon', 'radius_km'} and value not in (None, '', [], {})}
-            recommendation = generate_recommendation(choices)
-            if recommendation:
-                fallback.update(active=True, reason='gemini_personalized_suggestion', message=('No current opportunities match your interests and goals with these filters. Here is a self-guided idea based on your choices.'), recommendation=recommendation)
-        return dict(opportunities=cards, quests=self.mark_quests(self.quests_for(cards)), total=len(mixed), offset=offset, limit=limit, has_more=offset+limit<len(mixed), data_mode='catalog', context_applied=bool(any(context.values())), context_notes=(['Budget amount data is incomplete; showing confirmed free options only.'] if context.get('budget') in {'Under $25','Under $100'} else []) + (['Preferred event days use Pacific time when a scheduled date is known.'] if context.get('days') in {'Weekdays','Weekends'} else []), matched_count=sum(not o.get('general_task') for o,_,_ in mixed) if not using_fallback else 0, fallback=fallback, kinds=sorted({o['kind'] for o in self.catalog.values()}))
+            # an explicit sort orders everything inside the filters, sprinkled tasks included
+            stream.sort(key=lambda item: (item[0][1]['minutes'] if sort == 'shortest' else -item[0][1]['points'], -item[2]))
+        stream += [(item[0][0], item[0][2], item[1], True) for item in ordered_outside]
+        return stream, len(ordered_inside)
     def today(self):
         return self.clock().astimezone(DAY_ZONE).date()
     def profile(self):
@@ -217,7 +287,7 @@ class OneThing:
                 p['goal'] = 'Internship'
         return p
     def activity(self, kind):
-        return [a for a in self.db.all('activity') if a['kind'] == kind and a.get('profile_id') == g.user_id]
+        return [a for a in self.db.all('activity') if a['kind'] == kind and a['profile_id'] == g.user_id]
     def checkin(self):
         return next((a for a in self.activity('checkin') if a['date'] == self.today().isoformat()), None)
     def completion_day(self, a):

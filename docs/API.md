@@ -1,5 +1,5 @@
 # OneThing app API
-All requests and responses are JSON except PDF uploads. Vite proxies `/api/...` to Flask. Every route except `GET /health` requires `Authorization: Bearer <Supabase access token>`. Flask validates the token and confirmed, allowed-domain email with Supabase Auth, then scopes profile and activity data to the verified user ID. Errors use `{ "error": "Readable message" }` and HTTP 400/401/403/404/413/503.
+All requests and responses are JSON except PDF uploads. Vite proxies `/api/...` to Flask. Every route except `GET /health` requires `Authorization: Bearer <Supabase access token>`. Flask verifies the token with Supabase Auth and scopes private records to that user ID. Errors use `{ "error": "Readable message" }` and appropriate HTTP status codes, including 401/403/503.
 
 ## Default collected mode
 `ONETHING_DATA_MODE=catalog` reads the bundled, checksum-validated `backend/catalog/opportunities.json.gz`. It does not contact providers or overwrite profile/activity storage. Missing or corrupt files fail startup instead of silently substituting samples. Restart Flask after a manual export. Set `ONETHING_DATA_MODE=sample` for the explicit fictional fixture; that mode retains the original unpaginated feed contract for regression/demo use.
@@ -68,7 +68,7 @@ Profiles and activity use MongoDB when configured or local SQLite otherwise. Ato
 The lower-level read-only `/catalog/options` and `/catalog/opportunities` API preserves the canonical data taxonomy and explicit full/first/micro-step scopes; see [CATALOG_API.md](CATALOG_API.md).
 
 ### Demo clock and ranged analytics
-`POST /demo/clock` accepts `{ "date": "2026-10-18" }` or `{ "reset": true }`. Persisted Pacific date affects completion timestamps and daily quest eligibility; source availability uses real time. Disabled for real accounts (403). It is enabled only by explicit test fixtures. `/progress` includes disabled `demo_clock` metadata for compatibility.
+`POST /demo/clock` accepts `{ "date": "2026-10-18" }` or `{ "reset": true }`. Persisted Pacific date affects completion timestamps and daily quest eligibility; source availability uses real time. Disabled with `ONETHING_DEMO_TOOLS=0` (403). `/progress` includes `demo_clock` metadata.
 
 `GET /analytics?period=day|week|month|year&date=YYYY-MM-DD` returns scoped `completed_count`, `points`, category/skill/difficulty counters and `series` bins, plus inclusive `start` and exclusive `end`. Weeks begin Monday; all boundaries use Pacific time. With no period, lifetime recap counters remain available.
 
@@ -117,7 +117,7 @@ Core `/opportunities` and `/recommendations` accept:
 Invalid modes, sort options, and boolean strings return 400. The UI exposes these controls in Filters and offers individually removable active-filter chips. Reset restores relevance/any mode and clears visibility filters. Neutral fallback and general-task labels remain explicit; they are never described as exact matches in all mode.
 
 ### Profile situation and availability
-`POST /profiles` accepts optional `context`, validated against `shared/user_context.json`. It contains `situation`, `country`, `state`, `city`, optional `school`, `travel`, `relocate`, `experience`, `availability`, `days`, `formats` (array), `budget`, and optional `transportation`. Text fields are limited to 120 characters. Empty selections mean no preference. Omitting `context` during later filter/profile saves preserves existing details; passing an empty object clears them. Details persist with the signed-in profile and are editable in Profile.
+`POST /profiles` accepts optional `context`, validated against `shared/user_context.json`. It contains `situation`, `country`, `state`, `city`, optional `school`, `travel`, `relocate`, `experience`, `availability`, `days`, `formats` (array), `budget`, and optional `transportation`. Text fields are limited to 120 characters. Empty selections mean no preference. Omitting `context` during later filter/profile saves preserves existing details; passing an empty object clears them. Details persist with the authenticated user profile and are editable in Profile.
 
 Core discovery and broader recommendations apply saved context locally, before pagination:
 - Available time limits the **suggested preparation quest**, not the full course/job duration (15/30/60-minute caps; 2+ hours has no upper cap). The UI cannot replace this suggestion with a step above that limit.
@@ -127,4 +127,4 @@ Core discovery and broader recommendations apply saved context locally, before p
 - Preferred days constrain scheduled events with a known date (Pacific time); self-paced and undated records are not assigned invented weekdays.
 - City/state/country/school and situation add small evidence-based ranking tie breaks (at most 0.49 points). They do not establish residency, student eligibility or work authorization. Travel time, transit access and relocation eligibility are not inferred; these fields are stored for later supported matching.
 
-Feed responses expose `context_applied`, `context_notes`, per-card `context_reasons`, and `first_step_limit`. The UI offers an Edit link to the profile. These typed profile details are not added to Gemini prompts. Each account has its own saved context and activity.
+Feed responses expose `context_applied`, `context_notes`, per-card `context_reasons`, and `first_step_limit`. The UI offers an Edit link to the profile. These typed profile details are not added to Gemini prompts. Signed-in accounts have separate private profiles and activity.

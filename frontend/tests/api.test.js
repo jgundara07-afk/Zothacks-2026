@@ -1,7 +1,8 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {createApiClient} from '../src/api.js';
-const api=createApiClient(async()=>({data:{session:{access_token:'test-token'}}}));
+
+const api=createApiClient(async()=>({data:{session:{access_token:'fixture-token'}}}));
 
 test('empty proxy gateway errors report a backend connection failure',async t=>{
  const original=globalThis.fetch;t.after(()=>{globalThis.fetch=original});

@@ -1,7 +1,7 @@
 import tempfile
 import unittest
 from unittest.mock import patch
-from app import create_app,Store
+from app import Store
 from test_support import create_test_app as create_app
 from program_catalog import program_catalog,preparation_quests
 
@@ -33,11 +33,10 @@ class GeneralTaskJourneyTests(unittest.TestCase):
     def test_fallback_prioritizes_general_tasks_and_completion_counts_once(self):
         with tempfile.TemporaryDirectory() as directory:
             client=create_app(Store(path=directory+'/state.sqlite3'),data_mode='catalog').test_client()
-            result=client.get('/opportunities',query_string={'interests':'Automotive engineering','goals':'Internship','limit':10}).json
-            self.assertTrue(result['fallback']['active'])
-            self.assertTrue(all(o.get('general_task') for o in result['opportunities']))
-            self.assertTrue(all(o['placement']=='fallback' for o in result['opportunities']))
-            o=result['opportunities'][0]
+            result=client.get('/opportunities',query_string={'interests':'Quantum computing','goals':'Internship','limit':10}).json
+            self.assertTrue(result['opportunities'])
+            o=next(o for o in result['opportunities'] if o.get('general_task'))
+            self.assertEqual(o['placement'],'sprinkled')
             q=next(q for q in result['quests'] if q['opportunity_id']==o['id'])
             self.assertEqual(client.post('/profiles',json={'interests':[],'goals':[],'skills':['Writing']}).status_code,200)
             self.assertEqual(client.post('/saved',json={'opportunity_id':o['id']}).status_code,200)

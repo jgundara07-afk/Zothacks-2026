@@ -1,10 +1,10 @@
-from flask import g
-"""Activity-backed, permanent achievement unlocks for each account."""
+"""Activity-backed, permanent achievement unlocks for each authenticated profile."""
 import re
 import json
 from pathlib import Path
 from collections import Counter
 from datetime import timedelta
+from flask import g
 try:
     from .achievement_expansion import expanded_progress
 except ImportError:

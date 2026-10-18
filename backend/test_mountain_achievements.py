@@ -2,7 +2,7 @@ import tempfile
 import unittest
 from datetime import datetime, timedelta, timezone
 from unittest.mock import patch
-from app import Store, create_app
+from app import Store
 from test_support import create_test_app as create_app
 from achievements import BADGES, EXPANSION
 

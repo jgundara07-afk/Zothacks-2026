@@ -1,6 +1,6 @@
 import tempfile
 import unittest
-from app import create_app, Store
+from app import Store
 from test_support import create_test_app as create_app
 
 class JourneyTest(unittest.TestCase):

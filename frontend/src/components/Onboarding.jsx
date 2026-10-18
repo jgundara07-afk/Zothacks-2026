@@ -81,9 +81,8 @@ export default function Onboarding({skipIntro:returning=false,authenticated=fals
   <div className="ob-title-panel" inert={phase==='ui'?undefined:true}>
    <img className="ob-halftone" src={OPENING_HALFTONE} alt="" aria-hidden="true"/>
    <p className="ob-lede" ref={heading} tabIndex={-1}>Find one real opportunity and take the first step today.</p>
-   <button className="primary wide" disabled={authenticated&&!data} onClick={()=>authenticated?setStep(1):setLoginOpen(true)}>{authenticated&&!data?'Loading…':'Get started'}<ArrowRight size={18}/></button>
+   <button className="primary wide" disabled={!data} onClick={()=>authenticated?setStep(1):setLoginOpen(true)}>{data?(authenticated?'Continue':'Get started'):'Loading…'}<ArrowRight size={18}/></button>
    {hasProfile&&<button className="ob-text" disabled={busy} onClick={onSkip}>Continue where I left off</button>}
-   <small className="ob-fine">Your progress belongs to your account.</small>{error&&<p className="error" role="alert">{error}</p>}
   </div>
   {phase!=='ui'&&<button className="ob-skip-intro" onClick={skipIntro}>Skip intro</button>}
  </div>;
@@ -105,7 +104,7 @@ export default function Onboarding({skipIntro:returning=false,authenticated=fals
    <Title><span ref={heading} tabIndex={-1}>One useful thing, small enough to start <em>today.</em></span></Title>
    {sample&&<article className="ob-card">
     <img src={photoFor(sample)} alt=""/>
-    <div className="ob-card-text"><span className="ob-card-kicker">{sample.sample!==false&&data?.data_mode!=='catalog'?'Sample':'From the catalog'} · {sample.kind}</span><h2 className="eva">{sample.title}</h2><span className="ob-card-time"><Clock3 size={13}/>{sample.minutes||5} min first step</span></div>
+    <div className="ob-card-text"><span className="ob-card-kicker">{sample.general_task?'OneThing task':sample.sample!==false&&data?.data_mode!=='catalog'?'Sample':'From the catalog'} · {sample.difficulty||sample.kind}</span><h2 className="eva">{sample.title}</h2><span className="ob-card-time"><Clock3 size={13}/>{sample.minutes||5} min{sample.general_task?', start to finish':' first step'}</span></div>
    </article>}
    <p className="ob-note">Every quest has a first step you can finish in one sitting. Small steps count.</p>
   </main>

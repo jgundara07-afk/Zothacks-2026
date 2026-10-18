@@ -9,7 +9,7 @@ from unittest.mock import patch, MagicMock
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 import gemini_recommendation
-from app import Store, create_app
+from app import Store
 from test_support import create_test_app as create_app
 
 
@@ -43,12 +43,13 @@ class GeminiRecommendationTests(unittest.TestCase):
             self.assertFalse(matched['fallback']['active'])
             generate.assert_not_called()
 
-            later = client.get('/opportunities?interests=Physics&offset=1').json
+            later = client.get('/opportunities?interests=Quantum%20computing&cost=Free&offset=1').json
             self.assertNotIn('recommendation', later['fallback'])
             generate.assert_not_called()
 
-            empty = client.get('/opportunities?interests=Physics&cost=Free').json
+            empty = client.get('/opportunities?interests=Quantum%20computing&cost=Free').json
             self.assertTrue(empty['fallback']['active'])
+            self.assertTrue(empty['opportunities'], 'the feed still scrolls while the idea is offered')
             self.assertEqual(empty['fallback']['recommendation'], 'Try a 15-minute portfolio sketch.')
             self.assertEqual(generate.call_count, 1)
 

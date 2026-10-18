@@ -2,11 +2,27 @@ import React,{useState,useEffect} from 'react';
 import {ArrowRight} from 'lucide-react';
 import {api} from '../api';
 import ActivityWitness from './ActivityWitness';
-const colors=['#f1bf55','#80bcaa','#bc9ce0','#ef9681','#87b9eb','#dedb8a','#d791c1'];
+// Color follows the entity, never its rank: each skill keeps one earthy hue from the map palette, drawn in a
+// fixed order so neighbouring slices stay distinct (validated on parchment; the legend carries names and shares).
+const SKILL_COLORS={Coding:'#9a2f27','Data analysis':'#13907e',Writing:'#b8904a',Business:'#3463ab',Community:'#c0692c',Design:'#8a4a78',Research:'#6f8a3a',Sustainability:'#6c5ca8'};
+const PALETTE=Object.values(SKILL_COLORS),OTHER='#8b7a63';
+// Challenge is ordinal, so it reads as one oxblood ramp from light to dark.
+const CHALLENGE_COLORS={Lazy:'#c48a70',Easy:'#b0654e',Medium:'#97432f',Hard:'#7a2219',Challenging:'#4f130e'};
+function colorRows(title,values){
+ const entries=Object.entries(values).filter(([,n])=>n>0);
+ if(title==='Challenge mix')return Object.keys(CHALLENGE_COLORS).filter(k=>values[k]).map(k=>[k,values[k],CHALLENGE_COLORS[k]]).concat(entries.filter(([k])=>!CHALLENGE_COLORS[k]).map(([k,n])=>[k,n,OTHER]));
+ if(title==='Skills practiced'){const known=Object.keys(SKILL_COLORS);return known.filter(k=>values[k]).map(k=>[k,values[k],SKILL_COLORS[k]]).concat(entries.filter(([k])=>!SKILL_COLORS[k]).map(([k,n])=>[k,n,OTHER]))}
+ // Categories: a stable alphabetical order assigns hues; anything past the palette folds into Other.
+ const sorted=entries.sort((a,b)=>a[0].localeCompare(b[0])),head=sorted.slice(0,PALETTE.length-1),rest=sorted.slice(PALETTE.length-1);
+ const rows=head.map(([k,n],i)=>[k,n,PALETTE[i]]);
+ if(rest.length===1)rows.push([rest[0][0],rest[0][1],PALETTE[PALETTE.length-1]]);else if(rest.length)rows.push(['Other',rest.reduce((t,[,n])=>t+n,0),OTHER]);
+ return rows;
+}
 function Donut({title,values}){
- const rows=Object.entries(values).sort((a,b)=>b[1]-a[1]), total=rows.reduce((sum,[,n])=>sum+n,0);let angle=0;
- const slices=rows.map(([,n],i)=>{const start=angle;angle+=n/total*100;return `${colors[i%colors.length]} ${start}% ${angle}%`});
- return <ActivityWitness event={title==='Skills practiced'?'skills_view':null}><div className="mix-card"><h3>{title}</h3><div className="mix-donut" role="img" aria-label={total?rows.map(([name,n])=>`${name}: ${Math.round(n/total*100)} percent (${n})`).join(', '):'No completed quests in this period'} style={{background:total?`conic-gradient(${slices.join(',')})`:'#444'}}><div><strong>{total}</strong><small>{title==='Skills practiced'?'skill tags':'quests'}</small></div></div>{total?<ul className="mix-legend">{rows.map(([name,n],i)=><li key={name}><i style={{background:colors[i%colors.length]}}/><span>{name}</span><b>{Math.round(n/total*100)}%</b><small>({n})</small></li>)}</ul>:<p>Complete a quest in this period to see your mix.</p>}</div></ActivityWitness>
+ const rows=colorRows(title,values),total=rows.reduce((sum,[,n])=>sum+n,0),gap=rows.length>1?0.6:0;let angle=0;
+ // A thin parchment gap separates neighbouring slices.
+ const slices=rows.map(([,n,color])=>{const start=angle;angle+=n/total*100;return `${color} ${start}% ${angle-gap}%, var(--mix-gap) ${angle-gap}% ${angle}%`});
+ return <ActivityWitness event={title==='Skills practiced'?'skills_view':null}><div className="mix-card"><h3>{title}</h3><div className="mix-donut" role="img" aria-label={total?rows.map(([name,n])=>`${name}: ${Math.round(n/total*100)} percent (${n})`).join(', '):'No completed quests in this period'} style={{background:total?`conic-gradient(${slices.join(',')})`:'var(--mix-empty)'}}><div><strong>{total}</strong><small>{title==='Skills practiced'?'skill tags':'quests'}</small></div></div>{total?<ul className="mix-legend">{rows.map(([name,n,color])=><li key={name}><i style={{background:color}}/><span>{name}</span><b>{Math.round(n/total*100)}%</b><small>({n})</small></li>)}</ul>:<p>Complete a quest in this period to see your mix.</p>}</div></ActivityWitness>
 }
 export default function Analytics({data,onRecap,today,clock,onDateChange}){
  const [period,setPeriod]=useState('week'),[anchor,setAnchor]=useState(today||''),[result,setResult]=useState(null),[error,setError]=useState(''),[busy,setBusy]=useState(false),[retry,setRetry]=useState(0);

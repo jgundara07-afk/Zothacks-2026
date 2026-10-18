@@ -1,7 +1,7 @@
 import tempfile
 import unittest
 from datetime import datetime, timezone
-from app import create_app, Store
+from app import Store
 from test_support import create_test_app as create_app
 
 class DemoAnalyticsTest(unittest.TestCase):
