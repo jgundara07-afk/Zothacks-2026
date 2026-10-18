@@ -77,7 +77,7 @@ export default function App(){
   return()=>{active=false;subscription.unsubscribe()};
  },[]);
  if(!ready)return <div className="phone-shell demo-auth"><main className="demo-auth-body" role="status">Restoring your session…</main></div>;
- if(!session)return <Onboarding data={{}} hasProfile={false} error={verificationError} onLogin={setSession}/>;
+ if(!session)return <Onboarding data={{}} hasProfile={false} error={verificationError}/>;
  return <OneThingApp key={session.user.id} session={session} onLogout={async()=>{await logout();setSession(null)}}/>;
 }
 

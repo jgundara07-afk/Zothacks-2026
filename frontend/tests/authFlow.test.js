@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {register,login,resendVerification,logout} from '../src/authFlow.js';
+import {register,login,startGoogleSignIn,resendVerification,logout} from '../src/authFlow.js';
 
 const payload={name:'  Sam  ',email:' Sam@GMAIL.COM ',password:'long-enough-password',confirmation:'long-enough-password',redirectTo:'http://127.0.0.1:5173'};
 
@@ -28,6 +28,20 @@ test('incorrect password and unverified email give clear login errors',async()=>
   await assert.rejects(login(payload,client),expected);
  }
 });
+test('signup distinguishes email delivery limits from request limits',async()=>{
+ for(const [code,expected] of [
+  ['over_email_send_rate_limit',/Verification emails are temporarily limited/],
+  ['over_request_rate_limit',/Too many requests from this network/],
+  ['email_address_not_authorized',/Email delivery needs to be configured/],
+ ]){
+  const client={auth:{signUp:async()=>({error:{code}})}};
+  await assert.rejects(register(payload,client),error=>{
+   assert.equal(error.code,code);
+   assert.match(error.message,expected);
+   return true;
+  });
+ }
+});
 test('login returns verified provider session and rejects absent session',async()=>{
  const session={access_token:'token',user:{id:'user-id'}};
  let sent;
@@ -35,6 +49,13 @@ test('login returns verified provider session and rejects absent session',async(
  assert.equal(await login(payload,client),session);
  assert.deepEqual(sent,{email:'Sam@gmail.com',password:payload.password});
  await assert.rejects(login(payload,{auth:{signInWithPassword:async()=>({data:{session:null}})}}),/verify your session/);
+});
+test('Google sign-in starts Supabase OAuth with the current app URL',async()=>{
+ let sent;
+ const client={auth:{signInWithOAuth:async data=>{sent=data;return {data:{url:'https://example.test/authorize'}}}}};
+ assert.equal(await startGoogleSignIn({redirectTo:'http://127.0.0.1:5173/'},client),'https://example.test/authorize');
+ assert.deepEqual(sent,{provider:'google',options:{redirectTo:'http://127.0.0.1:5173/'}});
+ await assert.rejects(startGoogleSignIn({redirectTo:'http://127.0.0.1:5173/'},{auth:{signInWithOAuth:async()=>({error:{message:'Provider disabled'}})}}),/Provider disabled/);
 });
 test('signup cannot create an active session when email confirmation is off',async()=>{
  let signedOut=false;

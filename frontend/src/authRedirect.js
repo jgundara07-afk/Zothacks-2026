@@ -7,5 +7,5 @@ export function verificationRedirectError(value){
   if(!code&&!error)return '';
   return code==='otp_expired'
     ? 'That verification link expired. Enter your email and request a new link.'
-    : 'We could not verify that email link. Request a new link or try logging in.';
+    : 'We could not complete sign-in or verify that email link. Please try again.';
 }

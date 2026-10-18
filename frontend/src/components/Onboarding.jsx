@@ -24,7 +24,7 @@ const ASH=Array.from({length:46},(_,i)=>{const r=n=>((Math.sin(i*12.9898+n*78.23
 
 function Title({children,className=''}){return <h1 className={'eva '+className}>{children}</h1>}
 
-export default function Onboarding({skipIntro:returning=false,authenticated=false,initialStep=0,data,busy,error,hasProfile,interests,setInterests,goals,setGoals,skills,setSkills,preferences,setPreferences,stepSize,setStepSize,sample,topPick,topQuest,onSave,onEnter,onWiden,onSkip,onLogin,context,setContext}){
+export default function Onboarding({skipIntro:returning=false,authenticated=false,initialStep=0,data,busy,error,hasProfile,interests,setInterests,goals,setGoals,skills,setSkills,preferences,setPreferences,stepSize,setStepSize,sample,topPick,topQuest,onSave,onEnter,onWiden,onSkip,context,setContext}){
  const [step,setStep]=useState(initialStep);
  const [loginOpen,setLoginOpen]=useState(false);
  // Intro plays once per visit; reduced motion goes straight to the finished first screen.
@@ -63,7 +63,7 @@ export default function Onboarding({skipIntro:returning=false,authenticated=fals
  // ---------- 0: intro sequence → title card → first screen ----------
  // words ("Move forward every day" arrives word by word) → burn (they burn away into pixel embers and ash)
  // → card (letterboxed title card) → ui (title rises, panel slides in)
- if(loginOpen)return <SignIn initialError={error} onBack={()=>setLoginOpen(false)} onSignIn={session=>{onLogin?.(session);setLoginOpen(false);setStep(1)}}/>;
+ if(loginOpen)return <SignIn initialError={error} onBack={()=>setLoginOpen(false)}/>;
  if(step===0)return <div className={`phone-shell ob ob-title phase-${phase}`} onClick={phase==='ui'?undefined:skipIntro}>
   <div className="ob-title-photo" aria-hidden="true"/>
   <div className="ob-words" aria-hidden="true">
