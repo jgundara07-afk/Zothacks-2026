@@ -1,7 +1,8 @@
 import tempfile
 import unittest
+from unittest.mock import patch
 from app import create_app, Store
-from auth import normalize_email
+from auth import normalize_email, supabase_settings
 
 
 USERS = {
@@ -13,6 +14,15 @@ USERS = {
 
 
 class AuthTest(unittest.TestCase):
+    def test_supabase_settings_fall_back_to_public_vite_values(self):
+        names = ['SUPABASE_URL', 'SUPABASE_PUBLISHABLE_KEY', 'SUPABASE_ANON_KEY', 'VITE_SUPABASE_URL', 'VITE_SUPABASE_PUBLISHABLE_KEY', 'VITE_SUPABASE_ANON_KEY']
+        with patch.dict('os.environ', {name: '' for name in names}):
+            self.assertEqual(supabase_settings(), ('', ''))
+        with patch.dict('os.environ', {**{name: '' for name in names}, 'VITE_SUPABASE_URL': 'https://example.supabase.co/', 'VITE_SUPABASE_PUBLISHABLE_KEY': 'sb_publishable_x'}):
+            self.assertEqual(supabase_settings(), ('https://example.supabase.co', 'sb_publishable_x'))
+        with patch.dict('os.environ', {'SUPABASE_URL': 'https://server.supabase.co', 'SUPABASE_PUBLISHABLE_KEY': 'sb_publishable_server', 'VITE_SUPABASE_URL': 'https://browser.supabase.co', 'VITE_SUPABASE_PUBLISHABLE_KEY': 'sb_publishable_browser'}):
+            self.assertEqual(supabase_settings(), ('https://server.supabase.co', 'sb_publishable_server'))
+
     def test_email_policy(self):
         for domain in ['gmail.com', 'outlook.com', 'hotmail.com', 'live.com', 'yahoo.com', 'icloud.com', 'me.com', 'mac.com', 'proton.me', 'protonmail.com', 'uci.edu']:
             self.assertEqual(normalize_email('  Person+tag@' + domain.upper() + '  '), 'Person+tag@' + domain)
