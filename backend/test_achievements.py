@@ -38,7 +38,7 @@ class AchievementTest(unittest.TestCase):
         for index in range(10):
             self.store.put('activity', dict(id=f'save:{index}', kind='save', profile_id='demo', opportunity_id=f'backlog:{index}'))
         badges = self.badges()
-        self.assertEqual(len(badges), 95)
+        self.assertEqual(len(badges), 94)
         self.assertTrue(all(badges[key]['unlocked'] for key in ['first-step','one-percent','couch-bound','heavy-lifter','algorithm-whisperer','touch-grass','renaissance','visionary','warm-intro','base-camp']))
         self.assertEqual(badges['one-percent']['earned_at'], (day + timedelta(days=6)).isoformat())
         self.store.delete('activity', 'save:0')

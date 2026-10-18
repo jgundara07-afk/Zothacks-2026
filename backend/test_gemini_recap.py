@@ -143,6 +143,26 @@ class RecapNarrativeRouteTest(unittest.TestCase):
         self.assertEqual(response.json['narrative']['archetype'], 'The First-Step Scout')
         generate.assert_not_called()
 
+    def test_local_story_gives_each_slide_its_own_grounded_facts(self):
+        with tempfile.TemporaryDirectory() as directory, patch('routes.progress.generate_recap_narrative', return_value=None):
+            client = create_app(data_mode='sample', store=Store(path=directory + '/slides.sqlite3')).test_client()
+            client.post('/profiles', json={'goal': 'Build my skills', 'interests': ['Design'], 'skills': ['Writing']})
+            for opportunity, quest in (('design', 'design-1'), ('code', 'code-1'), ('green', 'green-1')):
+                client.post('/saved', json={'opportunity_id': opportunity})
+                client.post('/completions', json={'quest_id': quest})
+            response = client.post('/recap/narrative').json
+
+        stats, story = response['stats'], response['narrative']
+        self.assertEqual(stats['completed_count'], 3)
+        self.assertEqual(sum(stats['weekday_counts']), 3)
+        self.assertEqual(stats['toughest_quest']['difficulty'], 'Medium')
+        self.assertEqual(stats['category_count'], len(stats['categories']))
+        self.assertTrue(set(RECAP_FIELDS) <= set(story))
+        lines = [story[field] for field in RECAP_FIELDS]
+        self.assertEqual(len(set(lines)), len(lines))
+        self.assertIn(stats['busiest_weekday'], story['rhythm_line'])
+        self.assertIn(stats['toughest_quest']['difficulty'], story['plot_twist'])
+
     def test_month_scope_observes_pacific_boundaries_and_empty_month_skips_model(self):
         story = {field: f'Generated {field}' for field in RECAP_FIELDS}
         with tempfile.TemporaryDirectory() as directory, patch('routes.progress.generate_recap_narrative', return_value=story) as generate:

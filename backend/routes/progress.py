@@ -22,6 +22,97 @@ except ImportError:
     from gemini_recommendation import generate_recap_narrative
     from preferences import PREFERENCES
 
+WEEKDAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+DIFFICULTY_RANK = {'Lazy': 0, 'Easy': 1, 'Medium': 2, 'Hard': 3, 'Challenging': 4}
+
+
+def recap_stats(completed, summary, day_of, best_streak, badges):
+    """Facts for the recap slides, computed only from recorded completions in the period."""
+    def quest(row):
+        return dict(title=str(row.get('title') or 'Completed quest')[:180], date=day_of(row).isoformat(),
+                    difficulty=row.get('difficulty') or 'Unknown', category=row.get('category') or 'Other')
+    weekdays = [0] * 7
+    per_day = Counter()
+    for row in completed:
+        day = day_of(row)
+        weekdays[day.weekday()] += 1
+        per_day[day] += 1
+    busiest_day, busiest_count = max(per_day.items(), key=lambda item: (item[1], item[0])) if per_day else (None, 0)
+    ranked = [row for row in completed if row.get('difficulty') in DIFFICULTY_RANK]
+    toughest = max(ranked, key=lambda row: (DIFFICULTY_RANK[row['difficulty']], row.get('completed_at', ''))) if ranked else None
+    earned = sorted((b for b in badges if b.get('earned_in_period')), key=lambda b: b.get('earned_at') or '')
+    categories = Counter(summary['categories'])
+    return dict(
+        completed_count=summary['completed_count'], points=summary['points'], minutes=summary['estimated_minutes'],
+        active_days=summary['active_days'], best_streak=best_streak,
+        top_category=summary['top_category'], top_category_count=categories.most_common(1)[0][1] if categories else 0,
+        category_count=len(categories), categories=[[name, count] for name, count in categories.most_common(4)],
+        top_skills=[[name, count] for name, count in Counter(summary['skills']).most_common(3)],
+        weekday_counts=weekdays, busiest_weekday=WEEKDAYS[weekdays.index(max(weekdays))] if completed else None,
+        busiest_weekday_count=max(weekdays),
+        busiest_day=dict(date=busiest_day.isoformat(), count=busiest_count) if busiest_day else None,
+        first_quest=quest(completed[0]) if completed else None, latest_quest=quest(completed[-1]) if completed else None,
+        toughest_quest=quest(toughest) if toughest else None, difficulties=summary['difficulties'],
+        badges_earned=len(earned), latest_badge=earned[-1]['name'] if earned else None,
+    )
+
+
+def local_recap_story(stats, completed, archetypes):
+    """Deterministic story used when Gemini is unavailable; every line is drawn from recorded facts."""
+    if not completed:
+        return {
+            'archetype': 'The First-Step Scout',
+            'evidence': 'Your recap is ready for your first completed quest.',
+            'description': 'Your OneThing story is just getting started. One small step will give the next recap its first chapter.',
+            'quest_line': 'The opening track is still yours to choose.',
+            'signature_move': 'Start with a quest that fits the energy you have today.',
+            'rhythm_line': 'No streak yet. The first day of one is any day you choose.',
+            'plot_twist': 'The plot twist is that you do not need a grand plan to begin.',
+            'onething_line': 'No points yet, and all the possibility in front of you.',
+            'next_step': 'Pick one short quest and take its first step.',
+        }
+    n, category, skills = stats['completed_count'], stats['top_category'], stats['top_skills']
+    plural = lambda count, word: f'{count} {word}' + ('' if count == 1 else 's')
+    skill, skill_count = skills[0] if skills else (None, 0)
+    first, latest, toughest = stats['first_quest'], stats['latest_quest'], stats['toughest_quest']
+    weekday, weekday_count = stats['busiest_weekday'], stats['busiest_weekday_count']
+    if skill and len(skills) > 1:
+        pair = 'tied with' if skills[1][1] == skill_count else 'with'
+        signature = f'{skill} kept showing up ({plural(skill_count, "time")}), {pair} {skills[1][0]} right beside it. That is a thread worth pulling.'
+    elif skill:
+        signature = f'You returned to {skill} {plural(skill_count, "time")}. Repetition is how a skill starts to feel like yours.'
+    else:
+        signature = f'You kept coming back to {category}: {plural(stats["top_category_count"], "quest")} and counting.'
+    if stats['best_streak'] > 1:
+        rhythm = f'Your best run was {stats["best_streak"]} days in a row, and {weekday}s carried the most quests ({weekday_count}).'
+    elif stats['active_days'] > 1:
+        rhythm = f'You showed up on {plural(stats["active_days"], "different day")}. {weekday}s were your most active.'
+    else:
+        rhythm = f'Everything happened on a single {weekday}. One focused day still counts as a chapter.'
+    if toughest and first and DIFFICULTY_RANK.get(toughest['difficulty'], 0) > DIFFICULTY_RANK.get(first['difficulty'], 0):
+        twist = f'You opened on a {first["difficulty"]} step and later chose a {toughest["difficulty"]} one. The climb got steeper and you kept going.'
+    elif stats['category_count'] > 1:
+        names = [name for name, _ in stats['categories']]
+        twist = f'Your story crossed {stats["category_count"]} kinds of work, from {names[0]} to {names[-1]}. Range was the quiet theme.'
+    elif n > 1:
+        twist = f'Every quest stayed on {category}. Most stories wander; yours went deep instead.'
+    else:
+        twist = 'One finished quest is already more than most plans ever get. That is the twist.'
+    hours = round(stats['minutes'] / 60, 1)
+    effort = f'about {hours} hours' if stats['minutes'] >= 90 else plural(stats['minutes'], 'estimated minute')
+    return {
+        'archetype': archetypes.get(category, 'The OneThing Climber'),
+        'evidence': f'{plural(stats["top_category_count"], category + " quest")}' + (f' · {skill} ×{skill_count}' if skill else ''),
+        'description': f'Across {plural(stats["active_days"], "active day")}, your completed work leaned toward {category}. You kept turning a little time into progress you can point to.',
+        'quest_line': f'{plural(n, "quest")} made the reel, most recently “{latest["title"]}”.' if n > 1 else f'“{latest["title"]}” opened your highlight reel.',
+        'signature_move': signature,
+        'rhythm_line': rhythm,
+        'plot_twist': twist,
+        'onething_line': f'{effort}, {stats["points"]} points' + (f' and {plural(stats["badges_earned"], "new badge")}' if stats['badges_earned'] else '') + ': proof that small things add up.',
+        'next_step': f'Choose one manageable quest that builds on {skill}.' if skill else f'Pick one more {category} quest to keep the thread going.',
+    }
+
+
 def register(app, svc):
     db = svc.db
     clock = svc.clock
@@ -159,6 +250,7 @@ def register(app, svc):
             run = run + 1 if previous and day == previous + timedelta(days=1) else 1
             best = max(best, run)
             previous = day
+        stats = recap_stats(completed, summary, completion_day, best, badges)
         context = {
             'period': period, 'period_start': summary['start'], 'period_end_exclusive': summary['end'],
             'earned_badges': [badge['name'] for badge in badges if badge['earned_in_period']],
@@ -170,13 +262,16 @@ def register(app, svc):
             'category_counts': summary['categories'],
             'skill_counts': summary['skills'],
             'difficulty_counts': summary['difficulties'],
+            'weekday_counts': dict(zip(WEEKDAYS, stats['weekday_counts'])),
+            'busiest_day': stats['busiest_day'],
+            'toughest_quest': stats['toughest_quest'],
             'history_start': history[0]['date'] if history else None,
             'history_end': history[-1]['date'] if history else None,
             'completed_quests': history,
         }
         model=os.getenv('GEMINI_MODEL','gemini-3.5-flash-lite').strip()
         stable_context={key:value for key,value in context.items() if key!='earned_badges'}
-        fingerprint=hashlib.sha256(json.dumps({'version':2,'model':model,'context':stable_context},sort_keys=True).encode()).hexdigest()
+        fingerprint=hashlib.sha256(json.dumps({'version':3,'model':model,'context':stable_context},sort_keys=True).encode()).hexdigest()
         cached_record=db.get('recap_cache',fingerprint) if completed else None
         cached=bool(cached_record)
         generation={'status':'no_activity','message':'Complete a quest in this period to generate a Gemini recap.','retryable':False}
@@ -202,41 +297,23 @@ def register(app, svc):
                     generation={**generation,'retry_at':retry_at}
         source = 'gemini' if narrative else 'local'
         if not narrative:
-            categories = summary['categories']
-            skills = summary['skills']
-            category, count = Counter(categories).most_common(1)[0] if categories else (None, 0)
-            skill, skill_count = Counter(skills).most_common(1)[0] if skills else (None, 0)
             archetypes = {
                 'General task': 'The Small-Step Strategist',
                 'Online course': 'The Skill Collector',
                 'Certification': 'The Skill Collector',
                 'Class': 'The Curious Scholar',
                 'Internship': 'The Career Pathfinder',
+                'Job': 'The Career Pathfinder',
                 'Job simulation': 'The Career Pathfinder',
                 'Networking': 'The Connector',
                 'Club': 'The Community Builder',
                 'Park': 'The Trailblazer',
             }
-            if not completed:
-                narrative = {
-                    'archetype': 'The First-Step Scout',
-                    'evidence': 'Your recap is ready for your first completed quest.',
-                    'description': 'Your OneThing story is just getting started. One small step will give the next recap its first chapter.',
-                    'quest_line': 'The opening track is still yours to choose.',
-                    'onething_line': 'No points yet, and all the possibility in front of you.',
-                    'next_step': 'Pick one short quest and take its first step.',
-                }
-            else:
-                narrative = {
-                    'archetype': archetypes.get(category, 'The OneThing Climber'),
-                    'evidence': f'{count} completed {category} quests' + (f' · {skill} appeared {skill_count} times' if skill else ''),
-                    'description': f'Your completed work leaned toward {category}. You kept turning a little time into visible progress, one quest at a time.',
-                    'quest_line': f'“{completed[-1].get("title") or "Completed quest"}” made the highlight reel. Your quest list has range.',
-                    'onething_line': f'{summary["completed_count"]} completed steps and {summary["points"]} points: proof that small things add up.',
-                    'next_step': 'Choose one manageable quest that builds on your most-practiced skill.' if skill else 'Choose one manageable quest to start your next chapter.',
-                }
-        narrative.setdefault('signature_move', f'You kept returning to {summary["top_category"]}. That is a thread worth following.' if completed else 'Start with a quest that fits the energy you have today.')
-        narrative.setdefault('plot_twist', 'Your smallest finished actions still made the story move. Keep the next chapter manageable.' if completed else 'The plot twist is that you do not need a grand plan to begin.')
+            narrative = local_recap_story(stats, completed, archetypes)
+        # Stories cached before these fields existed still render every slide.
+        fallback = local_recap_story(stats, completed, {})
+        for field in ('signature_move', 'rhythm_line', 'plot_twist'):
+            narrative.setdefault(field, fallback[field])
         recap_id = 'recap:'+str(uuid4())
         highlights = [dict(title=row.get('title','Completed quest'),date=completion_day(row).isoformat()) for row in sorted(completed,key=lambda row:(row.get('points',0),row['completed_at']),reverse=True)[:5]]
         db.put('activity',dict(id=recap_id,profile_id='demo',kind='recap',period=period,month=anchor[:7],source=source,archetype=narrative['archetype'],has_highlights=bool(highlights),recorded_at=clock().isoformat()))
@@ -244,7 +321,7 @@ def register(app, svc):
         for badge in badges:
             earned_day=completion_day({'completed_at':badge['earned_at']}).isoformat() if badge['earned_at'] else None
             badge['earned_in_period']=bool(earned_day and (period=='lifetime' or summary['start']<=earned_day<summary['end']))
-        return jsonify(narrative=narrative, source=source, generation=generation,cached=cached,activity_count=len(completed),recap_id=recap_id,highlights=highlights,
+        return jsonify(narrative=narrative, source=source, generation=generation,cached=cached,activity_count=len(completed),recap_id=recap_id,highlights=highlights,stats=stats,
                        period=period, start=summary['start'], end=summary['end'], badges=badges)
 
     @app.get('/progress/data')

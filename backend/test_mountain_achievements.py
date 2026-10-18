@@ -22,8 +22,8 @@ class MountainAchievementTest(unittest.TestCase):
         row.update(extra);self.store.put('activity',row)
 
     def test_unsupported_achievements_are_omitted_and_every_peak_has_a_rule(self):
-        self.assertEqual(len(BADGES),95)
-        self.assertEqual(len({b[0] for b in BADGES}),95)
+        self.assertEqual(len(BADGES),94)
+        self.assertEqual(len({b[0] for b in BADGES}),94)
         omitted={'mount-21','mount-25','mount-31','mount-33','mount-34'}
         self.assertFalse(omitted.intersection(self.badges()))
         self.assertTrue(all(not badge['tracking_hint'] for badge in EXPANSION))

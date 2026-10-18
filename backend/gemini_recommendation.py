@@ -56,6 +56,7 @@ RECAP_FIELDS = {
     'onething_line': 240,
     'next_step': 180,
     'signature_move': 240,
+    'rhythm_line': 240,
     'plot_twist': 240,
 }
 
@@ -90,7 +91,12 @@ def generate_recap_narrative(context, timeout=45, diagnostics=None):
         "(3) one witty line connecting their recorded points, minutes, streak, or completion count "
         "to OneThing's small-steps idea; and (4) one practical, low-pressure next step. Never claim "
         "a future action is already done. Do not invent activity, numbers, skills, or opportunities. "
-        "Also write signature_move: a memorable recurring habit evidenced by these quests; and plot_twist: a surprising but grounded connection or contrast in this history (with little activity, celebrate beginning without inventing a pattern). These are story slides: avoid repeating the analytics charts. Keep the humor kind, concise, and suitable for a student audience. Return only the JSON "
+        "Also write signature_move: a memorable recurring habit evidenced by these quests, naming their most-practiced skill; "
+        "rhythm_line: one line about when they showed up, using weekday_counts, busiest_day, active_days or best_streak; and "
+        "plot_twist: a surprising but grounded connection or contrast in this history, such as their first quest versus toughest_quest "
+        "or two very different categories (with little activity, celebrate beginning without inventing a pattern). Each field is its "
+        "own story slide, so every field must make a different point with different specifics; do not repeat the same quest title, "
+        "number or phrase across fields. These are story slides: avoid repeating the analytics charts. Keep the humor kind, concise, and suitable for a student audience. Return only the JSON "
         "object requested by the schema.\n\nRecorded activity JSON:\n"
         + json.dumps(context, ensure_ascii=False, sort_keys=True)
     )
@@ -103,7 +109,7 @@ def generate_recap_narrative(context, timeout=45, diagnostics=None):
         'contents': [{'parts': [{'text': prompt}]}],
         'generationConfig': {
             'temperature': 0.8,
-            'maxOutputTokens': 900,
+            'maxOutputTokens': 1100,
             'responseMimeType': 'application/json',
             'responseSchema': schema,
         },

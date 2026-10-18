@@ -410,16 +410,6 @@
     "tracking_hint": ""
   },
   {
-    "id": "mount-47",
-    "name": "Lookout Point",
-    "metric": "filtered_saves",
-    "target": 3,
-    "criteria": "Use discovery filters to find and save 3 different opportunities.",
-    "region": "backlog",
-    "flavor": "Lookout Point is on your horizon. A plan left the notebook and met the trail.",
-    "tracking_hint": ""
-  },
-  {
     "id": "mount-48",
     "name": "Clear Sky Summit",
     "metric": "zero_inbox",
