@@ -17,15 +17,15 @@ class RetiredInterestTests(unittest.TestCase):
         self.assertEqual(preferences['interests'], taxonomy['interests'])
         self.assertEqual(manifest['taxonomy']['interests'], taxonomy['interests'])
         self.assertFalse(retired & set(taxonomy['interests']))
-        # Only labels with no catalog matches were retired.
-        self.assertFalse(retired & set(manifest['coverage']['interests']))
+        # Retired labels reach almost nothing in the catalog (fewer than 5 tagged records each).
+        self.assertTrue(all(manifest['coverage']['interests'].get(label, 0) < 5 for label in retired))
 
     def test_saved_profile_with_retired_interest_still_saves_without_it(self):
         with tempfile.TemporaryDirectory() as directory:
             client = create_app(data_mode='sample', store=Store(path=directory + '/retired.sqlite3')).test_client()
-            response = client.post('/profiles', json={'goal': 'Build my skills', 'interests': ['Physics', 'Birdwatching'], 'skills': ['Research']})
+            response = client.post('/profiles', json={'goal': 'Build my skills', 'interests': ['Robotics', 'Birdwatching'], 'skills': ['Research']})
             self.assertEqual(response.status_code, 200)
-            self.assertEqual(response.json['profile']['interests'], ['Physics'])
+            self.assertEqual(response.json['profile']['interests'], ['Robotics'])
             feed = client.get('/opportunities', query_string={'interests': 'Birdwatching'})
             self.assertEqual(feed.status_code, 200)
 

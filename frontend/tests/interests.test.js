@@ -7,7 +7,7 @@ test('all categorized interests exist in both UI and backend taxonomy without ca
  const preferences=JSON.parse(readFileSync(new URL('../../shared/preferences.json',import.meta.url)));
  const taxonomy=JSON.parse(readFileSync(new URL('../../opportunity_data/taxonomy.json',import.meta.url)));
  const all=searchInterests(interestCatalog.groups);
- assert.equal(all.length,272);
+ assert.equal(all.length,preferences.interests.length);
  assert.deepEqual(all,preferences.interests);
  assert.deepEqual(taxonomy.interests,preferences.interests);
  assert.equal(new Set(all.map(s=>s.toLowerCase())).size,all.length);

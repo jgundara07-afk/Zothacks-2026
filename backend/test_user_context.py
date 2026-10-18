@@ -19,6 +19,8 @@ class UserContextTest(unittest.TestCase):
                 self.assertTrue(feed['opportunities'])
                 quests={q['id']:q for q in feed['quests']}
                 for row in feed['opportunities']:
+                    # your situation narrows the first stretch; cards beyond it are labeled and come after
+                    if row.get('beyond_filters') or row.get('general_task'): continue
                     self.assertEqual(row['personalization']['assessment']['cost'],'Free')
                     self.assertIn(row['personalization']['assessment']['experience_level'],{'No experience','Beginner','Unknown'})
                     self.assertIn('Online / Remote',row['venues'])

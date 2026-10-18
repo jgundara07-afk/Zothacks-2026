@@ -67,8 +67,11 @@ class CollectedJourneyTest(unittest.TestCase):
             for query in ['limit=0','offset=-1','challenges=Impossible','locations=Near%20me','unknown=1','lat=nan&lon=0','step_size=Huge']:
                 self.assertEqual(client.get('/opportunities?'+query).status_code,400,query)
             nearby = client.get('/opportunities',query_string={'locations':'Near me','lat':33.7,'lon':-117.8,'radius_km':10}).json
-            self.assertEqual(nearby['total'],294)
-            self.assertTrue(all(o['source']=='irvine' and 'Near me' in o['venues'] for o in nearby['opportunities']))
+            # Near me narrows the first stretch (all 294 Irvine records); the feed keeps going beyond it.
+            # duplicate segments of the same trail collapse to one card, so the count is at most 294
+            self.assertTrue(0 < nearby['matched_count'] <= 294)
+            self.assertGreater(nearby['total'],nearby['matched_count'])
+            self.assertTrue(all(o['source']=='irvine' and 'Near me' in o['venues'] for o in nearby['opportunities'] if not o['beyond_filters']))
             result = client.post('/resume-analysis',json={'text':'Built an app with Python.','role':'Software developer'}).json
             self.assertTrue(result['recommendations'])
             self.assertTrue(all(not r['opportunity_id'].startswith('sample-') for r in result['recommendations']))
@@ -111,7 +114,8 @@ class CollectedJourneyTest(unittest.TestCase):
                     self.assertEqual(p['assessment']['duration_quality'],'Source reported')
                     self.assertLessEqual(p['duration']['max_minutes'],120)
                 free=client.get(route,query_string={'cost':'Free'}).json
-                self.assertTrue(all(row['personalization']['assessment']['cost']=='Free' for row in free['opportunities']))
+                # Inside the filter every card is free; the main feed then widens beyond it.
+                self.assertTrue(all(row['personalization']['assessment']['cost']=='Free' for row in free['opportunities'] if not row.get('beyond_filters')))
                 for query in ('max_minutes=nan','experience=Impossible','cost=Cheap','skills=Magic','source=imaginary','kind=imaginary'):
                     self.assertEqual(client.get(route+'?'+query).status_code,400,route+'?'+query)
                 nearby=client.get(route,query_string=[('locations','Near me'),('locations','Online / Remote'),('lat','0'),('lon','0')])

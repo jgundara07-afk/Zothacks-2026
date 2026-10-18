@@ -54,6 +54,11 @@ class AdvancedFilterTest(unittest.TestCase):
                 params=[('interests',v) for v in tags]
                 any_result=client.get(route,query_string=params).json
                 all_result=client.get(route,query_string=params+[('match_mode','all')]).json
+                if route=='/opportunities':
+                    # The main feed never shrinks: 'all' only moves cards matching every choice to the front.
+                    self.assertEqual(any_result['total'],all_result['total'])
+                    self.assertTrue(any_result['opportunities'])
+                    continue
                 self.assertGreater(any_result['total'],all_result['total'])
                 for row in all_result['opportunities']:
                     if row.get('recommendation_type')=='neutral':continue

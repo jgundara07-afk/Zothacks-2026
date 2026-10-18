@@ -14,6 +14,7 @@ from opportunity_data.export_app import project
 
 
 class NeutralFeedTests(unittest.TestCase):
+    """The feed never empties: closest matches first, then farther ones, and an honest note when nothing is close."""
     def setUp(self):
         self.gemini = patch('services.generate_recommendation', return_value=None)
         self.gemini.start()
@@ -37,38 +38,44 @@ class NeutralFeedTests(unittest.TestCase):
         self.directory.cleanup()
         self.gemini.stop()
 
-    def test_no_interest_goal_matches_returns_labeled_neutral_alternatives(self):
-        result=self.client.get('/opportunities',query_string={'interests':'Physics','goals':'Internship'}).json
+    def titles(self, result):
+        return [row['title'] for row in result['opportunities']]
+
+    def test_no_close_match_still_returns_a_feed_with_an_honest_note(self):
+        result=self.client.get('/opportunities',query_string={'interests':'Quantum computing'}).json
         self.assertTrue(result['fallback']['active'])
-        self.assertEqual(result['total'],2)
-        self.assertEqual({row['title'] for row in result['opportunities']},{'A peaceful park','Mindfulness and personal growth'})
-        self.assertTrue(all(row['recommendation_type']=='neutral' and not row['matching_tags'] for row in result['opportunities']))
+        self.assertIn('closest', result['fallback']['message'])
+        self.assertEqual(set(self.titles(result)),{'Robotics programming','A peaceful park','Mindfulness and personal growth'})
+        self.assertNotIn('Mindfulness retreat', self.titles(result))
+        self.assertTrue(all(row['match_reason'] for row in result['opportunities']))
         self.assertTrue(result['quests'])
 
-    def test_real_matches_take_precedence_and_later_empty_pages_do_not_fallback(self):
+    def test_real_matches_come_first_then_the_feed_keeps_going(self):
         result=self.client.get('/opportunities',query_string={'interests':'Robotics'}).json
         self.assertFalse(result['fallback']['active'])
-        self.assertEqual(result['total'],1)
-        self.assertEqual(result['opportunities'][0]['title'],'Robotics programming')
-        later=self.client.get('/opportunities',query_string={'interests':'Robotics','offset':10}).json
-        self.assertFalse(later['fallback']['active'])
-        self.assertEqual(later['opportunities'],[])
+        self.assertEqual(self.titles(result)[0],'Robotics programming')
+        self.assertEqual(result['opportunities'][0]['match_tier'],'close')
+        self.assertEqual(result['total'],3)
+        self.assertTrue(all(row['match_tier'] in {'related','explore'} for row in result['opportunities'][1:]))
 
-    def test_neutral_still_respects_location_time_skills_and_cost(self):
-        online=self.client.get('/opportunities',query_string={'interests':'Physics','locations':'Online / Remote'}).json
-        self.assertEqual([row['title'] for row in online['opportunities']],['Mindfulness and personal growth'])
+    def test_filters_narrow_the_first_stretch_then_widen(self):
+        online=self.client.get('/opportunities',query_string={'interests':'Quantum computing','locations':'Online / Remote'}).json
+        inside=[row for row in online['opportunities'] if not row['beyond_filters']]
+        self.assertEqual({row['title'] for row in inside},{'Robotics programming','Mindfulness and personal growth'})
+        self.assertEqual(self.titles(online)[-1],'A peaceful park')
+        self.assertTrue(online['opportunities'][-1]['beyond_filters'])
         for extra in ({'max_minutes':5},{'cost':'Free'},{'skills':'Coding'},{'locations':'Near me','lat':0,'lon':0}):
-            result=self.client.get('/opportunities',query_string={'interests':'Physics',**extra}).json
-            self.assertEqual(result['total'],0,extra)
-            self.assertFalse(result['fallback']['active'])
+            result=self.client.get('/opportunities',query_string={'interests':'Quantum computing',**extra}).json
+            self.assertGreater(result['total'],0,extra)
+            self.assertTrue(all(row['match_reason'] for row in result['opportunities']),extra)
 
-    def test_fallback_is_paginated_without_duplicates(self):
-        first=self.client.get('/opportunities',query_string={'interests':'Physics','limit':1}).json
-        second=self.client.get('/opportunities',query_string={'interests':'Physics','limit':1,'offset':1}).json
-        self.assertTrue(first['fallback']['active'] and second['fallback']['active'])
+    def test_feed_pages_without_duplicates(self):
+        first=self.client.get('/opportunities',query_string={'interests':'Quantum computing','limit':2}).json
+        second=self.client.get('/opportunities',query_string={'interests':'Quantum computing','limit':2,'offset':2}).json
         self.assertTrue(first['has_more'])
         self.assertFalse(second['has_more'])
-        self.assertNotEqual(first['opportunities'][0]['id'],second['opportunities'][0]['id'])
+        ids=[row['id'] for row in first['opportunities']+second['opportunities']]
+        self.assertEqual(len(ids),len(set(ids)))
 
 
 if __name__=='__main__':unittest.main()
