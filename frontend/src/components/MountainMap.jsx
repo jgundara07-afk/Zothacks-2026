@@ -4,11 +4,12 @@ import {BadgeMedallion} from './AchievementGallery';
 import {REGIONS,mountainName,badgeSeed} from '../utils/achievementRegions';
 import '../styles/mountainMap.css';
 
-export default function MountainMap({badges=[],points=0}){
+export default function MountainMap({badges=[],points=0,activeBadgeId=null,onSelectBadge=()=>{}}){
  const [region,setRegion]=useState('foundations'),[selectedId,setSelectedId]=useState(null);
  const dialog=useRef(null);
  const selected=badges.find(b=>b.id===selectedId),pieces=badges.filter(b=>(b.region||'foundations')===region);
  const explored=badges.filter(b=>b.unlocked).length,position=REGIONS.findIndex(([id])=>id===region);
+ useEffect(()=>{const active=badges.find(b=>b.id===activeBadgeId);if(active)setRegion(active.region||'foundations')},[activeBadgeId]);
  useEffect(()=>{if(selected&&!dialog.current?.open)dialog.current?.showModal();},[selectedId]);
  function close(){dialog.current?.close();setSelectedId(null)}
  return <section className="mountain-atlas" aria-label="Achievement mountain map">
@@ -18,7 +19,7 @@ export default function MountainMap({badges=[],points=0}){
   <div className="atlas-legend"><span><i className="explored-key"/>Explored & climbed</span><span><i/>Uncharted</span></div>
   {!badges.length?<p role="status">Your expedition map is loading…</p>:<div className="atlas-pieces" aria-label={REGIONS[position][1]}>{pieces.map(badge=>{
    const seed=badgeSeed(badge.id),peak=35+seed%13;
-   return <button key={badge.id+String(badge.unlocked)} className={'map-piece '+(badge.unlocked?'is-explored':'is-uncharted')} aria-haspopup="dialog" aria-label={`${mountainName(badge)}. ${badge.name}. ${badge.unlocked?'Explored and climbed':'Uncharted'}. View achievement details.`} onClick={()=>setSelectedId(badge.id)}>
+   return <button key={badge.id+String(badge.unlocked)} className={'map-piece '+(badge.unlocked?'is-explored':'is-uncharted')+(badge.id===activeBadgeId?' is-active':'')} aria-pressed={badge.id===activeBadgeId} aria-haspopup="dialog" aria-label={`${mountainName(badge)}. ${badge.name}. ${badge.unlocked?'Explored and climbed':'Uncharted'}. Track this mountain and view details.`} onClick={()=>{onSelectBadge(badge.id);setSelectedId(badge.id)}}>
     <svg className="piece-terrain" viewBox="0 0 180 160" aria-hidden="true"><path d="M0 136Q20 111 39 128T83 119T128 132T180 119V160H0Z" className="piece-hills"/><path d={`M17 128 54 65 77 101 104 ${peak} 164 131Z`} className="piece-mountain"/><path d={`M104 ${peak} 118 76 106 67 97 83 91 73Z`} className="piece-snow"/><path d={`M104 ${peak} 97 83 114 101 101 129M54 65 48 98 59 108 44 128`} className="piece-ridges"/>{badge.unlocked?<><path d={`M25 139Q56 114 69 118T91 97T104 ${peak}`} className="piece-route"/><path d={`M104 ${peak}v-18l14 4-14 5`} className="piece-flag"/></>:<path d="M17 78Q46 62 67 81T108 77T166 74M9 95Q38 81 59 96T110 92T174 93" className="piece-mist"/>}</svg>
     <BadgeMedallion badge={badge}/><span className="piece-name">{mountainName(badge)}</span><span className="piece-status">{badge.unlocked?<><Check size={11}/> Explored · Climbed</>:<><LockKeyhole size={10}/> Uncharted</>}</span>
    </button>
