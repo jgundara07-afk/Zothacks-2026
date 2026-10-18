@@ -6,7 +6,7 @@ import {OPPORTUNITY_ICONS,DEFAULT_ICON} from '../constants';
 export default function Print({src,color,icon,osd,children}){
  const Icon=icon||DEFAULT_ICON;
  return <div className={'print '+(color||'')}>
-  {src?<img src={src} alt="" loading="lazy"/>:<div className="print-fallback" aria-hidden="true"><Icon size={56} strokeWidth={1}/></div>}
+  {src?<img src={src} alt="" loading="lazy" decoding="async"/>:<div className="print-fallback" aria-hidden="true"><Icon size={56} strokeWidth={1}/></div>}
   <div className="grain" aria-hidden="true"/>
   {osd&&<div className="osd" aria-hidden="true"><span className="rec">REC</span><span>{osd}</span></div>}
   {children}

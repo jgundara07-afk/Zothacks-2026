@@ -23,7 +23,7 @@ export default function RewardSeal({points}){
    <svg viewBox="0 0 120 120"><defs><radialGradient id="seal-wax" cx="38%" cy="32%" r="75%"><stop offset="0" stopColor="#b8443a"/><stop offset=".55" stopColor="#8a2620"/><stop offset="1" stopColor="#4d130f"/></radialGradient></defs><polygon points={SEAL} fill="url(#seal-wax)"/><circle cx="60" cy="60" r="37" className="seal-rim"/><circle cx="60" cy="60" r="31" className="seal-rim inner"/><path d="M43 62 55 74 79 47" className="seal-check"/></svg>
    <span className="seal-sparks">{Array.from({length:10},(_,i)=><i key={i} style={{'--i':i}}/>)}</span>
   </div>
-  <p className="sr-only">{points} points earned</p>
-  <div className="reward-points" aria-hidden="true">+{shown}<span>points</span></div>
+  <p className="sr-only">{points} XP earned</p>
+  <div className="reward-points" aria-hidden="true">+{shown}<span>XP</span></div>
  </div>;
 }

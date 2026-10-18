@@ -407,3 +407,59 @@ select, .resume-lab textarea, .signin-account, .checklist label, .preference-cho
 .project-roadmap li.is-done strong { text-decoration: line-through; text-decoration-color: rgba(168,51,42,.8); }
 .project-roadmap li.is-next { border-color: var(--red-hi); box-shadow: inset 3px 0 0 var(--red-hi); background: rgba(138,38,32,.2); }
 .project-roadmap li.is-next .step-number { border-color: var(--red-hi); color: var(--on-ink); background: var(--red); }
+
+/* ===================== Filter bar, effort levels, XP, smooth feed (Oct 17 evening) ===================== */
+
+/* the only filter control: a slim bar floating at the top of the feed, hides while scrolling down */
+.feed-page { position: relative; }
+.filter-bar { position: absolute; z-index: 6; top: 8px; left: 18px; right: 18px; transition: transform .35s cubic-bezier(.2,.8,.2,1), opacity .25s ease; }
+.filter-bar.is-hidden { transform: translateY(-140%); opacity: 0; pointer-events: none; }
+.filter-bar-row { display: flex; align-items: center; gap: 6px; padding: 5px; border-radius: 999px; background: rgba(21,16,12,.82); border: 1px solid rgba(239,227,203,.16); box-shadow: 0 10px 24px -14px rgba(0,0,0,.9); }
+.filter-bar-row button { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px; border-radius: 999px; color: var(--on-ink); font-family: var(--font-serif); font-size: 14px; }
+.filter-bar-open b { min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--red); color: #fff; font-size: 11px; display: grid; place-items: center; }
+.filter-bar-summary { color: var(--on-ink-mute) !important; margin-left: auto; }
+.filter-bar-close { width: 34px; padding: 0 !important; justify-content: center; color: var(--on-ink-mute) !important; }
+.filter-bar-summary:only-of-type + .filter-bar-close, .filter-bar-open + .filter-bar-close { margin-left: auto; }
+.filter-bar-drop { margin-top: 6px; padding: 12px; border-radius: 18px; background: rgba(231,216,182,.97); color: var(--on-paper); max-height: 40dvh; overflow-y: auto; box-shadow: 0 16px 30px -18px rgba(0,0,0,.8); animation: drop-in .22s ease-out; }
+.filter-bar-drop small { display: block; font-family: var(--font-serif); font-style: italic; color: var(--on-paper-mute); margin-bottom: 8px; }
+.filter-bar-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.filter-bar-chips button { display: inline-flex; align-items: center; gap: 4px; padding: 6px 10px; border-radius: 999px; border: 1px solid rgba(36,24,13,.3); background: rgba(255,255,255,.35); font-family: var(--font-serif); font-size: 13px; color: var(--on-paper); }
+@keyframes drop-in { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+
+/* five-pip effort meter: Lazy, Easy, Medium, Hard, Locked-in */
+.effort-pill { display: inline-flex; align-items: center; gap: 7px; }
+.effort-pill .pips { display: inline-flex; gap: 2px; }
+.effort-pill .pips i { width: 4px; height: 10px; border-radius: 2px; background: rgba(255,255,255,.18); }
+.effort-pill .pips i.on { background: #e8cf9c; }
+.effort-pill.e4 .pips i.on { background: #e39a5a; }
+.effort-pill.e5 .pips i.on { background: #ff6b4a; box-shadow: 0 0 6px rgba(255,107,74,.6); }
+.effort-pill.e5 { color: #ffd6c8 !important; border-color: rgba(255,107,74,.55) !important; }
+.quest-chips .effort-pill, .quest-meta .effort-pill { padding: 5px 10px; border-radius: 999px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); color: #efe3cb; font-family: var(--font-serif); font-size: 13px; }
+.detail-chips .effort-pill, .quest-sheet .quest-meta .effort-pill { background: var(--ink-1); color: var(--on-ink); }
+.chip-xp { color: #e8cf9c !important; border-color: rgba(184,144,74,.45) !important; font-weight: 600; }
+.effort-pill.compact { font-size: 12px; gap: 5px; }
+.effort-pill.compact .pips i { background: rgba(36,24,13,.15); height: 9px; }
+.effort-pill.compact .pips i.on { background: var(--red); box-shadow: none; }
+.checklist label { flex-wrap: wrap; }
+.step-meta, .roadmap-meta { display: flex; align-items: center; gap: 10px; width: 100%; padding-left: 28px; margin-top: 4px; font-family: var(--font-serif); font-size: 12px; color: var(--on-paper-mute); }
+.roadmap-meta { padding-left: 0; }
+.step-meta .xp, .roadmap-meta .xp { font-style: normal; font-weight: 600; color: var(--red); }
+.roadmap-meta em { font-style: normal; }
+.roadmap-meta .effort-pill .pips i { background: rgba(239,227,203,.2); }
+
+/* smooth, one-at-a-time scrolling like Reels / TikTok */
+.opportunity-feed { scroll-snap-type: y mandatory; overscroll-behavior-y: contain; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
+.opportunity-feed .quest-card { scroll-snap-align: start; scroll-snap-stop: always; content-visibility: auto; contain-intrinsic-size: auto 760px; contain: layout paint style; }
+.opportunity-feed .print .grain { animation: none !important; }
+.opportunity-feed .quest-category, .opportunity-feed .quest-tier, .opportunity-feed .save-float { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(11,8,6,.66); }
+.opportunity-feed .print img { transform: translateZ(0); }
+@media (prefers-reduced-motion: reduce) { .opportunity-feed { scroll-behavior: auto; } .filter-bar { transition: none; } }
+/* the filter bar floats over the top of the photo, so the photo's own badges sit at its bottom edge */
+.opportunity-feed .quest-category { top: auto; bottom: 12px; left: 12px; }
+.opportunity-feed .quest-tier { top: auto; bottom: 12px; right: 12px; left: auto; }
+.opportunity-feed .quest-card-photo::before { content: ''; position: absolute; inset: 0 0 auto 0; height: 70px; z-index: 2; background: linear-gradient(180deg, rgba(11,8,6,.55), transparent); pointer-events: none; }
+/* the bar is a compact pill on the left, leaving the photo's bookmark (top right) clear */
+.filter-bar { right: auto; max-width: calc(100% - 96px); top: 22px; left: 22px; }
+.filter-bar-row { display: inline-flex; }
+.filter-bar-summary { margin-left: 0; }
+.filter-bar-drop { width: min(330px, calc(100vw - 60px)); }
