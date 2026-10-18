@@ -122,7 +122,7 @@ export default function App(){
  },[progress.achievements]);
  function saveContext(){return {active:!!(interests.length||goals.length||kinds.length||preferences.time.length||preferences.locations.length||Object.values(metadata).some(value=>Array.isArray(value)?value.length:!!value)),challenges:preferences.challenges}}
  function openFilters(){setContext({...emptyContext,...data?.profile?.context});setFiltersOpen(true)}
- async function toggleSave(o){if(o.saved)await api.unsave(o.id);else await api.save(o.id,saveContext());await load(hideSaved)}
+ async function toggleSave(o){if(o.saved)await api.unsave(o.id);else await api.save(o.id,saveContext());await load(hideSaved);if(detail===o.id&&(page==='Saved things'?o.saved:hideSaved&&!o.saved))setDetail(null)}
  const all=(page==='Saved things'?savedRows:(data?.opportunities||[])).map(o=>{
   const variant=chooseVariant(o,quests,{availableMinutes:contextOptions.first_step_minutes[data?.profile?.context?.availability],stepSize:difficulty,preferences,defaultEffort:data?.checkin?.effort});
   return variant?{...o,minutes:variant.minutes,suggested_quest_id:variant.id,difficulty:o.personalization&&!o.sample?o.difficulty:variant.difficulty,preparation_difficulty:variant.difficulty,effort:variant.effort,size:variant.size,hasVariant:true}:{...o,hasVariant:false};
@@ -148,7 +148,7 @@ export default function App(){
  ];
  const filterCount=Number(!!searchQuery.trim())+Number(matchMode==='all')+Number(hideSaved)+(difficulty!=='Any')+interests.length+goals.length+preferences.challenges.length+preferences.time.length+preferences.locations.length+(preferences.commitment!=='A mix of both')+kinds.length+Object.keys(metadataQuery(metadata)).length;
  const unlocking=reward===null&&!active?unlockQueue[0]:null;
- const modalOpen=!!(profileOpen||detail||active||reward!==null||filtersOpen||calendarOpen||unlocking);
+ const modalOpen=!!(profileOpen||selected||active||reward!==null||filtersOpen||calendarOpen||unlocking);
  const loadMoreRef=useRef(null);loadMoreRef.current=()=>fetchFeed(true);
  useEffect(()=>{
   const root=feedRef.current,target=endOfFeedRef.current;
