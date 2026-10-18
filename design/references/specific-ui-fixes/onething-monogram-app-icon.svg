@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" fill="none" role="img" aria-labelledby="title desc">
+  <title id="title">OneThing app icon</title>
+  <desc id="desc">A cream circular O crossed by a tilted red T that meets the circle at three points, on a dark square.</desc>
+  <rect width="240" height="240" rx="48" fill="#171311"/>
+  <g transform="rotate(-25 120 120)" stroke-width="11" stroke-linecap="butt" stroke-linejoin="round">
+    <path d="M50 103H125.5M120 103V192" stroke="#F4EADB"/>
+    <path d="M125.5 103H190" stroke="#BF1726"/>
+  </g>
+  <circle cx="120" cy="120" r="78" stroke="#F4EADB" stroke-width="11"/>
+</svg>

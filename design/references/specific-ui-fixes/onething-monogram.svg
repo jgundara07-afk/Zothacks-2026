@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" fill="none" role="img" aria-labelledby="title desc">
+  <title id="title">OneThing monogram</title>
+  <desc id="desc">A circular O crossed by a tilted T that meets the circle at three points.</desc>
+  <g transform="rotate(-25 120 120)" stroke-width="12" stroke-linecap="butt" stroke-linejoin="round">
+    <path d="M44 102H126M120 102V198" stroke="#171311"/>
+    <path d="M126 102H196" stroke="#BF1726"/>
+  </g>
+  <circle cx="120" cy="120" r="84" stroke="#171311" stroke-width="12"/>
+</svg>

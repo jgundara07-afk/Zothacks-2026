@@ -1,0 +1,67 @@
+/* ===================== Smooth pass (PROPOSAL, not committed) =====================
+   Brings the streak calendar's feel to the whole app: light parchment chrome instead of black bars, soft
+   rounded paper tiles, springy motion and tactile press feedback. Each numbered block can be kept or dropped. */
+
+/* 1. Light parchment header (was near-black) */
+.app-header {
+  background: linear-gradient(180deg, rgba(236,223,194,.94), rgba(222,203,166,.9)), var(--map) center 20% / 900px;
+  color: var(--on-paper); border-bottom: 1px solid rgba(58,39,22,.16);
+  box-shadow: 0 8px 22px -18px rgba(58,39,22,.7);
+}
+.app-header .brand { color: var(--on-paper); }
+.app-header .header-icon, .app-header .profile-button { color: var(--on-paper); border-color: rgba(36,24,13,.2); background: rgba(255,255,255,.28); }
+.app-header .streak-chip { background: rgba(255,255,255,.3); border-color: rgba(138,38,32,.35); color: var(--red) !important; }
+.app-header .header-icon[aria-pressed=true] { background: var(--on-paper); color: var(--paper); }
+
+/* 2. Light parchment tab bar with a sliding pill for the active tab */
+.bottom-nav {
+  background: linear-gradient(0deg, rgba(232,217,186,.97), rgba(222,203,166,.94)), var(--map) center 80% / 900px;
+  border-top: 1px solid rgba(58,39,22,.16); box-shadow: 0 -10px 24px -20px rgba(58,39,22,.8);
+}
+.bottom-nav > button { color: #7d6a50 !important; }
+.bottom-nav > button.active { color: var(--red) !important; background: transparent; }
+.bottom-nav > button.active .nav-icon { color: var(--red); }
+.nav-marker { top: 7px; height: calc(100% - 14px); }
+.nav-marker::before { inset: 0 6%; border-radius: 14px; background: rgba(255,255,255,.42); box-shadow: inset 0 0 0 1px rgba(138,38,32,.18), 0 4px 12px -8px rgba(58,39,22,.6); }
+.nav-marker::after { display: none; }
+.bottom-nav > button { position: relative; z-index: 1; }
+
+/* 3. XP strip: a thin line under the header filling toward the next 100-XP milestone */
+.xp-strip { position: absolute; left: 0; right: 0; bottom: -1px; height: 3px; background: rgba(58,39,22,.1); overflow: hidden; }
+.xp-strip i { display: block; height: 100%; width: calc(var(--xp, 0) * 100%); background: linear-gradient(90deg, #8a2620, #c8553f); border-radius: 0 3px 3px 0; box-shadow: 0 0 8px rgba(200,85,63,.6); transition: width 1.2s cubic-bezier(.2,.8,.2,1); }
+.app-header { position: relative; }
+
+/* 4. Paper tiles instead of black panels (Progress, Recap, details) — like the streak calendar */
+.progress-summary, .points-timeline, .quest-preview, .analytics-stats > div, .local-label, .milestone-banner {
+  background: rgba(243,233,210,.86) !important; color: var(--on-paper) !important;
+  border: 1px solid rgba(58,39,22,.14) !important; border-radius: 20px !important;
+  box-shadow: 0 10px 24px -20px rgba(58,39,22,.8), inset 0 1px 0 rgba(255,255,255,.55);
+}
+.progress-summary p, .quest-preview p, .points-timeline .pt-head strong, .quest-preview h3 { color: var(--on-paper) !important; }
+.progress-summary small, .pt-axis, .pt-head strong small, .points-timeline .eyebrow, .quest-preview .eyebrow { color: var(--on-paper-mute) !important; }
+.pt-bars span { background: rgba(138,38,32,.18); }
+.quest-preview .quest-meta > span, .roadmap-meta .effort-pill { background: rgba(255,255,255,.5) !important; color: var(--on-paper) !important; border-color: rgba(58,39,22,.18) !important; }
+.roadmap-meta .effort-pill .pips i { background: rgba(36,24,13,.15); }
+.roadmap-meta .effort-pill .pips i.on { background: var(--red); box-shadow: none; }
+.climb, .progress-panel, .analytics-panel, .resume-lab { border-radius: 20px !important; box-shadow: 0 10px 24px -20px rgba(58,39,22,.8); }
+
+/* 5. Tactile press feedback on everything you can tap */
+button, .quest-card-open { transition: transform .16s cubic-bezier(.3,1.4,.5,1), background-color .2s ease, box-shadow .2s ease; }
+button:active:not(:disabled) { transform: scale(.96); }
+.quest-card-open:active { transform: scale(.985); }
+
+@media (prefers-reduced-motion: no-preference) {
+  /* 6. Pages glide AND fade in; sheets rise on a spring */
+  main.tab-enter { animation: smooth-page .42s cubic-bezier(.22,.8,.24,1) backwards; }
+  main.tab-enter[data-dir="back"] { animation-name: smooth-page-back; }
+  .modal { animation: smooth-sheet .46s cubic-bezier(.2,1.1,.3,1) backwards !important; }
+
+  /* 7. The card you land on settles in: photo eases from a slight zoom, text rises */
+  .opportunity-feed.watching .quest-card:not(.in-view) .quest-card-photo img { transform: scale(1.07); }
+  .opportunity-feed .quest-card .quest-card-photo img { transition: transform 1.4s cubic-bezier(.2,.8,.2,1); }
+    .opportunity-feed.watching .quest-card:not(.in-view) .quest-card-body { opacity: .35; translate: 0 10px; }
+  .opportunity-feed .quest-card .quest-card-body { transition: opacity .5s ease, translate .5s cubic-bezier(.2,.8,.2,1); }
+  }
+@keyframes smooth-page { from { opacity: 0; translate: 24px 0; } to { opacity: 1; translate: 0 0; } }
+@keyframes smooth-page-back { from { opacity: 0; translate: -24px 0; } to { opacity: 1; translate: 0 0; } }
+@keyframes smooth-sheet { from { translate: 0 40px; opacity: .2; } to { translate: 0 0; opacity: 1; } }
