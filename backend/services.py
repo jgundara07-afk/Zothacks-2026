@@ -134,7 +134,7 @@ class OneThing:
         done_quests = {a['quest_id'] for a in self.activity('completion')}
 
         import json as _json
-        cache_key = _json.dumps([g.user_id, {k: v for k, v in filters.items() if k not in ('offset', 'limit')}, interest_tags, goal_tags, skill_tags,
+        cache_key = _json.dumps(['demo', {k: v for k, v in filters.items() if k not in ('offset', 'limit')}, interest_tags, goal_tags, skill_tags,
                                  context, sorted(done_quests), sorted(saved_ids), default_effort, str(self.today()), lat, lon, radius], sort_keys=True, default=str)
         cached = getattr(self, '_stream_cache', {}).get(cache_key)
         if cached is None:
@@ -204,8 +204,10 @@ class OneThing:
             if quests[0].get('project'):
                 quests = [next((q for q in quests if q['id'] not in done_quests), None)] if quests else []
                 if quests == [None]: continue
-            sized = [q for q in quests if (filters.get('step_size','Any') == 'Any' or q['size'] == filters['step_size']) and (step_limit is None or q['minutes'] <= step_limit)]
-            candidates = sized or quests
+            # an explicit step size narrows the first stretch; your availability only prefers steps that fit it
+            sized = [q for q in quests if filters.get('step_size','Any') == 'Any' or q['size'] == filters['step_size']]
+            fitting = [q for q in sized if step_limit is None or q['minutes'] <= step_limit]
+            candidates = fitting or sized or quests
             # With no effort set, use the opportunity's suggested first step (a mix of sizes, see program_catalog).
             chosen = next((q for q in candidates if q.get('suggested')), None) if not default_effort and filters.get('step_size','Any') == 'Any' else None
             chosen = chosen or min(candidates, key=lambda q: ((q['effort'] != default_effort) if default_effort else (q['difficulty'] not in p['challenge_levels']), q['minutes']))
@@ -214,9 +216,10 @@ class OneThing:
                 if within_filters(o, p, venues): general.append(entry)
                 continue
             value, tier, lead = score(o, interest_tags, goal_tags, skill_tags, near, match_mode)
-            value += context_relevance(o, context)[0]
-            # Your situation (budget, format, travel, days) shapes the first stretch like the Filters sheet does.
-            (inside if sized and within_filters(o, p, venues) and context_match(o, context, filters) else outside).append((entry, value, tier, lead))
+            # Your situation (budget, format, travel, days, availability) is a preference, never a gate: cards that
+            # fit it move up, the rest still appear.
+            value += context_relevance(o, context)[0] + (1.0 if context_match(o, context, filters) else 0) + (0.4 if fitting else 0)
+            (inside if sized and within_filters(o, p, venues) else outside).append((entry, value, tier, lead))
 
         interest_set = set(interest_tags)
         def order(pool):
