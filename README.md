@@ -65,7 +65,7 @@ Open http://127.0.0.1:5173. Vite proxies `/api` to Flask on port 5001. Continue 
 On macOS/Linux use `.venv/bin/python`, `cp`, and normal shell syntax. Keep existing `.env` credentials when updating the project.
 
 ## Deploy (Render)
-`render.yaml` defines one web service that builds `frontend/dist` and runs `gunicorn --chdir backend wsgi:app`. `backend/wsgi.py` serves the built frontend at `/` and the Flask API under `/api`, matching the Vite dev proxy. Set `MONGO_URI`, `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`, `VITE_SUPABASE_URL`, and `VITE_SUPABASE_PUBLISHABLE_KEY` in the Render dashboard before build (and optionally `GEMINI_API_KEY`); without `MONGO_URI` the service falls back to SQLite on Render's ephemeral disk, so saves and progress reset on every redeploy or restart. Pushes to `main` redeploy automatically. Republishing the catalog means committing a new `backend/catalog/opportunities.json.gz`.
+`render.yaml` defines one web service that builds `frontend/dist` and runs `gunicorn --chdir backend wsgi:app`. `backend/wsgi.py` serves the built frontend at `/` and the Flask API under `/api`, matching the Vite dev proxy. In the Render service's **Environment** settings, set `MONGO_URI`, `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`, `VITE_SUPABASE_URL`, and `VITE_SUPABASE_PUBLISHABLE_KEY` (and optionally `GEMINI_API_KEY`). Use the same Supabase project URL for both URL variables and the same public publishable key for both key variables. The `VITE_` values are embedded during the frontend build, while the unprefixed values are read by Flask at runtime; a working sign-in page does not prove the Flask variables are set. Save the Render environment changes and redeploy. Without `MONGO_URI` the service falls back to SQLite on Render's ephemeral disk, so saves and progress reset on every redeploy or restart. Pushes to `main` redeploy automatically. Republishing the catalog means committing a new `backend/catalog/opportunities.json.gz`.
 
 ## Data and sample modes
 `ONETHING_DATA_MODE=catalog` is the default. To use fictional sample mode for a run:
@@ -77,7 +77,7 @@ $env:ONETHING_DATA_MODE = 'sample'
 Remove-Item Env:ONETHING_DATA_MODE
 ```
 
-An empty `MONGO_URI` uses local `backend/demo.sqlite3`. A configured MongoDB must be reachable. Accounts are separate by verified Supabase user ID; the old fictional Alex fixture is not assigned to new users. Switching storage does not migrate state. Switching data modes preserves existing activity; it does not delete saved items or points. Startup never imports 11,254 records into the profile store or overwrites activity.
+An empty `MONGO_URI` uses persistent `backend/demo.sqlite3`, but signed-in users still have separate profiles and activity. A configured MongoDB must be reachable. Switching storage does not migrate state. Switching data modes preserves existing activity; it does not delete saved items or points. Startup never imports 11,254 records into the profile store or overwrites activity.
 
 The missing/corrupt catalog fails startup with a clear file/checksum error; there is no silent sample fallback. After a manual refresh, restart Flask to load the new catalog.
 
@@ -125,9 +125,10 @@ The phone-width UI, Google sign-in, preference checklist, list/image toggle, str
 ## Automatic feed pagination
 Discover loads the next API page automatically when the bottom of the image feed or text-only list approaches the viewport. Requests are serialized, appended cards are deduplicated by stable opportunity ID, and a filter change invalidates older responses. Scrolling stays in place while cards are appended. A load-more button remains as an accessible/manual fallback, failures show a retry action, and an explicit end message appears when `has_more` is false. Saved items keep their existing list behavior.
 
-### Analytics
+### Demo dates and analytics
+The Demo time machine is disabled for normal signed-in use. Test fixtures can enable it to simulate daily quests and streaks; catalog availability still uses real time. Accounts keep separate profiles and activity.
 
-The Demo time machine is disabled for real accounts. Analytics supports Weekly (Monday–Sunday), Monthly (daily bars fitted to the screen), and Yearly views, with period navigation. Donut charts show opportunity categories, challenges, and skill-tag shares for the selected period. Skills can overlap; percentages are rounded. Recap and the mountain retain lifetime totals.
+Analytics supports Weekly (Monday–Sunday), Monthly (daily bars fitted to the screen), and Yearly views, with period navigation. Donut charts show opportunity categories, challenges, and skill-tag shares for the selected period. Skills can overlap; percentages are rounded. Recap and the mountain retain lifetime totals.
 
 ### Catalog effort and filter update
 
