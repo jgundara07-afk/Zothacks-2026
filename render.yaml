@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: onething
+    runtime: python
+    plan: free
+    buildCommand: cd frontend && npm ci && npm run build && cd .. && pip install -r backend/requirements.txt gunicorn
+    startCommand: gunicorn --chdir backend --workers 1 --threads 4 --timeout 120 wsgi:app
+    healthCheckPath: /api/health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.7
+      - key: NODE_VERSION
+        value: 22.11.0
+      - key: MONGO_URI
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: ONETHING_DATA_MODE
+        value: catalog

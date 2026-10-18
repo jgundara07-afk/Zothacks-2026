@@ -41,6 +41,9 @@ Open http://127.0.0.1:5173. Vite proxies `/api` to Flask on port 5001. Sign in t
 
 On macOS/Linux use `.venv/bin/python`, `cp`, and normal shell syntax. Keep existing `.env` credentials when updating the project.
 
+## Deploy (Render)
+`render.yaml` defines one web service that builds `frontend/dist` and runs `gunicorn --chdir backend wsgi:app`. `backend/wsgi.py` serves the built frontend at `/` and the Flask API under `/api`, matching the Vite dev proxy. Set `MONGO_URI` (and optionally `GEMINI_API_KEY`) in the Render dashboard; without `MONGO_URI` the service falls back to SQLite on Render's ephemeral disk, so saves and progress reset on every redeploy or restart. Pushes to `main` redeploy automatically. Republishing the catalog means committing a new `backend/catalog/opportunities.json.gz`.
+
 ## Data and sample modes
 `ONETHING_DATA_MODE=catalog` is the default. To use fictional sample mode for a run:
 
