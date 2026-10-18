@@ -1,4 +1,6 @@
 .env
+# Public Supabase browser settings (publishable key only) are committed.
+!frontend/.env
 .venv/
 node_modules/
 dist/
